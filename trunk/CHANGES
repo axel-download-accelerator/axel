@@ -1,3 +1,14 @@
+Version 1.0b:
+- Removed spaces between -S[x] in man-pages, etc. They mess things up.
+- Fixed configure for OpenBSD.
+- Fixed configuration bug: s/alternate_interface/alternate_output/ in
+  axelrc.example, thanks to CLOTILDE Guy Daniel for the bug report!
+- Fixed weird behaviour when downloading from an unsupported server.
+- Fixed buffer overflow in conn.c. (CAN-2005-0390)
+
+Finished Apr 06 2005
+
+
 Version 1.0a:
 - gstrip on Solaris/SPARC breaks the binary, so stripping is made optional
   (but enabled by default!) and /usr/ccs/bin/strip is used instead of

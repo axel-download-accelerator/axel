@@ -66,7 +66,7 @@
 /* Compiled-in settings							*/
 #define MAX_STRING		256
 #define MAX_REDIR		5
-#define AXEL_VERSION_STRING	"1.0a"
+#define AXEL_VERSION_STRING	"1.0b"
 #define USER_AGENT		"Axel " AXEL_VERSION_STRING " (" ARCH ")"
 
 typedef struct
