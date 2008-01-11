@@ -7,7 +7,7 @@
 
 ### DEFINITIONS
 
-include Makefile.settings
+-include Makefile.settings
 
 .SUFFIXES: .po .mo
 

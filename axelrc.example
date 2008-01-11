@@ -99,4 +99,4 @@
 # If you don't like the wget-alike interface, you can set this to 1 to get
 # a scp-alike interface.
 #
-# alternate_interface = 1
+# alternate_output = 1

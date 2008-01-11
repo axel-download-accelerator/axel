@@ -158,7 +158,7 @@ NetBSD )
 	echo '         Please send me your results so I can update this!'
 	echo ''
 	echo '#define NOGETOPTLONG' >> config.h
-	echo 'LFLAGS+=-lpthread' >> Makefile.settings
+	echo 'LFLAGS+=-pthread' >> Makefile.settings
 	if [ "$i18n" = "1" ]; then
 		echo 'LFLAGS+=-lintl' >> Makefile.settings;
 	fi

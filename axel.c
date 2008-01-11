@@ -227,7 +227,7 @@ void axel_start( axel_t *axel )
 		axel->conn[i].local_if = axel->conf->interfaces->text;
 		axel->conf->interfaces = axel->conf->interfaces->next;
 		axel->conn[i].conf = axel->conf;
-		axel->conn[i].supported = 1;
+		if( i ) axel->conn[i].supported = 1;
 	}
 	
 	if( axel->conf->verbose > 0 )
