@@ -1,0 +1,15 @@
+[Desktop Entry]
+Comment[C]=
+Exec=axel-kapt %f
+Icon=connect_creating
+MimeType=
+Name[C]=Axel front-end
+Path=
+ServiceTypes=
+SwallowExec=
+SwallowTitle=
+Terminal=false
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
