@@ -1,0 +1,279 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Axel\n"
+"POT-Creation-Date: 2002-02-19 18:17+0100\n"
+"PO-Revision-Date: 2001-11-14 20:37GMT\n"
+"Last-Translator: Hermann J. Beckers <hjb-rheine@t-online.de>\n"
+"Language-Team: Deutsch <de@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.8\n"
+
+#: axel.c:55
+msgid "Buffer resized for this speed."
+msgstr "Buffer für diese Geschwindigkeit angepasst."
+
+#: axel.c:91
+msgid "Could not parse URL.\n"
+msgstr "Kann URL nicht parsen.\n"
+
+#: axel.c:126
+#, c-format
+msgid "File size: %i bytes"
+msgstr "Dateigröße: %i Bytes"
+
+#: axel.c:142
+#, c-format
+msgid "Opening output file %s"
+msgstr "Öffne Ausgabedatei: %s"
+
+#: axel.c:151
+msgid "Server unsupported, starting from scratch with one connection."
+msgstr "Server versteht REST nicht, Neustart mit einer Verbindung."
+
+#: axel.c:170
+#, c-format
+msgid "State file found: %i bytes downloaded, %i to go."
+msgstr "Status-Datei gefunden: %i Bytes übertragen, %i verbleiben."
+
+#: axel.c:177 axel.c:189
+msgid "Error opening local file"
+msgstr "Fehler beim Öffnen der lokalen Datei"
+
+#: axel.c:201
+msgid "Crappy filesystem/OS.. Working around. :-("
+msgstr "Schlechtes Datei-/Betriebssystem, Umgehung.."
+
+#: axel.c:234
+msgid "Starting download"
+msgstr "Starte Abruf"
+
+#: axel.c:240 axel.c:393
+#, fuzzy, c-format
+msgid "Connection %i downloading from %s:%i using interface %s"
+msgstr "Verbindung %i Abruf von %s:%i"
+
+#: axel.c:244 axel.c:402
+msgid "pthread error!!!"
+msgstr "pthread Fehler!!!"
+
+#: axel.c:312
+#, c-format
+msgid "Error on connection %i! Connection closed"
+msgstr "Fehler bei Verbindung %i! Verbindung getrennt"
+
+#: axel.c:326
+#, c-format
+msgid "Connection %i unexpectedly closed"
+msgstr "Verbindung %i unerwartet getrennt"
+
+#: axel.c:330 axel.c:347
+#, c-format
+msgid "Connection %i finished"
+msgstr "Verbindung %i beendet"
+
+#: axel.c:359
+msgid "Write error!"
+msgstr "Schreibfehler!"
+
+#: axel.c:371
+#, c-format
+msgid "Connection %i timed out"
+msgstr "Time-out bei Verbindung %i"
+
+#: conf.c:107
+#, c-format
+msgid "Error in %s line %i.\n"
+msgstr "Fehler in %s Zeile %i.\n"
+
+#: conn.c:344 ftp.c:121
+msgid "Too many redirects.\n"
+msgstr "Zu viele Weiterleitungen (redirects).\n"
+
+#: conn.c:363
+msgid "Unknown HTTP error.\n"
+msgstr "Unbekannter HTTP Fehler.\n"
+
+#: ftp.c:35 http.c:58
+#, c-format
+msgid "Unable to connect to server %s:%i\n"
+msgstr "Keine Verbindung mit %s:%i möglich\n"
+
+#: ftp.c:114 ftp.c:174
+msgid "File not found.\n"
+msgstr "Datei nicht gefunden.\n"
+
+#: ftp.c:176
+msgid "Multiple matches for this URL.\n"
+msgstr "Mehrere Treffer für diese URL.\n"
+
+#: ftp.c:247 ftp.c:253
+msgid "Error opening passive data connection.\n"
+msgstr "Fehler beim Öffnen der Passiv-Verbindung.\n"
+
+#: ftp.c:283
+#, c-format
+msgid "Error writing command %s\n"
+msgstr "Fehler beim Schreiben des Befehls %s\n"
+
+#: ftp.c:308 http.c:148
+msgid "Connection gone.\n"
+msgstr "Verbindung geschlossen.\n"
+
+#: http.c:44
+#, c-format
+msgid "Invalid proxy string: %s\n"
+msgstr "Ungültige Proxy-Angabe: %s\n"
+
+#: text.c:146
+msgid "Can't redirect stdout to /dev/null.\n"
+msgstr "Kann Standardausgabe nicht nach /dev/null umleiten.\n"
+
+#: text.c:174
+#, c-format
+msgid "Initializing download: %s\n"
+msgstr "Starte Abruf: %s\n"
+
+#: text.c:181
+msgid "Doing search...\n"
+msgstr "Suche gestartet...\n"
+
+#: text.c:185
+msgid "File not found\n"
+msgstr "Datei nicht gefunden\n"
+
+#: text.c:189
+msgid "Testing speeds, this can take a while...\n"
+msgstr "Teste Geschwindigkeiten, das kann etwas dauern...\n"
+
+#: text.c:194
+#, c-format
+msgid "%i usable servers found, will use these URLs:\n"
+msgstr "%i benutzbare Server gefunden, werde diese URLs benutzen:\n"
+
+#: text.c:256
+msgid "No state file, cannot resume!\n"
+msgstr "Keine Status-Datei, Fortsetzung nicht möglich!\n"
+
+#: text.c:261
+msgid "State file found, but no downloaded data. Starting from scratch.\n"
+msgstr "Status-Datei gefunden, aber noch nichts übertragen. Neustart.\n"
+
+#: text.c:392
+#, c-format
+msgid ""
+"\n"
+"Downloaded %s in %s. (%.2f KB/s)\n"
+msgstr ""
+"\n"
+"%s abgerufen in %s. (%.2f KB/s)\n"
+
+#: text.c:414
+#, c-format
+msgid "%i byte"
+msgstr "%i Byte"
+
+#: text.c:416
+#, c-format
+msgid "%i bytes"
+msgstr "%i Bytes"
+
+#: text.c:418
+#, c-format
+msgid "%.1f kilobytes"
+msgstr "%.1f Kilobytes"
+
+#: text.c:420
+#, c-format
+msgid "%.1f megabytes"
+msgstr "%.1f Megabytes"
+
+#: text.c:429
+#, c-format
+msgid "%i second"
+msgstr "%i Sekunde"
+
+#: text.c:431
+#, c-format
+msgid "%i seconds"
+msgstr "%i Sekunden"
+
+#: text.c:433
+#, c-format
+msgid "%i:%02i seconds"
+msgstr "%i:%02i Sekunden"
+
+#: text.c:435
+#, c-format
+msgid "%i:%02i:%02i seconds"
+msgstr "%i:%02i:%02i Sekunden"
+
+#: text.c:509
+#, fuzzy
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"-s x\tSpecify maximum speed (bytes per second)\n"
+"-n x\tSpecify maximum number of connections\n"
+"-o f\tSpecify local output file\n"
+"-S [x]\tSearch for mirrors and download from x servers\n"
+"-N\tJust don't use any proxy server\n"
+"-q\tLeave stdout alone\n"
+"-v\tMore status information\n"
+"-a\tAlternate progress indicator\n"
+"-h\tThis information\n"
+"-V\tVersion information\n"
+"\n"
+"Report bugs to lintux@lintux.cx\n"
+msgstr ""
+"Aufruf: axel [Optionen] url1 [url2] [url...]\n"
+"\n"
+"-s x\tMaximale Geschwindigkeit (Bytes pro Sekunde)\n"
+"-n x\tMaximale gleichzeitige Verbindungen\n"
+"-o f\tLokale Ausgabe-Datei\n"
+"-S [x]\tSuche nach Spiegelservern und Abruf von x Servern\n"
+"-N\tkeinen Proxy-Server benutzen\n"
+"-q\tKeine Meldungen auf Standard-Ausgabe\n"
+"-v\tZusätzliche Status-Information\n"
+"-h\tDiese Information\n"
+"-V\tVersions-Information\n"
+"\n"
+"Fehler an lintux@lintux.cx melden.\n"
+
+#: text.c:524
+#, fuzzy
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
+"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
+"--output=f\t\t-o f\tSpecify local output file\n"
+"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
+"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+"--quiet\t\t\t-q\tLeave stdout alone\n"
+"--verbose\t\t-v\tMore status information\n"
+"--alternate\t\t-a\tAlternate progress indicator\n"
+"--help\t\t\t-h\tThis information\n"
+"--version\t\t-V\tVersion information\n"
+"\n"
+"Report bugs to lintux@lintux.cx\n"
+msgstr ""
+"Aufruf: axel [Optionen] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tMaximale Geschwindigkeit (Bytes pro Sekunde)\n"
+"--num-connections=x\t-n x\tMaximale gleichzeitige Verbindungen\n"
+"--output=f\t\t-o f\tLokale Ausgabe-Datei\n"
+"--search=[x]\t\t-S [x] Suche nach Spiegelservern und Abruf von x Servern\n"
+"--no-proxy\t\t-N\tkeinen Proxy-Server benutzen\n"
+"--quiet\t\t\t-q\tKeine Meldungen auf Standard-Ausgabe\n"
+"--verbose\t\t-v\tMehr Fortgangs-Information\n"
+"--help\t\t\t-h\tDiese Information\n"
+"--version\t\t-V\tVersions-Information\n"
+"\n"
+"Fehler an lintux@lintux.cx melden.\n"
+
+#: text.c:543
+#, c-format
+msgid "Axel version %s (%s)\n"
+msgstr "Axel Version %s (%s)\n"
