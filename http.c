@@ -41,7 +41,8 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		sprintf( conn->host, "%s:%i", host, port );
 		if( !conn_set( tconn, proxy ) )
 		{
-			sprintf( conn->request, _("Invalid proxy string: %s\n"), proxy );
+			/* We'll put the message in conn->headers, not in request */
+			sprintf( conn->headers, _("Invalid proxy string: %s\n"), proxy );
 			return( 0 );
 		}
 		host = tconn->host;
@@ -55,7 +56,8 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	
 	if( ( conn->fd = tcp_connect( host, port, conn->local_if ) ) == -1 )
 	{
-		sprintf( conn->request, _("Unable to connect to server %s:%i\n"), host, port );
+		/* We'll put the message in conn->headers, not in request */
+		sprintf( conn->headers, _("Unable to connect to server %s:%i\n"), host, port );
 		return( 0 );
 	}
 	
@@ -145,7 +147,8 @@ int http_exec( http_t *conn )
 	{
 		if( read( conn->fd, s, 1 ) <= 0 )
 		{
-			sprintf( conn->request, _("Connection gone.\n") );
+			/* We'll put the message in conn->headers, not in request */
+			sprintf( conn->headers, _("Connection gone.\n") );
 			return( 0 );
 		}
 		if( *s == '\r' )

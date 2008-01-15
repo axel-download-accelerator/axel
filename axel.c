@@ -444,7 +444,9 @@ void axel_close( axel_t *axel )
 	
 	/* Terminate any thread still running				*/
 	for( i = 0; i < axel->conf->num_connections; i ++ )
-		pthread_cancel( *axel->conn[i].setup_thread );
+		/* don't try to kill non existing thread */
+		if ( *axel->conn[i].setup_thread != 0 )
+			pthread_cancel( *axel->conn[i].setup_thread );
 	
 	/* Delete state file if necessary				*/
 	if( axel->ready == 1 )
