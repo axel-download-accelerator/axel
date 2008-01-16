@@ -55,9 +55,9 @@ config :horizontal "OPTIONS" -> checks term max connex search;
 local -> file | ! @ ;
     file "Save as (optional). Choose a directory and type a filename..." -> " --output=" @directory();
 
-buttons :horizontal "Actions" -> mail help doit quit;
-    help -> @button(helpwin)="Help";
-    mail -> @action(bug)="Bug Report";
+buttons :horizontal "Actions" -> help mail doit quit;
+    help -> @preview(helpstr,"Close")="Help";
+    mail -> @preview(bug,"Close")="Bug Report";
     doit -> @exec(axel)="Start";
     #doit -> @echo(axel)="Start";
     quit -> @close="Exit";
@@ -65,13 +65,11 @@ buttons :horizontal "Actions" -> mail help doit quit;
 filler -> @fill(); #sometimes the bottom is obscured..
                    #not just in kaptain. Some other qt apps too
 
-helpwin "axel Help Text"-> helptitle helpwindow;
-        #huge button just to force the dialog wider
-	helptitle :horizontal -> @text(x%axel -V%) @close=">>>>>>>>>>>> Close this window <<<<<<<<<<<<<";
-	helpwindow -> @list(x%axel --help%);
+helpstr -> "Axel is a program that downloads a file from a FTP or HTTP \
+server through multiple connection, each connection downloads its own \
+part of the file.  Read the manual page - axel(1) for various options";
 
-bug -> "kmail -s " x%axel -V | grep Axel | sed s/" "/"_"/g% " lintux@lintux.cx"; 
-
+bug -> "Please visit http://axel.alioth.debian.org/ to report bugs on axel-kapt";
 
 axel -> term " -e axel -s " max " -n "connex proxy verb quiet search " " local " " url;
 '''
