@@ -85,12 +85,10 @@ if [ "$i18n" = "1" ]; then
 	fi;
 fi
 
+echo 'CFLAGS=-g' >> Makefile.settings
 if [ "$debug" = "1" ]; then
-	echo 'CFLAGS=-g' >> Makefile.settings
 	echo 'DEBUG=1' >> Makefile.settings
 	echo '#define DEBUG' >> config.h;
-else
-	echo 'CFLAGS=-O3' >> Makefile.settings;
 fi
 
 if [ "$i18n" = "1" ]; then
