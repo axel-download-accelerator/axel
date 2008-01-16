@@ -64,7 +64,7 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	{
 		axel->url = malloc( sizeof( url_t ) );
 		axel->url->next = axel->url;
-		strcpy( axel->url->text, (char *) url );
+		strncpy( axel->url->text, (char *) url, MAX_STRING );
 	}
 	else
 	{
@@ -72,7 +72,7 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 		u = axel->url = malloc( sizeof( url_t ) );
 		for( i = 0; i < count; i ++ )
 		{
-			strcpy( u->text, res[i].url );
+			strncpy( u->text, res[i].url, MAX_STRING );
 			if( i < count - 1 )
 			{
 				u->next = malloc( sizeof( url_t ) );
@@ -96,10 +96,10 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	axel->conn[0].local_if = axel->conf->interfaces->text;
 	axel->conf->interfaces = axel->conf->interfaces->next;
 	
-	strcpy( axel->filename, axel->conn[0].file );
+	strncpy( axel->filename, axel->conn[0].file, MAX_STRING );
 	http_decode( axel->filename );
 	if( *axel->filename == 0 )	/* Index page == no fn		*/
-		strcpy( axel->filename, axel->conf->default_filename );
+		strncpy( axel->filename, axel->conf->default_filename, MAX_STRING );
 	if( ( s = strchr( axel->filename, '?' ) ) != NULL && axel->conf->strip_cgi_parameters )
 		*s = 0;		/* Get rid of CGI parameters		*/
 	
@@ -119,7 +119,7 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 		return( axel );
 	}
 	s = conn_url( axel->conn );
-	strcpy( axel->url->text, s );
+	strncpy( axel->url->text, s, MAX_STRING );
 	if( ( axel->size = axel->conn[0].size ) != INT_MAX )
 	{
 		if( axel->conf->verbose > 0 )
@@ -128,7 +128,7 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	
 	/* Wildcards in URL --> Get complete filename			*/
 	if( strchr( axel->filename, '*' ) || strchr( axel->filename, '?' ) )
-		strcpy( axel->filename, axel->conn[0].file );
+		strncpy( axel->filename, axel->conn[0].file, MAX_STRING );
 	
 	return( axel );
 }

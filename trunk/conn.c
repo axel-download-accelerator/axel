@@ -74,12 +74,12 @@ int conn_set( conn_t *conn, char *set_url )
 		*j = '?';
 	if( i == NULL )
 	{
-		strcpy( conn->file, conn->dir );
+		strncpy( conn->file, conn->dir, MAX_STRING );
 		strcpy( conn->dir, "/" );
 	}
 	else
 	{
-		strcpy( conn->file, i + 1 );
+		strncpy( conn->file, i + 1, MAX_STRING );
 		strcat( conn->dir, "/" );
 	}
 	
@@ -89,7 +89,7 @@ int conn_set( conn_t *conn, char *set_url )
 		strncpy( conn->user, conn->host, MAX_STRING );
 		i = strrchr( conn->user, '@' );
 		*i = 0;
-		strcpy( conn->host, i + 1 );
+		strncpy( conn->host, i + 1, MAX_STRING );
 		*conn->pass = 0;
 	}
 	/* If not: Fill in defaults					*/
@@ -112,7 +112,7 @@ int conn_set( conn_t *conn, char *set_url )
 	if( ( i = strchr( conn->user, ':' ) ) != NULL )
 	{
 		*i = 0;
-		strcpy( conn->pass, i + 1 );
+		strncpy( conn->pass, i + 1, MAX_STRING );
 	}
 	/* Port number?							*/
 	if( ( i = strchr( conn->host, ':' ) ) != NULL )
