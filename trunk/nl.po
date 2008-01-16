@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
-"POT-Creation-Date: 2002-02-19 18:16+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-01-16 13:03+0530\n"
 "PO-Revision-Date: 2001-11-14 15:22+0200\n"
 "Last-Translator: Wilmer van der Gaast <lintux@lintux.cx>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -86,80 +87,102 @@ msgstr "Time-out op verbinding %i"
 msgid "Error in %s line %i.\n"
 msgstr "Fout in %s regel %i.\n"
 
-#: conn.c:344 ftp.c:121
+#: conn.c:345 ftp.c:124
+#, c-format
 msgid "Too many redirects.\n"
 msgstr "Te veel redirects.\n"
 
-#: conn.c:363
+#: conn.c:364
+#, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "Onbekende HTTP fout.\n"
 
-#: ftp.c:35 http.c:58
+#: ftp.c:35 http.c:60
 #, c-format
 msgid "Unable to connect to server %s:%i\n"
 msgstr "Kan niet verbinden met server %s:%i\n"
 
-#: ftp.c:114 ftp.c:174
+#: ftp.c:91
+#, c-format
+msgid "Can't change directory to %s\n"
+msgstr ""
+
+#: ftp.c:117 ftp.c:177
+#, c-format
 msgid "File not found.\n"
 msgstr "Bestand niet gevonden.\n"
 
-#: ftp.c:176
+#: ftp.c:179
+#, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "Meerdere bestanden passen bij deze URL.\n"
 
-#: ftp.c:247 ftp.c:253
+#: ftp.c:250 ftp.c:256
+#, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Fout bij het openen van een data verbinding.\n"
 
-#: ftp.c:283
+#: ftp.c:286
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Fout bij het schrijven van commando %s\n"
 
-#: ftp.c:308 http.c:148
+#: ftp.c:311 http.c:151
+#, c-format
 msgid "Connection gone.\n"
 msgstr "Verbinding gesloten.\n"
 
-#: http.c:44
+#: http.c:45
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "Ongeldige proxy string: %s\n"
 
 #: text.c:146
+#, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Fout bij het afsluiten van stdout.\n"
 
 #: text.c:174
 #, c-format
+msgid "Can't handle URLs of length over %d\n"
+msgstr ""
+
+#: text.c:179
+#, c-format
 msgid "Initializing download: %s\n"
 msgstr "Begin download: %s\n"
 
-#: text.c:181
+#: text.c:186
+#, c-format
 msgid "Doing search...\n"
 msgstr "Zoeken...\n"
 
-#: text.c:185
+#: text.c:190
+#, c-format
 msgid "File not found\n"
 msgstr "Bestand niet gevonden\n"
 
-#: text.c:189
+#: text.c:194
+#, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Snelheden testen, dit kan even duren...\n"
 
-#: text.c:194
+#: text.c:199
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i bruikbare servers gevonden, de volgende worden gebruikt:\n"
 
-#: text.c:256
+#: text.c:261
+#, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Geen .st bestand, kan niet resumen!\n"
 
-#: text.c:261
+#: text.c:266
+#, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ".st bestand gevonden maar geen uitvoerbestand. Opnieuw beginnen.\n"
 
-#: text.c:392
+#: text.c:397
 #, c-format
 msgid ""
 "\n"
@@ -168,47 +191,48 @@ msgstr ""
 "\n"
 "%s gedownload in %s. (%.2f KB/s)\n"
 
-#: text.c:414
+#: text.c:419
 #, c-format
 msgid "%i byte"
 msgstr "%i byte"
 
-#: text.c:416
+#: text.c:421
 #, c-format
 msgid "%i bytes"
 msgstr "%i bytes"
 
-#: text.c:418
+#: text.c:423
 #, c-format
 msgid "%.1f kilobytes"
 msgstr "%.1f kilobytes"
 
-#: text.c:420
+#: text.c:425
 #, c-format
 msgid "%.1f megabytes"
 msgstr "%.1f megabytes"
 
-#: text.c:429
+#: text.c:434
 #, c-format
 msgid "%i second"
 msgstr "%i seconde"
 
-#: text.c:431
+#: text.c:436
 #, c-format
 msgid "%i seconds"
 msgstr "%i seconden"
 
-#: text.c:433
+#: text.c:438
 #, c-format
 msgid "%i:%02i seconds"
 msgstr "%i:%02i seconden"
 
-#: text.c:435
+#: text.c:440
 #, c-format
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i seconden"
 
-#: text.c:509
+#: text.c:515
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -240,7 +264,8 @@ msgstr ""
 "\n"
 "Bugs melden aan lintux@lintux.cx\n"
 
-#: text.c:524
+#: text.c:530
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -272,7 +297,7 @@ msgstr ""
 "\n"
 "Bugs melden aan lintux@lintux.cx\n"
 
-#: text.c:543
+#: text.c:549
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel versie %s (%s)\n"
