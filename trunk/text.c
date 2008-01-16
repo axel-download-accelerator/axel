@@ -164,11 +164,16 @@ int main( int argc, char *argv[] )
 	else if( strcmp( argv[optind], "-" ) == 0 )
 	{
 		s = malloc( MAX_STRING );
-		scanf( "%127[^\n]s", s );
+		scanf( "%1024[^\n]s", s );
 	}
 	else
 	{
 		s = argv[optind];
+		if( strlen( s ) > MAX_STRING )
+		{
+			fprintf( stderr, _("Can't handle URLs of length over %d\n" ), MAX_STRING );
+			return( 1 );
+		}
 	}
 	
 	printf( _("Initializing download: %s\n"), s );
