@@ -173,13 +173,6 @@ Darwin )
 	echo 'Please keep in mind that you need GNU make to make Axel!'
 	echo ''
 ;;
-AtheOS | atheos )
-	echo 'If you want to run Axel on AtheOS, please use an older non-threaded version.'
-	echo 'This version still needs some changes to support the AtheOS threads.'
-	echo ''
-	echo 'Axel 0.96b can be downloaded from http://www.lintux.cx/axel.html'
-	exit 1
-;;
 Linux | GNU/kFreeBSD)
 	echo 'LFLAGS+=-lpthread' >> Makefile.settings
 ;;
