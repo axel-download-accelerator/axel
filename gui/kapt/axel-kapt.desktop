@@ -1,15 +1,11 @@
 [Desktop Entry]
-Comment[C]=
+Version=1.0
+Name=Axel
+GenericName=Axel Front-end
+Comment=Front-end for Axel - a light download accelerator
+Type=Application
 Exec=axel-kapt %f
 Icon=connect_creating
-MimeType=
-Name[C]=Axel front-end
-Path=
-ServiceTypes=
-SwallowExec=
-SwallowTitle=
 Terminal=false
-TerminalOptions=
-Type=Application
 X-KDE-SubstituteUID=false
-X-KDE-Username=
+Categories=Utility;Network;KDE;
