@@ -3,13 +3,13 @@ msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-01-16 13:03+0530\n"
-"PO-Revision-Date: 2001-11-14 20:37GMT\n"
-"Last-Translator: Hermann J. Beckers <hjb-rheine@t-online.de>\n"
-"Language-Team: Deutsch <de@li.org>\n"
+"PO-Revision-Date: 2007-12-15 15:18GMT\n"
+"Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
+"Language-Team: deutsch <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.8\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: axel.c:55
 msgid "Buffer resized for this speed."
@@ -106,7 +106,7 @@ msgstr "Keine Verbindung mit %s:%i möglich\n"
 #: ftp.c:91
 #, c-format
 msgid "Can't change directory to %s\n"
-msgstr ""
+msgstr "Kann nicht in Verzeichnis %s wechseln\n"
 
 #: ftp.c:117 ftp.c:177
 #, c-format
@@ -146,7 +146,7 @@ msgstr "Kann Standardausgabe nicht nach /dev/null umleiten.\n"
 #: text.c:174
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
-msgstr ""
+msgstr "Kann URLs mit mehr als %d Zeichen nicht nutzen\n"
 
 #: text.c:179
 #, c-format
