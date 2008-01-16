@@ -180,7 +180,7 @@ AtheOS | atheos )
 	echo 'Axel 0.96b can be downloaded from http://www.lintux.cx/axel.html'
 	exit 1
 ;;
-Linux )
+Linux | GNU/kFreeBSD)
 	echo 'LFLAGS+=-lpthread' >> Makefile.settings
 ;;
 SunOS )
