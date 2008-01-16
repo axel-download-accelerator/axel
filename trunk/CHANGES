@@ -1,3 +1,15 @@
+Version 1.1:
+
+- Compilation for GNU/kFreeBSD, thanks to Cyril Brulebois
+- Use simple pop-ups for Help and Bug Report buttons
+- Use strncpy instead of strcpy for length sensitive copies
+- Always compile with -g, disable -O3
+- Translation updates: de.po thanks Hermann J. Beckers
+- Update manpages axel.1 and axel-kapt.1
+- Prevent crash and raise error if FTP CWD fails
+- Prevent crash on long URLs and increase max length of URL to 1024
+- Fix segfaults on HTTP404 and HTTP401 responses
+
 Version 1.0b:
 - Removed spaces between -S[x] in man-pages, etc. They mess things up.
 - Fixed configure for OpenBSD.
