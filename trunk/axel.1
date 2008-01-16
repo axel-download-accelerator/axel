@@ -98,16 +98,14 @@ it must be a bug..
 
 .SH EXAMPLES
 .nf
-axel ftp://ftp.{be,nl,uk,de}.kernel.org/pub/linux/kernel/
-     v2.4/linux-2.4.17.tar.bz2
+axel ftp://ftp.{be,nl,uk,de}.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
 .fi
 
 This will use the Belgian, Dutch, English and German kernel.org mirrors to
 download a Linux 2.4.17 kernel image.
 
 .nf
-axel -S4 ftp://ftp.kernel.org/pub/linux/kernel/v2.4/
-          linux-2.4.17.tar.bz2
+axel \-S4 ftp://ftp.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
 .fi
 
 This will do a search for the linux-2.4.17.tar.bz2 file on filesearching.com
@@ -123,7 +121,7 @@ one line in this page.)
 .PP
 \fI~/.axelrc\fP Personal configuration file
 .PP
-These files are not documented in a man-page, but the example file which
+These files are not documented in a man\-page, but the example file which
 comes with the program contains enough information, I hope. The position
 of the system-wide configuration file might be different.
 
