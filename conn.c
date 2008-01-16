@@ -313,7 +313,8 @@ int conn_info( conn_t *conn )
 		do
 		{
 			conn->currentbyte = 1;
-			conn_setup( conn );
+			if( !conn_setup( conn ) )
+				return( 0 );
 			conn_exec( conn );
 			conn_disconnect( conn );
 			/* Code 3xx == redirect				*/

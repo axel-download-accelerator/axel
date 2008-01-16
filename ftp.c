@@ -87,7 +87,10 @@ int ftp_cwd( ftp_t *conn, char *cwd )
 	
 	ftp_command( conn, "CWD %s", cwd );
 	if( ftp_wait( conn ) / 100 != 2 )
+	{
+		fprintf( stderr, _("Can't change directory to %s\n"), cwd );
 		return( 0 );
+	}
 	
 	strncpy( conn->cwd, cwd, MAX_STRING );
 	
