@@ -525,7 +525,7 @@ void print_help()
 		"-h\tThis information\n"
 		"-V\tVersion information\n"
 		"\n"
-		"Report bugs to lintux@lintux.cx\n") );
+		"Visit http://axel.alioth.debian.org/ to report bugs\n") );
 #else
 	printf(	_("Usage: axel [options] url1 [url2] [url...]\n"
 		"\n"
@@ -540,7 +540,7 @@ void print_help()
 		"--help\t\t\t-h\tThis information\n"
 		"--version\t\t-V\tVersion information\n"
 		"\n"
-		"Report bugs to lintux@lintux.cx\n") );
+		"Visit http://axel.alioth.debian.org/ to report bugs\n") );
 #endif
 }
 
