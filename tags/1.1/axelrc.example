@@ -1,0 +1,102 @@
+############################################################################
+##                                                                        ##
+##   Example configuration file for Axel - A light download accelerator   ##
+##                                                                        ##
+############################################################################
+
+# reconnect_delay sets the number of seconds before trying again to build
+# a new connection to the server.
+#
+# reconnect_delay = 20
+
+# You can set a maximum speed (bytes per second) here, Axel will try to be
+# at most 5% faster or 5% slower.
+#
+# max_speed = 0
+
+# You can set the maximum number of connections Axel will try to set up
+# here. There's a value precompiled in the program too, setting this too
+# high requires recompilation. PLEASE respect FTP server operators and other
+# users: Don't set this one too high!!! 4 is enough in most cases.
+#
+# num_connections = 4
+
+# If no data comes from a connection for this number of seconds, abort (and
+# resume) the connection.
+#
+# connection_timeout = 45
+
+# Set proxies. no_proxy is a comma-separated list of domains which are
+# local, axel won't use any proxy for them. You don't have to specify full
+# hostnames there.
+#
+# Note: If the HTTP_PROXY environment variable is set correctly already,
+# you don't have to set it again here. The setting should be in the same
+# format as the HTTP_PROXY var, like 'http://host.domain.com:8080/',
+# although a string like 'host.domain.com:8080' should work too..
+#
+# Sometimes HTTP proxies support FTP downloads too, so the proxy you
+# configure here will be used for FTP downloads too.
+#
+# If you have to use a SOCKS server for some reason, the program should
+# work perfectly through socksify without even knowing about that server.
+# I haven't tried it myself, so I would love to hear from you about the
+# results.
+#
+# http_proxy = 
+# no_proxy = 
+
+# Keep CGI arguments in the local filename?
+#
+# strip_cgi_parameters = 1
+
+# When downloading a HTTP directory/index page, (like http://localhost/~me/)
+# what local filename do we have to store it in?
+#
+# default_filename = default
+
+# Save state every x seconds. Set this to 0 to disable state saving during
+# download. State files will always be saved when the program terminates
+# (unless the download is finished, of course) so this is only useful to
+# protect yourself against sudden system crashes.
+#
+# save_state_interval = 10
+
+# Buffer size: Maximum amount of bytes to read from a connection. One single
+# buffer is used for all the connections (no separate per-connection buffer).
+# A smaller buffer might improve the accuracy of the speed limiter, but a
+# larger buffer is a better choice for fast connections.
+#
+# buffer_size = 5120
+
+# By default some status messages about the download are printed. You can
+# disable this by setting this one to zero.
+#
+# verbose = 1
+
+# FTP searcher
+#
+# search_timeout - Maximum time (seconds) to wait for a speed test
+# search_threads - Maximum number of speed tests at once
+# search_amount  - Number of URL's to request from filesearching.com
+# search_top     - Number of different URL's to use for download
+#
+# search_timeout = 10
+# search_threads = 3
+# search_amount = 15
+# search_top = 3
+
+# If you have multiple interfaces to the Internet, you can make Axel use all
+# of them by listing them here (interface name or IP address). If one of the
+# interfaces is faster than the other(s), you can list it more than once and
+# it will be used more often.
+#
+# This option is blank by default, which means Axel uses the first match in
+# the routing table.
+#
+# interfaces = 
+
+# If you don't like the wget-alike interface, you can set this to 1 to get
+# a scp-alike interface.
+#
+# alternate_output = 1
