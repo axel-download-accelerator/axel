@@ -1,14 +1,13 @@
+Axel Home:
+
+    See http://axel.alioth.debian.org/ for latest information on axel
+
 /*************************\
 * Supported architectures *
 \*************************/
 
-
-My primary development platform is Debian Potato at the moment, the program
-should compile on any decent Linux system. Additionaly, it should compile
-(and run) on BSD, Solaris, Darwin (Mac OS X) and Win32 (Cygwin) systems. If
-you want to run Axel on AtheOS, please try an older Axel (0.96b), since that
-version can be compiled without pthreads. AtheOS does implement threads, but
-not (yet) pthreads.
+Should compile on any decent Linux system. Additionaly, it should compile
+(and run) on BSD, Solaris, Darwin (Mac OS X) and Win32 (Cygwin) systems.
 
 If the configure script does weird things on your system, please do warn me!
 I test it on as many machines and OS'es as possible, but still anything can
@@ -52,6 +51,5 @@ discouraged as I consider them abusive. </quote>
 
 And he certainly has a point.. Using more than one server at once is a fine
 solution IMHO, so please use this feature if possible!
-
 
 Wilmer van der Gaast. <wilmer@gaast.net>

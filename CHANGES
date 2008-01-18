@@ -10,6 +10,8 @@ Version 1.1:
 - Prevent crash on long URLs and increase max length of URL to 1024
 - Fix segfaults on HTTP404 and HTTP401 responses
 
+Finished Jan 18 2008
+
 Version 1.0b:
 - Removed spaces between -S[x] in man-pages, etc. They mess things up.
 - Fixed configure for OpenBSD.
