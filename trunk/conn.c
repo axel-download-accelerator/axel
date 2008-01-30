@@ -242,7 +242,7 @@ int conn_setup( conn_t *conn )
 		
 		if( conn->currentbyte )
 		{
-			ftp_command( conn->ftp, "REST %i", conn->currentbyte );
+			ftp_command( conn->ftp, "REST %lld", conn->currentbyte );
 			if( ftp_wait( conn->ftp ) / 100 != 3 &&
 			    conn->ftp->status / 100 != 2 )
 				return( 0 );
@@ -282,12 +282,12 @@ int conn_info( conn_t *conn )
 	/* It's all a bit messed up.. But it works.			*/
 	if( conn->proto == PROTO_FTP && !conn->proxy )
 	{
-		ftp_command( conn->ftp, "REST %i", 1 );
+		ftp_command( conn->ftp, "REST %lld", 1 );
 		if( ftp_wait( conn->ftp ) / 100 == 3 ||
 		    conn->ftp->status / 100 == 2 )
 		{
 			conn->supported = 1;
-			ftp_command( conn->ftp, "REST %i", 0 );
+			ftp_command( conn->ftp, "REST %lld", 0 );
 			ftp_wait( conn->ftp );
 		}
 		else
@@ -308,7 +308,7 @@ int conn_info( conn_t *conn )
 	else
 	{
 		char s[MAX_STRING], *t;
-		int i = 0;
+		long long int i = 0;
 		
 		do
 		{

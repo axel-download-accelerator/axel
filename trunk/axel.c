@@ -23,6 +23,7 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
+#define _FILE_OFFSET_BITS 64
 #include "axel.h"
 
 /* Axel */
@@ -123,7 +124,7 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	if( ( axel->size = axel->conn[0].size ) != INT_MAX )
 	{
 		if( axel->conf->verbose > 0 )
-			axel_message( axel, _("File size: %i bytes"), axel->size );
+			axel_message( axel, _("File size: %lld bytes"), axel->size );
 	}
 	
 	/* Wildcards in URL --> Get complete filename			*/
@@ -137,6 +138,7 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 int axel_open( axel_t *axel )
 {
 	int i, fd;
+	long long int j;
 	
 	if( axel->conf->verbose > 0 )
 		axel_message( axel, _("Opening output file %s"), axel->filename );
@@ -167,7 +169,7 @@ int axel_open( axel_t *axel )
 		for( i = 0; i < axel->conf->num_connections; i ++ )
 			read( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
 
-		axel_message( axel, _("State file found: %i bytes downloaded, %i to go."),
+		axel_message( axel, _("State file found: %lld bytes downloaded, %lld to go."),
 			axel->bytes_done, axel->size - axel->bytes_done );
 		
 		close( fd );
@@ -193,7 +195,7 @@ int axel_open( axel_t *axel )
 		/* And check whether the filesystem can handle seeks to
 		   past-EOF areas.. Speeds things up. :) AFAIK this
 		   should just not happen:				*/
-		if( lseek( axel->outfd, axel->size, SEEK_SET ) == -1 && axel->conf->num_connections > 1 )
+		if( lseek64( axel->outfd, axel->size, SEEK_SET ) == -1 && axel->conf->num_connections > 1 )
 		{
 			/* But if the OS/fs does not allow to seek behind
 			   EOF, we have to fill the file with zeroes before
@@ -201,11 +203,11 @@ int axel_open( axel_t *axel )
 			axel_message( axel, _("Crappy filesystem/OS.. Working around. :-(") );
 			lseek( axel->outfd, 0, SEEK_SET );
 			memset( buffer, 0, axel->conf->buffer_size );
-			i = axel->size;
-			while( i > 0 )
+			j = axel->size;
+			while( j > 0 )
 			{
-				write( axel->outfd, buffer, min( i, axel->conf->buffer_size ) );
-				i -= axel->conf->buffer_size;
+				write( axel->outfd, buffer, min( j, axel->conf->buffer_size ) );
+				j -= axel->conf->buffer_size;
 			}
 		}
 	}
@@ -260,7 +262,8 @@ void axel_start( axel_t *axel )
 void axel_do( axel_t *axel )
 {
 	fd_set fds[1];
-	int hifd, i, j, size;
+	int hifd, i, j;
+	long long int size;
 	struct timeval timeval[1];
 	
 	/* Create statefile if necessary				*/
@@ -571,13 +574,13 @@ static void axel_divide( axel_t *axel )
 	for( i = 1; i < axel->conf->num_connections; i ++ )
 	{
 #ifdef DEBUG
-		printf( "Downloading %i-%i using conn. %i\n", axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
+		printf( "Downloading %lld-%lld using conn. %i\n", axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
 #endif
 		axel->conn[i].currentbyte = axel->conn[i-1].lastbyte + 1;
 		axel->conn[i].lastbyte = axel->conn[i].currentbyte + axel->size / axel->conf->num_connections;
 	}
 	axel->conn[axel->conf->num_connections-1].lastbyte = axel->size - 1;
 #ifdef DEBUG
-	printf( "Downloading %i-%i using conn. %i\n", axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
+	printf( "Downloading %lld-%lld using conn. %i\n", axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
 #endif
 }

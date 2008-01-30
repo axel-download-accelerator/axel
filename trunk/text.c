@@ -26,9 +26,9 @@
 #include "axel.h"
 
 static void stop( int signal );
-static char *size_human( int value );
+static char *size_human( long long int value );
 static char *time_human( int value );
-static void print_commas( int bytes_done );
+static void print_commas( long long int bytes_done );
 static void print_alternate_output( axel_t *axel );
 static void print_help();
 static void print_version();
@@ -323,7 +323,7 @@ int main( int argc, char *argv[] )
 	
 	while( !axel->ready && run )
 	{
-		int prev, done;
+		long long int prev, done;
 		
 		prev = axel->bytes_done;
 		axel_do( axel );
@@ -347,9 +347,9 @@ int main( int argc, char *argv[] )
 						if( prev >= 1024 )
 							printf( "  [%6.1fKB/s]", (double) axel->bytes_per_second / 1024 );
 						if( axel->size < 10240000 )
-							printf( "\n[%3i%%]  ", min( 100, 102400 * i / axel->size ) );
+							printf( "\n[%3lld%%]  ", min( 100, 102400 * i / axel->size ) );
 						else
-							printf( "\n[%3i%%]  ", min( 100, i / ( axel->size / 102400 ) ) );
+							printf( "\n[%3lld%%]  ", min( 100, i / ( axel->size / 102400 ) ) );
 					}
 					else if( ( i % 10 ) == 0 )
 					{
@@ -413,12 +413,12 @@ void stop( int signal )
 }
 
 /* Convert a number of bytes to a human-readable form			*/
-char *size_human( int value )
+char *size_human( long long int value )
 {
 	if( value == 1 )
-		sprintf( string, _("%i byte"), value );
+		sprintf( string, _("%lld byte"), value );
 	else if( value < 1024 )
-		sprintf( string, _("%i bytes"), value );
+		sprintf( string, _("%lld bytes"), value );
 	else if( value < 10485760 )
 		sprintf( string, _("%.1f kilobytes"), (float) value / 1024 );
 	else
@@ -444,7 +444,7 @@ char *time_human( int value )
 
 /* Part of the infamous wget-like interface. Just put it in a function
 	because I need it quite often..					*/
-void print_commas( int bytes_done )
+void print_commas( long long int bytes_done )
 {
 	int i, j;
 	
@@ -462,8 +462,8 @@ void print_commas( int bytes_done )
 
 static void print_alternate_output(axel_t *axel) 
 {
-	int done=axel->bytes_done;
-	int total=axel->size;
+	long long int done=axel->bytes_done;
+	long long int total=axel->size;
 	int i,j=0;
 	double now = gettime();
 	

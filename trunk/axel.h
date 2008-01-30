@@ -95,7 +95,7 @@ typedef struct
 	char filename[MAX_STRING];
 	double start_time;
 	int next_state, finish_time;
-	int bytes_done, start_byte, size;
+	long long bytes_done, start_byte, size;
 	int bytes_per_second;
 	int delay_time;
 	int outfd;
