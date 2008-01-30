@@ -109,9 +109,9 @@ void http_get( http_t *conn, char *lurl )
 	if( conn->firstbyte )
 	{
 		if( conn->lastbyte )
-			http_addheader( conn, "Range: bytes=%i-%i", conn->firstbyte, conn->lastbyte );
+			http_addheader( conn, "Range: bytes=%lld-%lld", conn->firstbyte, conn->lastbyte );
 		else
-			http_addheader( conn, "Range: bytes=%i-", conn->firstbyte );
+			http_addheader( conn, "Range: bytes=%lld-", conn->firstbyte );
 	}
 }
 
@@ -196,15 +196,15 @@ char *http_header( http_t *conn, char *header )
 	return( NULL );
 }
 
-int http_size( http_t *conn )
+long long int http_size( http_t *conn )
 {
 	char *i;
-	int j;
+	long long int j;
 	
 	if( ( i = http_header( conn, "Content-Length:" ) ) == NULL )
 		return( -2 );
 	
-	sscanf( i, "%i", &j );
+	sscanf( i, "%lld", &j );
 	return( j );
 }
 

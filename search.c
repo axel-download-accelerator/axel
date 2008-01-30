@@ -88,7 +88,7 @@ int search_makelist( search_t *results, char *url )
 	s = malloc( size );
 	
 	sprintf( s, "http://www.filesearching.com/cgi-bin/s?q=%s&w=a&l=en&"
-		"t=f&e=on&m=%i&o=n&s1=%i&s2=%i&x=15&y=15",
+		"t=f&e=on&m=%i&o=n&s1=%lld&s2=%lld&x=15&y=15",
 		conn->file, results->conf->search_amount,
 		conn->size, conn->size );
 	
