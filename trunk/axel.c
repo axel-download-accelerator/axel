@@ -23,7 +23,6 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
-#define _FILE_OFFSET_BITS 64
 #include "axel.h"
 
 /* Axel */
@@ -195,7 +194,7 @@ int axel_open( axel_t *axel )
 		/* And check whether the filesystem can handle seeks to
 		   past-EOF areas.. Speeds things up. :) AFAIK this
 		   should just not happen:				*/
-		if( lseek64( axel->outfd, axel->size, SEEK_SET ) == -1 && axel->conf->num_connections > 1 )
+		if( lseek( axel->outfd, axel->size, SEEK_SET ) == -1 && axel->conf->num_connections > 1 )
 		{
 			/* But if the OS/fs does not allow to seek behind
 			   EOF, we have to fill the file with zeroes before

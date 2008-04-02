@@ -85,7 +85,7 @@ if [ "$i18n" = "1" ]; then
 	fi;
 fi
 
-echo 'CFLAGS=-g' >> Makefile.settings
+echo 'CFLAGS=-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -g' >> Makefile.settings
 if [ "$debug" = "1" ]; then
 	echo 'DEBUG=1' >> Makefile.settings
 	echo '#define DEBUG' >> config.h;
