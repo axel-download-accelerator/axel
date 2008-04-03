@@ -44,6 +44,9 @@ typedef struct
 	int search_threads;
 	int search_amount;
 	int search_top;
+
+	int add_header_count;
+	char add_header[MAX_ADD_HEADERS][MAX_STRING];
 } conf_t;
 
 int conf_loadfile( conf_t *conf, char *file );

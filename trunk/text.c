@@ -52,6 +52,7 @@ static struct option axel_options[] =
 	{ "help",		0,	NULL,	'h' },
 	{ "version",		0,	NULL,	'V' },
 	{ "alternate",		0,	NULL,	'a' },
+	{ "header",		1,	NULL,	'H' },
 	{ NULL,			0,	NULL,	0 }
 };
 #endif
@@ -67,7 +68,7 @@ int main( int argc, char *argv[] )
 	search_t *search;
 	conf_t conf[1];
 	axel_t *axel;
-	int i, j;
+	int i, j, cur_head = 0;
 	char *s;
 	
 #ifdef I18N
@@ -88,12 +89,15 @@ int main( int argc, char *argv[] )
 	{
 		int option;
 		
-		option = getopt_long( argc, argv, "s:n:o:S::NqvhHVa", axel_options, NULL );
+		option = getopt_long( argc, argv, "s:n:o:S::NqvhHVaH:", axel_options, NULL );
 		if( option == -1 )
 			break;
 		
 		switch( option )
 		{
+		case 'H':
+			strncpy( conf->add_header[cur_head++], optarg, MAX_STRING );
+			break;
 		case 's':
 			if( !sscanf( optarg, "%i", &conf->max_speed ) )
 			{
@@ -152,7 +156,7 @@ int main( int argc, char *argv[] )
 			return( 1 );
 		}
 	}
-	
+	conf->add_header_count = cur_head;
 	if( j > -1 )
 		conf->verbose = j;
 	
@@ -518,6 +522,7 @@ void print_help()
 		"-n x\tSpecify maximum number of connections\n"
 		"-o f\tSpecify local output file\n"
 		"-S [x]\tSearch for mirrors and download from x servers\n"
+		"-H x\tAdd header string\n"
 		"-N\tJust don't use any proxy server\n"
 		"-q\tLeave stdout alone\n"
 		"-v\tMore status information\n"
@@ -533,6 +538,7 @@ void print_help()
 		"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
 		"--output=f\t\t-o f\tSpecify local output file\n"
 		"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
+		"--header=x\t\t-H x\tAdd header string\n"
 		"--no-proxy\t\t-N\tJust don't use any proxy server\n"
 		"--quiet\t\t\t-q\tLeave stdout alone\n"
 		"--verbose\t\t-v\tMore status information\n"

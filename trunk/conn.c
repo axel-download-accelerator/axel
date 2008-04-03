@@ -251,11 +251,14 @@ int conn_setup( conn_t *conn )
 	else
 	{
 		char s[MAX_STRING];
-		
+		int i;
+
 		snprintf( s, MAX_STRING, "%s%s", conn->dir, conn->file );
 		conn->http->firstbyte = conn->currentbyte;
 		conn->http->lastbyte = conn->lastbyte;
 		http_get( conn->http, s );
+		for( i = 0; i < conn->conf->add_header_count; i++)
+			http_addheader( conn->http, "%s", conn->conf->add_header[i] );
 	}
 	return( 1 );
 }
