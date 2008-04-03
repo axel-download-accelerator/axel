@@ -107,6 +107,9 @@ int conf_loadfile( conf_t *conf, char *file )
 			fprintf( stderr, _("Error in %s line %i.\n"), file, line );
 			return( 0 );
 		}
+		get_config_number( add_header_count );
+		for(i=0;i<conf->add_header_count;i++)
+			get_config_string( add_header[i] );
 	}
 	
 	fclose( fp );
@@ -137,6 +140,7 @@ int conf_init( conf_t *conf )
 	conf->search_threads		= 3;
 	conf->search_amount		= 15;
 	conf->search_top		= 3;
+	conf->add_header_count	= 0;
 	
 	conf->interfaces = malloc( sizeof( if_t ) );
 	memset( conf->interfaces, 0, sizeof( if_t ) );
