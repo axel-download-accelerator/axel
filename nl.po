@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-18 14:22+0530\n"
+"POT-Creation-Date: 2008-04-03 16:32+0530\n"
 "PO-Revision-Date: 2001-11-14 15:22+0200\n"
 "Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -19,65 +19,65 @@ msgid "Could not parse URL.\n"
 msgstr "Kan URL niet verwerken.\n"
 
 #: axel.c:126
-#, c-format
-msgid "File size: %i bytes"
+#, fuzzy, c-format
+msgid "File size: %lld bytes"
 msgstr "Bestandsgrootte: %i bytes"
 
-#: axel.c:142
+#: axel.c:143
 #, c-format
 msgid "Opening output file %s"
 msgstr "Openen uitvoerbestand %s"
 
-#: axel.c:151
+#: axel.c:152
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server niet ondersteund, opnieuw beginnen met 1 verbinding."
 
-#: axel.c:170
-#, c-format
-msgid "State file found: %i bytes downloaded, %i to go."
+#: axel.c:171
+#, fuzzy, c-format
+msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr ".st bestand gevonden: %i bytes gedownload, %i te gaan."
 
-#: axel.c:177 axel.c:189
+#: axel.c:178 axel.c:190
 msgid "Error opening local file"
 msgstr "Fout bij openen lokaal bestand"
 
-#: axel.c:201
+#: axel.c:202
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Niet-fatale fout in OS/bestandssysteem, omheen werken.."
 
-#: axel.c:234
+#: axel.c:235
 msgid "Starting download"
 msgstr "Begin download"
 
-#: axel.c:240 axel.c:393
+#: axel.c:241 axel.c:395
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbinding %i gebruikt server %s:%i via interface %s"
 
-#: axel.c:244 axel.c:402
+#: axel.c:245 axel.c:404
 msgid "pthread error!!!"
 msgstr "pthread fout!!!"
 
-#: axel.c:312
+#: axel.c:314
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Fout op verbinding %i! Verbinding gesloten"
 
-#: axel.c:326
+#: axel.c:328
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Verbinding %i onverwachts gesloten"
 
-#: axel.c:330 axel.c:347
+#: axel.c:332 axel.c:349
 #, c-format
 msgid "Connection %i finished"
 msgstr "Verbinding %i klaar"
 
-#: axel.c:359
+#: axel.c:361
 msgid "Write error!"
 msgstr "Schrijffout!"
 
-#: axel.c:371
+#: axel.c:373
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Time-out op verbinding %i"
@@ -87,12 +87,12 @@ msgstr "Time-out op verbinding %i"
 msgid "Error in %s line %i.\n"
 msgstr "Fout in %s regel %i.\n"
 
-#: conn.c:345 ftp.c:124
+#: conn.c:348 ftp.c:124
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Te veel redirects.\n"
 
-#: conn.c:364
+#: conn.c:367
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "Onbekende HTTP fout.\n"
@@ -137,52 +137,52 @@ msgstr "Verbinding gesloten.\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "Ongeldige proxy string: %s\n"
 
-#: text.c:146
+#: text.c:150
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Fout bij het afsluiten van stdout.\n"
 
-#: text.c:174
+#: text.c:178
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr ""
 
-#: text.c:179
+#: text.c:183
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Begin download: %s\n"
 
-#: text.c:186
+#: text.c:190
 #, c-format
 msgid "Doing search...\n"
 msgstr "Zoeken...\n"
 
-#: text.c:190
+#: text.c:194
 #, c-format
 msgid "File not found\n"
 msgstr "Bestand niet gevonden\n"
 
-#: text.c:194
+#: text.c:198
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Snelheden testen, dit kan even duren...\n"
 
-#: text.c:199
+#: text.c:203
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i bruikbare servers gevonden, de volgende worden gebruikt:\n"
 
-#: text.c:261
+#: text.c:265
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Geen .st bestand, kan niet resumen!\n"
 
-#: text.c:266
+#: text.c:270
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ".st bestand gevonden maar geen uitvoerbestand. Opnieuw beginnen.\n"
 
-#: text.c:397
+#: text.c:401
 #, c-format
 msgid ""
 "\n"
@@ -191,47 +191,47 @@ msgstr ""
 "\n"
 "%s gedownload in %s. (%.2f KB/s)\n"
 
-#: text.c:419
-#, c-format
-msgid "%i byte"
+#: text.c:423
+#, fuzzy, c-format
+msgid "%lld byte"
 msgstr "%i byte"
 
-#: text.c:421
-#, c-format
-msgid "%i bytes"
+#: text.c:425
+#, fuzzy, c-format
+msgid "%lld bytes"
 msgstr "%i bytes"
 
-#: text.c:423
+#: text.c:427
 #, c-format
 msgid "%.1f kilobytes"
 msgstr "%.1f kilobytes"
 
-#: text.c:425
+#: text.c:429
 #, c-format
 msgid "%.1f megabytes"
 msgstr "%.1f megabytes"
 
-#: text.c:434
+#: text.c:438
 #, c-format
 msgid "%i second"
 msgstr "%i seconde"
 
-#: text.c:436
+#: text.c:440
 #, c-format
 msgid "%i seconds"
 msgstr "%i seconden"
 
-#: text.c:438
+#: text.c:442
 #, c-format
 msgid "%i:%02i seconds"
 msgstr "%i:%02i seconden"
 
-#: text.c:440
+#: text.c:444
 #, c-format
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i seconden"
 
-#: text.c:515
+#: text.c:519
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -240,6 +240,7 @@ msgid ""
 "-n x\tSpecify maximum number of connections\n"
 "-o f\tSpecify local output file\n"
 "-S [x]\tSearch for mirrors and download from x servers\n"
+"-H x\tAdd header string\n"
 "-N\tJust don't use any proxy server\n"
 "-q\tLeave stdout alone\n"
 "-v\tMore status information\n"
@@ -264,7 +265,7 @@ msgstr ""
 "\n"
 "Bugs melden aan lintux@lintux.cx\n"
 
-#: text.c:530
+#: text.c:535
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -273,6 +274,7 @@ msgid ""
 "--num-connections=x\t-n x\tSpecify maximum number of connections\n"
 "--output=f\t\t-o f\tSpecify local output file\n"
 "--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
+"--header=x\t\t-H x\tAdd header string\n"
 "--no-proxy\t\t-N\tJust don't use any proxy server\n"
 "--quiet\t\t\t-q\tLeave stdout alone\n"
 "--verbose\t\t-v\tMore status information\n"
@@ -297,7 +299,7 @@ msgstr ""
 "\n"
 "Bugs melden aan lintux@lintux.cx\n"
 
-#: text.c:549
+#: text.c:555
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel versie %s (%s)\n"
