@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-18 14:22+0530\n"
+"POT-Creation-Date: 2008-04-03 16:32+0530\n"
 "PO-Revision-Date: 2007-12-15 15:18GMT\n"
 "Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -20,65 +20,65 @@ msgid "Could not parse URL.\n"
 msgstr "Kann URL nicht parsen.\n"
 
 #: axel.c:126
-#, c-format
-msgid "File size: %i bytes"
+#, fuzzy, c-format
+msgid "File size: %lld bytes"
 msgstr "Dateigröße: %i Bytes"
 
-#: axel.c:142
+#: axel.c:143
 #, c-format
 msgid "Opening output file %s"
 msgstr "Öffne Ausgabedatei: %s"
 
-#: axel.c:151
+#: axel.c:152
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server versteht REST nicht, Neustart mit einer Verbindung."
 
-#: axel.c:170
-#, c-format
-msgid "State file found: %i bytes downloaded, %i to go."
+#: axel.c:171
+#, fuzzy, c-format
+msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "Status-Datei gefunden: %i Bytes übertragen, %i verbleiben."
 
-#: axel.c:177 axel.c:189
+#: axel.c:178 axel.c:190
 msgid "Error opening local file"
 msgstr "Fehler beim Öffnen der lokalen Datei"
 
-#: axel.c:201
+#: axel.c:202
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Schlechtes Datei-/Betriebssystem, Umgehung.."
 
-#: axel.c:234
+#: axel.c:235
 msgid "Starting download"
 msgstr "Starte Abruf"
 
-#: axel.c:240 axel.c:393
+#: axel.c:241 axel.c:395
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbindung %i: Abruf von %s:%i über Schnittstelle %s"
 
-#: axel.c:244 axel.c:402
+#: axel.c:245 axel.c:404
 msgid "pthread error!!!"
 msgstr "pthread Fehler!!!"
 
-#: axel.c:312
+#: axel.c:314
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Fehler bei Verbindung %i! Verbindung getrennt"
 
-#: axel.c:326
+#: axel.c:328
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Verbindung %i unerwartet getrennt"
 
-#: axel.c:330 axel.c:347
+#: axel.c:332 axel.c:349
 #, c-format
 msgid "Connection %i finished"
 msgstr "Verbindung %i beendet"
 
-#: axel.c:359
+#: axel.c:361
 msgid "Write error!"
 msgstr "Schreibfehler!"
 
-#: axel.c:371
+#: axel.c:373
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Time-out bei Verbindung %i"
@@ -88,12 +88,12 @@ msgstr "Time-out bei Verbindung %i"
 msgid "Error in %s line %i.\n"
 msgstr "Fehler in %s Zeile %i.\n"
 
-#: conn.c:345 ftp.c:124
+#: conn.c:348 ftp.c:124
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Zu viele Weiterleitungen (redirects).\n"
 
-#: conn.c:364
+#: conn.c:367
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "Unbekannter HTTP Fehler.\n"
@@ -138,52 +138,52 @@ msgstr "Verbindung geschlossen.\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "Ungültige Proxy-Angabe: %s\n"
 
-#: text.c:146
+#: text.c:150
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Kann Standardausgabe nicht nach /dev/null umleiten.\n"
 
-#: text.c:174
+#: text.c:178
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "Kann URLs mit mehr als %d Zeichen nicht nutzen\n"
 
-#: text.c:179
+#: text.c:183
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Starte Abruf: %s\n"
 
-#: text.c:186
+#: text.c:190
 #, c-format
 msgid "Doing search...\n"
 msgstr "Suche gestartet...\n"
 
-#: text.c:190
+#: text.c:194
 #, c-format
 msgid "File not found\n"
 msgstr "Datei nicht gefunden\n"
 
-#: text.c:194
+#: text.c:198
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Teste Geschwindigkeiten, das kann etwas dauern...\n"
 
-#: text.c:199
+#: text.c:203
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i benutzbare Server gefunden, werde diese URLs benutzen:\n"
 
-#: text.c:261
+#: text.c:265
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Keine Status-Datei, Fortsetzung nicht möglich!\n"
 
-#: text.c:266
+#: text.c:270
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "Status-Datei gefunden, aber noch nichts übertragen. Neustart.\n"
 
-#: text.c:397
+#: text.c:401
 #, c-format
 msgid ""
 "\n"
@@ -192,47 +192,47 @@ msgstr ""
 "\n"
 "%s abgerufen in %s. (%.2f KB/s)\n"
 
-#: text.c:419
-#, c-format
-msgid "%i byte"
+#: text.c:423
+#, fuzzy, c-format
+msgid "%lld byte"
 msgstr "%i Byte"
 
-#: text.c:421
-#, c-format
-msgid "%i bytes"
+#: text.c:425
+#, fuzzy, c-format
+msgid "%lld bytes"
 msgstr "%i Bytes"
 
-#: text.c:423
+#: text.c:427
 #, c-format
 msgid "%.1f kilobytes"
 msgstr "%.1f Kilobytes"
 
-#: text.c:425
+#: text.c:429
 #, c-format
 msgid "%.1f megabytes"
 msgstr "%.1f Megabytes"
 
-#: text.c:434
+#: text.c:438
 #, c-format
 msgid "%i second"
 msgstr "%i Sekunde"
 
-#: text.c:436
+#: text.c:440
 #, c-format
 msgid "%i seconds"
 msgstr "%i Sekunden"
 
-#: text.c:438
+#: text.c:442
 #, c-format
 msgid "%i:%02i seconds"
 msgstr "%i:%02i Sekunden"
 
-#: text.c:440
+#: text.c:444
 #, c-format
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i Sekunden"
 
-#: text.c:515
+#: text.c:519
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -241,6 +241,7 @@ msgid ""
 "-n x\tSpecify maximum number of connections\n"
 "-o f\tSpecify local output file\n"
 "-S [x]\tSearch for mirrors and download from x servers\n"
+"-H x\tAdd header string\n"
 "-N\tJust don't use any proxy server\n"
 "-q\tLeave stdout alone\n"
 "-v\tMore status information\n"
@@ -264,7 +265,7 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: text.c:530
+#: text.c:535
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -273,6 +274,7 @@ msgid ""
 "--num-connections=x\t-n x\tSpecify maximum number of connections\n"
 "--output=f\t\t-o f\tSpecify local output file\n"
 "--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
+"--header=x\t\t-H x\tAdd header string\n"
 "--no-proxy\t\t-N\tJust don't use any proxy server\n"
 "--quiet\t\t\t-q\tLeave stdout alone\n"
 "--verbose\t\t-v\tMore status information\n"
@@ -296,7 +298,7 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: text.c:549
+#: text.c:555
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"
