@@ -12,7 +12,7 @@
 .SUFFIXES: .po .mo
 
 # Add your translation here..
-MOFILES = nl.mo de.mo
+MOFILES = nl.mo de.mo ru.mo
 
 
 all: $(OUTFILE)
