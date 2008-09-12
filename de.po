@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-03 16:32+0530\n"
+"POT-Creation-Date: 2008-09-12 17:21+0530\n"
 "PO-Revision-Date: 2007-12-15 15:18GMT\n"
 "Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -232,7 +232,7 @@ msgstr "%i:%02i Sekunden"
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i Sekunden"
 
-#: text.c:519
+#: text.c:524
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -265,7 +265,7 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: text.c:535
+#: text.c:540
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -298,7 +298,7 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: text.c:555
+#: text.c:560
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"

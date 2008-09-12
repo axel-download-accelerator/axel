@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-08 12:28+0530\n"
+"POT-Creation-Date: 2008-09-12 17:22+0530\n"
 "Last-Translator: newhren <colimit@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -233,7 +233,7 @@ msgstr "%i:%02i секунд(ы)"
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i секунд(ы)"
 
-#: text.c:519
+#: text.c:524
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -267,7 +267,7 @@ msgstr ""
 "\n"
 "Об ошибках сообщайте на http://axel.alioth.debian.org/\n"
 
-#: text.c:535
+#: text.c:540
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -301,7 +301,7 @@ msgstr ""
 "\n"
 "Об ошибках сообщайте на http://axel.alioth.debian.org/\n"
 
-#: text.c:555
+#: text.c:560
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel, версия %s (%s)\n"
