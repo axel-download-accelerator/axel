@@ -148,7 +148,7 @@ int conf_init( conf_t *conf )
 	
 	if( ( s2 = getenv( "http_proxy" ) ) != NULL )
 		strncpy( conf->http_proxy, s2, MAX_STRING );
-  else if( ( s2 = getenv( "HTTP_PROXY" ) ) != NULL )
+	else if( ( s2 = getenv( "HTTP_PROXY" ) ) != NULL )
 		strncpy( conf->http_proxy, s2, MAX_STRING );
 	
 	if( !conf_loadfile( conf, ETCDIR "/axelrc" ) )
