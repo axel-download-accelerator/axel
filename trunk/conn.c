@@ -100,7 +100,7 @@ int conn_set( conn_t *conn, char *set_url )
 			/* Dash the password: Save traffic by trying
 			   to avoid multi-line responses		*/
 			strcpy( conn->user, "anonymous" );
-			strcpy( conn->pass, "-lara_hack@gmx.co.uk" );
+			strcpy( conn->pass, "mailto:axel-devel@alioth.debian.org" );
 		}
 		else
 		{
