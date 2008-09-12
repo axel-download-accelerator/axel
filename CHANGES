@@ -1,9 +1,13 @@
 Version 2.0:
 
-- Large file support
-- Custom Header Support
+- Large file support thanks thanks David Turnbull
+- Custom Header Support thanks Eli Yukelzon
+- New russian translation thanks newhren
+- Fix segfault in -H option thanks Philipp Hagemeister
+- Honour http_proxy and prefer it over HTTP_PROXY
+- Add new RPM spec file thanks bbbush
 
-UNFINISHED Apr 17 2008
+Finished Sep 12 2008
 
 Version 1.1:
 
