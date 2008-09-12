@@ -1,7 +1,13 @@
 An not-quite-sorted list of people who helped somehow:
 
+- Philipp Hagemeister <ubuntu@phihag.de>
+  Bug triage and patches to fix bugs
+
 - bbbush <bbbush.yuan@gmail.com>
   RPM spec file
+
+- newhren <colimit@gmail.com>
+  Russian translation
 
 - Eli Yukelzon <reflog@gmail.com>
   Custom Header Support
