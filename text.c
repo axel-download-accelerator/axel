@@ -89,7 +89,7 @@ int main( int argc, char *argv[] )
 	{
 		int option;
 		
-		option = getopt_long( argc, argv, "s:n:o:S::NqvhHVaH:", axel_options, NULL );
+		option = getopt_long( argc, argv, "s:n:o:S::NqvhVaH:", axel_options, NULL );
 		if( option == -1 )
 			break;
 		
