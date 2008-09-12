@@ -493,7 +493,12 @@ static void print_alternate_output(axel_t *axel)
 			putchar(' ');
 	}
 	
-	printf( "] [%6.1fKB/s]", (double) axel->bytes_per_second / 1024 );
+	if(axel->bytes_per_second > 1048576)
+		printf( "] [%6.1fMB/s]", (double) axel->bytes_per_second / 1024*1024 );
+	else if(axel->bytes_per_second > 1024)
+		printf( "] [%6.1fKB/s]", (double) axel->bytes_per_second / 1024 );
+	else
+		printf( "] [%6.1fB/s]", (double) axel->bytes_per_second );
 	
 	if(done<total)
 	{
