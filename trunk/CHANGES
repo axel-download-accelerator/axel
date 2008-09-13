@@ -1,3 +1,8 @@
+Version 2.1:
+
+- Fix version string.  2.0 still reported 1.1, thanks Ajay R Ramjatan
+- Fix new MB/s display (was showing B/s).  Thanks Philipp Hagemeister
+
 Version 2.0:
 
 - Large file support thanks thanks David Turnbull
