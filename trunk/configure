@@ -101,6 +101,7 @@ if [ "$i18n" = "1" ]; then
 fi
 
 if type gcc > /dev/null 2> /dev/null; then
+	echo "CFLAGS+=-Os" >> Makefile.settings;
 	echo "CC=gcc" >> Makefile.settings;
 elif type cc > /dev/null 2> /dev/null; then
 	echo "CC=cc" >> Makefile.settings;
