@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-12 17:22+0530\n"
+"POT-Creation-Date: 2008-09-15 19:07+0200\n"
 "Last-Translator: newhren <colimit@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -87,12 +87,12 @@ msgstr "Время соединения %i вышло"
 msgid "Error in %s line %i.\n"
 msgstr "Ошибка в файле %s линия %i.\n"
 
-#: conn.c:348 ftp.c:124
+#: conn.c:349 ftp.c:124
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Слишком много перенаправлений.\n"
 
-#: conn.c:367
+#: conn.c:368
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "Неизвестная ошибка HTTP.\n"
@@ -127,7 +127,7 @@ msgstr "Ошибка открытия пассивного соединения.
 msgid "Error writing command %s\n"
 msgstr "Ошибка записи команды %s\n"
 
-#: ftp.c:311 http.c:151
+#: ftp.c:311 http.c:150
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Соединение пропало.\n"
@@ -137,54 +137,54 @@ msgstr "Соединение пропало.\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "Некорректная стока прокси: %s\n"
 
-#: text.c:150
+#: text.c:154
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Невозможно перенаправить stdout в /dev/null.\n"
 
-#: text.c:178
+#: text.c:182
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "URLs длинной больше %d не поддерживаются\n"
 
-#: text.c:183
+#: text.c:187
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Начинаю скачивание: %s\n"
 
-#: text.c:190
+#: text.c:194
 #, c-format
 msgid "Doing search...\n"
 msgstr "Ищем...\n"
 
-#: text.c:194
+#: text.c:198
 #, c-format
 msgid "File not found\n"
 msgstr "Файл не найден\n"
 
-#: text.c:198
+#: text.c:202
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Пробуем скорости, это может занять некоторое время...\n"
 
-#: text.c:203
+#: text.c:207
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "Найдено %i полезных серверов, будут использованы следующие URLs:\n"
 
-#: text.c:265
+#: text.c:269
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Файл состояния не найден, возобновление невозможно!\n"
 
-#: text.c:270
+#: text.c:274
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ""
 "Файл состояния найден, но предварительно скачанные данные отсутствуют. "
 "Начинаем заново.\n"
 
-#: text.c:401
+#: text.c:405
 #, c-format
 msgid ""
 "\n"
@@ -193,47 +193,47 @@ msgstr ""
 "\n"
 "%s скачано за %s. (%.2f КБ/с)\n"
 
-#: text.c:423
+#: text.c:427
 #, c-format
 msgid "%lld byte"
 msgstr "%lld байт"
 
-#: text.c:425
+#: text.c:429
 #, c-format
 msgid "%lld bytes"
 msgstr "%lld байта(ов)"
 
-#: text.c:427
+#: text.c:431
 #, c-format
 msgid "%.1f kilobytes"
 msgstr "%.1f килобайта(ов)"
 
-#: text.c:429
+#: text.c:433
 #, c-format
 msgid "%.1f megabytes"
 msgstr "%.1f мегабайта(ов)"
 
-#: text.c:438
+#: text.c:442
 #, c-format
 msgid "%i second"
 msgstr "%i секунда"
 
-#: text.c:440
+#: text.c:444
 #, c-format
 msgid "%i seconds"
 msgstr "%i секунд(ы)"
 
-#: text.c:442
+#: text.c:446
 #, c-format
 msgid "%i:%02i seconds"
 msgstr "%i:%02i секунд(ы)"
 
-#: text.c:444
+#: text.c:448
 #, c-format
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i секунд(ы)"
 
-#: text.c:524
+#: text.c:528
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -243,6 +243,7 @@ msgid ""
 "-o f\tSpecify local output file\n"
 "-S [x]\tSearch for mirrors and download from x servers\n"
 "-H x\tAdd header string\n"
+"-U x\tSet user agent\n"
 "-N\tJust don't use any proxy server\n"
 "-q\tLeave stdout alone\n"
 "-v\tMore status information\n"
@@ -267,7 +268,7 @@ msgstr ""
 "\n"
 "Об ошибках сообщайте на http://axel.alioth.debian.org/\n"
 
-#: text.c:540
+#: text.c:545
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -277,6 +278,7 @@ msgid ""
 "--output=f\t\t-o f\tSpecify local output file\n"
 "--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
 "--header=x\t\t-H x\tAdd header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
 "--no-proxy\t\t-N\tJust don't use any proxy server\n"
 "--quiet\t\t\t-q\tLeave stdout alone\n"
 "--verbose\t\t-v\tMore status information\n"
@@ -301,7 +303,7 @@ msgstr ""
 "\n"
 "Об ошибках сообщайте на http://axel.alioth.debian.org/\n"
 
-#: text.c:560
+#: text.c:566
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel, версия %s (%s)\n"
