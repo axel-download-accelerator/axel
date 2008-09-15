@@ -47,6 +47,8 @@ typedef struct
 
 	int add_header_count;
 	char add_header[MAX_ADD_HEADERS][MAX_STRING];
+	
+	char user_agent[MAX_STRING];
 } conf_t;
 
 int conf_loadfile( conf_t *conf, char *file );
