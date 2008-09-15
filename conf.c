@@ -110,6 +110,7 @@ int conf_loadfile( conf_t *conf, char *file )
 		get_config_number( add_header_count );
 		for(i=0;i<conf->add_header_count;i++)
 			get_config_string( add_header[i] );
+		get_config_string( user_agent );
 	}
 	
 	fclose( fp );
@@ -140,7 +141,8 @@ int conf_init( conf_t *conf )
 	conf->search_threads		= 3;
 	conf->search_amount		= 15;
 	conf->search_top		= 3;
-	conf->add_header_count	= 0;
+	conf->add_header_count		= 0;
+	strncpy( conf->user_agent, DEFAULT_USER_AGENT, MAX_STRING );
 	
 	conf->interfaces = malloc( sizeof( if_t ) );
 	memset( conf->interfaces, 0, sizeof( if_t ) );

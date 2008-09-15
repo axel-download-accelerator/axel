@@ -79,6 +79,18 @@ and status of the different threads, along with current speed and an
 estimate for the remaining download time.
 
 .TP
+\fB\-\-header=x\fP, \fB\-H\ x\fP
+Add an additional HTTP header. This option should be in the form "Header:
+Value". See RFC 2616 section 4.2 and 14 for details on the format and
+standardized headers.
+
+.TP
+\fB\-\-user-agent=x\fP, \fB\-U\ x\fP
+Set the HTTP user agent to use. Some websites serve different content based upon
+this parameter. The default value will include "Axel", its version and the
+platform.
+
+.TP
 \fB\-\-help\fP, \fB\-h\fP
 A brief summary of all the options.
 
