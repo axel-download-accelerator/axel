@@ -16,6 +16,7 @@ i18n=0
 debug=0
 strip=1
 ftp=1
+metalink=0
 search=0
 ssl=0
 
@@ -41,6 +42,7 @@ Option		Description				Default
 --debug=0/1	Disable/enable debugging		$debug
 --strip=0/1	Disable/enable binary stripping		$strip
 --ftp=0/1	Disable/enable FTP support		$ftp
+--metalink=0/1	Disable/enable Metalink support		$metalink
 --search=0/1	Disable/enable filehosting.com support	$search
 --ssl=0/1	Disable/enable HTTPS/FTPS support	$ssl
 EOF
@@ -142,6 +144,10 @@ fi
 
 if [ "$ftp" = "1" ]; then
 	echo '#define FTP' >> config.h;
+fi
+
+if [ "$metalink" = "1" ]; then
+	echo '#define METALINK' >> config.h;
 fi
 
 if [ "$ssl" = "1" ]; then
@@ -246,6 +252,11 @@ if [ "$ftp" = "1" ]; then
 	echo '  FTP support enabled.';
 else
 	echo '  FTP support disabled.';
+fi
+if [ "$metalink" = "1" ]; then
+	echo '  Metalink support enabled.';
+else
+	echo '  Metalink support disabled.';
 fi
 if [ "$search" = "1" ]; then
 	echo '  filesearching.com support enabled.';
