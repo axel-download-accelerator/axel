@@ -1,0 +1,89 @@
+Roadmap for Axel v3
+===================
+
+Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://alioth.debian.org/tracker/?group_id=100070&atid=413085 ) for detailled information.
+
+Features
+========
+
+* HTTP authentication (#310785)
+ This is actually already implemented and should be documented. Using -H is possible, too.
+
+* Metalink (#310625)
+ Basic Metalink support should not be that difficult. However, it will only be compiled if METALINK is defined. Metalink support will require libxml2. As libmetalink is currently unusable for us (private symbols), we'll implement the format ourselves.
+
+* .netrc (#310635)
+ There are lots of GPLed implementations flying around. To minimize code size, it shouldn't be compiled in by default if the code exceeds a couple of bytes. Anyway, it's just one call from Axel's point of view.
+
+* Prevent connection to same server (#310638)
+ See tcp.c below for the implementation (aside from a flag in the configuration and a cli flag).
+
+* Force overriding state file (#311022)
+ Shouldn't be difficult and take more than a couple of bytes.
+
+* SSL protocols (HTTPS, FTPS) (#311163)
+
+* Parse Content-Disposition header (#311101)
+ Look if the specific problem mentioned in the bug is fixed by this.
+
+Code structure
+==============
+
+* conn.c
+ needs cleanup, possibly even elimination. Most functions look like
+ if (ftp && !proxy) {
+ // ... do FTP stuff (15 lines)
+ } else {
+ // ... do HTTP stuff (20 lines)
+ }
+ We should at least abstract the switch between HTTP and FTP and look what can be done about simplifiying and documenting the functions here.
+
+ Furthermore, redirecting should be cached somehow/done only once lest we reach the redirect limit because it's less than -n.
+* tcp.c
+ should be checked. The functions look a little bit obscure to me. But maybe, that's just me. Before we implement #310638, we should include some round-robin trickery in here.
+* Removing MAX_STRING(#311085) and MAX_ADD_HEADERS. These are arbitrary restrictions and may hide a number of strange bugs. Furthermore, statically sized fields are a waste of memory.
+* Add die messages: Axel must not exit with != 0 without telling why.
+* Add debugging messages: When compiled with DEBUG, Axel could be more verbose. This won't harm anything and may serve as comments.
+* Some functions could use a little bit of documentation.
+* Remove all logic from text.c
+* Ensure correct synchronization of thread state (volatile?)
+* Cleanup AXEL_LEGACY
+
+Bugs
+====
+
+We're gonna fix them all!
+#310979 seems pretty vague.
+
+Check spaces in FTP and HTTP URLs
+
+(User) Documentation
+====================
+
+* As previously mentioned, authentication should be documented.
+* Update API
+
+3.1
+===
+
+* Cookies (#310835)
+ Can be implemented via -H. The bug called for reading the Netcape-style cookies.txt (Wget's --load--cokies option). Domain-specific cookies could be rather complex to implement. If the implementation of this feature costs more than 100B, it should be deselectable.
+* Rate-limit status messages (#TODO)
+
+Future/Ideas
+============
+
+* IPv6 support
+* Real FTPS (AUTH)?
+* Allow downloading to /dev/null for debugging or speed test purposes
+* Desktop integration, look who likes download accelerators
+* Test very large -n values. Check pthread thread stack size.
+* Check the syscalls we make. Check whether timing and read() calls can be optimized
+* Write a macro ERROR_MESSAGE(msg) (msg), enclose all _("some long error message") and offer a compilation option for a single error message, see if that 
+* Check compilation with dietlibc(http://www.fefe.de/dietlibc/) and uclibc(http://www.uclibc.org/):
+	· How to compile with these libraries
+	· Does this actually improve the binary size?
+	· Check warnings
+* valgrind and friends
+* Write automated tests to test all these nifty corner cases. Either a test webserver or LD_PRELOAD injection of all syscalls (see libfake*)
+* Write a helper script that displays the final binary size for different configurations to determine what a particular feature costs
