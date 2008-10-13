@@ -15,6 +15,9 @@ locale='$prefix/share/locale'
 i18n=0
 debug=0
 strip=1
+ftp=1
+search=0
+ssl=0
 
 arch=`uname -s`
 
@@ -37,6 +40,9 @@ Option		Description				Default
 --i18n=0/1	Disable/enable internationalization	$i18n
 --debug=0/1	Disable/enable debugging		$debug
 --strip=0/1	Disable/enable binary stripping		$strip
+--ftp=0/1	Disable/enable FTP support		$ftp
+--search=0/1	Disable/enable filehosting.com support	$search
+--ssl=0/1	Disable/enable HTTPS/FTPS support	$ssl
 EOF
 		exit;
 	fi
@@ -85,7 +91,7 @@ if [ "$i18n" = "1" ]; then
 	fi;
 fi
 
-echo 'CFLAGS=-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -g' >> Makefile.settings
+echo 'CFLAGS=-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -g -Os' >> Makefile.settings
 if [ "$debug" = "1" ]; then
 	echo 'DEBUG=1' >> Makefile.settings
 	echo '#define DEBUG' >> config.h;
@@ -100,8 +106,9 @@ if [ "$i18n" = "1" ]; then
 	fi;
 fi
 
-if type gcc > /dev/null 2> /dev/null; then
-	echo "CFLAGS+=-Os" >> Makefile.settings;
+if [ "${CC}" != "" ]; then
+	echo "CC=${CC}" >> Makefile.settings;
+elif type gcc > /dev/null 2> /dev/null; then
 	echo "CC=gcc" >> Makefile.settings;
 elif type cc > /dev/null 2> /dev/null; then
 	echo "CC=cc" >> Makefile.settings;
@@ -131,6 +138,14 @@ else
 		echo 'STRIP=\# skip strip' >> Makefile.settings
 		strip=0;
 	fi;
+fi
+
+if [ "$ftp" = "1" ]; then
+	echo '#define FTP' >> config.h;
+fi
+
+if [ "$ssl" = "1" ]; then
+	echo '#define SSL' >> config.h;
 fi
 
 case "$arch" in
@@ -226,4 +241,19 @@ if [ "$strip" = "1" ]; then
 	echo '  Binary stripping enabled.';
 else
 	echo '  Binary stripping disabled.';
+fi
+if [ "$ftp" = "1" ]; then
+	echo '  FTP support enabled.';
+else
+	echo '  FTP support disabled.';
+fi
+if [ "$search" = "1" ]; then
+	echo '  filesearching.com support enabled.';
+else
+	echo '  filesearching.com support disabled.';
+fi
+if [ "$ssl" = "1" ]; then
+	echo '  SSL support enabled.';
+else
+	echo '  SSL support disabled.';
 fi
