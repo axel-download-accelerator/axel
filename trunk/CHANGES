@@ -1,3 +1,7 @@
+Version 2.2:
+
+- Fix a buffer overflow in http.c:http_encode.
+
 Version 2.1:
 
 - Fix version string.  2.0 still reported 1.1, thanks Ajay R Ramjatan

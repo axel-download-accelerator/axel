@@ -236,9 +236,19 @@ void http_encode( char *s )
 	
 	for( i = j = 0; s[i]; i ++, j ++ )
 	{
+		/* Fix buffer overflow */
+		if (j >= MAX_STRING - 1) {
+			break;
+		}
+		
 		t[j] = s[i];
 		if( s[i] == ' ' )
 		{
+			/* Fix buffer overflow */
+			if (j >= MAX_STRING - 3) {
+				break;
+			}
+			
 			strcpy( t + j, "%20" );
 			j += 2;
 		}
