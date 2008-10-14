@@ -2,6 +2,13 @@ Roadmap for Axel v3
 ===================
 
 Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://alioth.debian.org/tracker/?group_id=100070&atid=413085 ) for detailled information.
+Pre-release version numbers of Axel 3 will start with 2.99. Starting with the 3.x series, the following version scheme will be adopted:
+
+x.y.z
+
+x: Complete overhaul of the code structure
+y: New features and/or speed/size improvements
+z: Bug fixed
 
 Features
 ========
@@ -69,21 +76,28 @@ Check spaces in FTP and HTTP URLs
 * Cookies (#310835)
  Can be implemented via -H. The bug called for reading the Netcape-style cookies.txt (Wget's --load--cokies option). Domain-specific cookies could be rather complex to implement. If the implementation of this feature costs more than 100B, it should be deselectable.
 * Rate-limit status messages (#TODO)
+* Don't discard first HTTP connection, but use it adaptively (start requests from the end, RST as soon as first task is fullfilled)
+* A -1 option: Just make one request, and only one.
+* IPv6 support
+
+3.2
+===
+
+* Write a macro ERROR_MESSAGE(msg) (msg), enclose all _("some long error message") and offer a compilation option for a single error message, see if that yields any size improvements
+* Check compilation with dietlibc(http://www.fefe.de/dietlibc/) and uclibc(http://www.uclibc.org/):
+	· How to compile with these libraries
+	· Does this actually improve the binary size?
+	· Check warnings/suggestions
+* valgrind and friends
+* Test very large -n values. Check pthread thread stack size.
 
 Future/Ideas
 ============
 
-* IPv6 support
 * Real FTPS (AUTH)?
-* Allow downloading to /dev/null for debugging or speed test purposes
+* Allow downloading to /dev/null for debugging or speed test purposes (Statefile in memory or so)
 * Desktop integration, look who likes download accelerators
-* Test very large -n values. Check pthread thread stack size.
 * Check the syscalls we make. Check whether timing and read() calls can be optimized
-* Write a macro ERROR_MESSAGE(msg) (msg), enclose all _("some long error message") and offer a compilation option for a single error message, see if that 
-* Check compilation with dietlibc(http://www.fefe.de/dietlibc/) and uclibc(http://www.uclibc.org/):
-	· How to compile with these libraries
-	· Does this actually improve the binary size?
-	· Check warnings
-* valgrind and friends
 * Write automated tests to test all these nifty corner cases. Either a test webserver or LD_PRELOAD injection of all syscalls (see libfake*)
 * Write a helper script that displays the final binary size for different configurations to determine what a particular feature costs
+* Document and implement coding conventions, versioning scheme
