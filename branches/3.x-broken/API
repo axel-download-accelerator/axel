@@ -1,0 +1,212 @@
+  /********************************************************************\
+  * Axel -- A lighter download accelerator for Linux and other Unices. *
+  *                                                                    *
+  * Copyright 2001 Wilmer van der Gaast                                *
+  \********************************************************************/
+
+
+/* Short API description						*/
+
+Until version 0.97, a lot of Axel downloading code was 'stuck' in main().
+This made the development of alternate (ie graphical) interfaces to the
+program quite difficult. That's why Axel 0.97 is a major redesign: All the
+downloading code is out of main() now. Writing your own downloader which
+uses Axel should not be too difficult now.
+
+This document contains basic instructions on how to write a program which
+uses the Axel >=0.97 code to download data.
+
+Some work needs to be done before I can convert axel into a library. I don't
+know whether I'll do it at all.. So this API description is only useful if
+you want to create an alternate interface for the program, at the moment.
+Later on, I might change this. A Perl port of Axel would be nice too. :-)
+
+
+/* The structures							*/
+
+If you want to use Axel, you should have all the *.[ch] files in your
+program's directory (or subdir, whatever you want...) and include the axel.h
+file into your program. Then, the following structures and functions will be
+available:
+
+typedef struct
+{
+	conn_t *conn;
+	conf_t conf[1];
+	char filename[MAX_STRING];
+	double start_time;
+	int next_state, finish_time;
+	int bytes_done, start_byte, size;
+	int bytes_per_second;
+	int delay_time;
+	int outfd;
+	int ready;
+	message_t *message;
+	url_t *url;
+} axel_t;
+
+This is probably the most important structure.. Each axel structure can
+handle a separate download, each with a variable amount of connections.
+There is no maximum amount of connections hard-coded into the program
+anymore, by the way. The way conn_t and conf_t structures work is not very
+important for most people, it's mainly important for internal use. You /can/
+use those structures, if you want, they're not that complex...
+
+The filename string is set correctly by axel_new(). If you want data to
+be put into a different file, you can change the variable /after/ calling
+axel_new(), and /before/ calling axel_open(). The string can also include
+a full pathname.
+
+start_time contains the time at which the download started. Not very
+interesting for you, probably. Neither should next_state be very important,
+it just contains the time at which the next state file should be saved.
+(State files are important for resuming support, as described in the README
+file..) finish_time might be interesting, though. It contains the estimated
+time at which the download should be finished.
+
+bytes_done contains the number of bytes downloaded for this file, size
+contains the total file size. start_byte should be zero, usually, unless
+you're resuming a download.
+
+The code also calculates the average speed. This speed is put in the
+bytes_per_second variable.
+
+delay_time is not interesting at all. It's just used for the code which
+tries to slow down the download. You shouldn't really touch outfd either,
+it contains the file descriptor of the local file.
+
+ready is set to non-zero as soon as all data is downloaded, or as soon as
+something goes wrong. You shouldn't call axel_do() anymore, when ready is
+set.
+
+Last but not least, message. This is a linked list of messages to the user.
+You, as the programmer, may decide what to do with them. You can just
+destroy them (don't just ignore them, the messages do eat memory!) or you
+can log/display them. The structure is very simple, and I hope this is clear
+enough:
+
+typedef struct {
+	void *next;
+	char text[MAX_STRING];
+} message_t;
+
+Just don't forget to free() the message structures after printing them, and
+set axel->message to NULL to prevent crashes. See the print_messages()
+function in text.c for an example.
+
+message used to be the last, but I added url. It's a linked list as well,
+and in fact url_t == message_t. Not really of any importance, though. This
+element contains a number of URL's that'll be used by Axel for the download.
+The program can use multiple mirrors at the same time. This structure is
+filled in by axel_new, you shouldn't touch it yourself.
+
+
+/* The functions							*/
+
+int conf_init( conf_t *conf );
+
+Axel needs some settings. Your program has to allocate a conf_t structure
+and initialize it using this function. It sets some defaults, and then it
+scans your environment variables for some settings, and it tries to read
+a system-wide and personal user configuration file.
+
+axel_t *axel_new( conf_t *conf, char count, char *url );
+axel_t *axel_new( conf_t *conf, char count, search_t *urls );
+
+axel_new() allocates a new axel_t structure. You should pass a configuration
+structure and an URL. A pointer to a new axel_t structure will be returned.
+axel->filename is set now. You can change it, if you want data to be stored
+to a different file. Changing axel->filename after calling axel_open does
+not make sense, so be quick. :-)
+If you want axel to download from more than one mirror at once, you can use
+the second syntax. A search_t structure can be generated by the search_*
+functions. If you use the second syntax, count should contain the number of
+mirrors to be used from the structure. If you just want to pass a string
+with one URL (first syntax), count should be zero. Please note that all the
+mirrors passed to axel_new() should support acceleration. The support check
+should be done before downloading, which isn't much of a problem because
+search_getspeeds does it automatically.
+The ready element of the returned structure is set to one if nothing goes
+wrong. If it's zero, you shouldn't use the returned structure for anything
+else than displaying the error message(s) and closing it.
+
+int axel_open( axel_t *axel );
+
+axel_open() opens a local file to store downloaded data. Returns non-zero if
+nothing goes wrong. If anything goes wrong, you should still call
+axel_close() to clean things up. This is not done automatically, so that you
+can read any message still left in the structure.
+
+void axel_start( axel_t *axel );
+
+axel_start() starts the actual downloading. Normally, nothing should go
+wrong during this call, so it does not return anything.
+
+void axel_do( axel_t *axel );
+
+axel_do() should be called regularly (ie as often as possible...) to handle
+any incoming data. You don't have to do anything else, all data is stored in
+the local file automatically. You should stop calling this one as soon as
+axel->ready is set. Or you can stop calling it yourself, that's possible.
+Just don't forget to call axel_close()!
+
+void axel_close( axel_t *axel );
+
+If you want to stop downloading (ie if the download is complete) you should
+deallocate the axel_t structure using this function. Any connection still
+open will be closed and deallocated, all messages in the structure are
+deleted. You should always call this one when you're ready, if you don't
+want to waste memory.
+
+double gettime();
+
+This one is just a 'bonus'... I use it myself in text.c and axel.c, so I
+decided to make it global. It just returns the actual time, but with more
+precision.
+
+
+/* filesearcher.com interface						*/
+
+If you want to search for a faster mirror to download your file, or if you
+want to download from more than one server at once, you can use this
+interface. It's quite simple. You should create an array of this type:
+
+typedef struct
+{
+	char url[MAX_STRING];
+	double speed_start_time;
+	int speed, size;
+	pthread_t speed_thread[1];
+	conf_t *conf;
+} search_t;
+
+And it's wise to memset() it to zero before you start, btw. You also have to
+set the conf pointer for the first index of the array. Other fields will
+be filled in by these functions:
+
+int search_makelist( search_t *results, char *url );
+
+This function checks your URL, fetches the file size (needed for the search)
+and queries the ftpsearcher.com server for any mirror of this file. This one
+is finished in a few seconds on my system. It returns the number of mirrors
+found. Please note that, after calling this function, the first index of
+your search_t array contains the URL you used as an argument to this
+function. The speed field is filled in already for that one.
+
+int search_getspeeds( search_t *results, int count );
+
+This is quite time consuming. It tries all the URL's from the list, and
+checks the speed. URL's which do not exist, or URL's on non-supported
+servers are marked as bad, they can't be used. This is more time-consuming
+than a simple ping (it takes about twenty seconds on my system, but it
+heavily depends on the connection and your settings), but it makes sure only
+usable URL's are passed to the downloader. The function returns the number
+of not-bad servers.
+
+void search_sortlist( search_t *results, int count );
+
+It's very wise to sort the list of mirrors using this function before
+passing it to axel_new(). The fastest URL will be put on top of the list,
+bad URL's will be put at the bottom. Please note that count has to be the
+total number of servers, returned by search_makelist(), and not just the
+number of not-bad servers returned by search_getspeed().
