@@ -25,6 +25,9 @@
 
 #include "axel.h"
 
+#ifdef AXEL_LEGACY
+#ifdef FTP
+
 int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass )
 {
 	conn->data_fd = -1;
@@ -36,8 +39,10 @@ int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass )
 		return( 0 );
 	}
 	
-	if( ftp_wait( conn ) / 100 != 2 )
+	if( ftp_wait( conn ) / 100 != 2 ) {
+		sprintf( conn->message, _("No reaction from server %s:%i\n"), host, port );
 		return( 0 );
+	}
 	
 	ftp_command( conn, "USER %s", user );
 	if( ftp_wait( conn ) / 100 != 2 )
@@ -45,19 +50,24 @@ int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass )
 		if( conn->status / 100 == 3 )
 		{
 			ftp_command( conn, "PASS %s", pass );
-			if( ftp_wait( conn ) / 100 != 2 )
+			if( ftp_wait( conn ) / 100 != 2 ) {
+				sprintf( conn->message, _("FTP password not accepted\n"));
 				return( 0 );
+			}
 		}		
 		else
 		{
+			sprintf( conn->message, _("FTP login failed\n"));
 			return( 0 );
 		}
 	}
 	
 	/* ASCII mode sucks. Just use Binary.. */
 	ftp_command( conn, "TYPE I" );
-	if( ftp_wait( conn ) / 100 != 2 )
+	if( ftp_wait( conn ) / 100 != 2 ) {
+		sprintf( conn->message, _("Could not enter FTP binary mode\n"));
 		return( 0 );
+	}
 	
 	return( 1 );
 }
@@ -355,3 +365,6 @@ int ftp_wait( ftp_t *conn )
 	
 	return( conn->status );
 }
+
+#endif
+#endif

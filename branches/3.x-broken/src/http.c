@@ -25,6 +25,8 @@
 
 #include "axel.h"
 
+#ifdef AXEL_LEGACY
+
 int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, char *user, char *pass )
 {
 	char base64_encode[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -207,52 +209,4 @@ long long int http_size( http_t *conn )
 	return( j );
 }
 
-/* Decode%20a%20file%20name						*/
-void http_decode( char *s )
-{
-	char t[MAX_STRING];
-	int i, j, k;
-	
-	for( i = j = 0; s[i]; i ++, j ++ )
-	{
-		t[j] = s[i];
-		if( s[i] == '%' )
-			if( sscanf( s + i + 1, "%2x", &k ) )
-			{
-				t[j] = k;
-				i += 2;
-			}
-	}
-	t[j] = 0;
-	
-	strcpy( s, t );
-}
-
-void http_encode( char *s )
-{
-	char t[MAX_STRING];
-	int i, j;
-	
-	for( i = j = 0; s[i]; i ++, j ++ )
-	{
-		/* Fix buffer overflow */
-		if (j >= MAX_STRING - 1) {
-			break;
-		}
-		
-		t[j] = s[i];
-		if( s[i] == ' ' )
-		{
-			/* Fix buffer overflow */
-			if (j >= MAX_STRING - 3) {
-				break;
-			}
-			
-			strcpy( t + j, "%20" );
-			j += 2;
-		}
-	}
-	t[j] = 0;
-	
-	strcpy( s, t );
-}
+#endif

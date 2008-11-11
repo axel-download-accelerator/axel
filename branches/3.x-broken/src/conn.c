@@ -25,6 +25,7 @@
 
 #include "axel.h"
 
+/* TODO Remove this */
 char string[MAX_STRING];
 
 /* Convert an URL to a conn_t structure					*/
@@ -61,8 +62,9 @@ int conn_set( conn_t *conn, char *set_url )
 	{
 		*i = 0;
 		snprintf( conn->dir, MAX_STRING, "/%s", i + 1 );
-		if( conn->proto == PROTO_HTTP )
+		if( conn->proto == PROTO_HTTP ) {
 			http_encode( conn->dir );
+		}
 	}
 	strncpy( conn->host, url, MAX_STRING );
 	j = strchr( conn->dir, '?' );
@@ -95,7 +97,7 @@ int conn_set( conn_t *conn, char *set_url )
 	/* If not: Fill in defaults					*/
 	else
 	{
-		if( conn->proto == PROTO_FTP )
+		if( PROTO_MAIN(conn->proto) == PROTO_FTP )
 		{
 			/* Dash the password: Save traffic by trying
 			   to avoid multi-line responses		*/
@@ -104,7 +106,8 @@ int conn_set( conn_t *conn, char *set_url )
 		}
 		else
 		{
-			*conn->user = *conn->pass = 0;
+			*conn->user = 0;
+			*conn->pass = 0;
 		}
 	}
 	
@@ -120,47 +123,14 @@ int conn_set( conn_t *conn, char *set_url )
 		*i = 0;
 		sscanf( i + 1, "%i", &conn->port );
 	}
-	/* Take default port numbers from /etc/services			*/
 	else
 	{
-#ifndef DARWIN
-		struct servent *serv;
-		
-		if( conn->proto == PROTO_FTP )
-			serv = getservbyname( "ftp", "tcp" );
-		else
-			serv = getservbyname( "www", "tcp" );
-		
-		if( serv )
-			conn->port = ntohs( serv->s_port );
-		else
-#endif
-		if( conn->proto == PROTO_HTTP )
-			conn->port = 80;
-		else
-			conn->port = 21;
+		conn->port = proto_defport(conn->proto);
 	}
 	
 	return( conn->port > 0 );
 }
 
-/* Generate a nice URL string.						*/
-char *conn_url( conn_t *conn )
-{
-	if( conn->proto == PROTO_FTP )
-		strcpy( string, "ftp://" );
-	else
-		strcpy( string, "http://" );
-	
-	if( *conn->user != 0 && strcmp( conn->user, "anonymous" ) != 0 )
-		sprintf( string + strlen( string ), "%s:%s@",
-			conn->user, conn->pass );
-
-	sprintf( string + strlen( string ), "%s:%i%s%s",
-		conn->host, conn->port, conn->dir, conn->file );
-	
-	return( string );
-}
 
 /* Simple...								*/
 void conn_disconnect( conn_t *conn )
@@ -299,13 +269,15 @@ int conn_info( conn_t *conn )
 			conn->supported = 0;
 		}
 		
-		if( !ftp_cwd( conn->ftp, conn->dir ) )
+		if( !ftp_cwd( conn->ftp, conn->dir ) ) {
 			return( 0 );
+		}
 		conn->size = ftp_size( conn->ftp, conn->file, MAX_REDIR );
 		if( conn->size < 0 )
 			conn->supported = 0;
-		if( conn->size == -1 )
+		if( conn->size == -1 ) {
 			return( 0 );
+		}
 		else if( conn->size == -2 )
 			conn->size = INT_MAX;
 	}
@@ -325,7 +297,11 @@ int conn_info( conn_t *conn )
 			if( conn->http->status / 100 != 3 )
 				break;
 			if( ( t = http_header( conn->http, "location:" ) ) == NULL )
+			{
+				sprintf( conn->message, _("No location header in HTTP response"));
 				return( 0 );
+			}
+			
 			sscanf( t, "%255s", s );
 			if( strstr( s, "://" ) == NULL)
 			{
@@ -339,6 +315,11 @@ int conn_info( conn_t *conn )
 					conn->host, conn->port, s );
 				strncpy( s, conn->http->headers, MAX_STRING );
 			}
+			
+			#ifdef DEBUG
+				fprintf( stderr, "Redirecting to %s\n", s );
+			#endif
+			
 			conn_set( conn, s );
 			i ++;
 		}
@@ -364,10 +345,12 @@ int conn_info( conn_t *conn )
 		else
 		{
 			t = strchr( conn->message, '\n' );
-			if( t == NULL )
+			if( t == NULL ) {
 				sprintf( conn->message, _("Unknown HTTP error.\n") );
-			else
+			} else {
 				*t = 0;
+			}
+			
 			return( 0 );
 		}
 	}

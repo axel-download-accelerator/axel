@@ -1,9 +1,29 @@
-Version 2.2:
 
-- Fix a buffer overflow in http.c:http_encode.
+Version 2.99.0 (preview release):
+
+- Complete overhaul of the whole code structure
+- New folder structure: src/ contains all *.c and *.h files, test/ CUnit test files, all compiled files reside in out/, all configured files in cfg/
+- Default protocol is now HTTP
+- if_t, url_t, message_t removed from axel.h (replaced by aptly named types)
+- new url.* files for working with URLs, new url_t representing a URL (from conn.*, http.*)
+- new proto.* files for protocol IDs and protocol detection (from conn.*)
+- new helper.* files for axel-independent helper macros and functions (from axel.h)
+- Removal of statically sized strings (MAX_STRING)
+- Updated manpage (Bug reporting)
+- FTP support can be disabled by ./configure --ftp=0
+- Foundations for SSL support (HTTPS, legacy style FTPS), can be enabled by ./configure --ssl=1
+- Search support thrown out. Can be able to be enabled by ./configure --search=1.
+- configure script now evaluates environment variable CC before checking for gcc
+- Improved tar target, make tar just writes axel-$version.tar{,.gz,.bz2} files to out/
+- C99 compatible, gcc checks C99 compatibility level now
+- Removed double usage in favor of a single warning if NOGETOPTLONG is defined
+- Splitted usage text (=> simplifies i18n)
+
+- Temporarily thrown out: ftp, search
 
 Version 2.1:
 
+- Fix a buffer overflow in http.c:http_encode.
 - Fix version string.  2.0 still reported 1.1, thanks Ajay R Ramjatan
 - Fix new MB/s display (was showing B/s).  Thanks Philipp Hagemeister
 

@@ -4,7 +4,7 @@
   * Copyright 2001 Wilmer van der Gaast                                *
   \********************************************************************/
 
-/* FTP control include file						*/
+/* Configuration handling include file					*/
 
 /*
   This program is free software; you can redistribute it and/or modify
@@ -23,24 +23,34 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
-#define FTP_PASSIVE	1
-#define FTP_PORT	2
-
 typedef struct
 {
-	char cwd[MAX_STRING];
-	char *message;
-	int status;
-	int fd;
-	int data_fd;
-	int ftp_mode;
-	char *local_if;
-} ftp_t;
+	char* default_filename;
+	char* http_proxy; /* 0 for no proxy */
+	char** no_proxy; /* NULL-terminated list of no-proxy hosts */
+	int strip_cgi_parameters;
+	int save_state_interval;
+	int connection_timeout;
+	int reconnect_delay;
+	int num_connections;
+	int buffer_size;
+	int max_speed;
+	int verbose;
+	int alternate_output;
+	
+	char** interfaces;
+	
+	int search_timeout;
+	int search_threads;
+	int search_amount;
+	int search_top;
 
-int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass );
-void ftp_disconnect( ftp_t *conn );
-int ftp_wait( ftp_t *conn );
-int ftp_command( ftp_t *conn, char *format, ... );
-int ftp_cwd( ftp_t *conn, char *cwd );
-int ftp_data( ftp_t *conn );
-int ftp_size( ftp_t *conn, char *file, int maxredir );
+	int add_header_count;
+	char** add_header;
+	
+	char* user_agent; // NULL for default
+} conf_t;
+
+int conf_loadfile( conf_t *conf, char *file );
+int conf_init( conf_t *conf );
+conf_t* conf_new();

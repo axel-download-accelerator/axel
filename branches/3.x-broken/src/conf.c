@@ -25,7 +25,9 @@
 
 #include "axel.h"
 
-/* Some nifty macro's..							*/
+// TODO fix and check this stuff
+
+/* Some nifty macros..							*/
 #define get_config_string( name )				\
 	if( strcmp( key, #name ) == 0 )				\
 	{							\
@@ -117,9 +119,9 @@ int conf_loadfile( conf_t *conf, char *file )
 	return( 1 );
 }
 
-int conf_init( conf_t *conf )
+void conf_init( conf_t *conf )
 {
-	char s[MAX_STRING], *s2;
+	char* buf,
 	int i;
 	
 	/* Set defaults							*/

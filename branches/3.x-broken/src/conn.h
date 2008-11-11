@@ -23,25 +23,15 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
-#define PROTO_FTP	1
-#define PROTO_HTTP	2
-#define PROTO_DEFAULT	PROTO_FTP
-
-typedef struct
-{
+typedef struct {
 	conf_t *conf;
 	
-	int proto;
-	int port;
-	int proxy;
-	char host[MAX_STRING];
-	char dir[MAX_STRING];
-	char file[MAX_STRING];
-	char user[MAX_STRING];
-	char pass[MAX_STRING];
+	url_t* url; /* The URL to download from. Not owned by this struct */
+	proto_t* proto;
 	
-	ftp_t ftp[1];
-	http_t http[1];
+	/* TODO: document this */
+	int proxy;
+	
 	long long size;		/* File size, not 'connection size'..	*/
 	long long currentbyte;
 	long long lastbyte;

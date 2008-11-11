@@ -4,7 +4,7 @@
   * Copyright 2001 Wilmer van der Gaast                                *
   \********************************************************************/
 
-/* Configuration handling include file					*/
+/* HTTP control include file						*/
 
 /*
   This program is free software; you can redistribute it and/or modify
@@ -23,33 +23,29 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
-typedef struct
-{
-	char default_filename[MAX_STRING];
-	char http_proxy[MAX_STRING];
-	char no_proxy[MAX_STRING];
-	int strip_cgi_parameters;
-	int save_state_interval;
-	int connection_timeout;
-	int reconnect_delay;
-	int num_connections;
-	int buffer_size;
-	int max_speed;
-	int verbose;
-	int alternate_output;
-	
-	if_t *interfaces;
-	
-	int search_timeout;
-	int search_threads;
-	int search_amount;
-	int search_top;
+#ifdef AXEL_LEGACY
+typedef struct {
+	char host[MAX_STRING];
+	char auth[MAX_STRING];
+	char request[MAX_QUERY];
+	char headers[MAX_QUERY];
+	int proto;			/* FTP through HTTP proxies	*/
+	int proxy;
+	long long int firstbyte;
+	long long int lastbyte;
+	int status;
+	int fd;
+	char *local_if;
+} http_t;
 
-	int add_header_count;
-	char add_header[MAX_ADD_HEADERS][MAX_STRING];
-	
-	char user_agent[MAX_STRING];
-} conf_t;
+int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, char *user, char *pass );
+void http_disconnect( http_t *conn );
+void http_get( http_t *conn, char *lurl );
+void http_addheader( http_t *conn, char *format, ... );
+int http_exec( http_t *conn );
+char *http_header( http_t *conn, char *header );
+long long int http_size( http_t *conn );
+void http_encode( char *s );
+void http_decode( char *s );
 
-int conf_loadfile( conf_t *conf, char *file );
-int conf_init( conf_t *conf );
+#endif

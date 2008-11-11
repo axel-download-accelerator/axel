@@ -25,6 +25,8 @@
 
 #include "axel.h"
 
+#ifdef AXEL_LEGACY
+#ifdef SEARCH
 static char *strrstr( char *haystack, char *needle );
 static void *search_speedtest( void *r );
 static int search_sortlist_qsort( const void *a, const void *b );
@@ -287,3 +289,5 @@ int search_sortlist_qsort( const void *a, const void *b )
 	else
 		return( ((search_t *)a)->speed > ((search_t *)b)->speed );
 }
+#endif
+#endif

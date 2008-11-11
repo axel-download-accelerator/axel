@@ -2,7 +2,7 @@ Roadmap for Axel v3
 ===================
 
 Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://alioth.debian.org/tracker/?group_id=100070&atid=413085 ) for detailled information.
-Pre-release version numbers of Axel 3 will start with 2.99. Starting with the 3.x series, the following version scheme will be adopted:
+Pre-release version numbers of Axel 3 will begin with 2.99. Starting with the 3.x series, the following version scheme will be adopted:
 
 x.y.z
 
@@ -12,23 +12,6 @@ z: Bug fixed
 
 Features
 ========
-
-* HTTP authentication (#310785)
- This is actually already implemented and should be documented. Using -H is possible, too.
-
-* Metalink (#310625)
- Basic Metalink support should not be that difficult. However, it will only be compiled if METALINK is defined. Metalink support will require libxml2. As libmetalink is currently unusable for us (private symbols), we'll implement the format ourselves.
-
-* .netrc (#310635)
- There are lots of GPLed implementations flying around. To minimize code size, it shouldn't be compiled in by default if the code exceeds a couple of bytes. Anyway, it's just one call from Axel's point of view.
-
-* Prevent connection to same server (#310638)
- See tcp.c below for the implementation (aside from a flag in the configuration and a cli flag).
-
-* Force overriding state file (#311022)
- Shouldn't be difficult and take more than a couple of bytes.
-
-* SSL protocols (HTTPS, FTPS) (#311163)
 
 * Parse Content-Disposition header (#311101)
  Look if the specific problem mentioned in the bug is fixed by this.
@@ -55,14 +38,20 @@ Code structure
 * Remove all logic from text.c
 * Ensure correct synchronization of thread state (volatile?)
 * Cleanup AXEL_LEGACY
+* save_setup: Can we flush instead of close?
+* Check chinese man file, correct installation
+* Find out whether chinese manpage should be installed
+* Scrap crappy OS workaround? (Test on Windows)
 
 Bugs
 ====
 
-We're gonna fix them all!
-#310979 seems pretty vague.
-
+Fix rate limit, test it
 Check spaces in FTP and HTTP URLs
+Remove all TODOs
+
+Fix/test/simplify i18n regeneration (paths!) (remove .SUFFIXES?)
+Check speed limit
 
 (User) Documentation
 ====================
@@ -73,27 +62,60 @@ Check spaces in FTP and HTTP URLs
 3.1
 ===
 
-* Cookies (#310835)
- Can be implemented via -H. The bug called for reading the Netcape-style cookies.txt (Wget's --load--cokies option). Domain-specific cookies could be rather complex to implement. If the implementation of this feature costs more than 100B, it should be deselectable.
-* Rate-limit status messages (#TODO)
-* Don't discard first HTTP connection, but use it adaptively (start requests from the end, RST as soon as first task is fullfilled)
-* A -1 option: Just make one request, and only one.
-* IPv6 support
+* HTTP authentication (#310785)
+ This is actually already implemented and should be documented. Using -H is possible, too.
+ Document reading URLs from a file by the way.
+
+* Metalink (#310625)
+ Basic Metalink support should not be that difficult. However, it will only be compiled if METALINK is defined. Metalink support will require libxml2. As libmetalink is currently unusable for us (private symbols), we'll implement the format ourselves.
+
+* .netrc (#310635)
+ There are lots of GPLed implementations flying around. To minimize code size, it shouldn't be compiled in by default if the code exceeds a couple of bytes. Anyway, it's just one call from Axel's point of view.
+
+* Prevent connection to same server (#310638)
+ See tcp.c below for the implementation (aside from a flag in the configuration and a cli flag).
+
+* Force overriding state file (#311022)
+ Shouldn't be difficult and take more than a couple of bytes.
+
+* SSL protocols (HTTPS, FTPS) (#311163)
 
 3.2
 ===
 
+* Cookies (#310835)
+ Can be implemented via -H. The bug called for reading the Netcape-style cookies.txt (Wget's --load--cokies option). Domain-specific cookies could be rather complex to implement. If the implementation of this feature costs more than 100B, it should be deselectable.
+* Rate-limit status messages (#310546)
+* Don't discard first HTTP connection, but use it adaptively (start requests from the end, RST as soon as first task is fullfilled)
+* A -1 option: Just make one request, and only one.
+* IPv6 support
+
+3.3
+===
+
 * Write a macro ERROR_MESSAGE(msg) (msg), enclose all _("some long error message") and offer a compilation option for a single error message, see if that yields any size improvements
+* Static compilation? (See also next point)
 * Check compilation with dietlibc(http://www.fefe.de/dietlibc/) and uclibc(http://www.uclibc.org/):
 	· How to compile with these libraries
 	· Does this actually improve the binary size?
 	· Check warnings/suggestions
 * valgrind and friends
+* splint
 * Test very large -n values. Check pthread thread stack size.
+* Unicode domain names
+* --shrink / --all-features flags in configure
+* gzip, deflate compression? (optional)
+* Check NOGETOPTLONG definition. Is this really up to date? Can't we test it in an other way than looking at the platform?
+* Check whether we need to test the result of malloc for NULL. Does this significantly increase code size? Can we just call exit(42)?
+* Remove stdio.h, varargs.h and friends from axel.h , add them to text.c if needed
 
 Future/Ideas
 ============
 
+* Does open(O_DIRECT) hurt? Do we need it?
+* Could we employ less/even only one thread than -n using select() to get the next available fd
+* Automatically compare different revisions of axel regarding size
+* Read URLs from a file to encourage using passwords
 * Real FTPS (AUTH)?
 * Allow downloading to /dev/null for debugging or speed test purposes (Statefile in memory or so)
 * Desktop integration, look who likes download accelerators
@@ -101,3 +123,4 @@ Future/Ideas
 * Write automated tests to test all these nifty corner cases. Either a test webserver or LD_PRELOAD injection of all syscalls (see libfake*)
 * Write a helper script that displays the final binary size for different configurations to determine what a particular feature costs
 * Document and implement coding conventions, versioning scheme
+* Revive the GUI?

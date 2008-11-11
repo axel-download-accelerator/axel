@@ -23,7 +23,7 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include "axel.h"
+#include "../src/axel.h"
 
 static void stop( int signal );
 static char *size_human( long long int value );
@@ -64,12 +64,16 @@ static char string[MAX_STRING];
 
 int main( int argc, char *argv[] )
 {
-	char fn[MAX_STRING] = "";
-	int do_search = 0;
-	search_t *search;
 	conf_t conf[1];
 	axel_t *axel;
-	int i, j, cur_head = 0;
+#ifdef SEARCH
+	search_t *search;
+#endif
+	
+	int do_search = 0;
+	int i;
+	int cur_head = 0;
+	int verbosity = VERBOSITY_NORMAL;
 	char *s;
 	
 #ifdef I18N
@@ -97,7 +101,7 @@ int main( int argc, char *argv[] )
 		switch( option )
 		{
 		case 'U':
-			strncpy( conf->user_agent, optarg, MAX_STRING);
+			// TODO Use HEAP_COPY_STRING here (conf->user_agent strncpy( , optarg, MAX_STRING);
 			break;
 		case 'H':
 			strncpy( conf->add_header[cur_head++], optarg, MAX_STRING );
@@ -138,22 +142,13 @@ int main( int argc, char *argv[] )
 			print_help();
 			return( 0 );
 		case 'v':
-			if( j == -1 )
-				j = 1;
-			else
-				j ++;
+			conf->verbose = VERBOSITY_VERBOSE;
 			break;
 		case 'V':
 			print_version();
 			return( 0 );
 		case 'q':
-			close( 1 );
-			conf->verbose = -1;
-			if( open( "/dev/null", O_WRONLY ) != 1 )
-			{
-				fprintf( stderr, _("Can't redirect stdout to /dev/null.\n") );
-				return( 1 );
-			}
+			conf->verbose = VERBOSE_QUIET;
 			break;
 		default:
 			print_help();
@@ -524,59 +519,27 @@ static void print_alternate_output(axel_t *axel)
 
 void print_help()
 {
-#ifdef NOGETOPTLONG
-	printf(	_("Usage: axel [options] url1 [url2] [url...]\n"
-		"\n"
-		"-s x\tSpecify maximum speed (bytes per second)\n"
-		"-n x\tSpecify maximum number of connections\n"
-		"-o f\tSpecify local output file\n"
-		"-S [x]\tSearch for mirrors and download from x servers\n"
-		"-H x\tAdd header string\n"
-		"-U x\tSet user agent\n"
-		"-N\tJust don't use any proxy server\n"
-		"-q\tLeave stdout alone\n"
-		"-v\tMore status information\n"
-		"-a\tAlternate progress indicator\n"
-		"-h\tThis information\n"
-		"-V\tVersion information\n"
-		"\n"
-		"Visit http://axel.alioth.debian.org/ to report bugs\n") );
-#else
-	printf(	_("Usage: axel [options] url1 [url2] [url...]\n"
-		"\n"
-		"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
-		"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
-		"--output=f\t\t-o f\tSpecify local output file\n"
-		"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
-		"--header=x\t\t-H x\tAdd header string\n"
-		"--user-agent=x\t\t-U x\tSet user agent\n"
-		"--no-proxy\t\t-N\tJust don't use any proxy server\n"
-		"--quiet\t\t\t-q\tLeave stdout alone\n"
-		"--verbose\t\t-v\tMore status information\n"
-		"--alternate\t\t-a\tAlternate progress indicator\n"
-		"--help\t\t\t-h\tThis information\n"
-		"--version\t\t-V\tVersion information\n"
-		"\n"
-		"Visit http://axel.alioth.debian.org/ to report bugs\n") );
-#endif
+	printf(_("Usage: axel [options] url1 [url2] [url...]\n\n"));
+	
+	printf(_("--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"));
+	printf(_("--num-connections=x\t-n x\tSpecify maximum number of connections\n"));
+	printf(_("--output=f\t\t-o f\tSpecify local output file\n"));
+	printf(_("--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"));
+	printf(_("--header=x\t\t-H x\tAdd header string\n"));
+	printf(_("--user-agent=x\t\t-U x\tSet user agent\n"));
+	printf(_("--no-proxy\t\t-N\tJust don't use any proxy server\n"));
+	printf(_("--quiet\t\t\t-q\tLeave stdout alone\n"));
+	printf(_("--verbose\t\t-v\tMore status information\n"));
+	printf(_("--alternate\t\t-a\tAlternate progress indicator\n"));
+	printf(_("--help\t\t\t-h\tThis information\n"));
+	printf(_("--version\t\t-V\tVersion information\n"));
+	printf(_("\nVisit http://axel.alioth.debian.org/ to report bugs\n"));
+	#ifdef NOGETOPTLONG
+		printf(_("WARNING: Your version of getopt seems not to support long options. Please use the short ones (consisting of only a dash and a character)\n"));
+	#endif
 }
 
-void print_version()
-{
+void print_version() {
 	printf( _("Axel version %s (%s)\n"), AXEL_VERSION_STRING, ARCH );
 	printf( "\nCopyright 2001-2002 Wilmer van der Gaast.\n" );
-}
-
-/* Print any message in the axel structure				*/
-void print_messages( axel_t *axel )
-{
-	message_t *m;
-	
-	while( axel->message )
-	{
-		printf( "%s\n", axel->message->text );
-		m = axel->message;
-		axel->message = axel->message->next;
-		free( m );
-	}
 }

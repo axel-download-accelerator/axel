@@ -4,7 +4,7 @@
   * Copyright 2001 Wilmer van der Gaast                                *
   \********************************************************************/
 
-/* filesearching.com searcher include file				*/
+/* FTP control include file						*/
 
 /*
   This program is free software; you can redistribute it and/or modify
@@ -23,15 +23,30 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
+#ifdef AXEL_LEGACY
+#ifdef FTP
+
+#define FTP_PASSIVE	1
+#define FTP_PORT	2
+
 typedef struct
 {
-	char url[MAX_STRING];
-	double speed_start_time;
-	int speed, size;
-	pthread_t speed_thread[1];
-	conf_t *conf;
-} search_t;
+	char cwd[MAX_STRING];
+	char *message;
+	int status;
+	int fd;
+	int data_fd;
+	int ftp_mode;
+	char *local_if;
+} ftp_t;
 
-int search_makelist( search_t *results, char *url );
-int search_getspeeds( search_t *results, int count );
-void search_sortlist( search_t *results, int count );
+int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass );
+void ftp_disconnect( ftp_t *conn );
+int ftp_wait( ftp_t *conn );
+int ftp_command( ftp_t *conn, char *format, ... );
+int ftp_cwd( ftp_t *conn, char *cwd );
+int ftp_data( ftp_t *conn );
+int ftp_size( ftp_t *conn, char *file, int maxredir );
+
+#endif
+#endif

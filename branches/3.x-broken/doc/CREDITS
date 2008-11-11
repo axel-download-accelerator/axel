@@ -51,3 +51,9 @@ An not-quite-sorted list of people who helped somehow:
 - Sebastian Ritterbusch <Sebastian@Ritterbusch.de>
   For some interesting ideas for the new versions.
   For writing the alternate progress indicator.
+
+- Lintux
+  Wrote the original Makefile
+
+- Wilmer van der Gaast <wilmer@gaast.net>
+  Initially wrote, maintained, documented and did everything else for axel.
