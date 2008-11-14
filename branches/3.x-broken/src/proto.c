@@ -36,20 +36,20 @@ int proto_getid(const char* protostr) {
 		return PROTO_DEFAULT;
 	}
 		
-	if (strcmp(protostr, PROTO_HTTP_NAME) == 0) {
+	if (strcasecmp(protostr, PROTO_HTTP_NAME) == 0) {
 		return PROTO_HTTP;
 	}
 	#ifdef FTP
-	else if (strcmp(protostr, PROTO_FTP_NAME) == 0) {
+	else if (strcasecmp(protostr, PROTO_FTP_NAME) == 0) {
 		return PROTO_FTP;
 	}
 	#endif
 	#ifdef SSL
-		else if (strcmp(protostr, PROTO_HTTPS_NAME) == 0) {
+		else if (strcasecmp(protostr, PROTO_HTTPS_NAME) == 0) {
 			return PROTO_HTTPS;
 		}
 		#ifdef FTP
-		else if (strcmp(protostr, PROTO_FTPS_NAME) == 0) {
+		else if (strcasecmp(protostr, PROTO_FTPS_NAME) == 0) {
 			return PROTO_FTPS;
 		}
 		#endif

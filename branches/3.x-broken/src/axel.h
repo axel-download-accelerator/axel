@@ -82,6 +82,7 @@
 #include "proto.h"
 #include "conn.h"
 #include "search.h"
+#include "urllist.h"
 
 // Special value for delay_time, see below
 #define AXEL_DELAY_TIME_ABORT (-1)
@@ -100,10 +101,12 @@
 // Download correctly finished
 #define AXEL_STATE_FINISHED 5
 
+// TODO can we guarantee anything for the handlers?
+
 // A download to a single file, probably from multiple sources
 struct axel_struct {
 	const conf_t* conf; // Not owned by this structure
-	url_li_t* urls; // Linked list of URLs to read
+	urllist_t urls; // Linked list of URLs to read
 	
 	int conncount; // The number of connections, -1 if conn is not yet initialized
 	conn_t** conn; // array of connections, of size conncount. Owned by this struct.
@@ -122,7 +125,7 @@ struct axel_struct {
 	long long start_utime; // Start time in microseconds
 	
 	// The download's state, one of the AXEL_STATE_* constants
-	int state; // TODO check whether we read this state at all
+	volatile sig_atomic_t state; // TODO check whether we read this state at all
 	
 	/**
 	* Time to wait because of speed limit.
@@ -144,7 +147,7 @@ struct axel_struct {
 	*/
 	void (*abort_handler)(struct axel_struct* axel, int ret);
 	/**
-	* A handler that displays the download's state. Is called "frequently".
+	* A handler that displays the download's state. Is called "frequently" and on every update of state.
 	* Leave as NULL for no status display
 	*/
 	void (*status_handler)(const struct axel_struct* axel);
@@ -153,8 +156,7 @@ typedef struct axel_struct axel_t;
 
 // Main axel API: The following methods are used by the frontend.
 axel_t* axel_new(const conf_t *conf);
-void axel_add_url(axel_t* axel, const url_t* url);
-void axel_add_urlstr(axel_t* axel, const char* urlstr);
+_Bool axel_addurlstr(axel_t* axel, const char* urlstr, int priority);
 void axel_start(axel_t* axel);
 void axel_free(axel_t* axel);
 
@@ -162,13 +164,3 @@ void axel_message(const axel_t* axel, const char* message, int verbosity);
 void axel_message_fmt(const axel_t *axel, const char *format, ... );
 void axel_update_status(const axel_t* axel);
 void axel_abort(axel_t* axel, int ret);
-
-// An item of a URL list
-struct url_li_struct {
-	url_t* url;
-	url_li_struct* next; // NULL for end of list
-};
-typedef struct url_li_struct url_li_t;
-
-url_li_t* url_li_new(url_t* url);
-void url_li_free(url_li_t* urlli);

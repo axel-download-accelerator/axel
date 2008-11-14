@@ -21,3 +21,12 @@ char hex2byte(char* hexcs);
 char* uitoa(unsigned int ui);
 
 long long getutime();
+
+#ifdef DEBUG
+	void debug_print(const char* msg);
+	void debug_printf(const char* format, ...);
+	
+	#define DEBUG_ASSERT(assertion,msg) {if (!(assertion)) { debug_print(msg);}}
+#else
+	#define DEBUG_ASSERT(assertion,msg) ;
+#endif

@@ -131,3 +131,17 @@ long long getutime() {
 	
 	return ( (long long) time->tv_sec * 1000000 + (long long) time->tv_usec);
 }
+
+#ifdef DEBUG
+void debug_print(const char* msg) {
+	debug_printf("%s", msg);
+}
+
+void debug_printf(const char* format, ...) {
+	va_list params;
+	
+	va_start(params, format);
+	vfprintf(stderr, format, params);
+	va_end(params);
+}
+#endif

@@ -25,8 +25,8 @@
 
 #include "axel.h"
 
+static void axel_examine(axel_t* axel);
 static void axel_prepare(axel_t* axel);
-static void axel_init(axel_t* axel);
 static void axel_teardown(axel_t* axel);
 
 
@@ -72,10 +72,9 @@ void axel_update_status(const axel_t* axel) {
 
 void axel_abort(axel_t* axel, int ret) {
 	axel->state = ret == 0 ? AXEL_STATE_ERROR;
+	axel_update_status(axel);
 	
-	if (ret != 0) {
-		axel_teardown(axel);
-	}
+	axel_teardown(axel);
 	
 	if (axel->abort_handler != NULL) {
 		axel->abort_handler(axel, ret);
@@ -84,26 +83,32 @@ void axel_abort(axel_t* axel, int ret) {
 	}
 }
 
-/* Add a URL. urlstr is a pointer to a string specified by the user */
-void axel_add_urlstr(axel_t* axel, const char* urlstr) {
-	axel_add_url(axel, url_parse(urlstr));
-}
-
-/* Add a URL. From now on, the heap entry pointed to is owned by the axel_t struct */
-void axel_add_url(axel_t* axel, url_t* url) {
-	axel_add_url_prio(axel, url, 
-	url_li_t* p = axel->urls;
-	while (p != NULL) {
-		p = p->next;
+/**
+* Add a URL. urlstr is a pointer to a string specified by the user
+* @param priority The priority of this URL. If not URL_PRIO_NONE, this overwrites any priority in the URL.
+* @return 1 iff the URL was added
+*/
+_Bool axel_addurlstr(axel_t* axel, const char* urlstr, int priority) {
+	url_t* url = url_parse_heuristic(urlstr);
+	
+	if (url == NULL) {
+		return 0;
 	}
-	p->next = url_li_new(url);
+	
+	if (priority != URL_PRIO_NONE) {
+		url->priority = priority;
+	}
+	
+	urllist_add(axel->urls, url);
+	
+	return 1;
 }
 
 axel_t* axel_new(const conf_t* conf) {
 	axel_t* res = malloc( sizeof( axel_t ) );
 	
 	res->conf = conf;
-	res->urls = NULL;
+	urllist_init(&(res->urls));
 	
 	res->conncount = -1;
 	// conn is set once we know conncount
@@ -128,10 +133,7 @@ axel_t* axel_new(const conf_t* conf) {
 }
 
 void axel_free(axel_t* axel) {
-	url_li_t* urlip = axel->urls;
-	while (urlip != NULL) {
-		urlip = url_li_free(urlip);
-	}
+	urllist_free(axel->urls);
 	
 	free(axel->filename);
 	free(axel->statefilename);
@@ -143,10 +145,10 @@ void axel_free(axel_t* axel) {
 * Start downloading a file. If you want to know anything more about the download, register handlers.
 */
 void axel_start(axel_t* axel) {
-	axel_prepare(axel);
+	axel_examine(axel);
 	
 	if (axel->state == AXEL_STATE_READY) {
-		axel_init(axel);
+		axel_prepare(axel);
 	}
 }
 
@@ -154,17 +156,18 @@ void axel_start(axel_t* axel) {
 /**
 * Find out file size, file name and stuff
 */
-static void axel_prepare(axel_t* axel) {
+static void axel_examine(axel_t* axel) {
 	// TODO determine filename
 	// TODO determine file size
 	
 	axel->state = AXEL_STATE_READY;
+	axel_update_status();
 }
 
 /**
 * Initialize a prepared download, start all threads
 */
-static void axel_init(axel_t* axel) {
+static void axel_prepare(axel_t* axel) {
 	// TODO set conncount according to conf
 	
 	// Determine file name
@@ -189,7 +192,7 @@ static void axel_init(axel_t* axel) {
 	// TODO start threads
 	
 	
-	
+	axel_update_status(axel);
 }
 
 /**
@@ -207,32 +210,6 @@ static void axel_teardown(axel_t* axel) {
 
 
 
-
-/**
-* Construct a new item of a URL list.
-* @param url The Item. From now on, it is owned by this struct
-*/
-inline url_li_t* url_li_new(url_t* url) {
-	url_li_t* res = malloc(sizeof(url_li_t));
-	
-	res->url = url;
-	res->next = NULL;
-	
-	return res;
-}
-
-/**
-* Free a URL list item, including the URL itself.
-* @return The next item in the list of URLs
-*/
-inline url_li_t* url_li_free(url_li_t* urlli) {
-	url_li_t* next = urlli->next;
-	
-	free(urlli->url);
-	free(urlli);
-	
-	return res;
-}
 
 
 

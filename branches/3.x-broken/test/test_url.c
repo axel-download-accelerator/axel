@@ -23,6 +23,8 @@ static void test_url_str_single(const struct url_t* u, const char* expected);
 static void test_url_request();
 static void test_url_request_single(const struct url_t* u, const char* expected);
 
+static void test_url_priority();
+
 static const url_t* test_helper_urlgen(
 	int proto,
 	const char* user, const char* pass,
@@ -40,6 +42,7 @@ void test_url_suite() {
 	CU_add_test(ps, "url_parse_unencoded", test_url_parse_unencoded);
 	CU_add_test(ps, "url_str", test_url_str);
 	CU_add_test(ps, "url_request", test_url_request);
+	CU_add_test(ps, "URL priorities", test_url_priority);
 }
 
 static void test_url_encode() {
@@ -221,6 +224,20 @@ static void test_url_request_single(const struct url_t* u, const char* expected)
 	CU_ASSERT_STRING_EQUAL(got, expected);
 	
 	free(got);
+}
+
+static void test_url_priority() {
+	url_t* u = parse_url_heuristic("http://example.com/2");
+	CU_ASSERT_EQUALS(u->priority, URL_PRIORITY_DEFAULT);
+	url_free(u);
+	
+	u = parse_url_heuristic("{10}http://example.com/2");
+	CU_ASSERT_EQUALS(u->priority, 10);
+	url_free(u);
+	
+	u = parse_url_heuristic("{-10}http://example.com/2");
+	CU_ASSERT_EQUALS(u->priority, -10);
+	url_free(u);
 }
 
 static const url_t* test_helper_urlgen(

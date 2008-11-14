@@ -42,6 +42,7 @@ Code structure
 * Check chinese man file, correct installation
 * Find out whether chinese manpage should be installed
 * Scrap crappy OS workaround? (Test on Windows)
+* axel: new -> init, free -> destroy ?
 
 Bugs
 ====
@@ -89,6 +90,9 @@ Check speed limit
 * Don't discard first HTTP connection, but use it adaptively (start requests from the end, RST as soon as first task is fullfilled)
 * A -1 option: Just make one request, and only one.
 * IPv6 support
+* Add AXEL_THREADED option: If not set, don't use threads, but select()
+* OUTPUT_FLAGS option to output all the flag's names in --help or so
+* configure options minimal and allfeatures
 
 3.3
 ===

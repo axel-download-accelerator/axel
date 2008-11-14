@@ -96,7 +96,7 @@ char* url_heuristic_decode(const char * urlstr) {
 	res = (char*) realloc(res, resp - res + 1);
 	
 	#ifdef DEBUG
-		fprintf(stderr, "Original|Result of heuristic URL decoding:\n%s\n%s", urlstr, res);
+		debug_printf("Original|Result of heuristic URL decoding:\n%s\n%s", urlstr, res);
 	#endif
 	
 	return res;
@@ -130,11 +130,16 @@ url_t* url_parse_unencoded(const char* urlstr) {
 		host = schemesep + strlen(URL_SCHEME_SEP); // Host and rest of the URL
 	}
 	res->proto = proto_getid(protostr);
-	free(protostr);
+	
 	if (res->proto == PROTO_ERR) {
+		#ifdef DEBUG
+			debug_printf("Unsupported protocol %s", protostr);
+		#endif
+		free(protostr);
 		free(res);
 		return NULL;
 	}
+	free(protostr);
 	
 	// Request (directory name, file, request, fragment)
 	char* const request = strchr(host, URL_DIR_SEPCHAR);
@@ -195,27 +200,30 @@ url_t* url_parse_unencoded(const char* urlstr) {
 		heap_substr_upto(&(res->host), host, portstart);
 	}
 	
+	res->priority = URL_PRIO_DEFAULT;
+	
 	#ifdef DEBUG
-		sprintf(stderr, "Parsed URL:\n");
-		sprintf(stderr, "Protocol: %s (Internal ID: %d)\n", proto_getname(res->proto), proto);
+		debug_print("Parsed URL:\n");
+		debug_printf("Protocol: %s (Internal ID: %d)\n", proto_getname(res->proto), proto);
 		if (res->user != NULL) {
-			sprintf(stderr, "User name: %s\n", res->user);
+			debug_printf("User name: %s\n", res->user);
 		}
 		if (res->pass != NULL) {
-			sprintf(stderr, "Password: %s\n", res->pass);
+			debug_printf("Password: %s\n", res->pass);
 		}
-		sprintf(stderr, "Host: %s\n"; res->host);
-		sprintf(stderr, "Port: %d\n", res->port);
+		debug_printf("Host: %s\n"; res->host);
+		debug_printf("Port: %d\n", res->port);
 		if (res->dir != NULL) {
-			sprintf(stderr, "Directory: %s\n", res->dir);
+			debug_printf("Directory: %s\n", res->dir);
 		}
-		if (res->fikename != NULL) {
-			sprintf(stderr, "File name: %s\n", res->filename);
+		if (res->filename != NULL) {
+			debug_printf("File name: %s\n", res->filename);
 		}
 		if (res->query != NULL) {
-			sprintf(stderr, "Query: %s\n", res->query);
+			debug_printf("Query: %s\n", res->query);
 		}
-		sprintf(stderr, "\n");
+		debug_printf("Priority: %d\n", res->priority);
+		debug_print("\n");
 	#endif
 	
 	return res;

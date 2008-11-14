@@ -31,6 +31,15 @@
 #define URL_DIR_SEPCHAR '/'
 #define URL_QUERY_SEPCHAR '?'
 
+#define URL_PRIO_MAX INT_MAX
+#define URL_PRIO_MIN INT_MIN
+#define URL_PRIO_DEFAULT 50
+// No priority specified
+#define URL_PRIO_NONE 49
+// Add this n times to ensure all URLs with a lower n will not be requested until this URL is removed
+// This value may be used by others; it must therefore be a power of 2 and 256.
+#define URL_PRIO_GROUPSIZE 256
+
 // All string fields are stored unencoded
 typedef struct {
 	/* Protocol id as defined in proto.h */
@@ -42,10 +51,13 @@ typedef struct {
 	char* query; // Query and fragment of the URL without the initiating question mark, NULL for none
 	char* user; // NULL if no user specified (set anonymous if user is necessary)
 	char* pass; // NULL if no password specified (set to any value if required)
+	
+	// Metadata
+	int priority;
 } url_t;
 
 char* url_encode(const char* origurl);
-char* url_heuristic_decode(const char * urlstr)
+char* url_heuristic_decode(const char* urlstr);
 
 url_t* url_parse_heuristic(const char* urlstr);
 url_t* url_parse_unencoded(const char* urlstr);
