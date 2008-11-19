@@ -1,3 +1,7 @@
+Version 2.2.1:
+
+- Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
+
 Version 2.2:
 
 - Fix a buffer overflow in http.c:http_encode.
