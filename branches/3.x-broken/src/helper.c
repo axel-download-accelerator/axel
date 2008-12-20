@@ -2,13 +2,41 @@
 
 #include "axel.h"
 
+/**
+* A malloc implementation that exits on error.
+*/
+void* safe_malloc(size_t size) {
+	void* res = malloc(size);
+	
+	if (res == NULL) {
+		fprintf(stderr, _("FATAL ERROR: Can't allocate %d Bytes of memory\n"), (int) size);
+		exit(AXEL_EXIT_MALLOC_FAIL);
+	}
+	
+	return res;
+}
+
+/**
+* A realloc implementation that exits on error.
+*/
+void* safe_realloc(void* ptr, size_t size) {
+	void* res = realloc(ptr, size);
+	
+	if (res == NULL) {
+		fprintf(stderr, _("FATAL ERROR: Can't realloc %d Bytes of memory\n"), (int) size);
+		exit(AXEL_EXIT_REALLOC_FAIL);
+	}
+	
+	return res;
+}
+
 char* helper_strdup(const char* str) {
 	if (str == NULL) {
 		return NULL;
 	}
 	
 	size_t len = strlen(str);
-	char* res = malloc(len + 1);
+	char* res = safe_malloc(len + 1);
 	memcpy(res, str, len);
 	res[len] = '\0';
 	

@@ -1,5 +1,4 @@
-
-Version 2.99.0 (preview release):
+Version 3.0_rc1 (preview release):
 
 - Complete overhaul of the whole code structure
 - New folder structure: src/ contains all *.c and *.h files, test/ CUnit test files, all compiled files reside in out/, all configured files in cfg/
@@ -20,6 +19,15 @@ Version 2.99.0 (preview release):
 - Splitted usage text (=> simplifies i18n)
 
 - Temporarily thrown out: ftp, search
+
+Version 2.3:
+
+- Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
+- New Chinese translation and manpage, thanks Shuge Lee
+
+Version 2.2:
+
+- Fix a buffer overflow in http.c:http_encode.
 
 Version 2.1:
 

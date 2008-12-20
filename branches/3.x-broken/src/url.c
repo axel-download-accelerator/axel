@@ -32,7 +32,7 @@
 char* url_encode(const char* origurl) {
 	int resp = 0; // Position of the next character in the result
 	int ressize = 256; // Physical size of the result
-	char* res = (char*) malloc(ressize);
+	char* res = (char*) safe_malloc(ressize);
 	
 	char c;
 	for (;(c = *origurl) != '\0';origurl++) {
@@ -40,7 +40,7 @@ char* url_encode(const char* origurl) {
 		// Note 3 is a magic constant here because we write at most that much characters (plus a null byte)
 		if (resp >= ressize - 3) {
 			ressize *= 2;
-			res = (char*) realloc(res, ressize);
+			res = (char*) safe_realloc(res, ressize);
 		}
 		
 		if (isdigit(c) ||
@@ -59,7 +59,7 @@ char* url_encode(const char* origurl) {
 
 	res[resp] = '\0';
 	
-	res = (char*) realloc(res, resp+1);
+	res = (char*) safe_realloc(res, resp+1);
 	
 	return res;
 }
@@ -69,7 +69,7 @@ char* url_encode(const char* origurl) {
 * @return A decoded string. Must be freed by the caller.
 */
 char* url_heuristic_decode(const char * urlstr) {
-	char* res = malloc(strlen(urlstr));
+	char* res = safe_malloc(strlen(urlstr));
 	char* resp = res;
 	const char* origp = urlstr;
 	
@@ -93,7 +93,7 @@ char* url_heuristic_decode(const char * urlstr) {
 		resp++;
 	}
 	
-	res = (char*) realloc(res, resp - res + 1);
+	res = (char*) safe_realloc(res, resp - res + 1);
 	
 	#ifdef DEBUG
 		debug_printf("Original|Result of heuristic URL decoding:\n%s\n%s", urlstr, res);
@@ -119,7 +119,7 @@ url_t* url_parse_unencoded(const char* urlstr) {
 	url_t* res;
 	const char* host = urlstr;
 	
-	res = (url_t*) malloc(sizeof(url_t));
+	res = (url_t*) safe_malloc(sizeof(url_t));
 	memset(res, 0, sizeof(res));
 	
 	// Scheme (aka protocol)
@@ -284,7 +284,7 @@ char* url_str(const struct url_t* u, _Bool includeAuth) {
 		s += sizeof(URL_QUERY_SEPCHAR) + s_query;
 	}
 	
-	char* const res = malloc(sizeof(char) * (s + 1));
+	char* const res = safe_malloc(sizeof(char) * (s + 1));
 	register char* p = res;
 	
 	memcpy(p, protoname, s_proto);
@@ -370,7 +370,7 @@ char* url_request(const struct url_t* u) {
 		s += sizeof(URL_QUERY_SEPCHAR) + s_query;
 	}
 	
-	char* const res = malloc(sizeof(char) * (s + 1));
+	char* const res = safe_malloc(sizeof(char) * (s + 1));
 	register char* p = res;
 	
 	*p = URL_DIR_SEPCHAR;

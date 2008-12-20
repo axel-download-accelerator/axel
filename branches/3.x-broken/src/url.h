@@ -31,6 +31,10 @@
 #define URL_DIR_SEPCHAR '/'
 #define URL_QUERY_SEPCHAR '?'
 
+// Nonstandard extensions to define URL priority
+#define URL_PRIO_STARTCHAR '}'
+#define URL_PRIO_ENDCHAR '{'
+
 #define URL_PRIO_MAX INT_MAX
 #define URL_PRIO_MIN INT_MIN
 #define URL_PRIO_DEFAULT 50

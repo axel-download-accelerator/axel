@@ -25,63 +25,11 @@
 
 #include "axel.h"
 
-static void axel_examine(axel_t* axel);
 static void axel_prepare(axel_t* axel);
 static void axel_teardown(axel_t* axel);
-
-
-static void axel_save_state(axel_t *axel);
-static void* setup_thread(void *);
-static void axel_divide(axel_t *axel);
-
-/**
-* @param message The message to send. Note that this must be freed by the caller
-*/
-void axel_message(const axel_t* axel, const char* message, int verbosity) {
-	if (axel->message_handler != NULL) {
-		axel->message_handler(axel, message, verbosity);
-	}
-}
-
-void axel_message_fmt(const axel_t *axel, const char *format, ... ) {
-	const MAX_MSG_SIZE = 1024;
-	char* buf 
-	va_list params;
-	
-	va_start(params, format);
-	vsnprintf(buf, MAX_MSG_SIZE - 1, format, params );
-	va_end(params );
-	
-	if( axel->message == NULL )
-	{
-		axel->message = m;
-	}
-	else
-	{
-		while( n->next != NULL )
-			n = n->next;
-		n->next = m;
-	}
-}
-
-void axel_update_status(const axel_t* axel) {
-	if (axel->status_handler != NULL) {
-		axel->status_handler(axel);
-	}
-}
-
-void axel_abort(axel_t* axel, int ret) {
-	axel->state = ret == 0 ? AXEL_STATE_ERROR;
-	axel_update_status(axel);
-	
-	axel_teardown(axel);
-	
-	if (axel->abort_handler != NULL) {
-		axel->abort_handler(axel, ret);
-	} else {
-		exit(ret);
-	}
-}
+static void axel_save_state(axel_t* axel);
+static void axel_set_state(axel_t* axel, int state);
+static void axel_update_display(const axel_t* axel);
 
 /**
 * Add a URL. urlstr is a pointer to a string specified by the user
@@ -99,80 +47,82 @@ _Bool axel_addurlstr(axel_t* axel, const char* urlstr, int priority) {
 		url->priority = priority;
 	}
 	
-	urllist_add(axel->urls, url);
+	urllist_add(& axel->urls, url);
 	
 	return 1;
 }
 
-axel_t* axel_new(const conf_t* conf) {
-	axel_t* res = malloc( sizeof( axel_t ) );
+void axel_init(axel_t* ax, const conf_t* conf) {
+	ax->message_handler = NULL;
+	ax->display_handler = NULL;
 	
-	res->conf = conf;
-	urllist_init(&(res->urls));
+	ax->conf = conf;
+	urllist_init(& ax->urls);
 	
-	res->conncount = -1;
+	ax->conncount = -1;
 	// conn is set once we know conncount
 	
-	res->filename = NULL;
-	res->outfd = -1;
+	ax->filename = NULL;
+	ax->outfd = -1;
 	
-	res->statefilename = NULL;
+	ax->statefilename = NULL;
 	
-	res->size = -1;
+	ax->size = -1;
 	// start_utime is set once we're ready to start downloading
 	
-	axel->state = AXEL_STATE_INIT;
+	ax->state = AXEL_STATE_INIT;
 	
-	res->delay_time = 0;
-	
-	res->message_handler = NULL;
-	res->abort_handler = NULL;
-	res->status_handler = NULL;
-	
-	return res;
+	ax->delay_time = 0;
 }
 
-void axel_free(axel_t* axel) {
-	urllist_free(axel->urls);
+void axel_destroy(axel_t* axel) {
+	urllist_destroy(& axel->urls);
 	
 	free(axel->filename);
 	free(axel->statefilename);
-	
-	free(axel);
 }
 
 /**
-* Start downloading a file. If you want to know anything more about the download, register handlers.
+* Download a file. If you want to know anything more about the download, register handlers.
+* While the download is running, the current thread will dispatch the callback functions
+* Afterwards, a program has still to call axel_destroy() and then exit.
+* @return 0 on success, an error code otherwise
 */
-void axel_start(axel_t* axel) {
-	axel_examine(axel);
+int axel_download(axel_t* axel) {
+	axel_prepare(axel);
 	
-	if (axel->state == AXEL_STATE_READY) {
-		axel_prepare(axel);
+	if (axel->state != AXEL_STATE_DOWNLOADING) {
+		axel_set_state(axel, AXEL_STATE_ERROR);
+		
+		return axel->state;
 	}
-}
-
-
-/**
-* Find out file size, file name and stuff
-*/
-static void axel_examine(axel_t* axel) {
-	// TODO determine filename
-	// TODO determine file size
 	
-	axel->state = AXEL_STATE_READY;
-	axel_update_status();
+
+	for (int cid = 0;;cid = (cid < axel->conncount) ? cid + 1 : 0) {
+		// Main loop, visit all connections
+		
+		
+		
+		
+	}
+	
+	
+	// TODO set state to finished if not erred
+	
+	
+	return axel->state;
 }
 
 /**
-* Initialize a prepared download, start all threads
+* Prepare a download, start all threads
 */
 static void axel_prepare(axel_t* axel) {
-	// TODO set conncount according to conf
+	// TODO Determine file name
+	// TODO determine file size
 	
-	// Determine file name
+	
 	if (axel->filename == NULL) {
-		axel->filename = strdup(conf->default_filename);
+		axel->filename = strdup(axel->conf->default_filename);
 	}
 	
 	// TODO Open outfile
@@ -186,23 +136,90 @@ static void axel_prepare(axel_t* axel) {
 	axel->statefilename[fnlen + SUFFIXLEN + SUFFIXLEN] = '\0';
 	
 	// Start counting time
-	axel->state = AXEL_STATE_DOWNLOADING;
-	axel->start_time = getutime();
+	axel->start_utime = getutime();
+	axel_set_state(axel, AXEL_STATE_DOWNLOADING);
 	
 	// TODO start threads
-	
-	
-	axel_update_status(axel);
+	// TODO set conncount according to conf
 }
 
 /**
 * Prepare axel to be freed (cancel all connections, close outfile etc.)
 */
 static void axel_teardown(axel_t* axel) {
-	// TODO Cancel connections
+	// TODO Cancel all remaining connections
 	
 	
 	// TODO Close outfile
+}
+
+/**
+* @param message The message to send. Note that this must be freed by the caller
+*/
+void axel_message(const axel_t* axel, int verbosity, const char* message) {
+	if (axel->message_handler != NULL) {
+		axel->message_handler(axel, verbosity, message);
+	}
+	axel_update_display();
+}
+
+void axel_message_fmt(const axel_t *axel, int verbosity, const char *format, ...) {
+	const MAX_MSG_SIZE = 1024;
+	char* buf = alloca(MAX_MSG_SIZE);
+	
+	va_list params;
+	va_start(params, format);
+	vsnprintf(buf, MAX_MSG_SIZE, format, params );
+	va_end(params);
+	
+	axel_message(axel, verbosity, buf);
+	
+	free(buf);
+}
+
+static void axel_update_display(const axel_t* axel) {
+	if (axel->display_handler != NULL) {
+		axel->display_handler(axel);
+	}
+}
+
+static void axel_set_state(axel_t* axel, int state) {
+	axel->state = state;
+	axel_update_display();
+}
+
+/**
+* Setup a worker thread.
+*/
+// TODO define return value, NULL for delete the URL, otherwise for new value, input for unchanged?
+// TODO define param
+void* axel_thread(void *c) {
+	/* TODO check the following code */
+	conn_t *conn = c;
+	
+	/* Allow this thread to be killed at any time.			*/
+	pthread_setcancelstate( PTHREAD_CANCEL_ENABLE, &oldstate );
+	pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate );
+	
+	if( conn_setup( conn ) )
+	{
+		conn->last_transfer = gettime();
+		if( conn_exec( conn ) )
+		{
+			conn->last_transfer = gettime();
+			conn->enabled = 1;
+			conn->state = 0;
+			return( NULL );
+		}
+	}
+
+	conn_disconnect( conn );
+	
+	return( NULL );
+}
+
+void axel_save_state(axel_t* axel) {
+	// TODO copy stuff from save_state, sanitize
 }
 
 
@@ -218,10 +235,6 @@ static void axel_teardown(axel_t* axel) {
 
 
 
-
-
-
-static char *buffer = NULL; /* TODO: remove this in favor of dynamic allocation (wanna bet this isn't thread-safe?) */
 
 /* Create a new axel_t structure					*/
 axel_t *axel_new( conf_t *conf, int count, void *url )
@@ -241,7 +254,7 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	{
 		if( (float) axel->conf->max_speed / axel->conf->buffer_size < 0.5 )
 		{
-			axel_message( axel, _("Buffer resized for this speed."), VERBOSITY_NORMAL );
+			axel_message( axel, VERBOSITY_NORMAL, _("Buffer resized for this speed."));
 			axel->conf->buffer_size = axel->conf->max_speed;
 		}
 		axel->delay_time = (int) ( (float) 1000000 / axel->conf->max_speed * axel->conf->buffer_size * axel->conf->num_connections );
@@ -459,7 +472,7 @@ void axel_do( axel_t *axel )
 	/* Wait for data on (one of) the connections			*/
 	FD_ZERO( fds );
 	hifd = 0;
-	for( i = 0; i < axel->conf->num_connections; i ++ )
+	for( i = 0; i < axel->conncount; i ++ )
 	{
 		if( axel->conn[i].enabled )
 			FD_SET( axel->conn[i].fd, fds );
@@ -669,13 +682,8 @@ void save_state( axel_t *axel )
 	int fd, i;
 	char fn[MAX_STRING+4];
 
-	/* No use for such a file if the server doesn't support
-	   resuming anyway..						*/
-	if( !axel->conn[0].supported )
-		return;
-	
-	snprintf( fn, MAX_STRING, "%s.st", axel->filename );
-	if( ( fd = open( fn, O_CREAT | O_TRUNC | O_WRONLY, 0666 ) ) == -1 )
+	snprintf( fn, MAX_STRING, "%s" STATEFILE_SUFFIX, axel->filename );
+	if( ( fd = open( fn, O_CREAT | O_TRUNC | O_WRONLY, 0600 ) ) == -1 )
 	{
 		return;		/* Not 100% fatal..			*/
 	}
@@ -686,33 +694,6 @@ void save_state( axel_t *axel )
 		write( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
 	}
 	close( fd );
-}
-
-/* Thread used to set up a connection					*/
-void *setup_thread( void *c )
-{
-	conn_t *conn = c;
-	int oldstate;
-	
-	/* Allow this thread to be killed at any time.			*/
-	pthread_setcancelstate( PTHREAD_CANCEL_ENABLE, &oldstate );
-	pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate );
-	
-	if( conn_setup( conn ) )
-	{
-		conn->last_transfer = gettime();
-		if( conn_exec( conn ) )
-		{
-			conn->last_transfer = gettime();
-			conn->enabled = 1;
-			conn->state = 0;
-			return( NULL );
-		}
-	}
-	
-	conn_disconnect( conn );
-	conn->state = 0;
-	return( NULL );
 }
 
 /* Divide the file and set the locations for each connection		*/

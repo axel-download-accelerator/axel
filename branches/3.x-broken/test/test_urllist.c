@@ -19,11 +19,11 @@ static void test_urllist() {
 	url_t* url1 = url_parse_heuristic("http://example.org/1");
 	ulrllist_add(ul, url1, URL_PRIO_DEFAULT);
 	
-	url_t* url2 = url_parse_heuristic("{42}http://example.org/2");
-	ulrllist_add(ul, url2);
+	url_t* url2 = url_parse_heuristic(URL_PRIO_ENDCHAR "42" URL_PRIO_ENDCHAR "http://example.org/2");
+	ulrllist_add(ul, url2, URL_PRIO_NONE);
 	
 	url_t* url3 = url_parse_heuristic("{42}http://example.org/3");
-	ulrllist_add(ul, url3);
+	ulrllist_add(ul, url3, URL_PRIO_NONE);
 	
 	url_t* url4 = url_parse_heuristic("http://example.org/4");
 	ulrllist_add(ul, url4, 47);

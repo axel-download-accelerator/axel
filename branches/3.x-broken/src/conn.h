@@ -4,7 +4,7 @@
   * Copyright 2001 Wilmer van der Gaast                                *
   \********************************************************************/
 
-/* Connection stuff							*/
+/* A single downloading thread						*/
 
 /*
   This program is free software; you can redistribute it and/or modify
@@ -23,33 +23,33 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
+enum connstate {
+	INITIALIZED, // Just initialized
+	REQUESTED, // First byte went out to the network
+	DOWNLOADING, // Read complete header, currently downloading the file itself
+	FINISHED, // Completed entire download
+	ERROR
+};
+
 typedef struct {
 	conf_t *conf;
 	
 	url_t* url; /* The URL to download from. Not owned by this struct */
 	proto_t* proto;
 	
-	/* TODO: document this */
-	int proxy;
-	
-	long long size;		/* File size, not 'connection size'..	*/
 	long long currentbyte;
 	long long lastbyte;
+	
 	int fd;
 	int enabled;
 	int supported;
 	int last_transfer;
+	
+	connstate cstate;
 	char *message;
-	char *local_if;
-
-	int state;
-	pthread_t setup_thread[1];
+	
+	pthread_t thread[1];
 } conn_t;
 
-int conn_set( conn_t *conn, char *set_url );
-char *conn_url( conn_t *conn );
-void conn_disconnect( conn_t *conn );
-int conn_init( conn_t *conn );
-int conn_setup( conn_t *conn );
-int conn_exec( conn_t *conn );
-int conn_info( conn_t *conn );
+void conn_init(conn_t *conn, url_t* url, conf_t* conf, long long startbyte, long long endbyte);
+

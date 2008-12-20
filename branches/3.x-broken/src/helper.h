@@ -6,6 +6,9 @@
 // C99 does not actually include strdup
 #define strdup(str) helper_strdup(str)
 
+void* safe_malloc(size_t size);
+void* safe_realloc(void *ptr, size_t size);
+
 char* helper_strdup(const char* str);
 const char* strchr_upto(const char* haystack, char needle, const char* upto);
 

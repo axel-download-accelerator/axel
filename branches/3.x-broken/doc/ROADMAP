@@ -2,7 +2,7 @@ Roadmap for Axel v3
 ===================
 
 Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://alioth.debian.org/tracker/?group_id=100070&atid=413085 ) for detailled information.
-Pre-release version numbers of Axel 3 will begin with 2.99. Starting with the 3.x series, the following version scheme will be adopted:
+Starting with the 3.x series, the following version scheme will be adopted:
 
 x.y.z
 
@@ -15,6 +15,10 @@ Features
 
 * Parse Content-Disposition header (#311101)
  Look if the specific problem mentioned in the bug is fixed by this.
+* Do not rerequest != 20x more than once
+* Exponential backoff, exponential backoff, and make sure to include exponential backoff
+* readd proxy support
+
 
 Code structure
 ==============
@@ -40,9 +44,8 @@ Code structure
 * Cleanup AXEL_LEGACY
 * save_setup: Can we flush instead of close?
 * Check chinese man file, correct installation
-* Find out whether chinese manpage should be installed
+* Find out where chinese manpage should be installed
 * Scrap crappy OS workaround? (Test on Windows)
-* axel: new -> init, free -> destroy ?
 
 Bugs
 ====
@@ -53,6 +56,7 @@ Remove all TODOs
 
 Fix/test/simplify i18n regeneration (paths!) (remove .SUFFIXES?)
 Check speed limit
+Check on BSD, Mac OS X, Cygwin
 
 (User) Documentation
 ====================
@@ -91,7 +95,7 @@ Check speed limit
 * A -1 option: Just make one request, and only one.
 * IPv6 support
 * Add AXEL_THREADED option: If not set, don't use threads, but select()
-* OUTPUT_FLAGS option to output all the flag's names in --help or so
+* OUTPUT_FLAGS option to output all set flags' names in --help or so
 * configure options minimal and allfeatures
 
 3.3
@@ -107,24 +111,25 @@ Check speed limit
 * splint
 * Test very large -n values. Check pthread thread stack size.
 * Unicode domain names
-* --shrink / --all-features flags in configure
 * gzip, deflate compression? (optional)
 * Check NOGETOPTLONG definition. Is this really up to date? Can't we test it in an other way than looking at the platform?
 * Check whether we need to test the result of malloc for NULL. Does this significantly increase code size? Can we just call exit(42)?
-* Remove stdio.h, varargs.h and friends from axel.h , add them to text.c if needed
 
 Future/Ideas
 ============
 
+* libaxel?
+* Remove stdio.h, varargs.h and friends from axel.h , add them to text.c if needed?
 * Does open(O_DIRECT) hurt? Do we need it?
-* Could we employ less/even only one thread than -n using select() to get the next available fd
 * Automatically compare different revisions of axel regarding size
 * Read URLs from a file to encourage using passwords
 * Real FTPS (AUTH)?
-* Allow downloading to /dev/null for debugging or speed test purposes (Statefile in memory or so)
+* Allow downloading to /dev/null for debugging or speed test purposes
 * Desktop integration, look who likes download accelerators
 * Check the syscalls we make. Check whether timing and read() calls can be optimized
 * Write automated tests to test all these nifty corner cases. Either a test webserver or LD_PRELOAD injection of all syscalls (see libfake*)
 * Write a helper script that displays the final binary size for different configurations to determine what a particular feature costs
 * Document and implement coding conventions, versioning scheme
 * Revive the GUI?
+* Switch to C++?
+* Check synchronization

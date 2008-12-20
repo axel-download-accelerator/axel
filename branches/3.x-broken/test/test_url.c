@@ -110,14 +110,14 @@ static void test_url_parse_unencoded() {
 		NULL, "filename", NULL
 		);
 	
-	test_url_parse_unencoded_single_long("http://example.org/1/2/3asd?x=y&z=.",
+	test_url_parse_unencoded_single_long("htTp://example.org/1/2/3asd?x=y&z=.",
 		PROTO_HTTP,
 		NULL, NULL,
 		"example.org", 80,
 		"1/2", "3asd", "x=y&z=."
 		);
 	
-	test_url_parse_unencoded_single_long("http://a.x:b@example.org/1/2/3asd?x=y&z=.",
+	test_url_parse_unencoded_single_long("HTTP://a.x:b@example.org/1/2/3asd?x=y&z=.",
 		PROTO_HTTP,
 		"a.x", "b",
 		"example.org", 80,
@@ -132,7 +132,7 @@ static void test_url_parse_unencoded() {
 		);
 	
 	#ifdef FTP
-		test_url_parse_unencoded_single_long("ftp://example.org/1/2/3",
+		test_url_parse_unencoded_single_long("fTp://example.org/1/2/3",
 			PROTO_FTP,
 			NULL, NULL,
 			"example.org", 4223,
