@@ -47,7 +47,7 @@ _Bool axel_addurlstr(axel_t* axel, const char* urlstr, int priority) {
 		url->priority = priority;
 	}
 	
-	urllist_add(& axel->urls, url);
+	urllist_add(axel->urls, url);
 	
 	return 1;
 }
@@ -57,7 +57,7 @@ void axel_init(axel_t* ax, const conf_t* conf) {
 	ax->display_handler = NULL;
 	
 	ax->conf = conf;
-	urllist_init(& ax->urls);
+	urllist_init(ax->urls);
 	
 	ax->conncount = -1;
 	// conn is set once we know conncount
@@ -76,7 +76,7 @@ void axel_init(axel_t* ax, const conf_t* conf) {
 }
 
 void axel_destroy(axel_t* axel) {
-	urllist_destroy(& axel->urls);
+	urllist_destroy(axel->urls);
 	
 	free(axel->filename);
 	free(axel->statefilename);
@@ -122,7 +122,7 @@ static void axel_prepare(axel_t* axel) {
 	
 	
 	if (axel->filename == NULL) {
-		axel->filename = strdup(axel->conf->default_filename);
+		axel->filename = safe_strdup(axel->conf->default_filename);
 	}
 	
 	// TODO Open outfile
@@ -186,36 +186,6 @@ static void axel_update_display(const axel_t* axel) {
 static void axel_set_state(axel_t* axel, int state) {
 	axel->state = state;
 	axel_update_display();
-}
-
-/**
-* Setup a worker thread.
-*/
-// TODO define return value, NULL for delete the URL, otherwise for new value, input for unchanged?
-// TODO define param
-void* axel_thread(void *c) {
-	/* TODO check the following code */
-	conn_t *conn = c;
-	
-	/* Allow this thread to be killed at any time.			*/
-	pthread_setcancelstate( PTHREAD_CANCEL_ENABLE, &oldstate );
-	pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate );
-	
-	if( conn_setup( conn ) )
-	{
-		conn->last_transfer = gettime();
-		if( conn_exec( conn ) )
-		{
-			conn->last_transfer = gettime();
-			conn->enabled = 1;
-			conn->state = 0;
-			return( NULL );
-		}
-	}
-
-	conn_disconnect( conn );
-	
-	return( NULL );
 }
 
 void axel_save_state(axel_t* axel) {

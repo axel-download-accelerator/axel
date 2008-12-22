@@ -147,7 +147,7 @@ url_t* url_parse_unencoded(const char* urlstr) {
 		// Query
 		char* querystart = strchr(request+1, URL_REQUEST_SEPCHAR);
 		if (querystart != NULL) {
-			this->query = strdup(querystart+1);
+			this->query = safe_strdup(querystart+1);
 		}
 		heap_substr_upto(&(res->query), request+1, querystart);
 		

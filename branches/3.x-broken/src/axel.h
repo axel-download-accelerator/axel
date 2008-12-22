@@ -138,7 +138,7 @@ struct axel_struct {
 	void (*display_handler)(const struct axel_struct* axel);
 	
 	const conf_t* conf; // Not owned by this structure
-	urllist_t urls; // Sorted list of URLs to read
+	urllist_t urls[1]; // Sorted list of URLs to read
 	
 	int conncount; // The number of connections, -1 if conn is not yet initialized
 	conn_t** conn; // array of connections, of size conncount. Owned by this struct.
@@ -154,8 +154,7 @@ struct axel_struct {
 	char* statefilename; // Name of the state file, NULL for no state file
 	
 	long long size; // The full file size in Byte, or AXEL_SIZE_UNDETERMINED if the file size is not yet determined or undeterminable
-	long long start_utime; // Start time in microseconds
-	
+	axel_time start_utime; // Start time in microseconds
 	
 	// The download's state, one of the AXEL_STATE_* constants
 	int state;
@@ -168,7 +167,7 @@ typedef struct axel_struct axel_t;
 // Main axel API: The following methods are used by the frontend.
 void axel_init(axel_t* ax, const conf_t *conf);
 _Bool axel_addurlstr(axel_t* axel, const char* urlstr, int priority);
-int axel_download(axel_t* axel);
+axel_state axel_download(axel_t* axel);
 void axel_destroy(axel_t* axel);
 
 // These functions are only called from axel's core

@@ -46,6 +46,7 @@ Code structure
 * Check chinese man file, correct installation
 * Find out where chinese manpage should be installed
 * Scrap crappy OS workaround? (Test on Windows)
+* Figure out how to pass messages
 
 Bugs
 ====

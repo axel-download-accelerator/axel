@@ -3,13 +3,11 @@
 #define min( a, b )		( (a) < (b) ? (a) : (b) )
 #define max( a, b )		( (a) > (b) ? (a) : (b) )
 
-// C99 does not actually include strdup
-#define strdup(str) helper_strdup(str)
-
 void* safe_malloc(size_t size);
 void* safe_realloc(void *ptr, size_t size);
 
 char* helper_strdup(const char* str);
+char* safe_strdup(const char* str);
 const char* strchr_upto(const char* haystack, char needle, const char* upto);
 
 void heap_strcpy(char** destptr, const char* src);
@@ -23,7 +21,8 @@ char hex2byte(char* hexcs);
 
 char* uitoa(unsigned int ui);
 
-long long getutime();
+#define axel_time long long
+axel_time getutime();
 
 #ifdef DEBUG
 	void debug_print(const char* msg);

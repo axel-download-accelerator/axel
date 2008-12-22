@@ -43,7 +43,6 @@ typedef struct {
 	long long lastbyte; // The zero-based index of the last byte we should read. CONNB_UNKWOWN if everything should be read.
 	
 	volatile connstate cstate;
-	char *message;
 	
 	// Must only be read from other modules while cstate == DOWNLOADING
 	int fd;

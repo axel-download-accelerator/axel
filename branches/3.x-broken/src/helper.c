@@ -36,6 +36,22 @@ char* helper_strdup(const char* str) {
 	}
 	
 	size_t len = strlen(str);
+	char* res = malloc(len + 1);
+	if (res == NULL) {
+		return null;
+	}
+	memcpy(res, str, len);
+	res[len] = '\0';
+	
+	return res;
+}
+
+char* safe_strdup(const char* str) {
+	if (str == NULL) {
+		return NULL;
+	}
+	
+	size_t len = strlen(str);
 	char* res = safe_malloc(len + 1);
 	memcpy(res, str, len);
 	res[len] = '\0';
@@ -152,12 +168,12 @@ char* uitoa(unsigned int ui) {
 
 /** time() with more precision
 * @return The current time in us */
-long long getutime() {
+axel_time getutime() {
 	struct timeval time;
 	
 	gettimeofday (&time, NULL);
 	
-	return ( (long long) time->tv_sec * 1000000 + (long long) time->tv_usec);
+	return ( (axel_time) time->tv_sec * 1000000 + (axel_time) time->tv_usec);
 }
 
 #ifdef DEBUG

@@ -35,13 +35,14 @@ void conn_init(conn_t *c, const url_t* url, const conf_t* conf, long long startb
 	c->currentbyte = startbyte;
 	c->endbyte = endbyte;
 	c->cstate = INITIALIZED;
-	c->message = NULL;
 }
 
-void conn_start(conn_t* c) {
+_Bool conn_start(conn_t* c) {
 	if (pthread_create(conn->thread, NULL, conn_threadstart, c) != 0) {
-		// TODO pthread error
+		conn->message = _("Thread creation failed");
+		return false;
 	}
+	
 	
 }
 
@@ -53,7 +54,7 @@ void conn_threadstart(void* conn_void) {
 	if (pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &oldstate) != 0) ||
 		(pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate) != 0)) {
 		
-		conn->message = _("Thread initialization failed");
+		conn->message = safe_strdup("Thread initialization failed");
 		conn->cstate = ERROR;
 		return;
 	}
