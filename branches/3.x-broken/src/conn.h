@@ -23,6 +23,8 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
+#define CONNB_UNKWOWN (-1)
+
 enum connstate {
 	INITIALIZED, // Just initialized
 	REQUESTED, // First byte went out to the network
@@ -32,24 +34,33 @@ enum connstate {
 };
 
 typedef struct {
-	conf_t *conf;
+	const conf_t *conf;
 	
-	url_t* url; /* The URL to download from. Not owned by this struct */
-	proto_t* proto;
+	const url_t* url; /* The URL to download from. Not owned by this struct */
+	proto_t[1] proto;
 	
-	long long currentbyte;
-	long long lastbyte;
+	long long currentbyte; // The index of the byte we're currently reading, starting with zero.
+	long long lastbyte; // The zero-based index of the last byte we should read. CONNB_UNKWOWN if everything should be read.
 	
-	int fd;
-	int enabled;
-	int supported;
-	int last_transfer;
-	
-	connstate cstate;
+	volatile connstate cstate;
 	char *message;
 	
-	pthread_t thread[1];
+	// Must only be read from other modules while cstate == DOWNLOADING
+	int fd;
+	
+	// The following header settings are only set if state in {DOWNLOADING,FINISHED}
+	long long segsize; // Size of the whole segment we're downloading, CONNB_UNKWOWN if unknown
+	_Bool resume_supported; // 1 iff the server we're downloading from allows ranged downloading.
+	
+	// The thread that handles this connection. Only defined while connstate in {INITIALIZED, REQUESTED}
+	pthread_t[1] thread;
 } conn_t;
 
-void conn_init(conn_t *conn, url_t* url, conf_t* conf, long long startbyte, long long endbyte);
-
+void conn_init(conn_t *conn, const url_t* url, const conf_t* conf, long long startbyte, long long endbyte);
+// Start a thread that initiates downloading
+void conn_start(conn_t* conn);
+// Reads all headers, blocks until read. cstate is guaranteed to be either DOWNLOADING or FINISHED afterwards.
+void conn_readheaders(conn_t* conn);
+// Read up to bufsize bytes from this connection into buf. Segmantics are same as for the POSIX read() call.
+ssize_t conn_read(conn_t* conn, char* buf, size_t bufsize);
+void conn_destroy(conn_t* conn);

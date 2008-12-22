@@ -35,7 +35,8 @@ typedef struct {
 	/* TODO include a number of callbacks here, including a free-this-struct one */
 } proto_t;
 
-proto_t* proto_new(int protoid);
+proto_t proto_init(proto_t*, int protoid);
+proto_t proto_destroy(proto_t*);
 
 int proto_defport(int protoid);
 int proto_getid(const char* protostr);

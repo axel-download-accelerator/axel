@@ -15,9 +15,9 @@ Features
 
 * Parse Content-Disposition header (#311101)
  Look if the specific problem mentioned in the bug is fixed by this.
-* Do not rerequest != 20x more than once
+* Do not rerequest HTTP code  != 20x more than once
 * Exponential backoff, exponential backoff, and make sure to include exponential backoff
-* readd proxy support
+* re-add proxy support
 
 
 Code structure

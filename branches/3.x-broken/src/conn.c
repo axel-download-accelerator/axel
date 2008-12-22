@@ -25,8 +25,49 @@
 
 #include "axel.h"
 
-/* TODO Remove this */
-char string[MAX_STRING];
+static void conn_start_threadstart(void* conn);
+
+void conn_init(conn_t *c, const url_t* url, const conf_t* conf, long long startbyte, long long endbyte) {
+	c->conf = conf;
+	c->url = url;
+	
+	proto_init(c->proto, url->protoid);
+	c->currentbyte = startbyte;
+	c->endbyte = endbyte;
+	c->cstate = INITIALIZED;
+	c->message = NULL;
+}
+
+void conn_start(conn_t* c) {
+	if (pthread_create(conn->thread, NULL, conn_threadstart, c) != 0) {
+		// TODO pthread error
+	}
+	
+}
+
+// Entry point for the created thread
+void conn_threadstart(void* conn_void) {
+	conn_t* conn = conn_void;
+	int oldstate; // Dummy
+	
+	if (pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &oldstate) != 0) ||
+		(pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate) != 0)) {
+		
+		conn->message = _("Thread initialization failed");
+		conn->cstate = ERROR;
+		return;
+	}
+	
+	
+}
+
+// Reads all headers, blocks until read. cstate is guaranteed to be either DOWNLOADING or FINISHED afterwards.
+void conn_readheaders(conn_t* conn);
+// Read up to bufsize bytes from this connection into buf. Segmantics are same as for the POSIX read() call.
+ssize_t conn_read(conn_t* conn, char* buf, size_t bufsize);
+void conn_destroy(conn_t* conn);
+
+
 
 /* Convert an URL to a conn_t structure					*/
 int conn_set( conn_t *conn, char *set_url )
