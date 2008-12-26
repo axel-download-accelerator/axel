@@ -43,4 +43,4 @@ int ftp_wait( ftp_t *conn );
 int ftp_command( ftp_t *conn, char *format, ... );
 int ftp_cwd( ftp_t *conn, char *cwd );
 int ftp_data( ftp_t *conn );
-int ftp_size( ftp_t *conn, char *file, int maxredir );
+long long int ftp_size( ftp_t *conn, char *file, int maxredir );
