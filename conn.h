@@ -42,9 +42,9 @@ typedef struct
 	
 	ftp_t ftp[1];
 	http_t http[1];
-	long long size;		/* File size, not 'connection size'..	*/
-	long long currentbyte;
-	long long lastbyte;
+	long long int size;		/* File size, not 'connection size'..	*/
+	long long int currentbyte;
+	long long int lastbyte;
 	int fd;
 	int enabled;
 	int supported;

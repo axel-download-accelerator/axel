@@ -1,6 +1,7 @@
-Version 2.2.1:
+UNRELEASED
 
 - Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
+- Fix LFS support for FTP (Closes: #311320)
 
 Version 2.2:
 
