@@ -261,8 +261,8 @@ void axel_start( axel_t *axel )
 void axel_do( axel_t *axel )
 {
 	fd_set fds[1];
-	int hifd, i, j;
-	long long int size;
+	int hifd, i;
+	long long int remaining,size;
 	struct timeval timeval[1];
 	
 	/* Create statefile if necessary				*/
@@ -340,9 +340,9 @@ void axel_do( axel_t *axel )
 			conn_disconnect( &axel->conn[i] );
 			continue;
 		}
-		/* j == Bytes to go					*/
-		j = axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
-		if( j < size )
+		/* remaining == Bytes to go					*/
+		remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
+		if( remaining < size )
 		{
 			if( axel->conf->verbose )
 			{
@@ -350,7 +350,7 @@ void axel_do( axel_t *axel )
 			}
 			axel->conn[i].enabled = 0;
 			conn_disconnect( &axel->conn[i] );
-			size = j;
+			size = remaining;
 			/* Don't terminate, still stuff to write!	*/
 		}
 		/* This should always succeed..				*/
