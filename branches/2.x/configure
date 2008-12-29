@@ -85,7 +85,7 @@ if [ "$i18n" = "1" ]; then
 	fi;
 fi
 
-echo 'CFLAGS=-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -g' >> Makefile.settings
+echo 'CFLAGS=-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -g -Os' >> Makefile.settings
 if [ "$debug" = "1" ]; then
 	echo 'DEBUG=1' >> Makefile.settings
 	echo '#define DEBUG' >> config.h;
@@ -100,7 +100,9 @@ if [ "$i18n" = "1" ]; then
 	fi;
 fi
 
-if type gcc > /dev/null 2> /dev/null; then
+if [ "${CC}" != "" ]; then
+	echo "CC=${CC}" >> Makefile.settings;
+elif type gcc > /dev/null 2> /dev/null; then
 	echo "CC=gcc" >> Makefile.settings;
 elif type cc > /dev/null 2> /dev/null; then
 	echo "CC=cc" >> Makefile.settings;
