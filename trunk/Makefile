@@ -12,7 +12,7 @@
 .SUFFIXES: .po .mo
 
 # Add your translation here..
-MOFILES = nl.mo de.mo ru.mo
+MOFILES = nl.mo de.mo ru.mo zh_cn.mo
 
 
 all: $(OUTFILE)
@@ -34,9 +34,12 @@ distclean: clean
 install-man:
 	mkdir -p $(DESTDIR)$(MANDIR)/man1/
 	cp axel.1 $(DESTDIR)$(MANDIR)/man1/axel.1
+	mkdir -p $(DESTDIR)$(MANDIR)/zh_CN/
+	cp axel_zh_CN.1 $(DESTDIR)$(MANDIR)/zh_CN/man1/axel.1
 
 uninstall-man:
 	rm -f $(MANDIR)/man1/axel.1
+	rm -f $(MANDIR)/zh_CN/man1/axel.1
 
 install-etc:
 	mkdir -p $(DESTDIR)$(ETCDIR)/
