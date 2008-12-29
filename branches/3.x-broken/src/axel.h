@@ -25,49 +25,15 @@
 
 #include "../cfg/config.h"
 
-#include <time.h>
-#include <ctype.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <stdio.h>
-#include <netdb.h>
-#ifndef	NOGETOPTLONG
-#define _GNU_SOURCE
-#include <getopt.h>
-#endif
-#include <limits.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <string.h>
-#include <stdarg.h>
-#include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <netinet/in_systm.h>
-#include <netinet/in.h>
-#include <netinet/ip.h>
-#include <arpa/inet.h>
-#include <net/if.h>
-#include <pthread.h>
+// Include system libraries
+#include "libs.h"
 
-/* Internationalization							*/
-#ifdef I18N
-#define PACKAGE			"axel"
-#define _( x )			gettext( x )
-#include <libintl.h>
-#include <locale.h>
-#else
-#define _( x )			x
-#endif
-
-/* Compiled-in settings							*/
+// Compiled-in settings
 #define MAX_REDIR		5
 #define AXEL_VERSION_STRING	"3.0_rc1"
 #define DEFAULT_USER_AGENT	"Axel " AXEL_VERSION_STRING " (" ARCH ")"
 #define STATEFILE_SUFFIX ".st"
+#define AXEL_FILESIZE long long int
 
 #include "helper.h"
 #include "url.h"
@@ -79,11 +45,6 @@
 #include "conn.h"
 #include "search.h"
 #include "urllist.h"
-
-// Message relevance
-#define VERBOSITY_VERBOSE 2
-#define VERBOSITY_NORMAL 1
-#define VERBOSITY_QUIET 0
 
 // Emergency error codes
 #define AXEL_EXIT_MALLOC_FAIL 91
@@ -153,14 +114,18 @@ struct axel_struct {
 	
 	char* statefilename; // Name of the state file, NULL for no state file
 	
-	long long size; // The full file size in Byte, or AXEL_SIZE_UNDETERMINED if the file size is not yet determined or undeterminable
-	axel_time start_utime; // Start time in microseconds
+	AXEL_FILESIZE size; // The full file size in Byte, or AXEL_SIZE_UNDETERMINED if the file size is not yet determined or undeterminable
+	AXEL_TIME start_utime; // Start time in microseconds
 	
 	// The download's state, one of the AXEL_STATE_* constants
 	int state;
 	
 	// Time to wait because of speed limit.
 	int delay_time;
+	
+	// Messages
+	message_queue_t msgs[1];
+	pthread_mutex_t msgmtx[1];
 };
 typedef struct axel_struct axel_t;
 
@@ -173,3 +138,4 @@ void axel_destroy(axel_t* axel);
 // These functions are only called from axel's core
 void axel_message(const axel_t* axel, int verbosity, const char* message);
 void axel_message_fmt(const axel_t *axel, int verbosity, const char *format, ... );
+void axel_message_heap(const axel_t* axel, int verbosity, const char* message);

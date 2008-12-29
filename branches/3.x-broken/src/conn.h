@@ -34,13 +34,13 @@ enum connstate {
 };
 
 typedef struct {
-	const conf_t *conf;
+	const axel_t *axel;
 	
 	const url_t* url; /* The URL to download from. Not owned by this struct */
 	proto_t[1] proto;
 	
-	long long currentbyte; // The index of the byte we're currently reading, starting with zero.
-	long long lastbyte; // The zero-based index of the last byte we should read. CONNB_UNKWOWN if everything should be read.
+	AXEL_SIZE currentbyte; // The index of the byte we're currently reading, starting with zero.
+	AXEL_SIZE lastbyte; // The zero-based index of the last byte we should read. CONNB_UNKWOWN if everything should be read.
 	
 	volatile connstate cstate;
 	
@@ -55,7 +55,7 @@ typedef struct {
 	pthread_t[1] thread;
 } conn_t;
 
-void conn_init(conn_t *conn, const url_t* url, const conf_t* conf, long long startbyte, long long endbyte);
+void conn_init(conn_t *conn, const url_t* url, const axel_t* axel, AXEL_SIZE startbyte, AXEL_SIZE endbyte);
 // Start a thread that initiates downloading
 void conn_start(conn_t* conn);
 // Reads all headers, blocks until read. cstate is guaranteed to be either DOWNLOADING or FINISHED afterwards.

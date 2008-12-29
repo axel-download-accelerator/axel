@@ -73,6 +73,9 @@ void axel_init(axel_t* ax, const conf_t* conf) {
 	ax->state = AXEL_STATE_INIT;
 	
 	ax->delay_time = 0;
+	
+	pthread_mutex_init(ax->msgmtx);
+	messageq_init(ax->msgs);
 }
 
 void axel_destroy(axel_t* axel) {
@@ -80,6 +83,9 @@ void axel_destroy(axel_t* axel) {
 	
 	free(axel->filename);
 	free(axel->statefilename);
+	
+	pthread_mutex_destroy(msgmtx);
+	messaq_destroy(ax->msgs);
 }
 
 /**
@@ -139,8 +145,8 @@ static void axel_prepare(axel_t* axel) {
 	axel->start_utime = getutime();
 	axel_set_state(axel, AXEL_STATE_DOWNLOADING);
 	
-	// TODO start threads
 	// TODO set conncount according to conf
+	// TODO start threads
 }
 
 /**
@@ -154,27 +160,44 @@ static void axel_teardown(axel_t* axel) {
 }
 
 /**
+* Send a message from the main thread
 * @param message The message to send. Note that this must be freed by the caller
 */
-void axel_message(const axel_t* axel, int verbosity, const char* message) {
-	if (axel->message_handler != NULL) {
-		axel->message_handler(axel, verbosity, message);
-	}
-	axel_update_display();
+void axel_message(const axel_t* axel, message_t* msg) {
+	message_t* msg = safe_malloc(sizeof(message_t));
+	
+	msg->
+	
+	axel_message(axel, msg);
+}
+
+/**
+* @param message The message, will be freed by this method
+*/
+void axel_message_detail(const axel_t* axel, int verbosity, char* message, _Bool msgOnHeap) {
+	
 }
 
 void axel_message_fmt(const axel_t *axel, int verbosity, const char *format, ...) {
 	const MAX_MSG_SIZE = 1024;
-	char* buf = alloca(MAX_MSG_SIZE);
+	char* buf = malloc(MAX_MSG_SIZE);
 	
 	va_list params;
 	va_start(params, format);
 	vsnprintf(buf, MAX_MSG_SIZE, format, params );
 	va_end(params);
 	
-	axel_message(axel, verbosity, buf);
-	
-	free(buf);
+	axel_message_heap(axel, verbosity, buf);
+}
+
+/**
+* Display a message. Must only be called from the main thread.
+*/
+void axel_message(const axel_t* axel, const axel_message_t* msg) {
+	if (axel->message_handler != NULL) {
+		axel->message_handler(axel, msg->verbosity, msg->message);
+	}
+	axel_update_display();
 }
 
 static void axel_update_display(const axel_t* axel) {
@@ -188,9 +211,6 @@ static void axel_set_state(axel_t* axel, int state) {
 	axel_update_display();
 }
 
-void axel_save_state(axel_t* axel) {
-	// TODO copy stuff from save_state, sanitize
-}
 
 
 

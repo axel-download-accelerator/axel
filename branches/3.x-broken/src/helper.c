@@ -168,12 +168,12 @@ char* uitoa(unsigned int ui) {
 
 /** time() with more precision
 * @return The current time in us */
-axel_time getutime() {
+AXEL_TIME getutime() {
 	struct timeval time;
 	
 	gettimeofday (&time, NULL);
 	
-	return ( (axel_time) time->tv_sec * 1000000 + (axel_time) time->tv_usec);
+	return ( (AXEL_TIME) time->tv_sec * 1000000 + (AXEL_TIME) time->tv_usec);
 }
 
 #ifdef DEBUG
@@ -189,3 +189,4 @@ void debug_printf(const char* format, ...) {
 	va_end(params);
 }
 #endif
+

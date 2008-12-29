@@ -21,8 +21,8 @@ char hex2byte(char* hexcs);
 
 char* uitoa(unsigned int ui);
 
-#define axel_time long long
-axel_time getutime();
+#define AXEL_TIME long long int
+AXEL_TIME getutime();
 
 #ifdef DEBUG
 	void debug_print(const char* msg);

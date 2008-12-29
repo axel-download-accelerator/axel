@@ -27,7 +27,7 @@
 
 static void conn_start_threadstart(void* conn);
 
-void conn_init(conn_t *c, const url_t* url, const conf_t* conf, long long startbyte, long long endbyte) {
+void conn_init(conn_t *c, const url_t* url, const axel_t* axel, AXEL_SIZE startbyte, AXEL_SIZE endbyte) {
 	c->conf = conf;
 	c->url = url;
 	
@@ -37,18 +37,18 @@ void conn_init(conn_t *c, const url_t* url, const conf_t* conf, long long startb
 	c->cstate = INITIALIZED;
 }
 
+// Start a new thread. 
 _Bool conn_start(conn_t* c) {
 	if (pthread_create(conn->thread, NULL, conn_threadstart, c) != 0) {
-		conn->message = _("Thread creation failed");
+		axel_message(conn->axel, _("Thread creation failed"));
 		return false;
 	}
 	
-	
+	return true;
 }
 
 // Entry point for the created thread
 void conn_threadstart(void* conn_void) {
-	conn_t* conn = conn_void;
 	int oldstate; // Dummy
 	
 	if (pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &oldstate) != 0) ||
@@ -59,7 +59,7 @@ void conn_threadstart(void* conn_void) {
 		return;
 	}
 	
-	
+	conn_readheaders((conn_t*) conn_void);
 }
 
 // Reads all headers, blocks until read. cstate is guaranteed to be either DOWNLOADING or FINISHED afterwards.

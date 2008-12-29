@@ -3,7 +3,8 @@ Version 3.0_rc1 (preview release):
 - Complete overhaul of the whole code structure
 - New folder structure: src/ contains all *.c and *.h files, test/ CUnit test files, all compiled files reside in out/, all configured files in cfg/
 - Default protocol is now HTTP
-- if_t, url_t, message_t removed from axel.h (replaced by aptly named types)
+- if_t, url_tremoved from axel.h (replaced by aptly named types)
+- message_t incorporates a priority
 - new url.* files for working with URLs, new url_t representing a URL (from conn.*, http.*)
 - new proto.* files for protocol IDs and protocol detection (from conn.*)
 - new helper.* files for axel-independent helper macros and functions (from axel.h)
@@ -17,6 +18,8 @@ Version 3.0_rc1 (preview release):
 - C99 compatible, gcc checks C99 compatibility level now
 - Removed double usage in favor of a single warning if NOGETOPTLONG is defined
 - Splitted usage text (=> simplifies i18n)
+- Moved includes of standard libraries to libs.h to reduce size of axel.h 
+- Use AXEL_SIZE for all file size variables
 
 - Temporarily thrown out: ftp, search
 
