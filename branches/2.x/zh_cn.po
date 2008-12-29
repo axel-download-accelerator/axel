@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-14 01:00+0530\n"
+"POT-Creation-Date: 2008-12-29 13:55+0100\n"
 "PO-Revision-Date: 2008-11-08 22:40+0700\n"
 "Last-Translator: Shuge Lee <shuge.lee@gmail.com>\n"
-"Last-Revision: Li Jin <punkid.online@gmail.com>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Last-Revision: Li Jin <punkid.online@gmail.com>\n"
 
 #: axel.c:55
 msgid "Buffer resized for this speed."
@@ -20,69 +20,67 @@ msgid "Could not parse URL.\n"
 msgstr "无法解析URL\n"
 
 #: axel.c:126
-#, c-format
-msgid "File size: %i bytes"
+#, fuzzy, c-format
+msgid "File size: %lld bytes"
 msgstr "文件大小: %i 字节"
 
-#: axel.c:142
+#: axel.c:143
 #, c-format
 msgid "Opening output file %s"
 msgstr "打开输出文件 %s"
 
-#: axel.c:151
+#: axel.c:152
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "服务器不支持，开始一个连接。"
 
-#: axel.c:170
-#, c-format
-msgid "State file found: %i bytes downloaded, %i to go."
+#: axel.c:171
+#, fuzzy, c-format
+msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "找到状态文件： %i 字节已下载，继续下载 %i 字节。"
 
-#: axel.c:177
-#: axel.c:189
+#: axel.c:178 axel.c:190
 msgid "Error opening local file"
 msgstr "打开本地文件错误"
 
-#: axel.c:201
+#: axel.c:202
 msgid "Crappy filesystem/OS.. Working around. :-("
-msgstr "糟糕的文件系统或操作系统……Working around……（译注德国写的句子，实在不知道如何翻译……）:-("
+msgstr ""
+"糟糕的文件系统或操作系统……Working around……（译注德国写的句子，实在不知道如何"
+"翻译……）:-("
 
-#: axel.c:234
+#: axel.c:235
 msgid "Starting download"
 msgstr "开始下载"
 
-#: axel.c:240
-#: axel.c:393
+#: axel.c:241 axel.c:398
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "连接 %i 从 %s:%i 通过接口 %s 下载"
 
-#: axel.c:244
-#: axel.c:402
+#: axel.c:245 axel.c:407
 msgid "pthread error!!!"
 msgstr "线程错误！！！"
 
-#: axel.c:312
+#: axel.c:314
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "连接 %i 有错误！ 连接中断"
 
-#: axel.c:326
+#: axel.c:328
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "连接 %i 被异常中断"
 
-#: axel.c:330
-#: axel.c:347
+#: axel.c:332 axel.c:349
 #, c-format
 msgid "Connection %i finished"
 msgstr "连接 %i 结束"
 
-#: axel.c:359
+#: axel.c:361
 msgid "Write error!"
 msgstr "写错误！"
 
-#: axel.c:371
+#: axel.c:373
 #, c-format
 msgid "Connection %i timed out"
 msgstr "连接超时 %i"
@@ -92,19 +90,17 @@ msgstr "连接超时 %i"
 msgid "Error in %s line %i.\n"
 msgstr "%s %i 行有错误。\n"
 
-#: conn.c:345
-#: ftp.c:124
+#: conn.c:349 ftp.c:124
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "太多重定向。\n"
 
-#: conn.c:364
+#: conn.c:368
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "未知 HTTP 错误。\n"
 
-#: ftp.c:35
-#: http.c:60
+#: ftp.c:35 http.c:60
 #, c-format
 msgid "Unable to connect to server %s:%i\n"
 msgstr "不能连接到服务器 %s:%i\n"
@@ -114,8 +110,7 @@ msgstr "不能连接到服务器 %s:%i\n"
 msgid "Can't change directory to %s\n"
 msgstr "不能变更目录到 %s\n"
 
-#: ftp.c:117
-#: ftp.c:177
+#: ftp.c:117 ftp.c:177
 #, c-format
 msgid "File not found.\n"
 msgstr "找不到文件。\n"
@@ -125,8 +120,7 @@ msgstr "找不到文件。\n"
 msgid "Multiple matches for this URL.\n"
 msgstr "这个 URL 有多个匹配。\n"
 
-#: ftp.c:250
-#: ftp.c:256
+#: ftp.c:250 ftp.c:256
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "打开主动数据连接错误。\n"
@@ -136,8 +130,7 @@ msgstr "打开主动数据连接错误。\n"
 msgid "Error writing command %s\n"
 msgstr "写命令出错 %s\n"
 
-#: ftp.c:311
-#: http.c:151
+#: ftp.c:311 http.c:150
 #, c-format
 msgid "Connection gone.\n"
 msgstr "连接继续。\n"
@@ -147,52 +140,52 @@ msgstr "连接继续。\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "代理字符串无效： %s\n"
 
-#: text.c:146
+#: text.c:154
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "stdout 不能重定向到 /dev/null 。\n"
 
-#: text.c:174
+#: text.c:182
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "不能处理长度超过 %d 的URLs\n"
 
-#: text.c:179
+#: text.c:187
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "初始化下载: %s\n"
 
-#: text.c:186
+#: text.c:194
 #, c-format
 msgid "Doing search...\n"
 msgstr "进行搜索中...\n"
 
-#: text.c:190
+#: text.c:198
 #, c-format
 msgid "File not found\n"
 msgstr "文件找不到\n"
 
-#: text.c:194
+#: text.c:202
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "c测试速度，这可能有点费时……\n"
 
-#: text.c:199
+#: text.c:207
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i 可用的服务器没有找到，将使用这些 URLs ：\n"
 
-#: text.c:261
+#: text.c:269
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "没有状态文件，无法恢复！\n"
 
-#: text.c:266
+#: text.c:274
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "找到状态文件，但没有已下载数据。重新开始。\n"
 
-#: text.c:397
+#: text.c:405
 #, c-format
 msgid ""
 "\n"
@@ -201,48 +194,48 @@ msgstr ""
 "\n"
 "%s 已下载，用时 %s。（%.2f 千字节/秒）\n"
 
-#: text.c:419
-#, c-format
-msgid "%i byte"
+#: text.c:427
+#, fuzzy, c-format
+msgid "%lld byte"
 msgstr "%i 字节"
 
-#: text.c:421
-#, c-format
-msgid "%i bytes"
+#: text.c:429
+#, fuzzy, c-format
+msgid "%lld bytes"
 msgstr "%i 字节"
 
-#: text.c:423
+#: text.c:431
 #, c-format
 msgid "%.1f kilobytes"
 msgstr "%.1f 千字节"
 
-#: text.c:425
+#: text.c:433
 #, c-format
 msgid "%.1f megabytes"
 msgstr "%.1f 兆字节"
 
-#: text.c:434
+#: text.c:442
 #, c-format
 msgid "%i second"
 msgstr "%i 秒"
 
-#: text.c:436
+#: text.c:444
 #, c-format
 msgid "%i seconds"
 msgstr "%i 秒"
 
-#: text.c:438
+#: text.c:446
 #, c-format
 msgid "%i:%02i seconds"
 msgstr "%i:%02i 秒"
 
-#: text.c:440
+#: text.c:448
 #, c-format
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i 秒"
 
-#: text.c:515
-#, c-format
+#: text.c:528
+#, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -250,6 +243,8 @@ msgid ""
 "-n x\tSpecify maximum number of connections\n"
 "-o f\tSpecify local output file\n"
 "-S [x]\tSearch for mirrors and download from x servers\n"
+"-H x\tAdd header string\n"
+"-U x\tSet user agent\n"
 "-N\tJust don't use any proxy server\n"
 "-q\tLeave stdout alone\n"
 "-v\tMore status information\n"
@@ -272,10 +267,11 @@ msgstr ""
 "-h\t帮助信息\n"
 "-V\t版本信息\n"
 "\n"
-"请向 shuge.lee@gmail.com 提交翻译错误，请向 http://axel.alioth.debian.org/ 提交程序漏洞\n"
+"请向 shuge.lee@gmail.com 提交翻译错误，请向 http://axel.alioth.debian.org/ 提"
+"交程序漏洞\n"
 
-#: text.c:530
-#, c-format
+#: text.c:545
+#, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -283,6 +279,8 @@ msgid ""
 "--num-connections=x\t-n x\tSpecify maximum number of connections\n"
 "--output=f\t\t-o f\tSpecify local output file\n"
 "--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
+"--header=x\t\t-H x\tAdd header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
 "--no-proxy\t\t-N\tJust don't use any proxy server\n"
 "--quiet\t\t\t-q\tLeave stdout alone\n"
 "--verbose\t\t-v\tMore status information\n"
@@ -305,10 +303,10 @@ msgstr ""
 "--help\t\t\t-h\t帮助信息\n"
 "--version\t\t-V\t版本信息\n"
 "\n"
-"请向 shuge.lee@gmail.com 提交翻译错误，请向 http://axel.alioth.debian.org/ 提交程序漏洞\n"
+"请向 shuge.lee@gmail.com 提交翻译错误，请向 http://axel.alioth.debian.org/ 提"
+"交程序漏洞\n"
 
-#: text.c:549
+#: text.c:566
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel 版本 %s (%s)\n"
-

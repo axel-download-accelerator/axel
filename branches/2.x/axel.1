@@ -79,6 +79,18 @@ and status of the different threads, along with current speed and an
 estimate for the remaining download time.
 
 .TP
+\fB\-\-header=x\fP, \fB\-H\ x\fP
+Add an additional HTTP header. This option should be in the form "Header:
+Value". See RFC 2616 section 4.2 and 14 for details on the format and
+standardized headers.
+
+.TP
+\fB\-\-user-agent=x\fP, \fB\-U\ x\fP
+Set the HTTP user agent to use. Some websites serve different content based upon
+this parameter. The default value will include "Axel", its version and the
+platform.
+
+.TP
 \fB\-\-help\fP, \fB\-h\fP
 A brief summary of all the options.
 
@@ -129,12 +141,7 @@ of the system-wide configuration file might be different.
 Axel is Copyright 2001-2002 Wilmer van der Gaast.
 
 .SH BUGS
-.PP
-I'm sure there are some bugs left somewhere, please tell me about them and
-I will try to fix them.
-
-A known bug is that the program does weird things when downloading using
-hundreds of connections. Well, just don't do that.
+Please report bugs at https://alioth.debian.org/tracker/?group_id=100070&atid=413085.
 
 .SH AUTHORS
 Wilmer van der Gaast. <wilmer@gaast.net>

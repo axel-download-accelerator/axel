@@ -1,4 +1,4 @@
-Version 2.3:
+UNRELEASED
 
 - Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
 - New Chinese translation and manpage, thanks Shuge Lee

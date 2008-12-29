@@ -103,7 +103,6 @@ void http_get( http_t *conn, char *lurl )
 		http_addheader( conn, "GET %s HTTP/1.0", lurl );
 		http_addheader( conn, "Host: %s", conn->host );
 	}
-	http_addheader( conn, "User-Agent: %s", USER_AGENT );
 	if( *conn->auth )
 		http_addheader( conn, "Authorization: Basic %s", conn->auth );
 	if( conn->firstbyte )

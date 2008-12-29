@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-12 17:21+0530\n"
-"PO-Revision-Date: 2007-12-15 15:18GMT\n"
+"POT-Creation-Date: 2008-09-15 19:07+0200\n"
+"PO-Revision-Date: 2008-09-15 22:08+0200\n"
 "Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -88,15 +88,15 @@ msgstr "Time-out bei Verbindung %i"
 msgid "Error in %s line %i.\n"
 msgstr "Fehler in %s Zeile %i.\n"
 
-#: conn.c:348 ftp.c:124
+#: conn.c:349 ftp.c:124
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Zu viele Weiterleitungen (redirects).\n"
 
-#: conn.c:367
+#: conn.c:368
 #, c-format
 msgid "Unknown HTTP error.\n"
-msgstr "Unbekannter HTTP Fehler.\n"
+msgstr "Unbekannter HTTP-Fehler.\n"
 
 #: ftp.c:35 http.c:60
 #, c-format
@@ -128,7 +128,7 @@ msgstr "Fehler beim Öffnen der Passiv-Verbindung.\n"
 msgid "Error writing command %s\n"
 msgstr "Fehler beim Schreiben des Befehls %s\n"
 
-#: ftp.c:311 http.c:151
+#: ftp.c:311 http.c:150
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Verbindung geschlossen.\n"
@@ -138,52 +138,52 @@ msgstr "Verbindung geschlossen.\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "Ungültige Proxy-Angabe: %s\n"
 
-#: text.c:150
+#: text.c:154
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Kann Standardausgabe nicht nach /dev/null umleiten.\n"
 
-#: text.c:178
+#: text.c:182
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "Kann URLs mit mehr als %d Zeichen nicht nutzen\n"
 
-#: text.c:183
+#: text.c:187
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Starte Abruf: %s\n"
 
-#: text.c:190
+#: text.c:194
 #, c-format
 msgid "Doing search...\n"
 msgstr "Suche gestartet...\n"
 
-#: text.c:194
+#: text.c:198
 #, c-format
 msgid "File not found\n"
 msgstr "Datei nicht gefunden\n"
 
-#: text.c:198
+#: text.c:202
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Teste Geschwindigkeiten, das kann etwas dauern...\n"
 
-#: text.c:203
+#: text.c:207
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i benutzbare Server gefunden, werde diese URLs benutzen:\n"
 
-#: text.c:265
+#: text.c:269
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Keine Status-Datei, Fortsetzung nicht möglich!\n"
 
-#: text.c:270
+#: text.c:274
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "Status-Datei gefunden, aber noch nichts übertragen. Neustart.\n"
 
-#: text.c:401
+#: text.c:405
 #, c-format
 msgid ""
 "\n"
@@ -192,48 +192,48 @@ msgstr ""
 "\n"
 "%s abgerufen in %s. (%.2f KB/s)\n"
 
-#: text.c:423
+#: text.c:427
 #, fuzzy, c-format
 msgid "%lld byte"
 msgstr "%i Byte"
 
-#: text.c:425
+#: text.c:429
 #, fuzzy, c-format
 msgid "%lld bytes"
 msgstr "%i Bytes"
 
-#: text.c:427
+#: text.c:431
 #, c-format
 msgid "%.1f kilobytes"
 msgstr "%.1f Kilobytes"
 
-#: text.c:429
+#: text.c:433
 #, c-format
 msgid "%.1f megabytes"
 msgstr "%.1f Megabytes"
 
-#: text.c:438
+#: text.c:442
 #, c-format
 msgid "%i second"
 msgstr "%i Sekunde"
 
-#: text.c:440
+#: text.c:444
 #, c-format
 msgid "%i seconds"
 msgstr "%i Sekunden"
 
-#: text.c:442
+#: text.c:446
 #, c-format
 msgid "%i:%02i seconds"
 msgstr "%i:%02i Sekunden"
 
-#: text.c:444
+#: text.c:448
 #, c-format
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i Sekunden"
 
-#: text.c:524
-#, fuzzy, c-format
+#: text.c:528
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -242,6 +242,7 @@ msgid ""
 "-o f\tSpecify local output file\n"
 "-S [x]\tSearch for mirrors and download from x servers\n"
 "-H x\tAdd header string\n"
+"-U x\tSet user agent\n"
 "-N\tJust don't use any proxy server\n"
 "-q\tLeave stdout alone\n"
 "-v\tMore status information\n"
@@ -257,6 +258,8 @@ msgstr ""
 "-n x\tmaximale gleichzeitige Verbindungen\n"
 "-o f\tlokale Ausgabe-Datei\n"
 "-S [x]\tSuche nach Spiegelservern und Abruf von x Servern\n"
+"-H x\tSende HTTP-Header\n"
+"-U x\tSetze Browser-Kennung"
 "-N\tkeinen Proxy-Server benutzen\n"
 "-q\tkeine Meldungen auf Standard-Ausgabe\n"
 "-v\tzusätzliche Status-Information\n"
@@ -265,8 +268,8 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: text.c:540
-#, fuzzy, c-format
+#: text.c:545
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -275,6 +278,7 @@ msgid ""
 "--output=f\t\t-o f\tSpecify local output file\n"
 "--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
 "--header=x\t\t-H x\tAdd header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
 "--no-proxy\t\t-N\tJust don't use any proxy server\n"
 "--quiet\t\t\t-q\tLeave stdout alone\n"
 "--verbose\t\t-v\tMore status information\n"
@@ -290,6 +294,8 @@ msgstr ""
 "--num-connections=x\t-n x\tmaximale gleichzeitige Verbindungen\n"
 "--output=f\t\t-o f\tlokale Ausgabe-Datei\n"
 "--search=[x]\t\t-S [x]  Suche nach Spiegelservern und Abruf von x Servern\n"
+"--header=x\f\t-H x\tSende HTTP-Header\n"
+"--user-agent=x\f\t-U x\tSetze Browser-Kennung"
 "--no-proxy\t\t-N\tkeinen Proxy-Server benutzen\n"
 "--quiet\t\t\t-q\tkeine Meldungen auf Standard-Ausgabe\n"
 "--verbose\t\t-v\tzusätzliche Status-Information\n"
@@ -298,7 +304,8 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: text.c:560
+#: text.c:566
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"
+
