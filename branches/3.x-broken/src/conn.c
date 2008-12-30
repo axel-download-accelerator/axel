@@ -28,7 +28,7 @@
 static void conn_start_threadstart(void* conn);
 
 void conn_init(conn_t *c, const url_t* url, const axel_t* axel, AXEL_SIZE startbyte, AXEL_SIZE endbyte) {
-	c->conf = conf;
+	c->axel = axel;
 	c->url = url;
 	
 	proto_init(c->proto, url->protoid);
@@ -37,17 +37,7 @@ void conn_init(conn_t *c, const url_t* url, const axel_t* axel, AXEL_SIZE startb
 	c->cstate = INITIALIZED;
 }
 
-// Start a new thread. 
-_Bool conn_start(conn_t* c) {
-	if (pthread_create(conn->thread, NULL, conn_threadstart, c) != 0) {
-		axel_message(conn->axel, _("Thread creation failed"));
-		return false;
-	}
-	
-	return true;
-}
-
-// Entry point for the created thread
+// Entry point for a created thread
 void conn_threadstart(void* conn_void) {
 	int oldstate; // Dummy
 	

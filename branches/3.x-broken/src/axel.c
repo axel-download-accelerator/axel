@@ -30,6 +30,7 @@ static void axel_teardown(axel_t* axel);
 static void axel_save_state(axel_t* axel);
 static void axel_set_state(axel_t* axel, int state);
 static void axel_update_display(const axel_t* axel);
+static void axel_startthread(conn_t* conn);
 
 /**
 * Add a URL. urlstr is a pointer to a string specified by the user
@@ -211,7 +212,15 @@ static void axel_set_state(axel_t* axel, int state) {
 	axel_update_display();
 }
 
-
+// Start a new thread that immediately executes afterwards.
+_Bool axel_startthread(conn_t* c) {
+	if (pthread_create(conn->thread, NULL, conn_threadstart, c) != 0) {
+		axel_message(conn->axel, critical, _("Thread creation failed"));
+		return false;
+	}
+	
+	return true;
+}
 
 
 

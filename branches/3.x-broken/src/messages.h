@@ -17,3 +17,8 @@ struct {
 
 typedef struct message_struct message_t;
 
+
+// These functions are only called from axel's core
+void axel_message(const axel_t* axel, int verbosity, const char* message);
+void axel_message_fmt(const axel_t *axel, int verbosity, const char *format, ... );
+void axel_message_heap(const axel_t* axel, int verbosity, const char* message);

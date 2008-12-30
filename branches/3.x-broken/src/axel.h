@@ -45,6 +45,7 @@
 #include "conn.h"
 #include "search.h"
 #include "urllist.h"
+#include "messages.h"
 
 // Emergency error codes
 #define AXEL_EXIT_MALLOC_FAIL 91
@@ -135,7 +136,4 @@ _Bool axel_addurlstr(axel_t* axel, const char* urlstr, int priority);
 axel_state axel_download(axel_t* axel);
 void axel_destroy(axel_t* axel);
 
-// These functions are only called from axel's core
-void axel_message(const axel_t* axel, int verbosity, const char* message);
-void axel_message_fmt(const axel_t *axel, int verbosity, const char *format, ... );
-void axel_message_heap(const axel_t* axel, int verbosity, const char* message);
+// For other functions called only from axel's core, see messages.h
