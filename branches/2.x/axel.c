@@ -388,7 +388,7 @@ conn_check:
 			if( axel->conn[i].state == 0 )
 			{	
 				// Wait for termination of this thread
-				pthread_join(axel->conn[i].setup_thread, NULL);
+				pthread_join(*(axel->conn[i].setup_thread), NULL);
 				
 				conn_set( &axel->conn[i], axel->url->text );
 				axel->url = axel->url->next;
