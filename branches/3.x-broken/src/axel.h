@@ -86,12 +86,12 @@ struct axel_struct {
 	/** A function that displays messages with the following parameters:
 	
 	axel: A pointer to the calling axel structure
-	verbosity: one of the VERBOSITY_* values
+	rel: Importance of this message, may be used to supress some
 	message: The message to display (already i18ned), will be freed upon returning
 	
 	NULL for no message display
 	*/
-	void (*message_handler)(const struct axel_struct* axel, int verbosity, const char* message);
+	void (*message_handler)(const struct axel_struct* axel, message_relevance rel, const char* message);
 	/**
 	* A handler that displays the current download state.
 	* May be called frequently. Is guaranteed to be called on state changes and messages.
@@ -118,11 +118,7 @@ struct axel_struct {
 	AXEL_FILESIZE size; // The full file size in Byte, or AXEL_SIZE_UNDETERMINED if the file size is not yet determined or undeterminable
 	AXEL_TIME start_utime; // Start time in microseconds
 	
-	// The download's state, one of the AXEL_STATE_* constants
-	int state;
-	
-	// Time to wait because of speed limit.
-	int delay_time;
+	int state; // The download's state, one of the AXEL_STATE_* constants
 	
 	// Messages
 	message_queue_t msgs[1];
@@ -130,10 +126,15 @@ struct axel_struct {
 };
 typedef struct axel_struct axel_t;
 
-// Main axel API: The following methods are used by the frontend.
+// Main axel API: The following methods form the axel API.
 void axel_init(axel_t* ax, const conf_t *conf);
 _Bool axel_addurlstr(axel_t* axel, const char* urlstr, int priority);
 axel_state axel_download(axel_t* axel);
 void axel_destroy(axel_t* axel);
 
-// For other functions called only from axel's core, see messages.h
+// Called from axel's core, but not the main thread
+void axel_message_static(axel_t* axel, message_relevance rel, const char* msgstr);
+void axel_message_heap(axel_t* axel, message_relevance rel, char* msgstr);
+void axel_message_fmt(axel_t *axel, message_relevance rel, const char *format, ... );
+void axel_message(axel_t* axel, message_t* msg);
+

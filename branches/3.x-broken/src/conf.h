@@ -26,17 +26,14 @@
 typedef struct
 {
 	char* default_filename;
-	char* http_proxy; /* 0 for no proxy */
+	char* http_proxy; /* NULL for no proxy */
 	char** no_proxy; /* NULL-terminated list of no-proxy hosts */
-	int strip_cgi_parameters;
 	int save_state_interval;
 	int connection_timeout;
 	int reconnect_delay;
 	int num_connections;
 	int buffer_size;
 	int max_speed;
-	int verbose;
-	int alternate_output;
 	
 	char** interfaces;
 	
@@ -49,6 +46,13 @@ typedef struct
 	char** add_header;
 	
 	char* user_agent; // NULL for default
+	
+	// Interface options
+	int verbose;
+	int alternate_output;
+	
+	// TODO Check those
+	int strip_cgi_parameters;
 } conf_t;
 
 int conf_loadfile( conf_t *conf, char *file );

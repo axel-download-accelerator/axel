@@ -21,12 +21,9 @@ Version 3.0_rc1 (preview release):
 - Moved includes of standard libraries to libs.h to reduce size of axel.h 
 - Use AXEL_SIZE for all file size variables
 
-- Temporarily thrown out: ftp, search
+- Temporarily thrown out: ftp, search, speed limit
 
-Version 2.3:
-
-- Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
-- New Chinese translation and manpage, thanks Shuge Lee
+TODO: COPY CHANGELOG FROM trunk/ here
 
 Version 2.2:
 

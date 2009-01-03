@@ -19,7 +19,6 @@ Features
 * Exponential backoff, exponential backoff, and make sure to include exponential backoff
 * re-add proxy support
 
-
 Code structure
 ==============
 
@@ -56,7 +55,7 @@ Check spaces in FTP and HTTP URLs
 Remove all TODOs
 
 Fix/test/simplify i18n regeneration (paths!) (remove .SUFFIXES?)
-Check speed limit
+Reintroduce speed limit
 Check on BSD, Mac OS X, Cygwin
 
 (User) Documentation

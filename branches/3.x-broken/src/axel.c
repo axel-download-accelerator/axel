@@ -26,11 +26,18 @@
 #include "axel.h"
 
 static void axel_prepare(axel_t* axel);
-static void axel_teardown(axel_t* axel);
-static void axel_save_state(axel_t* axel);
-static void axel_set_state(axel_t* axel, int state);
-static void axel_update_display(const axel_t* axel);
+static void axel_do(axel_t* axel);
+static void axel_openoutfile(axel_t* axel, char* filename);
+
 static void axel_startthread(conn_t* conn);
+
+static void axel_teardown(axel_t* axel);
+
+static void axel_set_state(axel_t* axel, int state);
+static void axel_message_now(const axel_t* axel, const axel_message_t* msg);
+static void axel_update_display(const axel_t* axel);
+
+
 
 /**
 * Add a URL. urlstr is a pointer to a string specified by the user
@@ -98,24 +105,9 @@ void axel_destroy(axel_t* axel) {
 int axel_download(axel_t* axel) {
 	axel_prepare(axel);
 	
-	if (axel->state != AXEL_STATE_DOWNLOADING) {
-		axel_set_state(axel, AXEL_STATE_ERROR);
-		
-		return axel->state;
+	while (axel->state == AXEL_STATE_DOWNLOADING) {
+		axel_do(axel);
 	}
-	
-
-	for (int cid = 0;;cid = (cid < axel->conncount) ? cid + 1 : 0) {
-		// Main loop, visit all connections
-		
-		
-		
-		
-	}
-	
-	
-	// TODO set state to finished if not erred
-	
 	
 	return axel->state;
 }
@@ -127,27 +119,83 @@ static void axel_prepare(axel_t* axel) {
 	// TODO Determine file name
 	// TODO determine file size
 	
-	
-	if (axel->filename == NULL) {
-		axel->filename = safe_strdup(axel->conf->default_filename);
-	}
-	
-	// TODO Open outfile
-	
-	
-	// Determine state file name
-	const size_t SUFFIXLEN = strlen(STATEFILE_SUFFIX);
-	size_t fnlen = strlen(axel->filename);
-	axel->statefilename = malloc(fnlen + SUFFIXLEN + 1);
-	memcpy(axel->statefilename + fnlen, STATEFILE_SUFFIX, SUFFIXLEN);
-	axel->statefilename[fnlen + SUFFIXLEN + SUFFIXLEN] = '\0';
-	
 	// Start counting time
 	axel->start_utime = getutime();
 	axel_set_state(axel, AXEL_STATE_DOWNLOADING);
 	
 	// TODO set conncount according to conf
-	// TODO start threads
+}
+
+// An iteration of axel's main loop
+void axel_do(axel_t* axel) {
+	fd_set fds[1];
+	
+	// Assemble possibly ready descriptors
+	FD_ZERO(fds);
+	int hifd = 0;
+	for (i = 0;i < axel->conf->num_connections;i++) {
+		if (axel->conn[i].cstate == downloading) {
+			FD_SET(axel->conn[i].fd, fds);
+		}
+		
+		hifd = max(hifd, axel->conn[i].fd);
+	}
+	
+	if (hifd == 0) { // No connections yet.
+		usleep (100000);
+		goto conn_check;
+	} else {
+		// TODO check this
+		
+		timeval->tv_sec = 0;
+		timeval->tv_usec = 100000;
+		
+		/* A select() error probably means it was interrupted
+		   by a signal, or that something else's very wrong...	*/
+		if (select(hifd + 1, fds, NULL, NULL, timeval) == -1) {
+			axel_message_now(axel, critical, "select() call failed.");
+			axel_set_state(axel, AXEL_STATE_ERROR);
+			return;
+		}
+	}
+	
+	// Read and write data
+	for (int cid = 0;;cid = (cid < axel->conncount) ? cid + 1 : 0) {
+		if ((axel->conn[cid].state == downloading) && FD_ISSET(axel->conn[cid])) {
+			
+			
+			
+		}
+	}
+	
+	// TODO Write to statefile if necessary
+	
+	
+	// TODO set state to finished if not erred
+}
+
+static void axel_openoutfile(axel_t* axel, char* filename) {
+	if (filename == NULL) {
+		filename = safe_strdup(axel->conf->default_filename);
+	}
+	axel->filename = filename;
+	
+	// TODO Open outfile
+	
+	
+	// TODO check whether to create statefile
+	
+	if (axel->statefilename == NULL) { // Determine state file name
+		const size_t SUFFIXLEN = strlen(STATEFILE_SUFFIX);
+		size_t fnlen = strlen(filename);
+		axel->statefilename = safe_malloc(fnlen + SUFFIXLEN + 1);
+		memcpy(axel->statefilename, filename, fnlen);
+		memcpy(axel->statefilename + fnlen, STATEFILE_SUFFIX, SUFFIXLEN);
+		axel->statefilename[fnlen + SUFFIXLEN + SUFFIXLEN] = '\0';
+	}
+	
+	// TODO open state file
+	
 }
 
 /**
@@ -158,47 +206,6 @@ static void axel_teardown(axel_t* axel) {
 	
 	
 	// TODO Close outfile
-}
-
-/**
-* Send a message from the main thread
-* @param message The message to send. Note that this must be freed by the caller
-*/
-void axel_message(const axel_t* axel, message_t* msg) {
-	message_t* msg = safe_malloc(sizeof(message_t));
-	
-	msg->
-	
-	axel_message(axel, msg);
-}
-
-/**
-* @param message The message, will be freed by this method
-*/
-void axel_message_detail(const axel_t* axel, int verbosity, char* message, _Bool msgOnHeap) {
-	
-}
-
-void axel_message_fmt(const axel_t *axel, int verbosity, const char *format, ...) {
-	const MAX_MSG_SIZE = 1024;
-	char* buf = malloc(MAX_MSG_SIZE);
-	
-	va_list params;
-	va_start(params, format);
-	vsnprintf(buf, MAX_MSG_SIZE, format, params );
-	va_end(params);
-	
-	axel_message_heap(axel, verbosity, buf);
-}
-
-/**
-* Display a message. Must only be called from the main thread.
-*/
-void axel_message(const axel_t* axel, const axel_message_t* msg) {
-	if (axel->message_handler != NULL) {
-		axel->message_handler(axel, msg->verbosity, msg->message);
-	}
-	axel_update_display();
 }
 
 static void axel_update_display(const axel_t* axel) {
@@ -215,7 +222,7 @@ static void axel_set_state(axel_t* axel, int state) {
 // Start a new thread that immediately executes afterwards.
 _Bool axel_startthread(conn_t* c) {
 	if (pthread_create(conn->thread, NULL, conn_threadstart, c) != 0) {
-		axel_message(conn->axel, critical, _("Thread creation failed"));
+		axel_message_now(conn->axel, critical, _("Thread creation failed"));
 		return false;
 	}
 	
@@ -223,6 +230,76 @@ _Bool axel_startthread(conn_t* c) {
 }
 
 
+
+
+/* Messages */
+
+void axel_message_static(axel_t* axel, message_relevance rel, const char* msgstr) {
+	axel_message(axel, message_new_safe(rel, msgstr, false));
+}
+
+void axel_message_heap(axel_t* axel, message_relevance rel, char* msgstr) {
+	axel_message(axel, message_new_safe(rel, msgstr, true));
+}
+
+void axel_message_fmt(axel_t *axel, message_relevance rel, const char *format, ...) {
+	const MAX_MSG_SIZE = 1024;
+	char* buf = malloc(MAX_MSG_SIZE);
+	
+	va_list params;
+	va_start(params, format);
+	vsnprintf(buf, MAX_MSG_SIZE, format, params );
+	va_end(params);
+	
+	axel_message_heap(axel, verbosity, buf);
+}
+
+// Send a message from any thread
+void axel_message(axel_t* axel, message_t* msg) {
+	// We don't want to be interrupted
+	int oldstate;
+	pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &oldstate);
+	
+	{
+		pthread_mutex_lock(axel->msgmtx);
+		
+		msgq_enqueue(axel->msgs, msg);
+		
+		pthread_mutex_unlock(axel->msgmtx);
+	}
+	
+	pthread_setcancelstate(oldstate, NULL);
+}
+
+void axel_print_messages(const axel_t* axel) {
+	message_t* msg;
+	while (1) {
+		pthread_mutex_lock(axel->msgmtx);
+		
+		msg = msgq_dequeue(axel->msgs);
+		
+		pthread_mutex_unlock(axel->msgmtx);
+		
+		// Got all messages
+		if (msg == NULL) {
+			break;
+		}
+		
+		axel_message_now(axel, msg->rel, msg->str);
+		
+		message_free(msg);
+	}
+}
+
+/**
+* Display a message. Must only be called from the main thread.
+*/
+void axel_message_now(const axel_t* axel, message_relevance rel, const char* msg) {
+	if (axel->message_handler != NULL) {
+		axel->message_handler(axel, rel, msg);
+	}
+	axel_update_display();
+}
 
 
 

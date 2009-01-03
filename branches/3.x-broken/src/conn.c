@@ -39,17 +39,18 @@ void conn_init(conn_t *c, const url_t* url, const axel_t* axel, AXEL_SIZE startb
 
 // Entry point for a created thread
 void conn_threadstart(void* conn_void) {
+	conn_t* conn = conn_void;
 	int oldstate; // Dummy
 	
 	if (pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &oldstate) != 0) ||
 		(pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate) != 0)) {
 		
-		conn->message = safe_strdup("Thread initialization failed");
+		axel_message_static(conn->axel, "Thread initialization failed");
 		conn->cstate = ERROR;
 		return;
 	}
 	
-	conn_readheaders((conn_t*) conn_void);
+	conn_readheaders(conn);
 }
 
 // Reads all headers, blocks until read. cstate is guaranteed to be either DOWNLOADING or FINISHED afterwards.
