@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-15 19:07+0200\n"
+"POT-Creation-Date: 2009-01-05 11:14+0530\n"
 "PO-Revision-Date: 2008-09-15 22:08+0200\n"
 "Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -50,12 +50,12 @@ msgstr "Schlechtes Datei-/Betriebssystem, Umgehung.."
 msgid "Starting download"
 msgstr "Starte Abruf"
 
-#: axel.c:241 axel.c:395
+#: axel.c:241 axel.c:398
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbindung %i: Abruf von %s:%i über Schnittstelle %s"
 
-#: axel.c:245 axel.c:404
+#: axel.c:245 axel.c:407
 msgid "pthread error!!!"
 msgstr "pthread Fehler!!!"
 
@@ -259,7 +259,7 @@ msgstr ""
 "-o f\tlokale Ausgabe-Datei\n"
 "-S [x]\tSuche nach Spiegelservern und Abruf von x Servern\n"
 "-H x\tSende HTTP-Header\n"
-"-U x\tSetze Browser-Kennung"
+"-U x\tSetze Browser-Kennung\n"
 "-N\tkeinen Proxy-Server benutzen\n"
 "-q\tkeine Meldungen auf Standard-Ausgabe\n"
 "-v\tzusätzliche Status-Information\n"
@@ -295,7 +295,7 @@ msgstr ""
 "--output=f\t\t-o f\tlokale Ausgabe-Datei\n"
 "--search=[x]\t\t-S [x]  Suche nach Spiegelservern und Abruf von x Servern\n"
 "--header=x\f\t-H x\tSende HTTP-Header\n"
-"--user-agent=x\f\t-U x\tSetze Browser-Kennung"
+"--user-agent=x\f\t-U x\tSetze Browser-Kennung\n"
 "--no-proxy\t\t-N\tkeinen Proxy-Server benutzen\n"
 "--quiet\t\t\t-q\tkeine Meldungen auf Standard-Ausgabe\n"
 "--verbose\t\t-v\tzusätzliche Status-Information\n"
@@ -308,4 +308,3 @@ msgstr ""
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"
-
