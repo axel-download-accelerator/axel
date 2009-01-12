@@ -261,8 +261,8 @@ void axel_start( axel_t *axel )
 void axel_do( axel_t *axel )
 {
 	fd_set fds[1];
-	int hifd, i;
-	long long int remaining,size;
+	int hifd, i, j;
+	long long int size;
 	struct timeval timeval[1];
 	
 	/* Create statefile if necessary				*/
@@ -340,9 +340,9 @@ void axel_do( axel_t *axel )
 			conn_disconnect( &axel->conn[i] );
 			continue;
 		}
-		/* remaining == Bytes to go					*/
-		remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
-		if( remaining < size )
+		/* j == Bytes to go					*/
+		j = axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
+		if( j < size )
 		{
 			if( axel->conf->verbose )
 			{
@@ -350,7 +350,7 @@ void axel_do( axel_t *axel )
 			}
 			axel->conn[i].enabled = 0;
 			conn_disconnect( &axel->conn[i] );
-			size = remaining;
+			size = j;
 			/* Don't terminate, still stuff to write!	*/
 		}
 		/* This should always succeed..				*/
@@ -386,10 +386,7 @@ conn_check:
 		if( !axel->conn[i].enabled && axel->conn[i].currentbyte < axel->conn[i].lastbyte )
 		{
 			if( axel->conn[i].state == 0 )
-			{	
-				// Wait for termination of this thread
-				pthread_join(*(axel->conn[i].setup_thread), NULL);
-				
+			{
 				conn_set( &axel->conn[i], axel->url->text );
 				axel->url = axel->url->next;
 				/* axel->conn[i].local_if = axel->conf->interfaces->text;
