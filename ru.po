@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-15 19:07+0200\n"
+"POT-Creation-Date: 2009-01-05 11:15+0530\n"
 "Last-Translator: newhren <colimit@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -49,12 +49,12 @@ msgstr ""
 msgid "Starting download"
 msgstr "Начинаем скачивание"
 
-#: axel.c:241 axel.c:395
+#: axel.c:241 axel.c:398
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Соединение %i скачивает с %s:%i через интерфейс %s"
 
-#: axel.c:245 axel.c:404
+#: axel.c:245 axel.c:407
 msgid "pthread error!!!"
 msgstr "ошибка pthread!!!"
 

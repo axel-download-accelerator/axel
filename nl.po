@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-15 19:07+0200\n"
+"POT-Creation-Date: 2009-01-05 11:14+0530\n"
 "PO-Revision-Date: 2001-11-14 15:22+0200\n"
 "Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -49,12 +49,12 @@ msgstr "Niet-fatale fout in OS/bestandssysteem, omheen werken.."
 msgid "Starting download"
 msgstr "Begin download"
 
-#: axel.c:241 axel.c:395
+#: axel.c:241 axel.c:398
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbinding %i gebruikt server %s:%i via interface %s"
 
-#: axel.c:245 axel.c:404
+#: axel.c:245 axel.c:407
 msgid "pthread error!!!"
 msgstr "pthread fout!!!"
 
