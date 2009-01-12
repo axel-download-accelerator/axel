@@ -12,7 +12,7 @@
 .SUFFIXES: .po .mo
 
 # Add your translation here..
-MOFILES = nl.mo de.mo ru.mo zh_cn.mo
+MOFILES = nl.mo de.mo ru.mo
 
 
 all: $(OUTFILE)
@@ -29,17 +29,14 @@ clean:
 	rm -f *.o $(OUTFILE) search core *.mo
 
 distclean: clean
-	rm -f Makefile.settings config.h axel-*.tar axel-*.tar.gz axel-*.tar.bz2
+	rm -f Makefile.settings config.h
 
 install-man:
 	mkdir -p $(DESTDIR)$(MANDIR)/man1/
 	cp axel.1 $(DESTDIR)$(MANDIR)/man1/axel.1
-	mkdir -p $(DESTDIR)$(MANDIR)/zh_CN/
-	cp axel_zh_CN.1 $(DESTDIR)$(MANDIR)/zh_CN/man1/axel.1
 
 uninstall-man:
 	rm -f $(MANDIR)/man1/axel.1
-	rm -f $(MANDIR)/zh_CN/man1/axel.1
 
 install-etc:
 	mkdir -p $(DESTDIR)$(ETCDIR)/
@@ -51,7 +48,7 @@ uninstall-etc:
 ### MAIN PROGRAM
 
 $(OUTFILE): axel.o conf.o conn.o ftp.o http.o search.o tcp.o text.o
-	$(CC) *.o -o $(OUTFILE) $(LFLAGS)
+	$(CC) axel.o conf.o conn.o ftp.o http.o search.o tcp.o text.o -o $(OUTFILE) $(LFLAGS)
 ifndef DEBUG
 	-$(STRIP) $(OUTFILE)
 endif
@@ -66,11 +63,10 @@ install-bin:
 uninstall-bin:
 	rm -f $(BINDIR)/$(OUTFILE)
 
-tar:
-	version=$$(sed -n 's/#define AXEL_VERSION_STRING[ \t]*"\([^"]*\)"/\1/p' < axel.h) && \
-	tar --create --transform "s#^#axel-$${version}/#" "--file=axel-$${version}.tar" --exclude-vcs -- *.c *.h *.po configure Makefile axel.1 axelrc.example axel.spec gui API CHANGES COPYING CREDITS README && \
-	gzip --best < "axel-$${version}.tar" > "axel-$${version}.tar.gz" && \
-	bzip2 --best < "axel-$${version}.tar" > "axel-$${version}.tar.bz2"
+tar: distclean
+	x=`pwd | sed -e 's/\/.*\///'`; \
+	cd ..; \
+	tar czf $$x.tar.gz $$x
 
 
 ### I18N FILES

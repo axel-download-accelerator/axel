@@ -1,14 +1,3 @@
-UNRELEASED
-
-- Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
-- New Chinese translation and manpage, thanks Shuge Lee
-- Fix LFS support for FTP (Closes: #311320)
-- Fix LFS support (Closes: #311324), thanks Rodrigue Le Bayon
-
-Version 2.2:
-
-- Fix a buffer overflow in http.c:http_encode.
-
 Version 2.1:
 
 - Fix version string.  2.0 still reported 1.1, thanks Ajay R Ramjatan
