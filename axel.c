@@ -238,8 +238,12 @@ void axel_start( axel_t *axel )
 	if( axel->conn[i].currentbyte <= axel->conn[i].lastbyte )
 	{
 		if( axel->conf->verbose >= 2 )
+		{
 			axel_message( axel, _("Connection %i downloading from %s:%i using interface %s"),
 		        	      i, axel->conn[i].host, axel->conn[i].port, axel->conn[i].local_if );
+		}
+		
+		axel->conn[i].state = 1;
 		if( pthread_create( axel->conn[i].setup_thread, NULL, setup_thread, &axel->conn[i] ) != 0 )
 		{
 			axel_message( axel, _("pthread error!!!") );
@@ -248,7 +252,6 @@ void axel_start( axel_t *axel )
 		else
 		{
 			axel->conn[i].last_transfer = gettime();
-			axel->conn[i].state = 1;
 		}
 	}
 	
@@ -397,9 +400,10 @@ conn_check:
 				if( axel->conf->verbose >= 2 )
 					axel_message( axel, _("Connection %i downloading from %s:%i using interface %s"),
 				        	      i, axel->conn[i].host, axel->conn[i].port, axel->conn[i].local_if );
+				
+				axel->conn[i].state = 1;
 				if( pthread_create( axel->conn[i].setup_thread, NULL, setup_thread, &axel->conn[i] ) == 0 )
 				{
-					axel->conn[i].state = 1;
 					axel->conn[i].last_transfer = gettime();
 				}
 				else
