@@ -1,3 +1,7 @@
+UNRELEASED:
+
+- Fix thread hangups due to incorrect synchronization (Closes: #311469), thanks Yao Shi
+
 Version 2.3
 
 - Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
