@@ -1,6 +1,7 @@
 UNRELEASED:
 
 - Fix thread hangups due to incorrect synchronization (Closes: #311469), thanks Yao Shi
+- Fix size limits when copying strings (Closes: #311569), thanks Michael Schwendt and the Fedora project members
 
 Version 2.3
 
