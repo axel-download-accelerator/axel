@@ -55,6 +55,7 @@ Code structure
 * Remove all logic from text.c
 * Ensure correct synchronization of thread state (volatile?)
 * Cleanup AXEL_LEGACY
+* rewrite axel-kapt to be sane (probably sh, or even #!/usr/bin/env kaptain suffices) or remove it in favor of a sane GUI
 
 Bugs
 ====
