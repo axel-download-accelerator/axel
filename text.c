@@ -272,7 +272,7 @@ int main( int argc, char *argv[] )
 				
 				fn[fnlen] = '/';
 				memcpy(fn+fnlen+1, axel->filename, axelfnlen);
-				fn[fnlen + 1 + axelfnlen + 1] = '\0';
+				fn[fnlen + 1 + axelfnlen] = '\0';
 			}
 		}
 		sprintf( string, "%s.st", fn );
