@@ -8,7 +8,7 @@
 
 prefix='/usr/local'
 bindir='$prefix/bin'
-etcdir='$prefix/etc'
+etcdir='/etc'
 mandir='$prefix/share/man'
 locale='$prefix/share/locale'
 
