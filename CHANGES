@@ -1,7 +1,12 @@
 UNRELEASED:
 
+Version 2.4
+
+- Fix a buffer overflow caused by wrong size limits  when copying strings (Closes: #311569), thanks Michael Schwendt and the Fedora project members
 - Fix thread hangups due to incorrect synchronization (Closes: #311469), thanks Yao Shi
-- Fix size limits when copying strings (Closes: #311569), thanks Michael Schwendt and the Fedora project members
+- Removed Fedora packaging file. axel will be available in the Fedora repositories soon.
+- Use /etc/ instead of /usr/local/etc as the default system-wide configuration location.
+- Respect environment CFLAGS in configure.
 
 Version 2.3
 
