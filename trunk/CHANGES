@@ -7,6 +7,7 @@ Version 2.4
 - Removed Fedora packaging file. axel will be available in the Fedora repositories soon.
 - Use /etc/ instead of /usr/local/etc as the default system-wide configuration location.
 - Respect environment CFLAGS in configure.
+- Allow special characters in arguments to configure.
 
 Version 2.3
 
