@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Axel
+GenericName=Axel Front-end
+Comment=Front-end for Axel - a light download accelerator
+Type=Application
+Exec=axel-kapt %f
+MimeType=text/html;
+Icon=connect_creating
+Terminal=false
+X-KDE-SubstituteUID=false
+Categories=Network;FileTransfer;KDE;

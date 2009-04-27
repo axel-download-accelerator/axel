@@ -1,0 +1,82 @@
+#!/usr/bin/env python 
+# Copyright 2001 by Paul Evans
+# Sat Oct 20 01:15:11 2001 Paul Evans <pevans@users.sf.net>
+# v 0.3
+# This grammar is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License,
+# or (at your option) any later version. 
+
+# This grammar is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details. 
+
+# You should have a copy of the GNU General Public License.
+# Probably you have *many* of them...
+# If not, write to the Free Software Foundation,
+# Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# 
+
+# To use this grammar you need Kaptain. The primary web site for
+# Kaptain is http://kaptain.sourceforge.net. You can download the
+# latest version, documentation and other Kaptain grammars there. 
+# 
+# You may need to specify the location of your kaptain binary.
+
+
+import sys, os, string
+
+a = '''
+start :framed "Axel-Kapt  Download Accelerator" -> info url config local buttons filler;
+
+info :horizontal -> txt ico;
+    txt -> @text(x%axel -V%);
+    ico -> @icon("connect_creating.png");
+
+url "Url (you can add mirrors)" -> @string()="'''
+
+
+
+b = '''";
+config :horizontal "OPTIONS" -> checks term max connex search;
+    checks  :horizontal -> proxy verb quiet;
+        proxy "No Proxy" -> @|" -N ";
+        verb "Verbose" -> @|" --verbose ";
+        quiet "Quiet" -> @|" -q ";
+
+    term "Terminal Type" -> @string()="xterm";
+    max "Max bps"-> @integer()=0;
+    connex :horizontal "Connections" -> @integer()=4;
+    search :framed "ftp Search" -> numsites | ! @ ;
+        numsites -> " --search=" @integer()=3;
+
+
+local -> file | ! @ ;
+    file "Save as (optional). Choose a directory and type a filename..." -> " --output=" @directory();
+
+buttons :horizontal "Actions" -> help mail doit quit;
+    help -> @preview(helpstr,"Close")="Help";
+    mail -> @preview(bug,"Close")="Bug Report";
+    doit -> @exec(axel)="Start";
+    #doit -> @echo(axel)="Start";
+    quit -> @close="Exit";
+
+filler -> @fill(); #sometimes the bottom is obscured..
+                   #not just in kaptain. Some other qt apps too
+
+helpstr -> "Axel is a program that downloads a file from a FTP or HTTP \
+server through multiple connection, each connection downloads its own \
+part of the file.  Read the manual page - axel(1) for various options";
+
+bug -> "Please visit http://axel.alioth.debian.org/ to report bugs on axel-kapt";
+
+axel -> term " -e axel -s " max " -n "connex proxy verb quiet search " " local " " url;
+'''
+try:
+    c = string.join(sys.argv[1:])
+except:
+    c = ""
+
+cmd = "echo '" + a + "'" + c + "'" + b + "'" + " | kaptain" 
+os.system(cmd)

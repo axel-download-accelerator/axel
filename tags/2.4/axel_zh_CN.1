@@ -1,0 +1,139 @@
+.\"
+.\" Axel 手册页
+.\"
+.\" 起源于一本由Richard Stone和Neil Matthew写的、名为《Linux程序设计》的书的手册页样本。
+.\"
+.\" 翻译于08-10-17
+.\" 校对于08-11-11
+.\"
+.TH AXEL 1
+
+
+.SH 名称
+\fBAxel\fP \- Linux 下轻量的下载加速器。
+
+.SH 总览
+.B axel
+[\fI选项\fP] \fIurl1\fP [\fIurl2\fP] [\fIurl...\fP]
+
+.SH 描述
+Axel\ 是一个通过多个连接从一个\ HTTP\ 或\ FTP\ 服务器下载文件的程序，每个连接下载文件的一部分。
+
+跟其它程序不一样，\ Axel\ 会使用单一线程直接下载所有数据到目标文件。
+这样正好可以节省时间，因为程序没有必要如锁链般连接到所有要下载的部分。
+
+.SH 选项
+.PP
+必需要有一个参数--您想下载的文件的\ URL\ 。\
+当从\ FTP\ 下载，文件名可能包含通配符，程序会尝试解析完整的文件名。
+也可以指定多个\ URL\ ，程序将会通过那些地址下载。\
+请注意，程序不会检查文件是否相同。
+
+.PP
+其它选项：
+
+.TP
+\fB\-\-max\-speed=x\fP, \fB\-s\ x\fP
+您可以在这里指定一个速率（每秒字节，B/s），\ Axel\ 将会尝试保持平均速率在这个速率附近。\
+它很有用──如果您不想程序吃掉您所有的带宽。
+
+.TP
+\fB\-\-num\-connections=x\fP, \fB\-n\ x\fP
+您可以在这里指定一个最终连接数。
+
+.TP
+\fB\-\-output=x\fP, \fB\-o\ x\fP
+下载的数据将会被保存为一个跟\ URL\ 地址文件名同名的本地文件，\
+除非您使用这个选项指定使用一个不一样的名字。
+您也可以指定一个目录，程序将会追加文件名。
+
+.TP
+\fB\-\-search[=x]\fP, \fB-S[x]\fP
+Axel\ 能使用\ filesearching.com\ 搜索引擎，对镜像执行搜索。您使用这个选项它才会这么做。
+您也可以指定应该使用多少个不同的镜像来下载。
+
+对镜像搜索非常耗时，因为程序会测试每个服务器的速率，与及文件是否仍然有效。
+
+.TP
+\fB\-\-no\-proxy\fP, \fB\-N\fP
+不使用代理服务器下载文件。当然，当一个透明代理是有效时，这是不可能的。
+
+.TP
+\fB\-\-verbose\fP
+如果您想看到更多的状态信息，您可以使用这个选项。如果您想看到更多，就使用它多几次。
+
+.TP
+\fB\-\-quiet\fP, \fB-q\fP
+不输出到标准输出（stdout）。
+
+.TP
+\fB\-\-alternate\fP, \fB-a\fP
+这将会显示一个文本进度指示器。一个显示不同线程进度和状态，当前速率和评估剩余下载时间的棒形图。
+
+.TP
+\fB\-\-help\fP, \fB\-h\fP
+一个对所有选项的简洁摘要。
+
+.TP
+\fB\-\-version\fP, \fB\-V\fP
+获取版本信息。
+
+.SH 注意
+如果您的平台识别\ getopt_lang\ 调用，长（两杠破折号）选项才会被支持。\
+否则（像\ *BSD\ ），只能使用短选项。
+
+.SH 返回值
+当下载成功，程序返回0，如果真的出错返回1，如果下载被中断返回2，如果返回其它，它肯定是一个臭虫……
+
+.SH 例子
+.nf
+axel\ ftp://ftp.{be,nl,uk,de}.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
+.fi
+
+它将会使用\ Belgian\ 、\ Dutch\ 、\ English\ 和\ German\ 的\ kenel.org\ 镜像下载\ Linux\ 2.4.17\ kernel\ 映象。
+
+.nf
+axel\ \-S4\ ftp://ftp.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
+.fi
+
+它将会在\ filesearching.com\ 搜索\ linux-2.4.17.tar.bz2\ 文件，\
+然后从四个(如果可能的话)最快的镜像中下载（可能包括\ ftp.kernel.org\ ）。
+
+（当然，这个命令是一个独立行，但他们太长而不能在这个页面内显示为一行。）
+
+让\ Gentoo\ GNU/Linux\ 的\ Portage\ 软件包管理器调用\ Axel\ 来下载，把下面的命令添加进\ /etc/make.conf\ 。
+
+.nf
+FETCHCOMMAND='/usr/bin/axel -a -o "${DISTDIR}/${FILE}.axel" "${URI}" && mv "${DISTDIR}/${FILE}.axel" "${DISTDIR}/${FILE}"'
+RESUMECOMMAND="${FETCHCOMMAND}"
+.fi
+
+
+.SH 文件
+.PP
+\fI/etc/axelrc\fP 系统全局配置文件
+.PP
+\fI~/.axelrc\fP 个人配置文件
+.PP
+这些文件正文不会在一个手册页内显示，但我希望跟程序一起安装的样本文件包含足够的信息。
+配置文件在不同系统的位置可能不一样。
+
+.SH 版权
+Axel is Copyright 2001-2002 Wilmer van der Gaast.
+
+.SH 臭虫
+.PP
+我坚信在某些地方仍然会有臭虫，请告诉我，我会尝试修复它们。
+
+已知臭虫是当使用上百个连接下载时，程序会发生异常。您应该避免它。
+
+.SH 作者
+Wilmer van der Gaast. <wilmer@gaast.net>
+
+.SH 翻译
+蠡\ Shuge\ Lee\ <shuge.lee@gmail.com>
+
+.SH 校对
+李进\ Li\ Jin\ <punkid.online@gmail.com>
+
+.\" 最后更新09-02-06

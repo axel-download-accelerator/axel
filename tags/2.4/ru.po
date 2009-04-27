@@ -1,0 +1,319 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Axel\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-04-27 13:21+0530\n"
+"Last-Translator: newhren <colimit@gmail.com>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: axel.c:55
+msgid "Buffer resized for this speed."
+msgstr "Размер буфера изменен для этой скорости."
+
+#: axel.c:91
+msgid "Could not parse URL.\n"
+msgstr "Невозможно обработать URL.\n"
+
+#: axel.c:126
+#, c-format
+msgid "File size: %lld bytes"
+msgstr "Размер файла: %lld байта(ов)"
+
+#: axel.c:143
+#, c-format
+msgid "Opening output file %s"
+msgstr "Открывается выходной файл %s"
+
+#: axel.c:152
+msgid "Server unsupported, starting from scratch with one connection."
+msgstr "Сервер не поддерживается, начинаем заново с одним соединением."
+
+#: axel.c:171
+#, c-format
+msgid "State file found: %lld bytes downloaded, %lld to go."
+msgstr "Найден файл состояния: %lld байта(ов) скачано, %lld осталось."
+
+#: axel.c:178 axel.c:190
+msgid "Error opening local file"
+msgstr "Ошибка при открытии локального файла"
+
+#: axel.c:202
+msgid "Crappy filesystem/OS.. Working around. :-("
+msgstr ""
+"Ошибки в файловой системе или операционной системе.. Пробуем исправить :-("
+
+#: axel.c:235
+msgid "Starting download"
+msgstr "Начинаем скачивание"
+
+#: axel.c:242 axel.c:401
+#, c-format
+msgid "Connection %i downloading from %s:%i using interface %s"
+msgstr "Соединение %i скачивает с %s:%i через интерфейс %s"
+
+#: axel.c:249 axel.c:411
+msgid "pthread error!!!"
+msgstr "ошибка pthread!!!"
+
+#: axel.c:317
+#, c-format
+msgid "Error on connection %i! Connection closed"
+msgstr "Ошибка в соединении %i! Соединение закрыто"
+
+#: axel.c:331
+#, c-format
+msgid "Connection %i unexpectedly closed"
+msgstr "Соединение %i неожиданно закрылось"
+
+#: axel.c:335 axel.c:352
+#, c-format
+msgid "Connection %i finished"
+msgstr "Соединение %i закончилось"
+
+#: axel.c:364
+msgid "Write error!"
+msgstr "Ошибка записи!"
+
+#: axel.c:376
+#, c-format
+msgid "Connection %i timed out"
+msgstr "Время соединения %i вышло"
+
+#: conf.c:107
+#, c-format
+msgid "Error in %s line %i.\n"
+msgstr "Ошибка в файле %s линия %i.\n"
+
+#: conn.c:349 ftp.c:124
+#, c-format
+msgid "Too many redirects.\n"
+msgstr "Слишком много перенаправлений.\n"
+
+#: conn.c:368
+#, c-format
+msgid "Unknown HTTP error.\n"
+msgstr "Неизвестная ошибка HTTP.\n"
+
+#: ftp.c:35 http.c:60
+#, c-format
+msgid "Unable to connect to server %s:%i\n"
+msgstr "Невозможно подсоединиться к серверу %s:%i\n"
+
+#: ftp.c:91
+#, c-format
+msgid "Can't change directory to %s\n"
+msgstr "Невозможно сменить директорию на %s\n"
+
+#: ftp.c:117 ftp.c:177
+#, c-format
+msgid "File not found.\n"
+msgstr "Файл не найден.\n"
+
+#: ftp.c:179
+#, c-format
+msgid "Multiple matches for this URL.\n"
+msgstr "Несколько совпадений для этого URL.\n"
+
+#: ftp.c:250 ftp.c:256
+#, c-format
+msgid "Error opening passive data connection.\n"
+msgstr "Ошибка открытия пассивного соединения.\n"
+
+#: ftp.c:286
+#, c-format
+msgid "Error writing command %s\n"
+msgstr "Ошибка записи команды %s\n"
+
+#: ftp.c:311 http.c:150
+#, c-format
+msgid "Connection gone.\n"
+msgstr "Соединение пропало.\n"
+
+#: http.c:45
+#, c-format
+msgid "Invalid proxy string: %s\n"
+msgstr "Некорректная стока прокси: %s\n"
+
+#: text.c:154
+#, c-format
+msgid "Can't redirect stdout to /dev/null.\n"
+msgstr "Невозможно перенаправить stdout в /dev/null.\n"
+
+#: text.c:176
+#, c-format
+msgid "Error when trying to read URL (Too long?).\n"
+msgstr ""
+
+#: text.c:185
+#, c-format
+msgid "Can't handle URLs of length over %d\n"
+msgstr "URLs длинной больше %d не поддерживаются\n"
+
+#: text.c:190
+#, c-format
+msgid "Initializing download: %s\n"
+msgstr "Начинаю скачивание: %s\n"
+
+#: text.c:197
+#, c-format
+msgid "Doing search...\n"
+msgstr "Ищем...\n"
+
+#: text.c:201
+#, c-format
+msgid "File not found\n"
+msgstr "Файл не найден\n"
+
+#: text.c:205
+#, c-format
+msgid "Testing speeds, this can take a while...\n"
+msgstr "Пробуем скорости, это может занять некоторое время...\n"
+
+#: text.c:210
+#, c-format
+msgid "%i usable servers found, will use these URLs:\n"
+msgstr "Найдено %i полезных серверов, будут использованы следующие URLs:\n"
+
+#: text.c:269
+#, c-format
+msgid "Filename too long!\n"
+msgstr ""
+
+#: text.c:281
+#, c-format
+msgid "No state file, cannot resume!\n"
+msgstr "Файл состояния не найден, возобновление невозможно!\n"
+
+#: text.c:286
+#, c-format
+msgid "State file found, but no downloaded data. Starting from scratch.\n"
+msgstr ""
+"Файл состояния найден, но предварительно скачанные данные отсутствуют. "
+"Начинаем заново.\n"
+
+#: text.c:417
+#, c-format
+msgid ""
+"\n"
+"Downloaded %s in %s. (%.2f KB/s)\n"
+msgstr ""
+"\n"
+"%s скачано за %s. (%.2f КБ/с)\n"
+
+#: text.c:439
+#, c-format
+msgid "%lld byte"
+msgstr "%lld байт"
+
+#: text.c:441
+#, c-format
+msgid "%lld bytes"
+msgstr "%lld байта(ов)"
+
+#: text.c:443
+#, c-format
+msgid "%.1f kilobytes"
+msgstr "%.1f килобайта(ов)"
+
+#: text.c:445
+#, c-format
+msgid "%.1f megabytes"
+msgstr "%.1f мегабайта(ов)"
+
+#: text.c:454
+#, c-format
+msgid "%i second"
+msgstr "%i секунда"
+
+#: text.c:456
+#, c-format
+msgid "%i seconds"
+msgstr "%i секунд(ы)"
+
+#: text.c:458
+#, c-format
+msgid "%i:%02i seconds"
+msgstr "%i:%02i секунд(ы)"
+
+#: text.c:460
+#, c-format
+msgid "%i:%02i:%02i seconds"
+msgstr "%i:%02i:%02i секунд(ы)"
+
+#: text.c:540
+#, fuzzy, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"-s x\tSpecify maximum speed (bytes per second)\n"
+"-n x\tSpecify maximum number of connections\n"
+"-o f\tSpecify local output file\n"
+"-S [x]\tSearch for mirrors and download from x servers\n"
+"-H x\tAdd header string\n"
+"-U x\tSet user agent\n"
+"-N\tJust don't use any proxy server\n"
+"-q\tLeave stdout alone\n"
+"-v\tMore status information\n"
+"-a\tAlternate progress indicator\n"
+"-h\tThis information\n"
+"-V\tVersion information\n"
+"\n"
+"Visit http://axel.alioth.debian.org/ to report bugs\n"
+msgstr ""
+"Использование: axel [опции] url1 [url2] [url...]\n"
+"\n"
+"-s x\tМаксимальная скорость (байт в секунду)\n"
+"-n x\tМаксимальное число соединений\n"
+"-o f\tЛокальный выходной файл\n"
+"-S [x]\tПоискать зеркала и скачивать с x серверов\n"
+"-N\tНе использовать прокси-сервера\n"
+"-q\tНичего не выводить на stdout\n"
+"-v\tБольше информации о статусе\n"
+"-a\tАльтернативный индикатор прогресса\n"
+"-h\tЭта информация\n"
+"-V\tИнформация о версии\n"
+"\n"
+"Об ошибках сообщайте на http://axel.alioth.debian.org/\n"
+
+#: text.c:557
+#, fuzzy, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
+"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
+"--output=f\t\t-o f\tSpecify local output file\n"
+"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
+"--header=x\t\t-H x\tAdd header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
+"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+"--quiet\t\t\t-q\tLeave stdout alone\n"
+"--verbose\t\t-v\tMore status information\n"
+"--alternate\t\t-a\tAlternate progress indicator\n"
+"--help\t\t\t-h\tThis information\n"
+"--version\t\t-V\tVersion information\n"
+"\n"
+"Visit http://axel.alioth.debian.org/ to report bugs\n"
+msgstr ""
+"Использование: axel [опции] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tМаксимальная скорость (байт в секунду)\n"
+"--num-connections=x\t-n x\tМаксимальное число соединений\n"
+"--output=f\t\t-o f\tЛокальный выходной файл\n"
+"--search[=x]\t\t-S [x]\tПоискать зеркала и скачивать с x серверов\n"
+"--no-proxy\t\t-N\tНе использовать прокси-сервера\n"
+"--quiet\t\t\t-q\tНичего не выводить на stdout\n"
+"--verbose\t\t-v\tБольше информации о статусе\n"
+"--alternate\t\t-a\tАльтернативный индикатор прогресса\n"
+"--help\t\t\t-h\tЭта информация\n"
+"--version\t\t-V\tИнформация о версии\n"
+"\n"
+"Об ошибках сообщайте на http://axel.alioth.debian.org/\n"
+
+#: text.c:578
+#, c-format
+msgid "Axel version %s (%s)\n"
+msgstr "Axel, версия %s (%s)\n"

@@ -1,0 +1,317 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Axel\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-04-27 13:21+0530\n"
+"PO-Revision-Date: 2001-11-14 15:22+0200\n"
+"Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: axel.c:55
+msgid "Buffer resized for this speed."
+msgstr "Buffer verkleind voor deze snelheid."
+
+#: axel.c:91
+msgid "Could not parse URL.\n"
+msgstr "Kan URL niet verwerken.\n"
+
+#: axel.c:126
+#, fuzzy, c-format
+msgid "File size: %lld bytes"
+msgstr "Bestandsgrootte: %i bytes"
+
+#: axel.c:143
+#, c-format
+msgid "Opening output file %s"
+msgstr "Openen uitvoerbestand %s"
+
+#: axel.c:152
+msgid "Server unsupported, starting from scratch with one connection."
+msgstr "Server niet ondersteund, opnieuw beginnen met 1 verbinding."
+
+#: axel.c:171
+#, fuzzy, c-format
+msgid "State file found: %lld bytes downloaded, %lld to go."
+msgstr ".st bestand gevonden: %i bytes gedownload, %i te gaan."
+
+#: axel.c:178 axel.c:190
+msgid "Error opening local file"
+msgstr "Fout bij openen lokaal bestand"
+
+#: axel.c:202
+msgid "Crappy filesystem/OS.. Working around. :-("
+msgstr "Niet-fatale fout in OS/bestandssysteem, omheen werken.."
+
+#: axel.c:235
+msgid "Starting download"
+msgstr "Begin download"
+
+#: axel.c:242 axel.c:401
+#, c-format
+msgid "Connection %i downloading from %s:%i using interface %s"
+msgstr "Verbinding %i gebruikt server %s:%i via interface %s"
+
+#: axel.c:249 axel.c:411
+msgid "pthread error!!!"
+msgstr "pthread fout!!!"
+
+#: axel.c:317
+#, c-format
+msgid "Error on connection %i! Connection closed"
+msgstr "Fout op verbinding %i! Verbinding gesloten"
+
+#: axel.c:331
+#, c-format
+msgid "Connection %i unexpectedly closed"
+msgstr "Verbinding %i onverwachts gesloten"
+
+#: axel.c:335 axel.c:352
+#, c-format
+msgid "Connection %i finished"
+msgstr "Verbinding %i klaar"
+
+#: axel.c:364
+msgid "Write error!"
+msgstr "Schrijffout!"
+
+#: axel.c:376
+#, c-format
+msgid "Connection %i timed out"
+msgstr "Time-out op verbinding %i"
+
+#: conf.c:107
+#, c-format
+msgid "Error in %s line %i.\n"
+msgstr "Fout in %s regel %i.\n"
+
+#: conn.c:349 ftp.c:124
+#, c-format
+msgid "Too many redirects.\n"
+msgstr "Te veel redirects.\n"
+
+#: conn.c:368
+#, c-format
+msgid "Unknown HTTP error.\n"
+msgstr "Onbekende HTTP fout.\n"
+
+#: ftp.c:35 http.c:60
+#, c-format
+msgid "Unable to connect to server %s:%i\n"
+msgstr "Kan niet verbinden met server %s:%i\n"
+
+#: ftp.c:91
+#, c-format
+msgid "Can't change directory to %s\n"
+msgstr ""
+
+#: ftp.c:117 ftp.c:177
+#, c-format
+msgid "File not found.\n"
+msgstr "Bestand niet gevonden.\n"
+
+#: ftp.c:179
+#, c-format
+msgid "Multiple matches for this URL.\n"
+msgstr "Meerdere bestanden passen bij deze URL.\n"
+
+#: ftp.c:250 ftp.c:256
+#, c-format
+msgid "Error opening passive data connection.\n"
+msgstr "Fout bij het openen van een data verbinding.\n"
+
+#: ftp.c:286
+#, c-format
+msgid "Error writing command %s\n"
+msgstr "Fout bij het schrijven van commando %s\n"
+
+#: ftp.c:311 http.c:150
+#, c-format
+msgid "Connection gone.\n"
+msgstr "Verbinding gesloten.\n"
+
+#: http.c:45
+#, c-format
+msgid "Invalid proxy string: %s\n"
+msgstr "Ongeldige proxy string: %s\n"
+
+#: text.c:154
+#, c-format
+msgid "Can't redirect stdout to /dev/null.\n"
+msgstr "Fout bij het afsluiten van stdout.\n"
+
+#: text.c:176
+#, c-format
+msgid "Error when trying to read URL (Too long?).\n"
+msgstr ""
+
+#: text.c:185
+#, c-format
+msgid "Can't handle URLs of length over %d\n"
+msgstr ""
+
+#: text.c:190
+#, c-format
+msgid "Initializing download: %s\n"
+msgstr "Begin download: %s\n"
+
+#: text.c:197
+#, c-format
+msgid "Doing search...\n"
+msgstr "Zoeken...\n"
+
+#: text.c:201
+#, c-format
+msgid "File not found\n"
+msgstr "Bestand niet gevonden\n"
+
+#: text.c:205
+#, c-format
+msgid "Testing speeds, this can take a while...\n"
+msgstr "Snelheden testen, dit kan even duren...\n"
+
+#: text.c:210
+#, c-format
+msgid "%i usable servers found, will use these URLs:\n"
+msgstr "%i bruikbare servers gevonden, de volgende worden gebruikt:\n"
+
+#: text.c:269
+#, c-format
+msgid "Filename too long!\n"
+msgstr ""
+
+#: text.c:281
+#, c-format
+msgid "No state file, cannot resume!\n"
+msgstr "Geen .st bestand, kan niet resumen!\n"
+
+#: text.c:286
+#, c-format
+msgid "State file found, but no downloaded data. Starting from scratch.\n"
+msgstr ".st bestand gevonden maar geen uitvoerbestand. Opnieuw beginnen.\n"
+
+#: text.c:417
+#, c-format
+msgid ""
+"\n"
+"Downloaded %s in %s. (%.2f KB/s)\n"
+msgstr ""
+"\n"
+"%s gedownload in %s. (%.2f KB/s)\n"
+
+#: text.c:439
+#, fuzzy, c-format
+msgid "%lld byte"
+msgstr "%i byte"
+
+#: text.c:441
+#, fuzzy, c-format
+msgid "%lld bytes"
+msgstr "%i bytes"
+
+#: text.c:443
+#, c-format
+msgid "%.1f kilobytes"
+msgstr "%.1f kilobytes"
+
+#: text.c:445
+#, c-format
+msgid "%.1f megabytes"
+msgstr "%.1f megabytes"
+
+#: text.c:454
+#, c-format
+msgid "%i second"
+msgstr "%i seconde"
+
+#: text.c:456
+#, c-format
+msgid "%i seconds"
+msgstr "%i seconden"
+
+#: text.c:458
+#, c-format
+msgid "%i:%02i seconds"
+msgstr "%i:%02i seconden"
+
+#: text.c:460
+#, c-format
+msgid "%i:%02i:%02i seconds"
+msgstr "%i:%02i:%02i seconden"
+
+#: text.c:540
+#, fuzzy, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"-s x\tSpecify maximum speed (bytes per second)\n"
+"-n x\tSpecify maximum number of connections\n"
+"-o f\tSpecify local output file\n"
+"-S [x]\tSearch for mirrors and download from x servers\n"
+"-H x\tAdd header string\n"
+"-U x\tSet user agent\n"
+"-N\tJust don't use any proxy server\n"
+"-q\tLeave stdout alone\n"
+"-v\tMore status information\n"
+"-a\tAlternate progress indicator\n"
+"-h\tThis information\n"
+"-V\tVersion information\n"
+"\n"
+"Visit http://axel.alioth.debian.org/ to report bugs\n"
+msgstr ""
+"Gebruik: axel [opties] url1 [url2] [url...]\n"
+"\n"
+"-s x\tMaximale snelheid (bytes per seconde)\n"
+"-n x\tMaximale aantal verbindingen\n"
+"-o f\tLokaal uitvoerbestand\n"
+"-S [x]\tMirrors opzoeken en x mirrors gebruiken\n"
+"-N\tGeen proxy server gebruiken\n"
+"-q\tGeen uitvoer naar stdout\n"
+"-v\tMeer status informatie\n"
+"-a\tAlternatieve voortgangs indicator\n"
+"-h\tDeze informatie\n"
+"-V\tVersie informatie\n"
+"\n"
+"Bugs melden aan lintux@lintux.cx\n"
+
+#: text.c:557
+#, fuzzy, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
+"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
+"--output=f\t\t-o f\tSpecify local output file\n"
+"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
+"--header=x\t\t-H x\tAdd header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
+"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+"--quiet\t\t\t-q\tLeave stdout alone\n"
+"--verbose\t\t-v\tMore status information\n"
+"--alternate\t\t-a\tAlternate progress indicator\n"
+"--help\t\t\t-h\tThis information\n"
+"--version\t\t-V\tVersion information\n"
+"\n"
+"Visit http://axel.alioth.debian.org/ to report bugs\n"
+msgstr ""
+"Gebruik: axel [opties] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tMaximale snelheid (bytes per seconde)\n"
+"--num-connections=x\t-n x\tMaximale aantal verbindingen\n"
+"--output=f\t\t-o f\tLokaal uitvoerbestand\n"
+"--search[=x]\t\t-S [x]\tMirrors opzoeken en x mirrors gebruiken\n"
+"--no-proxy\t\t-N\tGeen proxy server gebruiken\n"
+"--quiet\t\t\t-q\tGeen uitvoer naar stdout\n"
+"--verbose\t\t-v\tMeer status informatie\n"
+"--alternate\t\t-a\tAlternatieve voortgangs indicator\n"
+"--help\t\t\t-h\tDeze informatie\n"
+"--version\t\t-V\tVersie informatie\n"
+"\n"
+"Bugs melden aan lintux@lintux.cx\n"
+
+#: text.c:578
+#, c-format
+msgid "Axel version %s (%s)\n"
+msgstr "Axel versie %s (%s)\n"

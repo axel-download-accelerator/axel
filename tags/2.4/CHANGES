@@ -1,0 +1,284 @@
+Version 2.4
+
+- Fix a buffer overflow caused by wrong size limits  when copying strings (Closes: #311569), thanks Michael Schwendt and the Fedora project members
+- Fix thread hangups due to incorrect synchronization (Closes: #311469), thanks Yao Shi
+- Removed Fedora packaging file. axel will be available in the Fedora repositories soon.
+- Use /etc/ instead of /usr/etc/ as the default system-wide configuration location.
+- Respect environment CFLAGS in configure.
+- Allow special characters in arguments to configure.
+- Add MimeType and fix Categories in the desktop file.
+
+Version 2.3
+
+- Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
+- New Chinese translation and manpage, thanks Shuge Lee
+- Fix LFS support for FTP (Closes: #311320)
+- Fix LFS support (Closes: #311324), thanks Rodrigue Le Bayon
+
+Version 2.2:
+
+- Fix a buffer overflow in http.c:http_encode.
+
+Version 2.1:
+
+- Fix version string.  2.0 still reported 1.1, thanks Ajay R Ramjatan
+- Fix new MB/s display (was showing B/s).  Thanks Philipp Hagemeister
+
+Version 2.0:
+
+- Large file support thanks thanks David Turnbull
+- Custom Header Support thanks Eli Yukelzon
+- New russian translation thanks newhren
+- Fix segfault in -H option thanks Philipp Hagemeister
+- Honour http_proxy and prefer it over HTTP_PROXY
+- Add new RPM spec file thanks bbbush
+
+Finished Sep 12 2008
+
+Version 1.1:
+
+- Compilation for GNU/kFreeBSD, thanks to Cyril Brulebois
+- Use simple pop-ups for Help and Bug Report buttons
+- Use strncpy instead of strcpy for length sensitive copies
+- Always compile with -g, disable -O3
+- Translation updates: de.po thanks Hermann J. Beckers
+- Update manpages axel.1 and axel-kapt.1
+- Prevent crash and raise error if FTP CWD fails
+- Prevent crash on long URLs and increase max length of URL to 1024
+- Fix segfaults on HTTP404 and HTTP401 responses
+
+Finished Jan 18 2008
+
+Version 1.0b:
+- Removed spaces between -S[x] in man-pages, etc. They mess things up.
+- Fixed configure for OpenBSD.
+- Fixed configuration bug: s/alternate_interface/alternate_output/ in
+  axelrc.example, thanks to CLOTILDE Guy Daniel for the bug report!
+- Fixed weird behaviour when downloading from an unsupported server.
+- Fixed buffer overflow in conn.c. (CAN-2005-0390)
+
+Finished Apr 06 2005
+
+
+Version 1.0a:
+- gstrip on Solaris/SPARC breaks the binary, so stripping is made optional
+  (but enabled by default!) and /usr/ccs/bin/strip is used instead of
+  gstrip.
+- Fixed a small (not harmful) errorcode interpretation bug in the ftp_size
+  code.
+- Downloading from unsupported sites works better now.
+- Added support for downloading using more than one local network interface.
+- Fixed a potential SIGSEGV bug. Would only happen with about more than 64
+  connections usually. Still strange things can happen with too many
+  connections when using Linux..
+- Hopefully fixed the problem with downloading from forwarding URL's.
+- HTTP %-escapes are handled now.
+- Alternate progress indicator with estimation of remaining download time
+- Changed the return-code a bit, see man-page for details.
+
+Finished Feb 19 2002
+
+
+Version 1.0:
+- Fixed a reconnect problem: Check for stalled connections was skipped by
+  previous versions if there is no active connection.
+- Solaris does not have www in /etc/services which confused Axel. Fixed.
+- Created a new build system.
+- install utility not used anymore: Solaris' install does weird things.
+- Added support for Cygwin and Solaris.
+- Corrected a little problem in de.po.
+- Thrown out the packaging stuff.
+
+Finished Dec 6 2001
+
+
+Version 0.99b brings you:
+- Debian package bugfix.
+- Restored i18n support.
+
+Finished Nov 16 2001
+
+
+Version 0.99a brings you:
+- Small bugfix for dumb HTTP bug.
+
+Finished Nov 10 2001
+
+
+Version 0.99 brings you:
+- Improved speed limiter. (For low speeds a smaller buffer works better,
+  so the buffer is resized automatically for low speeds.)
+- Some FTP servers don't ask for a password which confused ftp.c. Fixed.
+- Some HTTP servers send chunked data when using HTTP/1.1. So I went back
+  to HTTP/1.0.. (This also fixes the occasional filesearching.com problem)
+- Even more problems with FTP server reply codes, but they must be fixed
+  now, Axel's RFC compliant.
+- For HTTP downloads a Range: header is not sent when downloading starting
+  at byte 0. This is just a work-around for a problem with a weird webserver
+  which sends corrupted data when a Range: header is sent. It's just a
+  work-around for a rare problem, it does not really fix anything.
+- RPM package for axel-kapt added.
+
+Finished Nov 9 2001
+
+
+Version 0.98 brings you:
+- Fixed the weird percentage indicator bug. (Was buggy for large files,
+  did not affect the downloaded data.)
+- For single connection downloads from Apache: Apache returns a 200 result
+  code when the specified file range is the complete file. Axel handles
+  this correctly now.
+- Roxen FTP servers return the address and port number without brackets
+  after a passive command. This is RFC-compliant but quite unique. But now
+  handled correctly.
+- Fixed some things to make it work on Darwin again.
+- 'Upgraded' HTTP requests to HTTP/1.1. Tried this to fix a download
+  corruption bug for downloads from archive.progeny.com, but it did not
+  work. wget's resume has exactly the same problem. But using HTTP/1.1 is
+  more compliant (because in fact HTTP/1.0 does not support Ranges) so I'll
+  keep it this way..
+- Previous version used to delete the statefile in some cases. Fixed.
+
+Finished Nov 3 2001
+
+
+Version 0.97 (Bitcrusher) brings you:
+- Major redesign: Moved a lot of code from main() to separate functions,
+  it should make it easier to create different interfaces for the program.
+- All those ifdefs were a mess, they don't exist anymore. Separate threads
+  for setting up connections are used by default now. Version 0.96 will not
+  disappear, by the way.
+- HTTP HEAD request not used anymore: Squid's headers are incorrect when
+  using the HEAD request.
+- conn_disconnect did not work for FTP connections through HTTP proxies.
+- Documentation fix, sort of: The example configuration file still said
+  proxies are unsupported. But they are supported for quite some time
+  already.
+- Wrote a small (Small? Larger than any other doc.. :-) description of the
+  Axel API.
+- Added finish_time code. (Credits to sjoerd@huiswerkservice.nl)
+- Calling conn_setup without calling conn_init first also works when using
+  a proxy now.
+- A client for filesearching.com. You can use it to search for mirrors and
+  download from more than mirror at once.
+- Fixed another segfault bug which did not show up on my own system...
+  Also fixed by 0.96a.
+- Global error string is gone. Unusable in threaded programs.
+- The -V switch stopped working some time ago because I forgot to put it
+  in the getopt string. Now it's back, alive and kickin'...
+- TYPE I should be done quite early. Some servers return weird file sizes
+  when still in ASCII mode.
+- ftp.c (ftp_wait) sometimes resized conn->message to below MAX_STRING
+  which is Not Good(tm).
+- I18N support is a bit broken at this time, it'll be fixed later.
+- Tidied up the man-page a bit.
+- Removed config.h file, -D flags used again.
+- Added axel-kapt interface.
+- Changed syntax: Local file must be specified using the -o option now.
+  This allows the user to specify more than one URL and all of them will
+  be used for the download. A local directory can be passed as well, the
+  program will append the correct filename.
+- Fixed a bug which caused the program not to be able to download files
+  for which only one byte has to be downloaded for one of the connections.
+- Why bitcrusher? Just because I liked to have a code name for this
+  release... Bit crusher is a name of a musical group here in the
+  Netherlands, and it's a nice name for a downloader as well, I hope...
+
+Finished Oct 25 2001
+
+
+Version 0.96 brings you:
+- Fixed a terrible bug which caused any FTP download to corrupt. I promise
+  I will test the program before any next release. :-(( HTTP did work in
+  0.95.
+
+Finished Aug 14 2001 (Why is this fix so late? Because the actual release
+of version 0.95 was only last Friday/Saturday...)
+
+And yes, I tested it now. It works now. HTTP and FTP.
+
+
+Version 0.95 brings you:
+- An important bugfix: When bringing up the connection failed, the program
+  used to be unable to reconnect. :(
+- Small changes to make the program compile on FreeBSD and Darwin.
+- Support check for FTP servers is done only once now.
+- SIZE command is really used now.
+- Fixed a SIGINT-does-not-abort problem. Btw: Ctrl-\ (SIGQUIT) always works!
+- Connection status messages are not displayed by default. You can enable
+  them with the verbose-option.
+
+Finished Aug 7 2001
+
+
+Version 0.94 brings you:
+- 'make install' uses install instead of mkdir/cp now.
+- Added 'make uninstall' option.
+- Added more explanations to axelrc.example.
+- It uses the HTTP HEAD request now. Didn't know that one before. :)
+- Debian packaging stuff and RPM .spec file included by default.
+- select() problem now really understood... The real point was, that
+  sometimes select() was called with an empty fd set. Now I solved the
+  problem in a more 'useful' way.
+
+Finished Jun 26 2001
+
+
+Version 0.93 brings you:
+- A compile-time option to remove all the multi-connection stuff. Program
+  works without state files then, and it's a bit smaller, just in case you
+  need a very small program and if you don't believe in acceleration. :)
+- The SIZE command is now used as long as the URL does not contain wildcards.
+  Because FTP servers are just too different. :(
+- You can do FTP downloads through HTTP proxies now.
+- The weird initial 1-second delay which happened sometimes does not exist
+  anymore: It was because of select(), which does not return immediately
+  if there's data on a socket before the call starts. My first solution
+  is using a lower timeout, I hope there's a better solution available...
+- Local file existence check.
+- Small bug fixed in conf.c.
+
+Finished May 22 2001
+
+
+Version 0.92 brings you:
+- A credits file!! ;)
+- A German translation. Herrman J. Beckers: Thanks a lot!
+- ftp.c should understand weird Macintosh FTP servers too, now.
+- Connections are initialized in a different thread because then the program
+  can go on downloading data from other connections while setting up. Quick
+  hack, but it works.
+- config.h contains the configuration definitions now.
+- A URL - can be specified. The program will read a URL from stdin. Might
+  be useful if you don't want other people to see the URL in the 'ps aux'
+  output. (Think about passwords in URLs...)
+
+Finished May 11 2001
+
+
+Version 0.91 brings you:
+- A man page.
+- A quiet mode.
+- A Debian package. (0.9 .deb exists too, but that was after the 'official'
+  0.9 release..)
+- Made the sizes/times displayed after downloading more human-readable.
+- Corrected some stupid things in the nl.po file.
+- No bug in ftp_wait anymore, (or at least one bug less ;) the program was a
+  bit too late with the realloc() sometimes. I just hate those multi-line
+  replies.. :(
+- HTTP proxy support. no_proxy configuration flag also in use.
+- Support for empty configuration strings.
+- URL parser understands wrongly formatted URLs like slashdot.org. (instead
+  of the correct http://slashdot.org/)
+
+Finished Apr 30 2001
+
+
+Version 0.9 brings you:
+- See the README for all the old features.
+- Internationalization support.
+- Clearer error messages.
+- Probably some bug fixes too.
+- A highly sophisticated Makefile.. ;)
+
+Finished Apr 22 2001
