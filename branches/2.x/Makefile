@@ -68,7 +68,7 @@ uninstall-bin:
 
 tar:
 	version=$$(sed -n 's/#define AXEL_VERSION_STRING[ \t]*"\([^"]*\)"/\1/p' < axel.h) && \
-	tar --create --transform "s#^#axel-$${version}/#" "--file=axel-$${version}.tar" --exclude-vcs -- *.c *.h *.po *.1 configure Makefile axelrc.example axel.spec gui API CHANGES COPYING CREDITS README && \
+	tar --create --transform "s#^#axel-$${version}/#" "--file=axel-$${version}.tar" --exclude-vcs -- *.c *.h *.po *.1 configure Makefile axelrc.example gui API CHANGES COPYING CREDITS README && \
 	gzip --best < "axel-$${version}.tar" > "axel-$${version}.tar.gz" && \
 	bzip2 --best < "axel-$${version}.tar" > "axel-$${version}.tar.bz2"
 
