@@ -1,5 +1,3 @@
-UNRELEASED:
-
 Version 2.4
 
 - Fix a buffer overflow caused by wrong size limits  when copying strings (Closes: #311569), thanks Michael Schwendt and the Fedora project members
