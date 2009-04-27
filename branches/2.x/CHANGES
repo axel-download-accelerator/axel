@@ -6,6 +6,7 @@ Version 2.4
 - Use /etc/ instead of /usr/etc/ as the default system-wide configuration location.
 - Respect environment CFLAGS in configure.
 - Allow special characters in arguments to configure.
+- Add MimeType and fix Categories in the desktop file.
 
 Version 2.3
 
