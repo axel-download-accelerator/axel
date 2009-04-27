@@ -9,8 +9,9 @@
 prefix='/usr/local'
 bindir='$prefix/bin'
 etcdir='$prefix/etc'
-mandir='$prefix/share/man'
-locale='$prefix/share/locale'
+sharedir='$prefix/share'
+mandir='$sharedir/man'
+locale='$sharedir/locale'
 
 i18n=1
 debug=0
@@ -51,6 +52,7 @@ done
 # Expand $prefix
 bindir=`eval echo $bindir`
 etcdir=`eval echo $etcdir`
+sharedir=`eval echo $sharedir`
 mandir=`eval echo $mandir`
 locale=`eval echo $locale`
 if test "$etcdir" = "/usr/etc"; then
@@ -63,6 +65,7 @@ cat<<EOF>Makefile.settings
 PREFIX=$prefix
 BINDIR=$bindir
 ETCDIR=$etcdir
+SHAREDIR=$sharedir
 MANDIR=$mandir
 LOCALE=$locale
 
