@@ -45,7 +45,7 @@ config :horizontal "OPTIONS" -> checks term max connex search;
         verb "Verbose" -> @|" --verbose ";
         quiet "Quiet" -> @|" -q ";
 
-    term "Terminal Type" -> @combo("konsole", "rxvt", "xterm", "aterm");
+    term "Terminal Type" -> @string()="xterm";
     max "Max bps"-> @integer()=0;
     connex :horizontal "Connections" -> @integer()=4;
     search :framed "ftp Search" -> numsites | ! @ ;

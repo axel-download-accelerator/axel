@@ -124,7 +124,7 @@ void http_addheader( http_t *conn, char *format, ... )
 	strcat( s, "\r\n" );
 	va_end( params );
 	
-	strncat( conn->request, s, MAX_QUERY );
+	strncat( conn->request, s, MAX_QUERY - strlen(conn->request) - 1);
 }
 
 int http_exec( http_t *conn )

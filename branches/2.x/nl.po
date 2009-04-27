@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 11:14+0530\n"
+"POT-Creation-Date: 2009-04-27 13:21+0530\n"
 "PO-Revision-Date: 2001-11-14 15:22+0200\n"
 "Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -49,35 +49,35 @@ msgstr "Niet-fatale fout in OS/bestandssysteem, omheen werken.."
 msgid "Starting download"
 msgstr "Begin download"
 
-#: axel.c:241 axel.c:398
+#: axel.c:242 axel.c:401
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbinding %i gebruikt server %s:%i via interface %s"
 
-#: axel.c:245 axel.c:407
+#: axel.c:249 axel.c:411
 msgid "pthread error!!!"
 msgstr "pthread fout!!!"
 
-#: axel.c:314
+#: axel.c:317
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Fout op verbinding %i! Verbinding gesloten"
 
-#: axel.c:328
+#: axel.c:331
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Verbinding %i onverwachts gesloten"
 
-#: axel.c:332 axel.c:349
+#: axel.c:335 axel.c:352
 #, c-format
 msgid "Connection %i finished"
 msgstr "Verbinding %i klaar"
 
-#: axel.c:361
+#: axel.c:364
 msgid "Write error!"
 msgstr "Schrijffout!"
 
-#: axel.c:373
+#: axel.c:376
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Time-out op verbinding %i"
@@ -142,47 +142,57 @@ msgstr "Ongeldige proxy string: %s\n"
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Fout bij het afsluiten van stdout.\n"
 
-#: text.c:182
+#: text.c:176
+#, c-format
+msgid "Error when trying to read URL (Too long?).\n"
+msgstr ""
+
+#: text.c:185
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr ""
 
-#: text.c:187
+#: text.c:190
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Begin download: %s\n"
 
-#: text.c:194
+#: text.c:197
 #, c-format
 msgid "Doing search...\n"
 msgstr "Zoeken...\n"
 
-#: text.c:198
+#: text.c:201
 #, c-format
 msgid "File not found\n"
 msgstr "Bestand niet gevonden\n"
 
-#: text.c:202
+#: text.c:205
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Snelheden testen, dit kan even duren...\n"
 
-#: text.c:207
+#: text.c:210
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i bruikbare servers gevonden, de volgende worden gebruikt:\n"
 
 #: text.c:269
 #, c-format
+msgid "Filename too long!\n"
+msgstr ""
+
+#: text.c:281
+#, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Geen .st bestand, kan niet resumen!\n"
 
-#: text.c:274
+#: text.c:286
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ".st bestand gevonden maar geen uitvoerbestand. Opnieuw beginnen.\n"
 
-#: text.c:405
+#: text.c:417
 #, c-format
 msgid ""
 "\n"
@@ -191,47 +201,47 @@ msgstr ""
 "\n"
 "%s gedownload in %s. (%.2f KB/s)\n"
 
-#: text.c:427
+#: text.c:439
 #, fuzzy, c-format
 msgid "%lld byte"
 msgstr "%i byte"
 
-#: text.c:429
+#: text.c:441
 #, fuzzy, c-format
 msgid "%lld bytes"
 msgstr "%i bytes"
 
-#: text.c:431
+#: text.c:443
 #, c-format
 msgid "%.1f kilobytes"
 msgstr "%.1f kilobytes"
 
-#: text.c:433
+#: text.c:445
 #, c-format
 msgid "%.1f megabytes"
 msgstr "%.1f megabytes"
 
-#: text.c:442
+#: text.c:454
 #, c-format
 msgid "%i second"
 msgstr "%i seconde"
 
-#: text.c:444
+#: text.c:456
 #, c-format
 msgid "%i seconds"
 msgstr "%i seconden"
 
-#: text.c:446
+#: text.c:458
 #, c-format
 msgid "%i:%02i seconds"
 msgstr "%i:%02i seconden"
 
-#: text.c:448
+#: text.c:460
 #, c-format
 msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i seconden"
 
-#: text.c:528
+#: text.c:540
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -266,7 +276,7 @@ msgstr ""
 "\n"
 "Bugs melden aan lintux@lintux.cx\n"
 
-#: text.c:545
+#: text.c:557
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -301,7 +311,7 @@ msgstr ""
 "\n"
 "Bugs melden aan lintux@lintux.cx\n"
 
-#: text.c:566
+#: text.c:578
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel versie %s (%s)\n"

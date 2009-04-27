@@ -172,7 +172,10 @@ int main( int argc, char *argv[] )
 	else if( strcmp( argv[optind], "-" ) == 0 )
 	{
 		s = malloc( MAX_STRING );
-		scanf( "%1024[^\n]s", s );
+		if (scanf( "%1024[^\n]s", s) != 1) {
+			fprintf( stderr, _("Error when trying to read URL (Too long?).\n") );
+			return( 1 );
+		}
 	}
 	else
 	{
@@ -259,8 +262,17 @@ int main( int argc, char *argv[] )
 		{
 			if( S_ISDIR( buf.st_mode ) )
 			{
-				strncat( fn, "/", MAX_STRING );
-				strncat( fn, axel->filename, MAX_STRING );
+				size_t fnlen = strlen(fn);
+				size_t axelfnlen = strlen(axel->filename);
+				
+				if (fnlen + 1 + axelfnlen + 1 > MAX_STRING) {
+					fprintf( stderr, _("Filename too long!\n"));
+					return ( 1 );
+				}
+				
+				fn[fnlen] = '/';
+				memcpy(fn+fnlen+1, axel->filename, axelfnlen);
+				fn[fnlen + 1 + axelfnlen] = '\0';
 			}
 		}
 		sprintf( string, "%s.st", fn );
