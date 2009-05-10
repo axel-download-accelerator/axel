@@ -24,17 +24,17 @@ all: main test tar
 fast: main
 
 prepare:
-	mkdir -p "${OUTDIR}"
+	mkdir -p -- "${OUTDIR}"
 
 clean:
-	rm -rf "${OUTDIR}"
+	rm -rf -- "${OUTDIR}"
 
 distclean: clean
-	rm -rf "${CFGDIR}"
+	rm -rf -- "${CFGDIR}"
 
 tar: main prepare
 	version=$$(sed -n 's/#define AXEL_VERSION_STRING[ \t]*"\([^"]*\)"/\1/p' < axel.h) && \
-	tar --create --transform "s#^#axel-$${version}/#" "--file=${OUTDIR}axel-$${version}.tar" --exclude-vcs -- "${SRCDIR}" "${TESTDIR}" "${I18NDIR}" "${DOCDIR}" configure Makefile axelrc.example axel.spec && \
+	tar --create --numeric-owner --owner 0 --group 0 --transform "s#^#axel-$${version}/#" "--file=${OUTDIR}axel-$${version}.tar" --exclude-vcs -- "${SRCDIR}" "${TESTDIR}" "${I18NDIR}" "${DOCDIR}" configure Makefile axelrc.example axel.spec && \
 	gzip --best < "${OUTDIR}axel-$${version}.tar" > "${OUTDIR}axel-$${version}.tar.gz" && \
 	bzip2 --best < "${OUTDIR}axel-$${version}.tar" > "${OUTDIR}axel-$${version}.tar.bz2"
 
