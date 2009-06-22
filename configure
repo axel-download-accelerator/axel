@@ -42,8 +42,8 @@ EOF
 		exit;
 	fi
 	
-	keyname=$(expr "$e" : '\(.*\)=.*' | sed 's/[^a-z0-9_]/_/g')
-	value=$(expr "$e" : '.*=\(.*\)' | sed "s/'/_/g")
+	keyname=`expr "$e" : '\(.*\)=.*' | sed 's/[^a-z0-9_]/_/g'`
+	value=`expr "$e" : '.*=\(.*\)' | sed "s/'/_/g"`
 	
 	eval "$keyname='$value'"
 	shift;
