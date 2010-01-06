@@ -73,7 +73,6 @@ OUTFILE=axel
 ARCH=$arch
 
 DESTDIR=
-LFLAGS=
 
 EOF
 
@@ -87,6 +86,8 @@ cat<<EOF>config.h
 
 EOF
 
+AXEL_LFLAGS=${LFLAGS}
+
 if [ "$i18n" = "1" ]; then
 	if type msgfmt > /dev/null 2> /dev/null; then :;else
 		echo 'WARNING: Internationalization disabled, you don'\''t have the necessary files'
@@ -94,11 +95,15 @@ if [ "$i18n" = "1" ]; then
 		echo ''
 		i18n=0;
 	fi;
+	
+	echo "all: i18n-mofiles" >> Makefile.settings
+	echo "install: install-i18n" >> Makefile.settings
+	echo "uninstall: uninstall-i18n" >> Makefile.settings
 fi
 
-echo "CFLAGS=-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Os ${CFLAGS}" >> Makefile.settings
+AXEL_CFLAGS="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Os ${CFLAGS}"
 if [ "$debug" = "1" ]; then
-	echo 'CFLAGS+=-g' >> Makefile.settings
+	AXEL_CFLAGS="${AXEL_CFLAGS} -g"
 	echo 'DEBUG=1' >> Makefile.settings
 	echo '#define DEBUG' >> config.h;
 fi
@@ -106,16 +111,23 @@ fi
 if [ "$i18n" = "1" ]; then
 	echo 'I18N=1' >> Makefile.settings
 	echo '#define I18N' >> config.h
-	if cat /usr/local/include/libintl.h > /dev/null 2> /dev/null; then
-		echo 'CFLAGS+=-I/usr/local/include' >> Makefile.settings
-		echo 'LFLAGS+=-L/usr/local/lib' >> Makefile.settings;
-	fi;
+	if [ -f /usr/local/include/libintl.h ]; then
+		AXEL_CFLAGS="${AXEL_CFLAGS} -I/usr/local/include"
+		AXEL_LFLAGS="${AXEL_LFLAGS} -L/usr/local/lib"
+	elif [ -f /opt/csw/include/libintl.h ]; then
+		AXEL_CFLAGS="${AXEL_CFLAGS} -I/opt/csw/include"
+		AXEL_LFLAGS="${AXEL_LFLAGS} -L/opt/csw/lib"
+	elif [ -f "${prefix}/include/libintl.h" ]; then
+		AXEL_CFLAGS="${AXEL_CFLAGS} -I${prefix}/include"
+		AXEL_LFLAGS="${AXEL_LFLAGS} -L${prefix}/lib"
+	fi
 fi
 
 if [ "${CC}" != "" ]; then
 	echo "CC=${CC}" >> Makefile.settings;
 elif type gcc > /dev/null 2> /dev/null; then
 	echo "CC=gcc" >> Makefile.settings;
+	AXEL_CFLAGS="${AXEL_CFLAGS} -Wall"
 elif type cc > /dev/null 2> /dev/null; then
 	echo "CC=cc" >> Makefile.settings;
 else
@@ -126,9 +138,6 @@ fi
 if [ "$strip" = 0 ]; then
 	echo "STRIP=\# skip strip" >> Makefile.settings;
 else
-	echo 'The strip option is enabled. This should not be a problem usually, but on some'
-	echo 'systems it breaks stuff.'
-	echo
 	if [ "$debug" = 1 ]; then
 		echo 'Stripping binaries does not make sense when debugging. Stripping disabled.'
 		echo
@@ -136,7 +145,7 @@ else
 		strip=0;
 	elif type strip > /dev/null 2> /dev/null; then
 		echo "STRIP=strip" >> Makefile.settings;
-	elif /bin/test -x /usr/ccs/bin/strip; then
+	elif [ -x /usr/ccs/bin/strip ]; then
 		echo "STRIP=/usr/ccs/bin/strip" >> Makefile.settings;
 	else
 		echo 'No strip utility found, cannot remove unnecessary parts from executable.'
@@ -149,80 +158,82 @@ fi
 case "$arch" in
 FreeBSD )
 	echo '#define NOGETOPTLONG' >> config.h
-	echo 'LFLAGS+=-pthread' >> Makefile.settings
+	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
 	if [ "$i18n" = "1" ]; then
-		echo 'LFLAGS+=-lintl' >> Makefile.settings;
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
 	fi
-	echo 'Please keep in mind that you need GNU make to make Axel!'
-	echo ''
 ;;
 OpenBSD )
 	echo '#define NOGETOPTLONG' >> config.h
-	echo 'LFLAGS+=-pthread' >> Makefile.settings
+	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
 	if [ "$i18n" = "1" ]; then
-		echo 'LFLAGS+=-lintl' >> Makefile.settings;
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
 	fi
-	echo 'Please keep in mind that you need GNU make to make Axel!'
-	echo ''
 ;;
 NetBSD )
 	echo 'WARNING: NetBSD not tested! Using OpenBSD settings.'
-	echo '         Please send me your results so I can update this!'
-	echo ''
 	echo '#define NOGETOPTLONG' >> config.h
-	echo 'LFLAGS+=-pthread' >> Makefile.settings
+	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
 	if [ "$i18n" = "1" ]; then
-		echo 'LFLAGS+=-lintl' >> Makefile.settings;
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
 	fi
-	echo 'Please keep in mind that you need GNU make to make Axel!'
-	echo ''
 ;;
 Darwin )
 	echo '#define NOGETOPTLONG' >> config.h
-	echo 'LFLAGS+=-lpthread' >> Makefile.settings
+	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
 	if [ "$i18n" = "1" ]; then
-		echo 'LFLAGS+=-lintl' >> Makefile.settings;
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
 	fi
 	echo '#define DARWIN' >> config.h
-	echo 'Please keep in mind that you need GNU make to make Axel!'
-	echo ''
 ;;
 Linux | GNU/kFreeBSD)
-	echo 'LFLAGS+=-lpthread' >> Makefile.settings
+	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
 ;;
 SunOS )
 	echo '#define NOGETOPTLONG' >> config.h
 	echo '#define BSD_COMP' >> config.h
-	echo 'LFLAGS+=-lpthread -lsocket -lnsl' >> Makefile.settings
+	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread -lsocket -lnsl"
 	if [ "$i18n" = "1" ]; then
-		echo 'LFLAGS+=-lintl' >> Makefile.settings;
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
 	fi
-	echo 'Please keep in mind that you need GNU make to make Axel!'
-	echo ''
+;;
+HP-UX )
+	echo '#define NOGETOPTLONG' >> config.h
+	AXEL_LFLAGS="${AXEL_LFLAGS} -lpthread"
+	if [ "$i18n" = "1" ]; then
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
+	
+		if [ -d /usr/local/lib/hpux32 ]; then
+			AXEL_LFLAGS="${AXEL_LFLAGS} -L/usr/local/lib/hpux32"
+		fi
+	fi
 ;;
 CYGWIN_* )
-	echo 'LFLAGS+=-lpthread' >> Makefile.settings
+	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
 	if [ "$i18n" = "1" ]; then
-		echo 'LFLAGS+=-lintl' >> Makefile.settings;
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
 	fi
 	echo 'OUTFILE=axel.exe' >> Makefile.settings
 ;;
 * )
-	echo 'LFLAGS+=-lpthread' >> Makefile.settings
+	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
 	echo '#define NOGETOPTLONG' >> config.h
 	if [ "$i18n" = "1" ]; then
-		echo 'LFLAGS+=-lintl' >> Makefile.settings;
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl";
 	fi
 	echo 'WARNING: This architecture is unknown!'
 	echo ''
-	echo 'That does not mean Axel will not work, it just means I'\''ve never had the chance'
-	echo 'to test Axel on it. It'\''d be a great help if you could send me more information'
-	echo 'about your platform so I can add it to the build tools.'
+	echo 'That does not mean Axel will not work, it just means Axel is not tested on it.'
+	echo 'It'\''d be a great help if you could send me more information'
+	echo 'about your platform so that it can be addedto the build tools.'
 	echo 'You can try to build the program now, if you wish, this default setup might'
 	echo 'just work.'
 	echo ''
 ;;
 esac
+
+echo "CFLAGS=${AXEL_CFLAGS}" >> Makefile.settings
+echo "LFLAGS=${AXEL_LFLAGS}" >> Makefile.settings
 
 echo 'Configuration done:'
 if [ "$i18n" = "1" ]; then

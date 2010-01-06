@@ -4,7 +4,6 @@
 ## Copyright 2001 Lintux ##
 ###########################
 
-
 ### DEFINITIONS
 
 -include Makefile.settings
@@ -18,12 +17,6 @@ MOFILES = nl.mo de.mo ru.mo zh_CN.mo
 all: $(OUTFILE)
 install: install-bin install-etc install-man
 uninstall: uninstall-bin uninstall-etc uninstall-man
-
-ifdef I18N
-all: $(MOFILES)
-install: install-i18n
-uninstall: uninstall-i18n
-endif
 
 clean:
 	rm -f *.o $(OUTFILE) search core *.mo
@@ -52,12 +45,10 @@ uninstall-etc:
 
 $(OUTFILE): axel.o conf.o conn.o ftp.o http.o search.o tcp.o text.o
 	$(CC) *.o -o $(OUTFILE) $(LFLAGS)
-ifndef DEBUG
-	-$(STRIP) $(OUTFILE)
-endif
+	$(STRIP) $(OUTFILE)
 
 .c.o:
-	$(CC) -c $*.c -o $*.o -Wall $(CFLAGS)
+	$(CC) -c $*.c -o $*.o $(CFLAGS)
 
 install-bin:
 	mkdir -p $(DESTDIR)$(BINDIR)/
@@ -67,7 +58,7 @@ uninstall-bin:
 	rm -f $(BINDIR)/$(OUTFILE)
 
 tar:
-	version=$$(sed -n 's/#define AXEL_VERSION_STRING[ \t]*"\([^"]*\)"/\1/p' < axel.h) && \
+	version=`sed -n 's/#define AXEL_VERSION_STRING[ \t]*"\([^"]*\)"/\1/p' < axel.h` && \
 	tar --create --numeric-owner --owner 0 --group 0 --transform "s#^#axel-$${version}/#" "--file=axel-$${version}.tar" --exclude-vcs -- *.c *.h *.po *.1 configure Makefile axelrc.example gui API CHANGES COPYING CREDITS README && \
 	gzip --best < "axel-$${version}.tar" > "axel-$${version}.tar.gz" && \
 	bzip2 --best < "axel-$${version}.tar" > "axel-$${version}.tar.bz2"
@@ -87,6 +78,8 @@ tar:
 
 .po.mo: $@.po
 	msgfmt -vo $@ $*.po
+
+i18n-mofiles: $(MOFILES)
 
 install-i18n:
 	@echo Installing locale files...
