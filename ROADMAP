@@ -1,3 +1,9 @@
+Roadmap for Axel v2
+===================
+
+* replace old gettext with new one
+* Check if strrstr is provided by environment
+
 Roadmap for Axel v3
 ===================
 
