@@ -25,7 +25,7 @@
 
 #include "axel.h"
 
-static char *strrstr( char *haystack, char *needle );
+static char *axel_strrstr( char *haystack, char *needle );
 static void *search_speedtest( void *r );
 static int search_sortlist_qsort( const void *a, const void *b );
 
@@ -136,7 +136,7 @@ int search_makelist( search_t *results, char *url )
 	for( i = 1; strncmp( s1, "</pre>", 6 ) && i < results->conf->search_amount && *s1; i ++ )
 	{
 		s3 = strchr( s1, '\n' ); *s3 = 0;
-		s2 = strrstr( s1, "<a href=" ) + 8;
+		s2 = axel_strrstr( s1, "<a href=" ) + 8;
 		*s3 = '\n';
 		s3 = strchr( s2, ' ' ); *s3 = 0;
 		if( strcmp( results[0].url, s2 ) )
@@ -257,7 +257,7 @@ void *search_speedtest( void *r )
 	return( NULL );
 }
 
-char *strrstr( char *haystack, char *needle )
+char *axel_strrstr( char *haystack, char *needle )
 {
 	int i, j;
 	
