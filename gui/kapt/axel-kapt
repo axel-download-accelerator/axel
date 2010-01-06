@@ -40,20 +40,21 @@ url "Url (you can add mirrors)" -> @string()="'''
 
 b = '''";
 config :horizontal "OPTIONS" -> checks term max connex search;
-    checks  :horizontal -> proxy verb quiet;
-        proxy "No Proxy" -> @|" -N ";
-        verb "Verbose" -> @|" --verbose ";
-        quiet "Quiet" -> @|" -q ";
+    checks  :horizontal -> proxy verb quiet altern;
+        proxy "No Proxy" -> "-N " | ! @ ;
+        verb "Verbose" -> "--verbose " | ! @;
+        quiet "Quiet" -> "-q " | ! @ ;
+        altern "Alt Progress" -> "-a " | @;
 
-    term "Terminal Type" -> @string()="xterm";
+    term "Terminal Type" -> @string()="x-terminal-emulator";
     max "Max bps"-> @integer()=0;
     connex :horizontal "Connections" -> @integer()=4;
     search :framed "ftp Search" -> numsites | ! @ ;
-        numsites -> " --search=" @integer()=3;
+        numsites -> "--search=" @integer()=3 " ";
 
 
 local -> file | ! @ ;
-    file "Save as (optional). Choose a directory and type a filename..." -> " --output=" @directory();
+    file "Save as (optional). Choose a directory and type a filename..." -> "--output=\\"" @directory() "\\" ";
 
 buttons :horizontal "Actions" -> help mail doit quit;
     help -> @preview(helpstr,"Close")="Help";
@@ -71,7 +72,7 @@ part of the file.  Read the manual page - axel(1) for various options";
 
 bug -> "Please visit http://axel.alioth.debian.org/ to report bugs on axel-kapt";
 
-axel -> term " -e axel -s " max " -n "connex proxy verb quiet search " " local " " url;
+axel -> term " -e axel -s " max " -n "connex " " proxy verb quiet altern search local url;
 '''
 try:
     c = string.join(sys.argv[1:])

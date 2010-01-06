@@ -1,7 +1,8 @@
 UNRELEASED:
 
 - Make axel build on HP-UX, thanks Ciro Iriarte
-- Fix Solaris support, thanks Sebastian Kayser
+- Fix Solaris support (Closes: #312092), thanks Sebastian Kayser
+- Restore kapt meanings (Closes: #311811), thanks Daniel Gimpelevich
 
 Version 2.4
 
