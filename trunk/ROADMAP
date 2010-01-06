@@ -3,6 +3,7 @@ Roadmap for Axel v2
 
 * replace old gettext with new one
 * Check if strrstr is provided by environment
+* Use SI prefixes
 
 Roadmap for Axel v3
 ===================

@@ -276,12 +276,12 @@ int main( int argc, char *argv[] )
 			}
 		}
 		sprintf( string, "%s.st", fn );
-		if( access( fn, F_OK ) == 0 ) if( access( string, F_OK ) != 0 )
+		if( access( fn, F_OK ) == 0 && access( string, F_OK ) != 0 )
 		{
 			fprintf( stderr, _("No state file, cannot resume!\n") );
 			return( 1 );
 		}
-		if( access( string, F_OK ) == 0 ) if( access( fn, F_OK ) != 0 )
+		if( access( string, F_OK ) == 0 && access( fn, F_OK ) != 0 )
 		{
 			printf( _("State file found, but no downloaded data. Starting from scratch.\n" ) );
 			unlink( string );
@@ -435,14 +435,14 @@ void stop( int signal )
 /* Convert a number of bytes to a human-readable form			*/
 char *size_human( long long int value )
 {
-	if( value == 1 )
+	if( value < 1024 )
 		sprintf( string, _("%lld byte"), value );
-	else if( value < 1024 )
-		sprintf( string, _("%lld bytes"), value );
-	else if( value < 10485760 )
-		sprintf( string, _("%.1f kilobytes"), (float) value / 1024 );
+	else if( value < 1024 * 1024 )
+		sprintf( string, _("%.1f Kilobyte"), (float) value / 1024 );
+	else if( value < 1024 * 1024 * 1024 )
+		sprintf( string, _("%.1f Megabyte"), (float) value / (1024 * 1024) );
 	else
-		sprintf( string, _("%.1f megabytes"), (float) value / 1048576 );
+		sprintf( string, _("%.1f Gigabyte"), (float) value / (1024 * 1024 * 1024) );
 	
 	return( string );
 }
