@@ -3,6 +3,7 @@ UNRELEASED:
 - Make axel build on HP-UX, thanks Ciro Iriarte
 - Fix Solaris support (Closes: #312092), thanks Sebastian Kayser
 - Restore kapt meanings (Closes: #311811), thanks Daniel Gimpelevich
+- Add PO-Revision-Date header to ru.po
 
 Version 2.4
 
