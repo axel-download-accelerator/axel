@@ -199,14 +199,13 @@ SunOS )
 ;;
 HP-UX )
 	echo '#define NOGETOPTLONG' >> config.h
-	AXEL_LFLAGS="${AXEL_LFLAGS} -lpthread"
 	if [ "$i18n" = "1" ]; then
-		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
-	
 		if [ -d /usr/local/lib/hpux32 ]; then
 			AXEL_LFLAGS="${AXEL_LFLAGS} -L/usr/local/lib/hpux32"
 		fi
+		AXEL_LFLAGS="${AXEL_LFLAGS} -lintl"
 	fi
+	AXEL_LFLAGS="${AXEL_LFLAGS} -lpthread"
 ;;
 CYGWIN_* )
 	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
