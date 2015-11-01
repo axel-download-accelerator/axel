@@ -5,6 +5,9 @@ Version 2.5, 01 Nov 2015
 * configure:
     - Changed the default prefix to /usr.
     - Changed the default etc path to /etc.
+* gui/: removed. The binary axel-kapt depended on kaptain, that is
+        no longer available in QT5. For details, see
+        https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=789819
 * manpage:
     - Moved to man/ directory.
     - Using txt2man to generate the manpage.
