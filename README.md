@@ -12,13 +12,14 @@
 1. HELP THIS PROJECT
 --------------------
 
-Axel needs your help. If you are a programmer and if you wants to
+Axel needs your help. '''If you are a programmer''' and if you wants to
 help a nice project, this is your opportunity.
 
-My name is Eriberto and I am not a C developer. I imported Axel from
+My name is Eriberto and '''I am not a C developer'''. I imported Axel from
 its old repository[1] to GitHub (the original homepage and developers
 are inactive). After this, I applied all patches found in Debian project
-for this program. I also maintain Axel packaged in Debian[2].
+and other places for this program. All my initial work was registered in
+CHANGES file (version 2.5). I also maintain Axel packaged in Debian[2].
 
 If you are interested to help Axel, read the README.to-contribute[3] file.
 
