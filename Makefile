@@ -10,7 +10,7 @@
 
 .SUFFIXES: .po .mo
 
-# Add your translation here..
+# Add your translation here
 MOFILES = nl.mo de.mo ru.mo zh_CN.mo ja.mo
 
 
@@ -63,15 +63,19 @@ tar:
 
 ### I18N FILES
 
-%.po: $(wildcard *.c *.h)
-	-@mv $@ $@.bak
-	xgettext -k_ -o$@ *.[ch]
-	@if [ -e $@.bak ]; then \
-		echo -n Merging files...; \
-		msgmerge -vo $@.combo $@.bak $@; \
-		rm -f $@ $@.bak; \
-		mv $@.combo $@; \
-	fi
+# The following target is generating changes in original source code when
+# building. It will be temporally disabled. I will fix/change/optimize it
+# in future.
+#
+#%.po: $(wildcard *.c *.h)
+#	-@mv $@ $@.bak
+#	xgettext -k_ -o$@ *.[ch]
+#	@if [ -e $@.bak ]; then \
+#		echo -n Merging files...; \
+#		msgmerge -vo $@.combo $@.bak $@; \
+#		rm -f $@ $@.bak; \
+#		mv $@.combo $@; \
+#	fi
 
 .po.mo: $@.po
 	msgfmt -vo $@ $*.po

@@ -13,6 +13,8 @@ Version 2.5, 2015-11-01
         available for QT5 (dead upstream development). For details, see
         https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=789819
 * http.c: fix a possible buffer overflow.
+* Makefile: disabled the .po regeneration/merge actions to avoid changes in
+    source code when building. I will try to fix it in future.
 * manpage:
     - Moved to man/ directory.
     - Using txt2man to generate the manpage.
