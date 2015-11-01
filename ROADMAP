@@ -7,7 +7,7 @@ Roadmap for Axel v2
 Roadmap for Axel v3
 ===================
 
-Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://alioth.debian.org/tracker/?group_id=100070&atid=413085 ) for detailled information.
+Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://github.com/eribertomota/axel/issues ) for detailled information.
 Pre-release version numbers of Axel 3 will start with 2.99. Starting with the 3.x series, the following version scheme will be adopted:
 
 x.y.z
