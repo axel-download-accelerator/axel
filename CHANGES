@@ -38,6 +38,12 @@ Version 2.5, 2015-11-01
   as a patch to Debian project, on 03 Jul 2010. For details, see
   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=525290
 
+  [ unknown person ] 2011-04-12
+
+*  Fixed an issue that produces a Bad HTTP Request when 302 redirected link is
+   longer than 255 chars (like youtube). For details, see
+   https://alioth.debian.org/tracker/index.php?func=detail&aid=313080&group_id=100070&atid=413085
+
   [ Osamu Aoki ] 2012-03-10
 
 * Added the translation to Japanese. See
