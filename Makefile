@@ -41,11 +41,11 @@ uninstall-etc:
 ### MAIN PROGRAM
 
 $(OUTFILE): axel.o conf.o conn.o ftp.o http.o search.o tcp.o text.o
-	$(CC) *.o -o $(OUTFILE) $(LFLAGS)
+	$(CC) *.o -o $(OUTFILE) $(LFLAGS) $(LDFLAGS) $(CPPFLAGS)
 	$(STRIP) $(OUTFILE)
 
 .c.o:
-	$(CC) -c $*.c -o $*.o $(CFLAGS)
+	$(CC) -c $*.c -o $*.o $(CFLAGS) $(LDFLAGS) $(CPPFLAGS)
 
 install-bin:
 	mkdir -p $(DESTDIR)$(BINDIR)/
