@@ -85,7 +85,7 @@ FILES
  enough information. The position of the system-wide configuration file might be different.
 
 COPYRIGHT
- Axel was originally written by Wilmer van der Gaast and other authors over time. Please, see the AUTHORS file.
+ Axel was originally written by Wilmer van der Gaast and other authors over time. Please, see the CREDITS file.
 
  The current Axel homepage (since 2015) is https://github.com/eribertomota/axel
 
