@@ -2,6 +2,7 @@
   * Axel -- A lighter download accelerator for Linux and other Unices. *
   *                                                                    *
   * Copyright 2001 Wilmer van der Gaast                                *
+  * Copyright 2015 Joao Eriberto Mota Filho                            *
   \********************************************************************/
 
 /* Text interface							*/
@@ -576,7 +577,9 @@ void print_help()
 void print_version()
 {
 	printf( _("Axel version %s (%s)\n"), AXEL_VERSION_STRING, ARCH );
-	printf( "\nCopyright 2001-2002 Wilmer van der Gaast.\n" );
+	printf( "\nCopyright 2001-2007 Wilmer van der Gaast\n" );
+	printf( "Copyright 2015      Joao Eriberto Mota Filho\n" );
+	printf( "and others. Please, see the CREDITS file.\n" );
 }
 
 /* Print any message in the axel structure				*/
