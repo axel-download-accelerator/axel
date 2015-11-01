@@ -5,6 +5,12 @@ Version 2.5, 01 Nov 2015
 * configure:
     - Changed the default prefix to /usr.
     - Changed the default etc path to /etc.
+* manpage:
+    - Moved to man/ directory.
+    - Using txt2man to generate the manpage.
+    - Updated the manpage.
+    - Removed some typos.
+    - Dropped the Chinese manpage (outdated now).
 
   [ Other people ]
 
