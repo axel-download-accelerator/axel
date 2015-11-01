@@ -9,7 +9,7 @@
 
 prefix='/usr'
 bindir='$prefix/bin'
-etcdir='$prefix/etc'
+etcdir='/etc'
 sharedir='$prefix/share'
 mandir='$sharedir/man'
 locale='$sharedir/locale'
