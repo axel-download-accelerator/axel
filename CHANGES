@@ -1,3 +1,10 @@
+Version 2.5, 01 Nov 2015
+
+  [Joao Eriberto Mota Filho]
+
+* configure:
+    - Changed the default prefix to /usr.
+
 UNRELEASED:
 
 - Make axel build on HP-UX, thanks Ciro Iriarte

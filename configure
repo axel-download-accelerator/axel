@@ -1,12 +1,13 @@
 #!/bin/sh
 
-###########################
-##  Configurer for Axel  ##
-##                       ##
-## Copyright 2001 Lintux ##
-###########################
+########################################################################
+##  Configurer for Axel                                               ##
+##                                                                    ##
+## Copyright 2001 Lintux (Wilmer van der Gaast <wilmer@gaast.net>     ##
+## Copyright 2015 Joao Eriberto Mota Filho <eriberto@eriberto.pro.br> ##
+########################################################################
 
-prefix='/usr/local'
+prefix='/usr'
 bindir='$prefix/bin'
 etcdir='$prefix/etc'
 sharedir='$prefix/share'
