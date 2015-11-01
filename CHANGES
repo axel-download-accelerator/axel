@@ -2,6 +2,7 @@ Version 2.5, 2015-11-01
 
   [ Joao Eriberto Mota Filho ]
 
+* Changed the homepage of the project in several files.
 * configure:
     - Changed the default prefix to /usr.
     - Changed the default etc path to /etc.
