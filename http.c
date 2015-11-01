@@ -2,9 +2,10 @@
   * Axel -- A lighter download accelerator for Linux and other Unices. *
   *                                                                    *
   * Copyright 2001 Wilmer van der Gaast                                *
+  * Copyright 2015 Joao Eriberto Mota Filho <eriberto@eriberto.pro.br> *                                *
   \********************************************************************/
 
-/* HTTP control file							*/
+/* HTTP control file                                                   */
 
 /*
   This program is free software; you can redistribute it and/or modify
@@ -164,7 +165,7 @@ int http_exec( http_t *conn )
 		{
 			i ++;
 		}
-		strncat( conn->headers, s, MAX_QUERY );
+		strncat( conn->headers, s, MAX_QUERY - strlen(conn->headers) - 1 );
 	}
 
 #ifdef DEBUG

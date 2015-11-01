@@ -12,6 +12,7 @@ Version 2.5, 2015-11-01
 * gui/: removed. The binary axel-kapt depended on kaptain that is no longer
         available for QT5 (dead upstream development). For details, see
         https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=789819
+* http.c: fix a possible buffer overflow.
 * manpage:
     - Moved to man/ directory.
     - Using txt2man to generate the manpage.
