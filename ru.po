@@ -2,10 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-02 00:05+0200\n"
+"POT-Creation-Date: 2012-03-11 00:56+0900\n"
 "PO-Revision-Date: 2009-04-02 00:05+0200\n"
 "Last-Translator: newhren <colimit@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -211,17 +212,17 @@ msgstr "%lld байт"
 
 #: text.c:441
 #, c-format
-msgid "%lld bytes"
-msgstr "%lld байта(ов)"
+msgid "%.1f Kilobyte"
+msgstr "%.1f килобайта(ов)"
 
 #: text.c:443
 #, c-format
-msgid "%.1f kilobytes"
-msgstr "%.1f килобайта(ов)"
+msgid "%.1f Megabyte"
+msgstr "%.1f мегабайта(ов)"
 
 #: text.c:445
-#, c-format
-msgid "%.1f megabytes"
+#, fuzzy, c-format
+msgid "%.1f Gigabyte"
 msgstr "%.1f мегабайта(ов)"
 
 #: text.c:454
@@ -245,7 +246,7 @@ msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i секунд(ы)"
 
 #: text.c:540
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -277,10 +278,10 @@ msgstr ""
 "-h\tЭта информация\n"
 "-V\tИнформация о версии\n"
 "\n"
-"Об ошибках сообщайте на http://axel.alioth.debian.org/\n"
+""
 
 #: text.c:557
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -312,7 +313,7 @@ msgstr ""
 "--help\t\t\t-h\tЭта информация\n"
 "--version\t\t-V\tИнформация о версии\n"
 "\n"
-"Об ошибках сообщайте на http://axel.alioth.debian.org/\n"
+""
 
 #: text.c:578
 #, c-format

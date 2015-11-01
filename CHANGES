@@ -33,6 +33,8 @@ Version 2.5, 2015-11-01
 
   [ Osamu Aoki ] 2012-03-10
 
+* Added the translation to Japanese. See
+  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=663286
 * Changed the configure file to honor the noopt when building. So, was removed
   the '-Os' option. See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=645271
 

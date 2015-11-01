@@ -1,198 +1,204 @@
+# Japanese messages for axel
+# Copyright (C) 2012 Osamu Aoki <osamu@debian.org>
+# This file is distributed under the same license as the axcel package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-11 00:56+0900\n"
-"PO-Revision-Date: 2008-09-15 22:08+0200\n"
-"Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
-"Language-Team: deutsch <de@li.org>\n"
+"PO-Revision-Date: 2012-03-11 00:03+0900\n"
+"Last-Translator: Osamu Aoki <osamu@debian.org>\n"
+"Language-Team: debian-japanese@lists.debian.org\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
 
 #: axel.c:55
 msgid "Buffer resized for this speed."
-msgstr "Buffer f�r diese Geschwindigkeit angepasst."
+msgstr "このスピードに合わせバッファーをリサイズします。"
 
 #: axel.c:91
 msgid "Could not parse URL.\n"
-msgstr "Kann URL nicht parsen.\n"
+msgstr "URLを解析できません。\n"
 
 #: axel.c:126
 #, c-format
 msgid "File size: %lld bytes"
-msgstr "Dateigr��e: %lld bytes"
+msgstr "ファイルサイズ: %lld バイト"
 
 #: axel.c:143
 #, c-format
 msgid "Opening output file %s"
-msgstr "�ffne Ausgabedatei: %s"
+msgstr "出力ファイル %s をオープンします"
 
 #: axel.c:152
 msgid "Server unsupported, starting from scratch with one connection."
-msgstr "Server versteht REST nicht, Neustart mit einer Verbindung."
+msgstr ""
+"サポートされていないサーバーなので、単一コネクションを使い最初から始めます。"
 
 #: axel.c:171
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
-msgstr "Status-Datei gefunden: %lld bytes �bertragen, %lld verbleiben."
+msgstr "状態ファイル発見: %lld バイトがダウンロード済み、あと %lld バイト。"
 
 #: axel.c:178 axel.c:190
 msgid "Error opening local file"
-msgstr "Fehler beim �ffnen der lokalen Datei"
+msgstr "ローカルファイルをオープンする際にエラー発生しました"
 
 #: axel.c:202
 msgid "Crappy filesystem/OS.. Working around. :-("
-msgstr "Schlechtes Datei-/Betriebssystem, Umgehung.."
+msgstr "ファイルシステム/OSがイマイチ。回避します。 :-("
 
 #: axel.c:235
 msgid "Starting download"
-msgstr "Starte Abruf"
+msgstr "ダウンロード開始します"
 
 #: axel.c:242 axel.c:401
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
-msgstr "Verbindung %i: Abruf von %s:%i �ber Schnittstelle %s"
+msgstr "接続 %i は %s:%i から、インターフェース %s でダウンロードします"
 
 #: axel.c:249 axel.c:411
 msgid "pthread error!!!"
-msgstr "pthread Fehler!!!"
+msgstr "pthread のエラー!!!"
 
 #: axel.c:317
 #, c-format
 msgid "Error on connection %i! Connection closed"
-msgstr "Fehler bei Verbindung %i! Verbindung getrennt"
+msgstr "接続 %i でエラー! コネクションをクローズしました"
 
 #: axel.c:331
 #, c-format
 msgid "Connection %i unexpectedly closed"
-msgstr "Verbindung %i unerwartet getrennt"
+msgstr "接続 %i が不意にクローズされました"
 
 #: axel.c:335 axel.c:352
 #, c-format
 msgid "Connection %i finished"
-msgstr "Verbindung %i beendet"
+msgstr "接続 %i が終了しました"
 
 #: axel.c:364
 msgid "Write error!"
-msgstr "Schreibfehler!"
+msgstr "書き込みエラー!"
 
 #: axel.c:376
 #, c-format
 msgid "Connection %i timed out"
-msgstr "Time-out bei Verbindung %i"
+msgstr "接続 %i がタイムアウトしました"
 
 #: conf.c:107
 #, c-format
 msgid "Error in %s line %i.\n"
-msgstr "Fehler in %s Zeile %i.\n"
+msgstr "%s の %i 行目でエラー。\n"
 
 #: conn.c:349 ftp.c:124
 #, c-format
 msgid "Too many redirects.\n"
-msgstr "Zu viele Weiterleitungen (redirects).\n"
+msgstr "リディレクト回数が多すぎます。\n"
 
 #: conn.c:368
 #, c-format
 msgid "Unknown HTTP error.\n"
-msgstr "Unbekannter HTTP-Fehler.\n"
+msgstr "未知の HTTP エラー。\n"
 
 #: ftp.c:35 http.c:60
 #, c-format
 msgid "Unable to connect to server %s:%i\n"
-msgstr "Keine Verbindung mit %s:%i m�glich\n"
+msgstr "サーバー %s:%i に接続できません。\n"
 
 #: ftp.c:91
 #, c-format
 msgid "Can't change directory to %s\n"
-msgstr "Kann nicht in Verzeichnis %s wechseln\n"
+msgstr "ディレクトリーを %s に変更できません\n"
 
 #: ftp.c:117 ftp.c:177
 #, c-format
 msgid "File not found.\n"
-msgstr "Datei nicht gefunden.\n"
+msgstr "ファイルが見つかりません。\n"
 
 #: ftp.c:179
 #, c-format
 msgid "Multiple matches for this URL.\n"
-msgstr "Mehrere Treffer f�r diese URL.\n"
+msgstr "この URL には複数のマッチがあります。\n"
 
 #: ftp.c:250 ftp.c:256
 #, c-format
 msgid "Error opening passive data connection.\n"
-msgstr "Fehler beim �ffnen der Passiv-Verbindung.\n"
+msgstr "受動的データー接続の開始でエラー。\n"
 
 #: ftp.c:286
 #, c-format
 msgid "Error writing command %s\n"
-msgstr "Fehler beim Schreiben des Befehls %s\n"
+msgstr "コマンド %s を書く際にエラー\n"
 
 #: ftp.c:311 http.c:150
 #, c-format
 msgid "Connection gone.\n"
-msgstr "Verbindung geschlossen.\n"
+msgstr "接続が失われています。\n"
 
 #: http.c:45
 #, c-format
 msgid "Invalid proxy string: %s\n"
-msgstr "Ung�ltige Proxy-Angabe: %s\n"
+msgstr "無効なプロキシストリング: %s\n"
 
 #: text.c:154
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
-msgstr "Kann Standardausgabe nicht nach /dev/null umleiten.\n"
+msgstr "標準出力を /dev/null にリディレクトできません。\n"
 
 #: text.c:176
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
-msgstr "Fehler beim Lesen der URL (Zu lang?).\n"
+msgstr "URL を読もうとした際に(長すぎ?)エラー。\n"
 
 #: text.c:185
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
-msgstr "Kann URLs mit mehr als %d Zeichen nicht nutzen\n"
+msgstr "%d を超える長さの URL は取り扱えません\n"
 
 #: text.c:190
 #, c-format
 msgid "Initializing download: %s\n"
-msgstr "Starte Abruf: %s\n"
+msgstr "ダウンロードを初期化: %s\n"
 
 #: text.c:197
 #, c-format
 msgid "Doing search...\n"
-msgstr "Suche gestartet...\n"
+msgstr "サーチ中...\n"
 
 #: text.c:201
 #, c-format
 msgid "File not found\n"
-msgstr "Datei nicht gefunden\n"
+msgstr "ファイルが見つかりません\n"
 
 #: text.c:205
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
-msgstr "Teste Geschwindigkeiten, das kann etwas dauern...\n"
+msgstr "スピードをテスト中、時間がかかるかもしれません...\n"
 
 #: text.c:210
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
-msgstr "%i benutzbare Server gefunden, werde diese URLs benutzen:\n"
+msgstr ""
+"使用可能なサーバーが %i つ見つかりましたので、以下の URL を使用します:\n"
 
 #: text.c:269
 #, c-format
 msgid "Filename too long!\n"
-msgstr "Dateiname zu lang!\n"
+msgstr "ファイル名が長すぎます!\n"
 
 #: text.c:281
 #, c-format
 msgid "No state file, cannot resume!\n"
-msgstr "Keine Status-Datei, Fortsetzung nicht m�glich!\n"
+msgstr "状態ファイルがありませんので、再開できません!\n"
 
 #: text.c:286
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
-msgstr "Status-Datei gefunden, aber noch nichts �bertragen. Neustart.\n"
+msgstr ""
+"状態ファイルが見つかったけれど、ダウンロードされたデーターが見つかりません。"
+"最初から始めます。\n"
 
 #: text.c:417
 #, c-format
@@ -201,47 +207,47 @@ msgid ""
 "Downloaded %s in %s. (%.2f KB/s)\n"
 msgstr ""
 "\n"
-"%s abgerufen in %s. (%.2f KB/s)\n"
+"%s を %s にダウンロード。(%.2f KB/s)\n"
 
 #: text.c:439
 #, c-format
 msgid "%lld byte"
-msgstr "%lld byte"
+msgstr "%lld バイト"
 
 #: text.c:441
 #, c-format
 msgid "%.1f Kilobyte"
-msgstr "%.1f Kilobytes"
+msgstr "%.1f キロバイト"
 
 #: text.c:443
 #, c-format
 msgid "%.1f Megabyte"
-msgstr "%.1f Megabytes"
+msgstr "%.1f メガバイト"
 
 #: text.c:445
 #, c-format
 msgid "%.1f Gigabyte"
-msgstr "%.1f Gigabytes"
+msgstr "%.1f ギガバイト"
 
 #: text.c:454
 #, c-format
 msgid "%i second"
-msgstr "%i Sekunde"
+msgstr "%i 秒"
 
 #: text.c:456
 #, c-format
 msgid "%i seconds"
-msgstr "%i Sekunden"
+msgstr "%i 秒"
 
 #: text.c:458
 #, c-format
 msgid "%i:%02i seconds"
-msgstr "%i:%02i Sekunden"
+msgstr "%i:%02i 秒"
 
 #: text.c:460
 #, c-format
 msgid "%i:%02i:%02i seconds"
-msgstr "%i:%02i:%02i Sekunden"
+msgstr "%i:%02i:%02i 秒"
 
 #: text.c:540
 #, c-format
@@ -261,23 +267,24 @@ msgid ""
 "-h\tThis information\n"
 "-V\tVersion information\n"
 "\n"
-"Visit http://axel.alioth.debian.org/ to report bugs\n"
+""
 msgstr ""
-"Aufruf: axel [Optionen] url1 [url2] [url...]\n"
+"使用法: axel [options] url1 [url2] [url...]\n"
 "\n"
-"-s x\tMaximale Geschwindigkeit (Bytes pro Sekunde)\n"
-"-n x\tmaximale gleichzeitige Verbindungen\n"
-"-o f\tlokale Ausgabe-Datei\n"
-"-S [x]\tSuche nach Spiegelservern und Abruf von x Servern\n"
-"-H x\tSende HTTP-Header\n"
-"-U x\tSetze Browser-Kennung\n"
-"-N\tkeinen Proxy-Server benutzen\n"
-"-q\tkeine Meldungen auf Standard-Ausgabe\n"
-"-v\tzus�tzliche Status-Information\n"
-"-h\tdiese Information\n"
-"-V\tVersions-Information\n"
+"-s x\t最大速度を指定 (毎秒のバイト数)\n"
+"-n x\t最大接続数を指定\n"
+"-o f\tローカルの出力ファイルを指定\n"
+"-S [x]\tミラーを探し x サーバーからダウンロード\n"
+"-H x\tヘッダーストリングを追加\n"
+"-U x\tユーザーエージェントを設定\n"
+"-N\tプロキシサーバーを一切使用しなくする\n"
+"-q\t標準出力を使用しない\n"
+"-v\t状態情報を増加させる\n"
+"-a\t代替のプログレスインディケーター\n"
+"-h\tこの情報\n"
+"-V\tバージョン情報\n"
 "\n"
-"Fehler an lintux@lintux.cx melden.\n"
+""
 
 #: text.c:557
 #, c-format
@@ -297,25 +304,27 @@ msgid ""
 "--help\t\t\t-h\tThis information\n"
 "--version\t\t-V\tVersion information\n"
 "\n"
-"Visit http://axel.alioth.debian.org/ to report bugs\n"
+""
 msgstr ""
-"Aufruf: axel [Optionen] url1 [url2] [url...]\n"
+"使用法: axel [options] url1 [url2] [url...]\n"
 "\n"
-"--max-speed=x\t\t-s x\tmaximale Geschwindigkeit (Bytes pro Sekunde)\n"
-"--num-connections=x\t-n x\tmaximale gleichzeitige Verbindungen\n"
-"--output=f\t\t-o f\tlokale Ausgabe-Datei\n"
-"--search=[x]\t\t-S [x]  Suche nach Spiegelservern und Abruf von x Servern\n"
-"--header=x\t\t-H x\tSende HTTP-Header\n"
-"--user-agent=x\t\t-U x\tSetze Browser-Kennung\n"
-"--no-proxy\t\t-N\tkeinen Proxy-Server benutzen\n"
-"--quiet\t\t\t-q\tkeine Meldungen auf Standard-Ausgabe\n"
-"--verbose\t\t-v\tzus�tzliche Status-Information\n"
-"--help\t\t\t-h\tdiese Information\n"
-"--version\t\t-V\tVersions-Information\n"
+"-max-speed=x\t\t-s x\t最大速度を指定 (毎秒のバイト数)\n"
+"--num-connections=x\t\t-n x\t最大接続数を指定\n"
+"--output=f\t\t-o f\tローカルの出力ファイルを指定\n"
+"--search[=x]\t\t-S [x]\tミラーを探し x サーバーからダウンロード\n"
+"--header=x\t\t-H x\tヘッダーストリングを追加\n"
+"--user-agent=x\t\t-U x\tユーザーエージェントを設定\n"
+"--no-proxy\t\t-N\tプロキシサーバーを一切使用しなくする\n"
+"--quiet\t\t\t-q\t標準出力を使用しない\n"
+"--verbose\t\t-v\t状態情報を増加させる\n"
+"--alternate\t\t-a\t代替のプログレスインディケーター\n"
+"--help\t\t\t-h\tこの情報\n"
+"--version\t\t-V\tバージョン情報\n"
 "\n"
-"Fehler an lintux@lintux.cx melden.\n"
+""
 
 #: text.c:578
 #, c-format
 msgid "Axel version %s (%s)\n"
-msgstr "Axel Version %s (%s)\n"
+msgstr "Axel バージョン %s (%s)\n"
+

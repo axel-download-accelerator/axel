@@ -2,10 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-02 00:04+0200\n"
+"POT-Creation-Date: 2012-03-11 00:56+0900\n"
 "PO-Revision-Date: 2001-11-14 15:22+0200\n"
 "Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
 "Language-Team: Dutch <nl@li.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
@@ -19,9 +20,9 @@ msgid "Could not parse URL.\n"
 msgstr "Kan URL niet verwerken.\n"
 
 #: axel.c:126
-#, fuzzy, c-format
+#, c-format
 msgid "File size: %lld bytes"
-msgstr "Bestandsgrootte: %i bytes"
+msgstr "Bestandsgrootte: %illd bytes"
 
 #: axel.c:143
 #, c-format
@@ -33,9 +34,9 @@ msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server niet ondersteund, opnieuw beginnen met 1 verbinding."
 
 #: axel.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
-msgstr ".st bestand gevonden: %i bytes gedownload, %i te gaan."
+msgstr ".st bestand gevonden: %illd bytes gedownload, %lld te gaan."
 
 #: axel.c:178 axel.c:190
 msgid "Error opening local file"
@@ -202,24 +203,24 @@ msgstr ""
 "%s gedownload in %s. (%.2f KB/s)\n"
 
 #: text.c:439
-#, fuzzy, c-format
+#, c-format
 msgid "%lld byte"
-msgstr "%i byte"
+msgstr "%lld byte"
 
 #: text.c:441
-#, fuzzy, c-format
-msgid "%lld bytes"
-msgstr "%i bytes"
+#, c-format
+msgid "%.1f Kilobyte"
+msgstr "%.1f Kilobytes"
 
 #: text.c:443
 #, c-format
-msgid "%.1f kilobytes"
-msgstr "%.1f kilobytes"
+msgid "%.1f Megabyte"
+msgstr "%.1f Megabytes"
 
 #: text.c:445
 #, c-format
-msgid "%.1f megabytes"
-msgstr "%.1f megabytes"
+msgid "%.1f Gigabyte"
+msgstr "%.1f Gigabytes"
 
 #: text.c:454
 #, c-format
@@ -242,7 +243,7 @@ msgid "%i:%02i:%02i seconds"
 msgstr "%i:%02i:%02i seconden"
 
 #: text.c:540
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -274,7 +275,7 @@ msgstr ""
 "-h\tDeze informatie\n"
 "-V\tVersie informatie\n"
 "\n"
-"Bugs melden aan lintux@lintux.cx\n"
+""
 
 #: text.c:557
 #, fuzzy, c-format
@@ -309,7 +310,7 @@ msgstr ""
 "--help\t\t\t-h\tDeze informatie\n"
 "--version\t\t-V\tVersie informatie\n"
 "\n"
-"Bugs melden aan lintux@lintux.cx\n"
+""
 
 #: text.c:578
 #, c-format

@@ -11,7 +11,7 @@
 .SUFFIXES: .po .mo
 
 # Add your translation here..
-MOFILES = nl.mo de.mo ru.mo zh_CN.mo
+MOFILES = nl.mo de.mo ru.mo zh_CN.mo ja.mo
 
 
 all: $(OUTFILE)
@@ -63,7 +63,7 @@ tar:
 
 ### I18N FILES
 
-%.po:
+%.po: $(wildcard *.c *.h)
 	-@mv $@ $@.bak
 	xgettext -k_ -o$@ *.[ch]
 	@if [ -e $@.bak ]; then \
