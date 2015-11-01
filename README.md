@@ -1,8 +1,11 @@
 # AXEL
-## Light command line download accelerator for Linux and Unix
+**Light command line download accelerator for Linux and Unix**
+
+
 
 **1. HELP THIS PROJECT**
 **2. WHAT IS AXEL?**
+
 
 
 --------------------
