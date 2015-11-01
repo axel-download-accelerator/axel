@@ -456,9 +456,9 @@ char *time_human( int value )
 	else if( value < 60 )
 		sprintf( string, _("%i seconds"), value );
 	else if( value < 3600 )
-		sprintf( string, _("%i:%02i seconds"), value / 60, value % 60 );
+		sprintf( string, _("%i:%02i minute(s)"), value / 60, value % 60 );
 	else
-		sprintf( string, _("%i:%02i:%02i seconds"), value / 3600, ( value / 60 ) % 60, value % 60 );
+		sprintf( string, _("%i:%02i:%02i hour(s)"), value / 3600, ( value / 60 ) % 60, value % 60 );
 	
 	return( string );
 }

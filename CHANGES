@@ -38,6 +38,11 @@ Version 2.5, 2015-11-01
   as a patch to Debian project, on 03 Jul 2010. For details, see
   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=525290
 
+  [ unknown person ] 2010-08-19
+
+* Fixed incorrect unit of time in download summary. For details see
+  https://alioth.debian.org/tracker/index.php?func=detail&aid=312669&group_id=100070&atid=413085
+
   [ unknown person ] 2011-04-12
 
 *  Fixed an issue that produces a Bad HTTP Request when 302 redirected link is
