@@ -2,8 +2,8 @@
 **Light command line download accelerator for Linux and Unix**
 
 
-
-**1. HELP THIS PROJECT**
+<br><br>
+**1. HELP THIS PROJECT**<br>
 **2. WHAT IS AXEL?**
 
 
