@@ -1,8 +1,9 @@
-  /********************************************************************\
-  * Axel -- A lighter download accelerator for Linux and other Unices. *
-  *                                                                    *
-  * Copyright 2001 Wilmer van der Gaast                                *
-  \********************************************************************/
+  /*****************************************************************************************\
+  * Axel -- A lighter download accelerator for Linux and other Unices.                     *
+  *                                                                                        *
+  * Copyright 2001 Wilmer van der Gaast                                                    *
+  * Copyright 2010 Mark Smith <nanog@85d5b20a518b8f6864949bd940457dc124746ddc.nosense.org> *
+  \*****************************************************************************************/
 
 /* TCP control file							*/
 
