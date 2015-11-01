@@ -1,3 +1,11 @@
+2.5 version:
+
+- Barry deFreese <bdefreese@debian.org>
+  Build over GNU/Hurd.
+
+
+Up to the 2.4 version:
+
 An not-quite-sorted list of people who helped somehow:
 
 - Philipp Hagemeister <ubuntu@phihag.de>
@@ -43,7 +51,7 @@ An not-quite-sorted list of people who helped somehow:
 
 - Paul Evans <pevans@users.sourceforge.net>
   For being a very good beta tester.
-  For creating axel-kapt.
+  For creating axel-kapt. (deprected in 2.5 version, see the CHANGES file)
 
 - Justin A <justin@bouncybouncy.net>
   For some testing and for the new (multi-URL) syntax idea.
