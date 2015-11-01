@@ -4,6 +4,7 @@
 ##  Configurer for Axel                                               ##
 ##                                                                    ##
 ## Copyright 2001 Lintux (Wilmer van der Gaast <wilmer@gaast.net>     ##
+## Copyright 2009 Barry deFreese <bdefreese@debian.org>
 ## Copyright 2015 Joao Eriberto Mota Filho <eriberto@eriberto.pro.br> ##
 ########################################################################
 
@@ -187,7 +188,7 @@ Darwin )
 	fi
 	echo '#define DARWIN' >> config.h
 ;;
-Linux | GNU/kFreeBSD)
+Linux | GNU/kFreeBSD | GNU)
 	AXEL_LFLAGS="${AXEL_LFLAGS} -pthread"
 ;;
 SunOS )

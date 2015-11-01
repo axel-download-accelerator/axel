@@ -5,8 +5,8 @@ Version 2.5, 01 Nov 2015
 * configure:
     - Changed the default prefix to /usr.
     - Changed the default etc path to /etc.
-* gui/: removed. The binary axel-kapt depended on kaptain, that is
-        no longer available in QT5. For details, see
+* gui/: removed. The binary axel-kapt depended on kaptain, that is no longer
+        available in QT5. For details, see
         https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=789819
 * manpage:
     - Moved to man/ directory.
@@ -15,7 +15,12 @@ Version 2.5, 01 Nov 2015
     - Removed some typos.
     - Dropped the Chinese manpage (outdated now).
 
-  [ Other people ]
+  [ Barry deFreese ]
+
+* Add Hurd (GNU) to configure file. It will allow Axel to build over
+  GNU/Hurd. This change was provided by Barry deFreese <bdefreese@debian.org>,
+  as a patch to Debian project, on 11 Jun 2009. For details, see
+  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=532793
 
   [ From original authors ]
 
