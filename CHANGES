@@ -1,12 +1,14 @@
-Version 2.5, 01 Nov 2015
+Version 2.5, 2015-11-01
 
   [ Joao Eriberto Mota Filho ]
 
 * configure:
     - Changed the default prefix to /usr.
     - Changed the default etc path to /etc.
-* gui/: removed. The binary axel-kapt depended on kaptain, that is no longer
-        available in QT5. For details, see
+    - Changed CFLAGS and LDFLAGS definition lines to allow external values,
+      as GCC hardening sent by Debian.
+* gui/: removed. The binary axel-kapt depended on kaptain that is no longer
+        available for QT5 (dead upstream development). For details, see
         https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=789819
 * manpage:
     - Moved to man/ directory.
@@ -15,14 +17,21 @@ Version 2.5, 01 Nov 2015
     - Removed some typos.
     - Dropped the Chinese manpage (outdated now).
 
-  [ Barry deFreese ]
+  [ Barry deFreese ] 2009-06-11
 
 * Added Hurd (GNU) to configure file. It will allow Axel to build over
   GNU/Hurd. This change was provided by Barry deFreese <bdefreese@debian.org>,
   as a patch to Debian project, on 11 Jun 2009. For details, see
   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=532793
 
-  [ Osamu Aoki ]
+  [ Mark Smith ] 2010-07-03
+
+* Added a support to IPv6. This change was provided by
+  Mark Smith <nanog@85d5b20a518b8f6864949bd940457dc124746ddc.nosense.org>,
+  as a patch to Debian project, on 03 Jul 2010. For details, see
+  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=525290
+
+  [ Osamu Aoki ] 2012-03-10
 
 * Changed the configure file to honor the noopt when building. So, was removed
   the '-Os' option. See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=645271
@@ -33,7 +42,6 @@ Version 2.5, 01 Nov 2015
 
   - Make axel build on HP-UX, thanks Ciro Iriarte
   - Fix Solaris support (Closes: #312092), thanks Sebastian Kayser
-  - Restore kapt meanings (Closes: #311811), thanks Daniel Gimpelevich
   - Add PO-Revision-Date header to ru.po
 
 Version 2.4

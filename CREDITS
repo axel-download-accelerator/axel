@@ -3,6 +3,9 @@
 - Barry deFreese <bdefreese@debian.org>
   Build over GNU/Hurd.
 
+- Mark Smith <nanog@85d5b20a518b8f6864949bd940457dc124746ddc.nosense.org>
+  IPv6 support.
+
 - Osamu Aoki <osamu@debian.org>
   Honor noopt when buildind.
 

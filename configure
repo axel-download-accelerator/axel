@@ -234,8 +234,8 @@ CYGWIN_* )
 ;;
 esac
 
-echo "CFLAGS=${AXEL_CFLAGS}" >> Makefile.settings
-echo "LFLAGS=${AXEL_LFLAGS}" >> Makefile.settings
+echo "CFLAGS+=${AXEL_CFLAGS}" >> Makefile.settings
+echo "LFLAGS+=${AXEL_LFLAGS}" >> Makefile.settings
 
 echo 'Configuration done:'
 if [ "$i18n" = "1" ]; then

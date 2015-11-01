@@ -28,59 +28,73 @@
 /* Get a TCP connection */
 int tcp_connect( char *hostname, int port, char *local_if )
 {
-	struct hostent *host = NULL;
-	struct sockaddr_in addr;
-	struct sockaddr_in local;
-	int fd;
+	struct sockaddr_in local_addr;
+	const int portstr_len = 10;
+	char portstr[portstr_len];
+	struct addrinfo ai_hints;
+	struct addrinfo *gai_results, *gai_result;
+	int ret;
+	int sock_fd = -1;
 
-#ifdef DEBUG
-	socklen_t i = sizeof( local );
-	
-	fprintf( stderr, "tcp_connect( %s, %i ) = ", hostname, port );
-#endif
-	
-	/* Why this loop? Because the call might return an empty record.
-	   At least it very rarely does, on my system...		*/
-	for( fd = 0; fd < 5; fd ++ )
-	{
-		if( ( host = gethostbyname( hostname ) ) == NULL )
-			return( -1 );
-		if( *host->h_name ) break;
+
+	if (local_if && *local_if) {
+		local_addr.sin_family = AF_INET;
+		local_addr.sin_port = 0;
+		local_addr.sin_addr.s_addr = inet_addr(local_if);
 	}
-	if( !host || !host->h_name || !*host->h_name )
-		return( -1 );
-	
-	if( ( fd = socket( AF_INET, SOCK_STREAM, 0 ) ) == -1 )
-		return( -1 );
-	
-	if( local_if && *local_if )
-	{
-		local.sin_family = AF_INET;
-		local.sin_port = 0;
-		local.sin_addr.s_addr = inet_addr( local_if );
-		if( bind( fd, (struct sockaddr *) &local, sizeof( struct sockaddr_in ) ) == -1 )
-		{
-			close( fd );
-			return( -1 );
+
+	snprintf(portstr, portstr_len, "%d", port);
+
+	memset(&ai_hints, 0, sizeof(ai_hints));
+	ai_hints.ai_family = AF_UNSPEC;
+	ai_hints.ai_socktype = SOCK_STREAM;
+	ai_hints.ai_flags = AI_ADDRCONFIG;
+	ai_hints.ai_protocol = 0;
+
+	ret = getaddrinfo(hostname, portstr, &ai_hints, &gai_results);
+	if (ret != 0) {
+		return -1;
+	}
+
+	gai_result = gai_results;
+	sock_fd = -1;
+	while ((sock_fd == -1) && (gai_result != NULL)) {
+
+		sock_fd = socket(gai_result->ai_family,
+			gai_result->ai_socktype, gai_result->ai_protocol);
+
+		if (sock_fd != -1) {
+
+			if (gai_result->ai_family == AF_INET) {
+				if (local_if && *local_if) {
+					ret = bind(sock_fd,
+						(struct sockaddr *) &local_addr,
+						sizeof(local_addr));
+					if (ret == -1) {
+						close(sock_fd);
+						sock_fd = -1;
+						gai_result =
+							gai_result->ai_next;
+					}
+				}
+			}
+
+			if (sock_fd != -1) {
+				ret = connect(sock_fd, gai_result->ai_addr,
+						gai_result->ai_addrlen);
+				if (ret == -1) {
+					close(sock_fd);
+					sock_fd = -1;
+					gai_result = gai_result->ai_next;
+				}
+			}
 		}
 	}
-	
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons( port );
-	addr.sin_addr = *( (struct in_addr *) host->h_addr );
-	
-	if( connect( fd, (struct sockaddr *) &addr, sizeof( struct sockaddr_in ) ) == -1 )
-	{
-		close( fd );
-		return( -1 );
-	}
-	
-#ifdef DEBUG
-	getsockname( fd, &local, &i );
-	fprintf( stderr, "%i\n", ntohs( local.sin_port ) );
-#endif
-	
-	return( fd );
+
+	freeaddrinfo(gai_results);
+
+	return sock_fd;
+
 }
 
 int get_if_ip( char *iface, char *ip )
