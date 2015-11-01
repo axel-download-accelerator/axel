@@ -6,7 +6,7 @@ Axel Home:
 * Supported architectures *
 \*************************/
 
-Should compile on any decent Linux system. Additionaly, it should compile
+Should compile on any decent Linux system. Additionally, it should compile
 (and run) on BSD, Solaris, Darwin (Mac OS X) and Win32 (Cygwin) systems.
 
 If the configure script does weird things on your system, please do warn me!
