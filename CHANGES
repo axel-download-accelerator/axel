@@ -17,16 +17,19 @@ Version 2.5, 01 Nov 2015
 
   [ Barry deFreese ]
 
-* Add Hurd (GNU) to configure file. It will allow Axel to build over
+* Added Hurd (GNU) to configure file. It will allow Axel to build over
   GNU/Hurd. This change was provided by Barry deFreese <bdefreese@debian.org>,
   as a patch to Debian project, on 11 Jun 2009. For details, see
   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=532793
 
+  [ Osamu Aoki ]
+
+* Changed the configure file to honor the noopt when building. So, was removed
+  the '-Os' option. See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=645271
+
   [ From original authors ]
 
-* Releasing this old block:
-
-  UNRELEASED:
+* Releasing this old block (written after 2.4 and before 2.5 versions):
 
   - Make axel build on HP-UX, thanks Ciro Iriarte
   - Fix Solaris support (Closes: #312092), thanks Sebastian Kayser

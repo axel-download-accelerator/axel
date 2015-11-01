@@ -4,7 +4,8 @@
 ##  Configurer for Axel                                               ##
 ##                                                                    ##
 ## Copyright 2001 Lintux (Wilmer van der Gaast <wilmer@gaast.net>     ##
-## Copyright 2009 Barry deFreese <bdefreese@debian.org>
+## Copyright 2009 Barry deFreese <bdefreese@debian.org>               ##
+## Copyrigth 2012 Osamu Aoki <osamu@debian.org>                       ##
 ## Copyright 2015 Joao Eriberto Mota Filho <eriberto@eriberto.pro.br> ##
 ########################################################################
 
@@ -103,7 +104,7 @@ if [ "$i18n" = "1" ]; then
 	echo "uninstall: uninstall-i18n" >> Makefile.settings
 fi
 
-AXEL_CFLAGS="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Os ${CFLAGS}"
+AXEL_CFLAGS="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 ${CFLAGS}"
 if [ "$debug" = "1" ]; then
 	AXEL_CFLAGS="${AXEL_CFLAGS} -g"
 	echo 'DEBUG=1' >> Makefile.settings

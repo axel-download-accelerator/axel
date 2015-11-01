@@ -3,6 +3,9 @@
 - Barry deFreese <bdefreese@debian.org>
   Build over GNU/Hurd.
 
+- Osamu Aoki <osamu@debian.org>
+  Honor noopt when buildind.
+
 
 Up to the 2.4 version:
 
