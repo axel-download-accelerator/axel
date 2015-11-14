@@ -4,6 +4,7 @@ Version 2.6, 2015-11-14
 
 * Moved all .c and .h to new /src directory.
 * Moved all .po files to new /po directory.
+* Switched the install system to autotools.
 
 Version 2.5, 2015-11-01
 
