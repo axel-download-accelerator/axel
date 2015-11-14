@@ -4,3 +4,4 @@ When updating, change these files (if needed):
 - CHANGES
 - CREDITS
 - axel.h (AXEL_VERSION_STRING)
+- configure.ac (VERSION)
