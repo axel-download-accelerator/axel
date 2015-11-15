@@ -1,2 +1,2 @@
 bin_PROGRAMS = axel
-axel_SOURCES = axel.c  conf.c  conn.c  ftp.c  http.c  search.c  tcp.c  text.c
+axel_SOURCES = axel.c conf.c conn.c ftp.c http.c search.c tcp.c text.c

@@ -27,5 +27,26 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([gettimeofday inet_ntoa memset select setlocale socket strcasecmp strchr strrchr strstr])
 
+# Flags
+CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
+LDFLAGS="$LDFLAGS -pthread"
+
+#### Definitions ####
+
+# OS
+arch=$(uname -s)
+AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
+
+# etc path
+AC_DEFINE_UNQUOTED([ETCDIR], ["/etc"], ["Define /etc directory path"])
+
+# Other
+AH_TEMPLATE([_REENTRANT], [Local definition])
+AC_DEFINE_UNQUOTED([_REENTRANT])
+AH_TEMPLATE([_THREAD_SAFE], [Local definition])
+AC_DEFINE_UNQUOTED([_THREAD_SAFE])
+
+#####################
+
 AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
