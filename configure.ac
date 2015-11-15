@@ -8,6 +8,10 @@ AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CC
+AC_CHECK_PROGS([GETTEXT], [gettext], "no")
+if test "x$GETTEXT" = "xno"; then
+    AC_MSG_ERROR([axel requires gettext])
+fi
 
 # Checks for libraries.
 
