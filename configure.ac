@@ -5,6 +5,7 @@ AC_PREREQ([2.69])
 AC_INIT([axel], [2.6], [https://github.com/eribertomota/axel/issues])
 AC_CONFIG_SRCDIR([src/conf.h])
 AC_CONFIG_HEADERS([config.h])
+AM_INIT_AUTOMAKE
 
 # Checks for programs.
 AC_PROG_CC
