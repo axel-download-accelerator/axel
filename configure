@@ -4472,7 +4472,6 @@ done
 
 # Flags
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
-#CPPFLAGS="$CPPFLAGS -I/usr/include"
 LDFLAGS="$LDFLAGS -pthread"
 
 #### Definitions ####
