@@ -24,6 +24,7 @@
 */
 
 #include "axel.h"
+#include "assert.h"
 
 /* Axel */
 static void save_state( axel_t *axel );
@@ -138,6 +139,8 @@ int axel_open( axel_t *axel )
 {
 	int i, fd;
 	long long int j;
+ 	ssize_t nread;
+ 	ssize_t nwrite;
 	
 	if( axel->conf->verbose > 0 )
 		axel_message( axel, _("Opening output file %s"), axel->filename );
@@ -157,16 +160,20 @@ int axel_open( axel_t *axel )
 	}
 	else if( ( fd = open( buffer, O_RDONLY ) ) != -1 )
 	{
-		read( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
+		nread = read( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
+		assert( nread == sizeof( axel->conf->num_connections ) );
 		
 		axel->conn = realloc( axel->conn, sizeof( conn_t ) * axel->conf->num_connections );
 		memset( axel->conn + 1, 0, sizeof( conn_t ) * ( axel->conf->num_connections - 1 ) );
 
 		axel_divide( axel );
 		
-		read( fd, &axel->bytes_done, sizeof( axel->bytes_done ) );
-		for( i = 0; i < axel->conf->num_connections; i ++ )
-			read( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
+		nread = read( fd, &axel->bytes_done, sizeof( axel->bytes_done ) );
+		assert( nread == sizeof( axel->bytes_done ) );
+		for( i = 0; i < axel->conf->num_connections; i ++ ) {
+			nread = read( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
+			assert( nread == sizeof( axel->conn[i].currentbyte ) );
+		}
 
 		axel_message( axel, _("State file found: %lld bytes downloaded, %lld to go."),
 			axel->bytes_done, axel->size - axel->bytes_done );
@@ -203,10 +210,13 @@ int axel_open( axel_t *axel )
 			lseek( axel->outfd, 0, SEEK_SET );
 			memset( buffer, 0, axel->conf->buffer_size );
 			j = axel->size;
-			while( j > 0 )
-			{
-				write( axel->outfd, buffer, min( j, axel->conf->buffer_size ) );
-				j -= axel->conf->buffer_size;
+			while( j > 0 ) {
+				if( ( nwrite = write( axel->outfd, buffer, min( j, axel->conf->buffer_size ) ) ) < 0 ) {
+					if ( errno == EINTR || errno == EAGAIN) continue;
+					axel_message( axel, _("Error creating local file") );
+					return( 0 );
+				}
+				j -= nwrite;
 			}
 		}
 	}
@@ -500,6 +510,7 @@ void save_state( axel_t *axel )
 {
 	int fd, i;
 	char fn[MAX_STRING+4];
+	ssize_t nwrite;
 
 	/* No use for such a file if the server doesn't support
 	   resuming anyway..						*/
@@ -511,11 +522,16 @@ void save_state( axel_t *axel )
 	{
 		return;		/* Not 100% fatal..			*/
 	}
-	write( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
-	write( fd, &axel->bytes_done, sizeof( axel->bytes_done ) );
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-	{
-		write( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
+
+        nwrite = write( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
+	assert( nwrite == sizeof( axel->conf->num_connections ) ); 
+	
+	nwrite = write( fd, &axel->bytes_done, sizeof( axel->bytes_done ) );
+	assert( nwrite == sizeof( axel->bytes_done ) ); 
+
+	for( i = 0; i < axel->conf->num_connections; i ++ ) {
+		nwrite = write( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
+		assert( nwrite == sizeof( axel->conn[i].currentbyte ) );
 	}
 	close( fd );
 }

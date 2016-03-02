@@ -58,8 +58,8 @@ int conf_loadfile( conf_t *conf, char *file )
 		line ++;
 		
 		*s = 0;
-		fscanf( fp, "%100[^\n#]s", s );
-		fscanf( fp, "%*[^\n]s" );
+		i=fscanf( fp, "%100[^\n#]s", s );
+		i=fscanf( fp, "%*[^\n]s" );
 		fgetc( fp );			/* Skip newline		*/
 		if( strchr( s, '=' ) == NULL )
 			continue;		/* Probably empty?	*/

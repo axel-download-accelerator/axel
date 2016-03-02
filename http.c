@@ -131,6 +131,7 @@ void http_addheader( http_t *conn, char *format, ... )
 int http_exec( http_t *conn )
 {
 	int i = 0;
+	ssize_t nwrite = 0;
 	char s[2] = " ", *s2;
 
 #ifdef DEBUG
@@ -138,7 +139,16 @@ int http_exec( http_t *conn )
 #endif
 
 	http_addheader( conn, "" );
-	write( conn->fd, conn->request, strlen( conn->request ) );
+
+	while ( nwrite < strlen( conn->request ) ) {
+		if( ( i = write( conn->fd, conn->request + nwrite, strlen( conn->request ) - nwrite ) ) < 0 ) {
+        		if (errno == EINTR || errno == EAGAIN) continue;
+			/* We'll put the message in conn->headers, not in request */
+			sprintf( conn->headers, _("Connection gone while writing.\n") );
+			return( 0 );
+		}
+    		nwrite += i;
+	}
 	
 	*conn->headers = 0;
 	/* Read the headers byte by byte to make sure we don't touch the
