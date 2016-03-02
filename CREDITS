@@ -1,3 +1,11 @@
+x.x version...
+
+- commit dcce1f73dc128c6a608ce4d0a2dcc422e5f44c1a:
+  Fix compilation warnings.
+  Patch from Ivan Gimenez <ivan.gimenez@gmail.com>
+  Date: Wed, 2 Mar 2016 02:36:50 +0100
+  Thanks a lot!
+
 2.5 version:
 
 - Barry deFreese <bdefreese@debian.org>
