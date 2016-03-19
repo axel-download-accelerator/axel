@@ -1,0 +1,16 @@
+To create a translation to a new language (e.g. pt_BR):
+
+$ cd po/
+$ msginit -l pt_BR   # change pt_BR to your new language
+$ edit pt_BR.po      # likewise
+
+// Now, edit the empty strings started by msgstr, doing the translation.
+// Send me the translation!
+
+If you want activate the translation locally, add pt_BR to LINGUAS and run:
+
+$ make update-po
+
+Run the last command if you are updating a .po file.
+
+  -- Eriberto, Sat, 19 Mar 2016 14:13:52 -0300
