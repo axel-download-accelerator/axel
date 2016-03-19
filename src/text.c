@@ -34,6 +34,7 @@ static void print_alternate_output( axel_t *axel );
 static void print_help();
 static void print_version();
 static void print_messages( axel_t *axel );
+static int get_term_width();
 
 int run = 1;
 
@@ -388,7 +389,7 @@ int main( int argc, char *argv[] )
 			{
 				/* clreol-simulation */
 				putchar( '\r' );
-				for( i = 0; i < 79; i++ ) /* linewidth known? */
+				for( i = get_term_width(); i > 0; i--)
 					putchar( ' ' );
 				putchar( '\r' );
 			}
@@ -486,12 +487,13 @@ static void print_alternate_output(axel_t *axel)
 	long long int total=axel->size;
 	int i,j=0;
 	double now = gettime();
+	int width = get_term_width() - 30;
 	
 	printf("\r[%3ld%%] [", min(100,(long)(done*100./total+.5) ) );
 		
 	for(i=0;i<axel->conf->num_connections;i++)
 	{
-		for(;j<((double)axel->conn[i].currentbyte/(total+1)*50)-1;j++)
+		for(;j<((double)axel->conn[i].currentbyte/(total+1)*width)-1;j++)
 			putchar('.');
 
 		if(axel->conn[i].currentbyte<axel->conn[i].lastbyte)
@@ -505,7 +507,7 @@ static void print_alternate_output(axel_t *axel)
 
 		j++;
 		
-		for(;j<((double)axel->conn[i].lastbyte/(total+1)*50);j++)
+		for(;j<((double)axel->conn[i].lastbyte/(total+1)*width);j++)
 			putchar(' ');
 	}
 	
@@ -532,6 +534,14 @@ static void print_alternate_output(axel_t *axel)
 	}
 	
 	fflush( stdout );
+}
+
+static int get_term_width()
+{
+	struct winsize w;
+
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	return w.ws_col;
 }
 
 void print_help()
