@@ -1,8 +1,8 @@
   /********************************************************************\
   * Axel -- A lighter download accelerator for Linux and other Unices. *
   *                                                                    *
-  * Copyright 2001 Wilmer van der Gaast                                *
-  * Copyright 2015 Joao Eriberto Mota Filho                            *
+  * Copyright 2001      Wilmer van der Gaast                           *
+  * Copyright 2015-2016 Joao Eriberto Mota Filho                       *
   \********************************************************************/
 
 /* Text interface							*/
@@ -73,11 +73,10 @@ int main( int argc, char *argv[] )
 	int i, j, cur_head = 0;
 	char *s;
 	
-#ifdef I18N
+/* Set up internationalization (i18n) */
 	setlocale( LC_ALL, "" );
-	bindtextdomain( PACKAGE, LOCALE );
+	bindtextdomain( PACKAGE, LOCALEDIR );
 	textdomain( PACKAGE );
-#endif
 	
 	if( !conf_init( conf ) )
 	{
