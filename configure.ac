@@ -27,6 +27,10 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([gettimeofday inet_ntoa memset select setlocale socket strcasecmp strchr strrchr strstr])
 
+# Add Gettext
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.18.1])
+
 # Flags
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
 LDFLAGS="$LDFLAGS -pthread"
@@ -48,5 +52,5 @@ AC_DEFINE_UNQUOTED([_THREAD_SAFE])
 
 #####################
 
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile po/Makefile.in])
 AC_OUTPUT
