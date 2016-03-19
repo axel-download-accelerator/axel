@@ -2,9 +2,11 @@
   * Axel -- A lighter download accelerator for Linux and other Unices. *
   *                                                                    *
   * Copyright 2001 Wilmer van der Gaast                                *
+  * Copyright 2016 Joao Eriberto Mota Filho                            *
+  *                                                                    *
   \********************************************************************/
 
-/* Main include file							*/
+/* Main include file */
 
 /*
   This program is free software; you can redistribute it and/or modify
@@ -53,21 +55,17 @@
 #include <net/if.h>
 #include <pthread.h>
 
-/* Internationalization							*/
-#ifdef I18N
+/* Internationalization */
 #define PACKAGE			"axel"
 #define _( x )			gettext( x )
 #include <libintl.h>
 #include <locale.h>
-#else
-#define _( x )			x
-#endif
 
 /* Compiled-in settings							*/
 #define MAX_STRING		1024
 #define MAX_ADD_HEADERS	10
 #define MAX_REDIR		5
-#define AXEL_VERSION_STRING	"2.5"
+#define AXEL_VERSION_STRING	"2.6"
 #define DEFAULT_USER_AGENT	"Axel " AXEL_VERSION_STRING " (" ARCH ")"
 
 typedef struct
