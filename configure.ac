@@ -29,7 +29,7 @@ AC_CHECK_FUNCS([gettimeofday inet_ntoa memset select setlocale socket strcasecmp
 
 # Add Gettext
 AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.18.1])
+AM_GNU_GETTEXT_VERSION([0.19.3])
 
 # Flags
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"

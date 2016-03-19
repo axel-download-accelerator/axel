@@ -8,8 +8,8 @@
 # Please note that the actual code of GNU gettext is covered by the GNU
 # General Public License and is *not* in the public domain.
 #
-# Origin: gettext-0.18
-GETTEXT_MACRO_VERSION = 0.18
+# Origin: gettext-0.19
+GETTEXT_MACRO_VERSION = 0.19
 
 PACKAGE = @PACKAGE@
 VERSION = @VERSION@
