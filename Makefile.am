@@ -1,4 +1,4 @@
-SUBDIRS = src
+SUBDIRS = src po
 
 man_MANS = man/axel.1
 
