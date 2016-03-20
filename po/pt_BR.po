@@ -55,7 +55,7 @@ msgstr "Filesystem/SO ruim... Trabalhando em torno disso. :-("
 #: src/axel.c:217
 #, fuzzy
 msgid "Error creating local file"
-msgstr "Erro ao abrir o arquivo local"
+msgstr "Erro ao criar o arquivo local"
 
 #: src/axel.c:246
 msgid "Starting download"
@@ -78,7 +78,7 @@ msgstr "Erro na conexão %i! Conexão fechada."
 #: src/axel.c:342
 #, c-format
 msgid "Connection %i unexpectedly closed"
-msgstr "Conexão %i fechada inexperadamente"
+msgstr "Conexão %i fechada inesperadamente"
 
 #: src/axel.c:346 src/axel.c:363
 #, c-format
@@ -152,7 +152,7 @@ msgstr "String de proxy inválida: %s\n"
 #: src/http.c:147
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
-msgstr "Conexão perdida.\n"
+msgstr "Conexão perdida enquanto escrevia no disco.\n"
 
 #: src/text.c:155
 #, c-format
@@ -286,7 +286,7 @@ msgstr ""
 "-n x\tEspecifica o número máximo de conexões\n"
 "-o f\tEspecifica o arquivo de saída\n"
 "-S [x]\tProcura por mirrors e baixa a partir de x servidores\n"
-"-H x\tAdiciona um header string\n"
+"-H x\tAdiciona uma entrada adicional de cabeçalho\n"
 "-U x\tConfigura um user agent\n"
 "-N\tNão utiliza qualquer servidor proxy\n"
 "-q\tEvita mensagens na tela\n"
@@ -324,7 +324,7 @@ msgstr ""
 "--output=f\t\t-o f\tEspecifica o arquivo de saída\n"
 "--search[=x]\t\t-S [x]\tProcura por mirrors e baixa a partir de x "
 "servidores\n"
-"--header=x\t\t-H x\tAdiciona um header string\n"
+"--header=x\t\t-H x\tAdiciona uma entrada adicional de cabeçalho\n"
 "--user-agent=x\t\t-U x\tConfigura um user agent\n"
 "--no-proxy\t\t-N\tNão utiliza qualquer servidor proxy\n"
 "--quiet\t\t\t-q\tEvita mensagens na tela\n"
