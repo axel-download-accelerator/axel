@@ -1,12 +1,18 @@
-    HOW TO CONTRIBUTE TO AXEL DEVELOPMENT
+## HOW TO CONTRIBUTE TO AXEL DEVELOPMENT
 
-If you are interested to contribute to axel development, please, follow these
-steps:
+Axel is available at https://github.com/eribertomota/axel
 
-1. Send a patch that fix an issue or that implement a new feature.
+If you are interested in contribute to axel development, please, follow
+these steps:
 
-2. Ask for join to the Axel project in GitHub, if you want to work officially.
-   Note that this second step isn't compulsory.
+1. Send me a patch that fix an issue or that implement a new feature.
+   Alternatively, you can do a 'pull request'[1] in GitHub.
+
+   [1] https://help.github.com/articles/using-pull-requests
+
+2. Ask for join to the Axel project in GitHub, if you want to work
+   officially. Note that this second step is not compulsory. However,
+   to accept you in project, I need a minimum collaboration before.
 
 
 To find issues and bugs to fix, you can check these addresses:
@@ -21,3 +27,5 @@ To find issues and bugs to fix, you can check these addresses:
    - https://bugs.gentoo.org/buglist.cgi?quicksearch=net-misc%2Faxel
 
 If you want to join, please contact me: eriberto at eriberto.pro.br
+
+  -- Eriberto, Sun, 20 Mar 2016 16:27:53 -0300
