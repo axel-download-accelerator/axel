@@ -27,13 +27,13 @@
 
 char string[MAX_STRING];
 
-/* Convert an URL to a conn_t structure					*/
+/* Convert an URL to a conn_t structure */
 int conn_set( conn_t *conn, char *set_url )
 {
 	char url[MAX_STRING];
 	char *i, *j;
-	
-	/* protocol://							*/
+
+	/* protocol:// */
 	if( ( i = strstr( set_url, "://" ) ) == NULL )
 	{
 		conn->proto = PROTO_DEFAULT;
@@ -51,8 +51,8 @@ int conn_set( conn_t *conn, char *set_url )
 		}
 		strncpy( url, i + 3, MAX_STRING );
 	}
-	
-	/* Split							*/
+
+	/* Split */
 	if( ( i = strchr( url, '/' ) ) == NULL )
 	{
 		strcpy( conn->dir, "/" );
@@ -82,8 +82,8 @@ int conn_set( conn_t *conn, char *set_url )
 		strncpy( conn->file, i + 1, MAX_STRING );
 		strcat( conn->dir, "/" );
 	}
-	
-	/* Check for username in host field				*/
+
+	/* Check for username in host field */
 	if( strrchr( conn->host, '@' ) != NULL )
 	{
 		strncpy( conn->user, conn->host, MAX_STRING );
@@ -92,13 +92,13 @@ int conn_set( conn_t *conn, char *set_url )
 		strncpy( conn->host, i + 1, MAX_STRING );
 		*conn->pass = 0;
 	}
-	/* If not: Fill in defaults					*/
+	/* If not: Fill in defaults */
 	else
 	{
 		if( conn->proto == PROTO_FTP )
 		{
 			/* Dash the password: Save traffic by trying
-			   to avoid multi-line responses		*/
+			   to avoid multi-line responses */
 			strcpy( conn->user, "anonymous" );
 			strcpy( conn->pass, "mailto:axel@axel.project" );
 		}
@@ -107,30 +107,30 @@ int conn_set( conn_t *conn, char *set_url )
 			*conn->user = *conn->pass = 0;
 		}
 	}
-	
-	/* Password?							*/
+
+	/* Password? */
 	if( ( i = strchr( conn->user, ':' ) ) != NULL )
 	{
 		*i = 0;
 		strncpy( conn->pass, i + 1, MAX_STRING );
 	}
-	/* Port number?							*/
+	/* Port number? */
 	if( ( i = strchr( conn->host, ':' ) ) != NULL )
 	{
 		*i = 0;
 		sscanf( i + 1, "%i", &conn->port );
 	}
-	/* Take default port numbers from /etc/services			*/
+	/* Take default port numbers from /etc/services */
 	else
 	{
 #ifndef DARWIN
 		struct servent *serv;
-		
+
 		if( conn->proto == PROTO_FTP )
 			serv = getservbyname( "ftp", "tcp" );
 		else
 			serv = getservbyname( "www", "tcp" );
-		
+
 		if( serv )
 			conn->port = ntohs( serv->s_port );
 		else
@@ -140,29 +140,29 @@ int conn_set( conn_t *conn, char *set_url )
 		else
 			conn->port = 21;
 	}
-	
+
 	return( conn->port > 0 );
 }
 
-/* Generate a nice URL string.						*/
+/* Generate a nice URL string. */
 char *conn_url( conn_t *conn )
 {
 	if( conn->proto == PROTO_FTP )
 		strcpy( string, "ftp://" );
 	else
 		strcpy( string, "http://" );
-	
+
 	if( *conn->user != 0 && strcmp( conn->user, "anonymous" ) != 0 )
 		sprintf( string + strlen( string ), "%s:%s@",
 			conn->user, conn->pass );
 
 	sprintf( string + strlen( string ), "%s:%i%s%s",
 		conn->host, conn->port, conn->dir, conn->file );
-	
+
 	return( string );
 }
 
-/* Simple...								*/
+/* Simple... */
 void conn_disconnect( conn_t *conn )
 {
 	if( conn->proto == PROTO_FTP && !conn->proxy )
@@ -176,7 +176,7 @@ int conn_init( conn_t *conn )
 {
 	char *proxy = conn->conf->http_proxy, *host = conn->conf->no_proxy;
 	int i;
-	
+
 	if( *conn->conf->http_proxy == 0 )
 	{
 		proxy = NULL;
@@ -193,9 +193,9 @@ int conn_init( conn_t *conn )
 					break;
 			}
 	}
-	
+
 	conn->proxy = proxy != NULL;
-	
+
 	if( conn->proto == PROTO_FTP && !conn->proxy )
 	{
 		conn->ftp->local_if = conn->local_if;
@@ -233,13 +233,13 @@ int conn_setup( conn_t *conn )
 	if( conn->ftp->fd <= 0 && conn->http->fd <= 0 )
 		if( !conn_init( conn ) )
 			return( 0 );
-	
+
 	if( conn->proto == PROTO_FTP && !conn->proxy )
 	{
-		if( !ftp_data( conn->ftp ) )	/* Set up data connnection	*/
+		if( !ftp_data( conn->ftp ) )	/* Set up data connnection */
 			return( 0 );
 		conn->fd = conn->ftp->data_fd;
-		
+
 		if( conn->currentbyte )
 		{
 			ftp_command( conn->ftp, "REST %lld", conn->currentbyte );
@@ -280,10 +280,10 @@ int conn_exec( conn_t *conn )
 	}
 }
 
-/* Get file size and other information					*/
+/* Get file size and other information */
 int conn_info( conn_t *conn )
 {
-	/* It's all a bit messed up.. But it works.			*/
+	/* It's all a bit messed up.. But it works. */
 	if( conn->proto == PROTO_FTP && !conn->proxy )
 	{
 		ftp_command( conn->ftp, "REST %lld", 1 );
@@ -298,7 +298,7 @@ int conn_info( conn_t *conn )
 		{
 			conn->supported = 0;
 		}
-		
+
 		if( !ftp_cwd( conn->ftp, conn->dir ) )
 			return( 0 );
 		conn->size = ftp_size( conn->ftp, conn->file, MAX_REDIR );
@@ -313,7 +313,7 @@ int conn_info( conn_t *conn )
 	{
 		char s[MAX_STRING], *t;
 		long long int i = 0;
-		
+
 		do
 		{
 			conn->currentbyte = 1;
@@ -321,7 +321,7 @@ int conn_info( conn_t *conn )
 				return( 0 );
 			conn_exec( conn );
 			conn_disconnect( conn );
-			/* Code 3xx == redirect				*/
+			/* Code 3xx == redirect */
 			if( conn->http->status / 100 != 3 )
 				break;
 			if( ( t = http_header( conn->http, "location:" ) ) == NULL )
@@ -343,13 +343,13 @@ int conn_info( conn_t *conn )
 			i ++;
 		}
 		while( conn->http->status / 100 == 3 && i < MAX_REDIR );
-		
+
 		if( i == MAX_REDIR )
 		{
 			sprintf( conn->message, _("Too many redirects.\n") );
 			return( 0 );
 		}
-		
+
 		conn->size = http_size( conn->http );
 		if( conn->http->status == 206 && conn->size >= 0 )
 		{
@@ -371,6 +371,6 @@ int conn_info( conn_t *conn )
 			return( 0 );
 		}
 	}
-	
+
 	return( 1 );
 }

@@ -21,7 +21,7 @@
 
 /* HTTP control include file */
 
-#define MAX_QUERY	2048		/* Should not grow larger..	*/
+#define MAX_QUERY	2048		/* Should not grow larger.. */
 
 typedef struct
 {
@@ -29,7 +29,7 @@ typedef struct
 	char auth[MAX_STRING];
 	char request[MAX_QUERY];
 	char headers[MAX_QUERY];
-	int proto;			/* FTP through HTTP proxies	*/
+	int proto;			/* FTP through HTTP proxies */
 	int proxy;
 	long long int firstbyte;
 	long long int lastbyte;

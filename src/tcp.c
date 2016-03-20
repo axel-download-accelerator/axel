@@ -99,9 +99,9 @@ int get_if_ip( char *iface, char *ip )
 {
 	struct ifreq ifr;
 	int fd = socket( PF_INET, SOCK_DGRAM, IPPROTO_IP );
-	
+
 	memset( &ifr, 0, sizeof( struct ifreq ) );
-	
+
 	strcpy( ifr.ifr_name, iface );
 	ifr.ifr_addr.sa_family = AF_INET;
 	if( ioctl( fd, SIOCGIFADDR, &ifr ) == 0 )

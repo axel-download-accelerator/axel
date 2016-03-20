@@ -33,10 +33,10 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	char auth[MAX_STRING];
 	conn_t tconn[1];
 	int i;
-	
+
 	strncpy( conn->host, host, MAX_STRING );
 	conn->proto = proto;
-	
+
 	if( proxy != NULL ) { if( *proxy != 0 )
 	{
 		sprintf( conn->host, "%s:%i", host, port );
@@ -54,14 +54,14 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	{
 		conn->proxy = 0;
 	} }
-	
+
 	if( ( conn->fd = tcp_connect( host, port, conn->local_if ) ) == -1 )
 	{
 		/* We'll put the message in conn->headers, not in request */
 		sprintf( conn->headers, _("Unable to connect to server %s:%i\n"), host, port );
 		return( 0 );
 	}
-	
+
 	if( *user == 0 )
 	{
 		*conn->auth = 0;
@@ -80,7 +80,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 			if( auth[i*3+1] == 0 ) conn->auth[i*4+2] = '=';
 		}
 	}
-	
+
 	return( 1 );
 }
 
@@ -119,12 +119,12 @@ void http_addheader( http_t *conn, char *format, ... )
 {
 	char s[MAX_STRING];
 	va_list params;
-	
+
 	va_start( params, format );
 	vsnprintf( s, MAX_STRING - 3, format, params );
 	strcat( s, "\r\n" );
 	va_end( params );
-	
+
 	strncat( conn->request, s, MAX_QUERY - strlen(conn->request) - 1);
 }
 
@@ -149,10 +149,10 @@ int http_exec( http_t *conn )
 		}
     		nwrite += i;
 	}
-	
+
 	*conn->headers = 0;
 	/* Read the headers byte by byte to make sure we don't touch the
-	   actual data							*/
+	   actual data */
 	while( 1 )
 	{
 		if( read( conn->fd, s, 1 ) <= 0 )
@@ -181,12 +181,12 @@ int http_exec( http_t *conn )
 #ifdef DEBUG
 	fprintf( stderr, "--- Reply headers ---\n%s--- End of headers ---\n", conn->headers );
 #endif
-	
+
 	sscanf( conn->headers, "%*s %3i", &conn->status );
 	s2 = strchr( conn->headers, '\n' ); *s2 = 0;
 	strcpy( conn->request, conn->headers );
 	*s2 = '\n';
-	
+
 	return( 1 );
 }
 
@@ -194,7 +194,7 @@ char *http_header( http_t *conn, char *header )
 {
 	char s[32];
 	int i;
-	
+
 	for( i = 1; conn->headers[i]; i ++ )
 		if( conn->headers[i-1] == '\n' )
 		{
@@ -202,7 +202,7 @@ char *http_header( http_t *conn, char *header )
 			if( strcasecmp( s, header ) == 0 )
 				return( &conn->headers[i+strlen(header)] );
 		}
-	
+
 	return( NULL );
 }
 
@@ -210,20 +210,20 @@ long long int http_size( http_t *conn )
 {
 	char *i;
 	long long int j;
-	
+
 	if( ( i = http_header( conn, "Content-Length:" ) ) == NULL )
 		return( -2 );
-	
+
 	sscanf( i, "%lld", &j );
 	return( j );
 }
 
-/* Decode%20a%20file%20name						*/
+/* Decode%20a%20file%20name */
 void http_decode( char *s )
 {
 	char t[MAX_STRING];
 	int i, j, k;
-	
+
 	for( i = j = 0; s[i]; i ++, j ++ )
 	{
 		t[j] = s[i];
@@ -235,7 +235,7 @@ void http_decode( char *s )
 			}
 	}
 	t[j] = 0;
-	
+
 	strcpy( s, t );
 }
 
@@ -243,14 +243,14 @@ void http_encode( char *s )
 {
 	char t[MAX_STRING];
 	int i, j;
-	
+
 	for( i = j = 0; s[i]; i ++, j ++ )
 	{
 		/* Fix buffer overflow */
 		if (j >= MAX_STRING - 1) {
 			break;
 		}
-		
+
 		t[j] = s[i];
 		if( s[i] == ' ' )
 		{
@@ -258,12 +258,12 @@ void http_encode( char *s )
 			if (j >= MAX_STRING - 3) {
 				break;
 			}
-			
+
 			strcpy( t + j, "%20" );
 			j += 2;
 		}
 	}
 	t[j] = 0;
-	
+
 	strcpy( s, t );
 }

@@ -27,16 +27,16 @@ int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass )
 {
 	conn->data_fd = -1;
 	conn->message = malloc( MAX_STRING );
-	
+
 	if( ( conn->fd = tcp_connect( host, port, conn->local_if ) ) == -1 )
 	{
 		sprintf( conn->message, _("Unable to connect to server %s:%i\n"), host, port );
 		return( 0 );
 	}
-	
+
 	if( ftp_wait( conn ) / 100 != 2 )
 		return( 0 );
-	
+
 	ftp_command( conn, "USER %s", user );
 	if( ftp_wait( conn ) / 100 != 2 )
 	{
@@ -45,18 +45,18 @@ int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass )
 			ftp_command( conn, "PASS %s", pass );
 			if( ftp_wait( conn ) / 100 != 2 )
 				return( 0 );
-		}		
+		}
 		else
 		{
 			return( 0 );
 		}
 	}
-	
+
 	/* ASCII mode sucks. Just use Binary.. */
 	ftp_command( conn, "TYPE I" );
 	if( ftp_wait( conn ) / 100 != 2 )
 		return( 0 );
-	
+
 	return( 1 );
 }
 
@@ -76,32 +76,32 @@ void ftp_disconnect( ftp_t *conn )
 	conn->fd = conn->data_fd = -1;
 }
 
-/* Change current working directory					*/
+/* Change current working directory */
 int ftp_cwd( ftp_t *conn, char *cwd )
 {
 	/* Necessary at all? */
 	if( strncmp( conn->cwd, cwd, MAX_STRING ) == 0 )
 		return( 1 );
-	
+
 	ftp_command( conn, "CWD %s", cwd );
 	if( ftp_wait( conn ) / 100 != 2 )
 	{
 		fprintf( stderr, _("Can't change directory to %s\n"), cwd );
 		return( 0 );
 	}
-	
+
 	strncpy( conn->cwd, cwd, MAX_STRING );
-	
+
 	return( 1 );
 }
 
-/* Get file size. Should work with all reasonable servers now		*/
+/* Get file size. Should work with all reasonable servers now */
 long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 {
 	long long int i, j, size = MAX_STRING;
 	char *reply, *s, fn[MAX_STRING];
-	
-	/* Try the SIZE command first, if possible			*/
+
+	/* Try the SIZE command first, if possible */
 	if( !strchr( file, '*' ) && !strchr( file, '?' ) )
 	{
 		ftp_command( conn, "SIZE %s", file );
@@ -116,21 +116,21 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 			return( -1 );
 		}
 	}
-	
+
 	if( maxredir == 0 )
 	{
 		sprintf( conn->message, _("Too many redirects.\n") );
 		return( -1 );
 	}
-	
+
 	if( !ftp_data( conn ) )
 		return( -1 );
-	
+
 	ftp_command( conn, "LIST %s", file );
 	if( ftp_wait( conn ) / 100 != 1 )
 		return( -1 );
-	
-	/* Read reply from the server.					*/
+
+	/* Read reply from the server. */
 	reply = malloc( size );
 	memset( reply, 0, size );
 	*reply = '\n';
@@ -148,18 +148,18 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 	}
 	close( conn->data_fd );
 	conn->data_fd = -1;
-	
+
 	if( ftp_wait( conn ) / 100 != 2 )
 	{
 		free( reply );
 		return( -1 );
 	}
-	
+
 #ifdef DEBUG
 	fprintf( stderr, reply );
 #endif
-	
-	/* Count the number of probably legal matches: Files&Links only	*/
+
+	/* Count the number of probably legal matches: Files&Links only */
 	j = 0;
 	for( i = 1; reply[i] && reply[i+1]; i ++ )
 		if( reply[i] == '-' || reply[i] == 'l' )
@@ -167,8 +167,8 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 		else
 			while( reply[i] != '\n' && reply[i] )
 				i ++;
-	
-	/* No match or more than one match				*/
+
+	/* No match or more than one match */
 	if( j != 1 )
 	{
 		if( j == 0 )
@@ -179,14 +179,14 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 		return( -1 );
 	}
 
-	/* Symlink handling						*/
+	/* Symlink handling */
 	if( ( s = strstr( reply, "\nl" ) ) != NULL )
 	{
 		/* Get the real filename */
 		sscanf( s, "%*s %*i %*s %*s %*i %*s %*i %*s %100s", fn );
 		strcpy( file, fn );
-		
-		/* Get size of the file linked to			*/
+
+		/* Get size of the file linked to */
 		strncpy( fn, strstr( s, "->" ) + 3, MAX_STRING );
 		free( reply );
 		if( ( reply = strchr( fn, '\r' ) ) != NULL )
@@ -196,7 +196,7 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 		return( ftp_size( conn, fn, maxredir - 1 ) );
 	}
 	/* Normal file, so read the size! And read filename because of
-	   possible wildcards.						*/
+	   possible wildcards. */
 	else
 	{
 		s = strstr( reply, "\n-" );
@@ -210,22 +210,22 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 			}
 		}
 		strcpy( file, fn );
-		
+
 		free( reply );
 		return( size );
 	}
 }
 
-/* Open a data connection. Only Passive mode supported yet, easier..	*/
+/* Open a data connection. Only Passive mode supported yet, easier.. */
 int ftp_data( ftp_t *conn )
 {
 	int i, info[6];
 	char host[MAX_STRING];
-	
-	/* Already done?						*/
+
+	/* Already done? */
 	if( conn->data_fd > 0 )
 		return( 0 );
-	
+
 /*	if( conn->ftp_mode == FTP_PASSIVE )
 	{
 */		ftp_command( conn, "PASV" );
@@ -254,7 +254,7 @@ int ftp_data( ftp_t *conn )
 			sprintf( conn->message, _("Error opening passive data connection.\n") );
 			return( 0 );
 		}
-		
+
 		return( 1 );
 /*	}
 	else
@@ -264,21 +264,21 @@ int ftp_data( ftp_t *conn )
 	} */
 }
 
-/* Send a command to the server						*/
+/* Send a command to the server */
 int ftp_command( ftp_t *conn, char *format, ... )
 {
 	va_list params;
 	char cmd[MAX_STRING];
-	
+
 	va_start( params, format );
 	vsnprintf( cmd, MAX_STRING - 3, format, params );
 	strcat( cmd, "\r\n" );
 	va_end( params );
-	
+
 #ifdef DEBUG
 	fprintf( stderr, "fd(%i)<--%s", conn->fd, cmd );
 #endif
-	
+
 	if( write( conn->fd, cmd, strlen( cmd ) ) != strlen( cmd ) )
 	{
 		sprintf( conn->message, _("Error writing command %s\n"), format );
@@ -291,14 +291,14 @@ int ftp_command( ftp_t *conn, char *format, ... )
 }
 
 /* Read status from server. Should handle multi-line replies correctly.
-   Multi-line replies suck...						*/
+   Multi-line replies suck... */
 int ftp_wait( ftp_t *conn )
 {
 	int size = MAX_STRING, r = 0, complete, i, j;
 	char *s;
-	
+
 	conn->message = realloc( conn->message, size );
-	
+
 	do
 	{
 		do
@@ -322,7 +322,7 @@ int ftp_wait( ftp_t *conn )
 			complete = 1;
 		else
 			complete = 0;
-		
+
 		for( i = 0; conn->message[i]; i ++ ) if( conn->message[i] == '\n' )
 		{
 			if( complete == 1 )
@@ -341,15 +341,15 @@ int ftp_wait( ftp_t *conn )
 	}
 	while( complete != 2 );
 
-#ifdef DEBUG		
+#ifdef DEBUG
 	fprintf( stderr, "fd(%i)-->%s", conn->fd, conn->message );
 #endif
-	
+
 	if( ( s = strchr( conn->message, '\n' ) ) != NULL )
 		*s = 0;
 	if( ( s = strchr( conn->message, '\r' ) ) != NULL )
 		*s = 0;
 	conn->message = realloc( conn->message, max( strlen( conn->message ) + 1, MAX_STRING ) );
-	
+
 	return( conn->status );
 }

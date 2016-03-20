@@ -28,7 +28,7 @@
 typedef struct
 {
 	conf_t *conf;
-	
+
 	int proto;
 	int port;
 	int proxy;
@@ -37,10 +37,10 @@ typedef struct
 	char file[MAX_STRING];
 	char user[MAX_STRING];
 	char pass[MAX_STRING];
-	
+
 	ftp_t ftp[1];
 	http_t http[1];
-	long long int size;		/* File size, not 'connection size'..	*/
+	long long int size;		/* File size, not 'connection size'.. */
 	long long int currentbyte;
 	long long int lastbyte;
 	int fd;

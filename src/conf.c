@@ -25,7 +25,7 @@
 
 #include "axel.h"
 
-/* Some nifty macro's..							*/
+/* Some nifty macro's.. */
 #define get_config_string( name )				\
 	if( strcmp( key, #name ) == 0 )				\
 	{							\
@@ -38,7 +38,7 @@
 		st = 1;						\
 		sscanf( value, "%i", &conf->name );		\
 	}
-	
+
 int parse_interfaces( conf_t *conf, char *s );
 
 int conf_loadfile( conf_t *conf, char *file )
@@ -46,23 +46,23 @@ int conf_loadfile( conf_t *conf, char *file )
 	int i, line = 0;
 	FILE *fp;
 	char s[MAX_STRING], key[MAX_STRING], value[MAX_STRING];
-	
+
 	fp = fopen( file, "r" );
 	if( fp == NULL )
-		return( 1 );			/* Not a real failure	*/
-	
+		return( 1 );			/* Not a real failure */
+
 	while( !feof( fp ) )
 	{
 		int st;
-		
+
 		line ++;
-		
+
 		*s = 0;
 		i=fscanf( fp, "%100[^\n#]s", s );
 		i=fscanf( fp, "%*[^\n]s" );
-		fgetc( fp );			/* Skip newline		*/
+		fgetc( fp );			/* Skip newline */
 		if( strchr( s, '=' ) == NULL )
-			continue;		/* Probably empty?	*/
+			continue;		/* Probably empty? */
 		sscanf( s, "%[^= \t]s", key );
 		for( i = 0; s[i]; i ++ )
 			if( s[i] == '=' )
@@ -73,10 +73,10 @@ int conf_loadfile( conf_t *conf, char *file )
 		strcpy( value, &s[i] );
 		for( i = strlen( value ) - 1; isspace( (int) value[i] ); i -- )
 			value[i] = 0;
-		
+
 		st = 0;
-		
-		/* Long live macros!!					*/
+
+		/* Long live macros!! */
 		get_config_string( default_filename );
 		get_config_string( http_proxy );
 		get_config_string( no_proxy );
@@ -89,19 +89,19 @@ int conf_loadfile( conf_t *conf, char *file )
 		get_config_number( max_speed );
 		get_config_number( verbose );
 		get_config_number( alternate_output );
-		
+
 		get_config_number( search_timeout );
 		get_config_number( search_threads );
 		get_config_number( search_amount );
 		get_config_number( search_top );
-		
-		/* Option defunct but shouldn't be an error		*/
+
+		/* Option defunct but shouldn't be an error */
 		if( strcmp( key, "speed_type" ) == 0 )
 			st = 1;
-		
+
 		if( strcmp( key, "interfaces" ) == 0 )
 			st = parse_interfaces( conf, value );
-		
+
 		if( !st )
 		{
 			fprintf( stderr, _("Error in %s line %i.\n"), file, line );
@@ -112,7 +112,7 @@ int conf_loadfile( conf_t *conf, char *file )
 			get_config_string( add_header[i] );
 		get_config_string( user_agent );
 	}
-	
+
 	fclose( fp );
 	return( 1 );
 }
@@ -121,8 +121,8 @@ int conf_init( conf_t *conf )
 {
 	char s[MAX_STRING], *s2;
 	int i;
-	
-	/* Set defaults							*/
+
+	/* Set defaults */
 	memset( conf, 0, sizeof( conf_t ) );
 	strcpy( conf->default_filename, "default" );
 	*conf->http_proxy		= 0;
@@ -136,39 +136,39 @@ int conf_init( conf_t *conf )
 	conf->max_speed			= 0;
 	conf->verbose			= 1;
 	conf->alternate_output		= 0;
-	
+
 	conf->search_timeout		= 10;
 	conf->search_threads		= 3;
 	conf->search_amount		= 15;
 	conf->search_top		= 3;
 	conf->add_header_count		= 0;
 	strncpy( conf->user_agent, DEFAULT_USER_AGENT, MAX_STRING );
-	
+
 	conf->interfaces = malloc( sizeof( if_t ) );
 	memset( conf->interfaces, 0, sizeof( if_t ) );
 	conf->interfaces->next = conf->interfaces;
-	
+
 	if( ( s2 = getenv( "http_proxy" ) ) != NULL )
 		strncpy( conf->http_proxy, s2, MAX_STRING );
 	else if( ( s2 = getenv( "HTTP_PROXY" ) ) != NULL )
 		strncpy( conf->http_proxy, s2, MAX_STRING );
-	
+
 	if( !conf_loadfile( conf, ETCDIR "/axelrc" ) )
 		return( 0 );
-	
+
 	if( ( s2 = getenv( "HOME" ) ) != NULL )
 	{
 		sprintf( s, "%s/%s", s2, ".axelrc" );
 		if( !conf_loadfile( conf, s ) )
 			return( 0 );
 	}
-	
-	/* Convert no_proxy to a 0-separated-and-00-terminated list..	*/
+
+	/* Convert no_proxy to a 0-separated-and-00-terminated list.. */
 	for( i = 0; conf->no_proxy[i]; i ++ )
 		if( conf->no_proxy[i] == ',' )
 			conf->no_proxy[i] = 0;
 	conf->no_proxy[i+1] = 0;
-	
+
 	return( 1 );
 }
 
@@ -176,18 +176,18 @@ int parse_interfaces( conf_t *conf, char *s )
 {
 	char *s2;
 	if_t *iface;
-	
+
 	iface = conf->interfaces->next;
 	while( iface != conf->interfaces )
 	{
 		if_t *i;
-		
+
 		i = iface->next;
 		free( iface );
 		iface = i;
 	}
 	free( conf->interfaces );
-	
+
 	if( !*s )
 	{
 		conf->interfaces = malloc( sizeof( if_t ) );
@@ -195,7 +195,7 @@ int parse_interfaces( conf_t *conf, char *s )
 		conf->interfaces->next = conf->interfaces;
 		return( 1 );
 	}
-	
+
 	s[strlen(s)+1] = 0;
 	conf->interfaces = iface = malloc( sizeof( if_t ) );
 	while( 1 )
@@ -219,6 +219,6 @@ int parse_interfaces( conf_t *conf, char *s )
 			break;
 		}
 	}
-	
+
 	return( 1 );
 }

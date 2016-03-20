@@ -36,9 +36,9 @@ typedef struct
 	int max_speed;
 	int verbose;
 	int alternate_output;
-	
+
 	if_t *interfaces;
-	
+
 	int search_timeout;
 	int search_threads;
 	int search_amount;
@@ -46,7 +46,7 @@ typedef struct
 
 	int add_header_count;
 	char add_header[MAX_ADD_HEADERS][MAX_STRING];
-	
+
 	char user_agent[MAX_STRING];
 } conf_t;
 

@@ -59,7 +59,7 @@
 #include <libintl.h>
 #include <locale.h>
 
-/* Compiled-in settings							*/
+/* Compiled-in settings */
 #define MAX_STRING		1024
 #define MAX_ADD_HEADERS	10
 #define MAX_REDIR		5

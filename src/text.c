@@ -60,7 +60,7 @@ static struct option axel_options[] =
 };
 #endif
 
-/* For returning string values from functions				*/
+/* For returning string values from functions */
 static char string[MAX_STRING];
 
 
@@ -73,28 +73,28 @@ int main( int argc, char *argv[] )
 	axel_t *axel;
 	int i, j, cur_head = 0;
 	char *s;
-	
+
 /* Set up internationalization (i18n) */
 	setlocale( LC_ALL, "" );
 	bindtextdomain( PACKAGE, LOCALEDIR );
 	textdomain( PACKAGE );
-	
+
 	if( !conf_init( conf ) )
 	{
 		return( 1 );
 	}
-	
+
 	opterr = 0;
-	
+
 	j = -1;
 	while( 1 )
 	{
 		int option;
-		
+
 		option = getopt_long( argc, argv, "s:n:o:S::NqvhVaH:U:", axel_options, NULL );
 		if( option == -1 )
 			break;
-		
+
 		switch( option )
 		{
 		case 'U':
@@ -164,7 +164,7 @@ int main( int argc, char *argv[] )
 	conf->add_header_count = cur_head;
 	if( j > -1 )
 		conf->verbose = j;
-	
+
 	if( argc - optind == 0 )
 	{
 		print_help();
@@ -187,7 +187,7 @@ int main( int argc, char *argv[] )
 			return( 1 );
 		}
 	}
-	
+
 	printf( _("Initializing download: %s\n"), s );
 	if( do_search )
 	{
@@ -254,23 +254,23 @@ int main( int argc, char *argv[] )
 	{
 		free( s );
 	}
-	
+
 	if( *fn )
 	{
 		struct stat buf;
-		
+
 		if( stat( fn, &buf ) == 0 )
 		{
 			if( S_ISDIR( buf.st_mode ) )
 			{
 				size_t fnlen = strlen(fn);
 				size_t axelfnlen = strlen(axel->filename);
-				
+
 				if (fnlen + 1 + axelfnlen + 1 > MAX_STRING) {
 					fprintf( stderr, _("Filename too long!\n"));
 					return ( 1 );
 				}
-				
+
 				fn[fnlen] = '/';
 				memcpy(fn+fnlen+1, axel->filename, axelfnlen);
 				fn[fnlen + 1 + axelfnlen] = '\0';
@@ -291,7 +291,7 @@ int main( int argc, char *argv[] )
 	}
 	else
 	{
-		/* Local file existence check					*/
+		/* Local file existence check */
 		i = 0;
 		s = axel->filename + strlen( axel->filename );
 		while( 1 )
@@ -314,7 +314,7 @@ int main( int argc, char *argv[] )
 			i ++;
 		}
 	}
-	
+
 	if( !axel_open( axel ) )
 	{
 		print_messages( axel );
@@ -330,33 +330,33 @@ int main( int argc, char *argv[] )
 	} 
 	else
 	{
-		if( axel->bytes_done > 0 )	/* Print first dots if resuming	*/
+		if( axel->bytes_done > 0 )	/* Print first dots if resuming */
 		{
 			putchar( '\n' );
 			print_commas( axel->bytes_done );
 		}
 	}
 	axel->start_byte = axel->bytes_done;
-	
-	/* Install save_state signal handler for resuming support	*/
+
+	/* Install save_state signal handler for resuming support */
 	signal( SIGINT, stop );
 	signal( SIGTERM, stop );
-	
+
 	while( !axel->ready && run )
 	{
 		long long int prev, done;
-		
+
 		prev = axel->bytes_done;
 		axel_do( axel );
-		
+
 		if( conf->alternate_output )
-		{			
+		{
 			if( !axel->message && prev != axel->bytes_done )
 				print_alternate_output( axel );
 		}
 		else
 		{
-			/* The infamous wget-like 'interface'.. ;)		*/
+			/* The infamous wget-like 'interface'.. ;) */
 			done = ( axel->bytes_done / 1024 ) - ( prev / 1024 );
 			if( done && conf->verbose > -1 )
 			{
@@ -382,7 +382,7 @@ int main( int argc, char *argv[] )
 				fflush( stdout );
 			}
 		}
-		
+
 		if( axel->message )
 		{
 			if(conf->alternate_output==1)
@@ -411,29 +411,29 @@ int main( int argc, char *argv[] )
 			putchar( '\n' );
 		}
 	}
-	
+
 	strcpy( string + MAX_STRING / 2,
 		size_human( axel->bytes_done - axel->start_byte ) );
-	
+
 	printf( _("\nDownloaded %s in %s. (%.2f KB/s)\n"),
 		string + MAX_STRING / 2,
 		time_human( gettime() - axel->start_time ),
 		(double) axel->bytes_per_second / 1024 );
-	
+
 	i = axel->ready ? 0 : 2;
-	
+
 	axel_close( axel );
-	
+
 	return( i );
 }
 
-/* SIGINT/SIGTERM handler						*/
+/* SIGINT/SIGTERM handler */
 void stop( int signal )
 {
 	run = 0;
 }
 
-/* Convert a number of bytes to a human-readable form			*/
+/* Convert a number of bytes to a human-readable form */
 char *size_human( long long int value )
 {
 	if( value < 1024 )
@@ -444,11 +444,11 @@ char *size_human( long long int value )
 		sprintf( string, _("%.1f Megabyte"), (float) value / (1024 * 1024) );
 	else
 		sprintf( string, _("%.1f Gigabyte"), (float) value / (1024 * 1024 * 1024) );
-	
+
 	return( string );
 }
 
-/* Convert a number of seconds to a human-readable form			*/
+/* Convert a number of seconds to a human-readable form */
 char *time_human( int value )
 {
 	if( value == 1 )
@@ -459,16 +459,16 @@ char *time_human( int value )
 		sprintf( string, _("%i:%02i minute(s)"), value / 60, value % 60 );
 	else
 		sprintf( string, _("%i:%02i:%02i hour(s)"), value / 3600, ( value / 60 ) % 60, value % 60 );
-	
+
 	return( string );
 }
 
 /* Part of the infamous wget-like interface. Just put it in a function
-	because I need it quite often..					*/
+	because I need it quite often.. */
 void print_commas( long long int bytes_done )
 {
 	int i, j;
-	
+
 	printf( "       " );
 	j = ( bytes_done / 1024 ) % 50;
 	if( j == 0 ) j = 50;
@@ -481,16 +481,16 @@ void print_commas( long long int bytes_done )
 	fflush( stdout );
 }
 
-static void print_alternate_output(axel_t *axel) 
+static void print_alternate_output(axel_t *axel)
 {
 	long long int done=axel->bytes_done;
 	long long int total=axel->size;
 	int i,j=0;
 	double now = gettime();
 	int width = get_term_width() - 30;
-	
+
 	printf("\r[%3ld%%] [", min(100,(long)(done*100./total+.5) ) );
-		
+
 	for(i=0;i<axel->conf->num_connections;i++)
 	{
 		for(;j<((double)axel->conn[i].currentbyte/(total+1)*width)-1;j++)
@@ -506,18 +506,18 @@ static void print_alternate_output(axel_t *axel)
 			putchar('.');
 
 		j++;
-		
+
 		for(;j<((double)axel->conn[i].lastbyte/(total+1)*width);j++)
 			putchar(' ');
 	}
-	
+
 	if(axel->bytes_per_second > 1048576)
 		printf( "] [%6.1fMB/s]", (double) axel->bytes_per_second / (1024*1024) );
 	else if(axel->bytes_per_second > 1024)
 		printf( "] [%6.1fKB/s]", (double) axel->bytes_per_second / 1024 );
 	else
 		printf( "] [%6.1fB/s]", (double) axel->bytes_per_second );
-	
+
 	if(done<total)
 	{
 		int seconds,minutes,hours,days;
@@ -532,7 +532,7 @@ static void print_alternate_output(axel_t *axel)
 		else
 			printf(" [%02d:%02d]",minutes,seconds);
 	}
-	
+
 	fflush( stdout );
 }
 
@@ -592,11 +592,11 @@ void print_version()
 	printf ("\nPlease, see the CREDITS file.\n\n" );
 }
 
-/* Print any message in the axel structure				*/
+/* Print any message in the axel structure */
 void print_messages( axel_t *axel )
 {
 	message_t *m;
-	
+
 	while( axel->message )
 	{
 		printf( "%s\n", axel->message->text );
