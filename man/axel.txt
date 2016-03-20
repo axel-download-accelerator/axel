@@ -65,27 +65,32 @@ RETURN VALUE
  download was interrupted. If something else comes back, it must be a bug.
 
 EXAMPLES
+ The trivial usage to download a file is similar to:
+
+    $ axel ftp://ftp.nl.kernel.org/pub/linux/kernel/v2.2/linux-2.2.20.tar.bz2
+
  This will use the Belgian, Dutch, English and German kernel.org mirrors to download a Linux 2.4.17
  kernel image.
 
-    axel ftp://ftp.{be,nl,uk,de}.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
+    $ axel ftp://ftp.{be,nl,uk,de}.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
 
  This will do a search for the linux-2.4.17.tar.bz2 file on filesearching.com and it'll use the four (if possible)
  fastest mirrors for the download (possibly including ftp.kernel.org). Of course, the commands are a single
  line, but they're too long to fit on one line in this page.
 
-    axel -S4 ftp://ftp.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
+    $ axel -S4 ftp://ftp.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
 
 FILES
  /etc/axelrc  System-wide configuration file.
 
- ~/.axelrc  Personal configuration file
+ ~/.axelrc  Personal configuration file.
 
  These files are not documented in a manpage, but the example file which comes with the program contains
- enough information. The position of the system-wide configuration file might be different.
+ enough information. The position of the system-wide configuration file might be different. In source code this
+ example file is at doc/ directory. On Debian systems, it is at /usr/share/doc/axel/examples/ directory.
 
 COPYRIGHT
- Axel was originally written by Wilmer van der Gaast and other authors over time. Please, see the CREDITS file.
+ Axel was originally written by Wilmer van der Gaast and other authors over time. Please, see the AUTHORS and CREDITS files.
 
  The current Axel homepage (since 2015) is https://github.com/eribertomota/axel
 
