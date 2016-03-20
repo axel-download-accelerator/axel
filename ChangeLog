@@ -6,12 +6,13 @@ Version 2.6, 2016-03-20
 * Moved all .c and .h to new /src directory.
 * Moved all .po files to new /po directory.
 * Moved some files to doc/ directory.
+* Renamed README.to-contribute to CONTRIBUTING.md.
 * Switched the build and install system to autotools.
 * Updated all copyright notices.
 
   [ Ivan Gimenez ]
 
-* Fix compilation warnings.
+* Fix several compilation warnings.
 
   [ Stephen Thirlwall ]
 

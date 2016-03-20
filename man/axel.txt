@@ -95,4 +95,5 @@ COPYRIGHT
  The current Axel homepage (since 2015) is https://github.com/eribertomota/axel
 
 HELP THIS PROJECT
- If you intent to help, please, read the README.to-contribute file.
+ If you intent to help, please, read the CONTRIBUTING.md file. On Debian systems, this file will be available at
+ /usr/share/doc/axel/ directory.
