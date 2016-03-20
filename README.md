@@ -45,4 +45,4 @@ wget clone (and other console based programs) on byte-critical systems.
 
 Axel was originally developed by Wilmer van der Gaast. Thanks for your
 efforts. Over time, Axel got several contributions from people. Please,
-see the file CREDITS.
+see the files AUTHORS and CREDITS.
