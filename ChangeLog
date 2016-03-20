@@ -1,10 +1,21 @@
-Version 2.6, 2015-11-14
+Version 2.6, 2016-03-20
 
   [ Joao Eriberto Mota Filho ]
 
+* Added the Brazilian Portuguese translation.
 * Moved all .c and .h to new /src directory.
 * Moved all .po files to new /po directory.
-* Switched the install system to autotools.
+* Moved some files to doc/ directory.
+* Switched the build and install system to autotools.
+* Updated all copyright notices.
+
+  [ Ivan Gimenez ]
+
+* Fix compilation warnings.
+
+  [ Stephen Thirlwall ]
+
+* Alterate display expands to terminal width.
 
 Version 2.5, 2015-11-01
 
