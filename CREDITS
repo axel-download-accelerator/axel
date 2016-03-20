@@ -1,9 +1,9 @@
 2.6 version:
 
-- commit dcce1f73dc128c6a608ce4d0a2dcc422e5f44c1a:
+- Ivan Gimenez <ivan.gimenez@gmail.com>
+  commit dcce1f7
   Fix compilation warnings.
-  Patch from Ivan Gimenez <ivan.gimenez@gmail.com>
-  Date: Wed, 2 Mar 2016 02:36:50 +0100
+  Patch sent by email on 2016-03-02
   Thanks a lot!
 
 - Stephen Thirlwall
