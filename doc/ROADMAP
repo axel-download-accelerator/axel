@@ -4,7 +4,7 @@ Roadmap for Axel v2
 * Check if strrstr is provided by environment
 * Use SI prefixes
 
-Roadmap for Axel v3
+Roadmap for Axel v3 (by Philipp Hagemeister, 2008-2010)
 ===================
 
 Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://github.com/eribertomota/axel/issues ) for detailled information.
