@@ -267,6 +267,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 axel_SOURCES = axel.c conf.c conn.c ftp.c http.c search.c tcp.c text.c
+AM_CPPFLAGS = -DLOCALEDIR=\""$(localedir)"\"
 all: all-am
 
 .SUFFIXES:
