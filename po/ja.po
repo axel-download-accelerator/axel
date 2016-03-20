@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-19 13:22-0300\n"
+"POT-Creation-Date: 2016-03-20 01:28-0300\n"
 "PO-Revision-Date: 2012-03-11 00:03+0900\n"
 "Last-Translator: Osamu Aoki <osamu@debian.org>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
@@ -14,75 +14,80 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/axel.c:55
+#: src/axel.c:57
 msgid "Buffer resized for this speed."
 msgstr "このスピードに合わせバッファーをリサイズします。"
 
-#: src/axel.c:91
+#: src/axel.c:93
 msgid "Could not parse URL.\n"
 msgstr "URLを解析できません。\n"
 
-#: src/axel.c:126
+#: src/axel.c:128
 #, c-format
 msgid "File size: %lld bytes"
 msgstr "ファイルサイズ: %lld バイト"
 
-#: src/axel.c:143
+#: src/axel.c:147
 #, c-format
 msgid "Opening output file %s"
 msgstr "出力ファイル %s をオープンします"
 
-#: src/axel.c:152
+#: src/axel.c:156
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr ""
 "サポートされていないサーバーなので、単一コネクションを使い最初から始めます。"
 
-#: src/axel.c:171
+#: src/axel.c:179
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "状態ファイル発見: %lld バイトがダウンロード済み、あと %lld バイト。"
 
-#: src/axel.c:178 src/axel.c:190
+#: src/axel.c:186 src/axel.c:198
 msgid "Error opening local file"
 msgstr "ローカルファイルをオープンする際にエラー発生しました"
 
-#: src/axel.c:202
+#: src/axel.c:210
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "ファイルシステム/OSがイマイチ。回避します。 :-("
 
-#: src/axel.c:235
+#: src/axel.c:217
+#, fuzzy
+msgid "Error creating local file"
+msgstr "ローカルファイルをオープンする際にエラー発生しました"
+
+#: src/axel.c:246
 msgid "Starting download"
 msgstr "ダウンロード開始します"
 
-#: src/axel.c:242 src/axel.c:401
+#: src/axel.c:253 src/axel.c:412
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "接続 %i は %s:%i から、インターフェース %s でダウンロードします"
 
-#: src/axel.c:249 src/axel.c:411
+#: src/axel.c:260 src/axel.c:422
 msgid "pthread error!!!"
 msgstr "pthread のエラー!!!"
 
-#: src/axel.c:317
+#: src/axel.c:328
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "接続 %i でエラー! コネクションをクローズしました"
 
-#: src/axel.c:331
+#: src/axel.c:342
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "接続 %i が不意にクローズされました"
 
-#: src/axel.c:335 src/axel.c:352
+#: src/axel.c:346 src/axel.c:363
 #, c-format
 msgid "Connection %i finished"
 msgstr "接続 %i が終了しました"
 
-#: src/axel.c:364
+#: src/axel.c:375
 msgid "Write error!"
 msgstr "書き込みエラー!"
 
-#: src/axel.c:376
+#: src/axel.c:387
 #, c-format
 msgid "Connection %i timed out"
 msgstr "接続 %i がタイムアウトしました"
@@ -92,7 +97,7 @@ msgstr "接続 %i がタイムアウトしました"
 msgid "Error in %s line %i.\n"
 msgstr "%s の %i 行目でエラー。\n"
 
-#: src/conn.c:349 src/ftp.c:124
+#: src/conn.c:349 src/ftp.c:122
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "リディレクト回数が多すぎます。\n"
@@ -102,37 +107,37 @@ msgstr "リディレクト回数が多すぎます。\n"
 msgid "Unknown HTTP error.\n"
 msgstr "未知の HTTP エラー。\n"
 
-#: src/ftp.c:35 src/http.c:61
+#: src/ftp.c:33 src/http.c:61
 #, c-format
 msgid "Unable to connect to server %s:%i\n"
 msgstr "サーバー %s:%i に接続できません。\n"
 
-#: src/ftp.c:91
+#: src/ftp.c:89
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "ディレクトリーを %s に変更できません\n"
 
-#: src/ftp.c:117 src/ftp.c:177
+#: src/ftp.c:115 src/ftp.c:175
 #, c-format
 msgid "File not found.\n"
 msgstr "ファイルが見つかりません。\n"
 
-#: src/ftp.c:179
+#: src/ftp.c:177
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "この URL には複数のマッチがあります。\n"
 
-#: src/ftp.c:250 src/ftp.c:256
+#: src/ftp.c:248 src/ftp.c:254
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "受動的データー接続の開始でエラー。\n"
 
-#: src/ftp.c:286
+#: src/ftp.c:284
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "コマンド %s を書く際にエラー\n"
 
-#: src/ftp.c:311 src/http.c:151
+#: src/ftp.c:309 src/http.c:161
 #, c-format
 msgid "Connection gone.\n"
 msgstr "接続が失われています。\n"
@@ -141,6 +146,11 @@ msgstr "接続が失われています。\n"
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "無効なプロキシストリング: %s\n"
+
+#: src/http.c:147
+#, fuzzy, c-format
+msgid "Connection gone while writing.\n"
+msgstr "接続が失われています。\n"
 
 #: src/text.c:155
 #, c-format
@@ -249,7 +259,7 @@ msgstr "%i:%02i 秒"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i 秒"
 
-#: src/text.c:541
+#: src/text.c:550
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -285,7 +295,7 @@ msgstr ""
 "-V\tバージョン情報\n"
 "\n"
 
-#: src/text.c:558
+#: src/text.c:567
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -321,7 +331,7 @@ msgstr ""
 "--version\t\t-V\tバージョン情報\n"
 "\n"
 
-#: src/text.c:579
+#: src/text.c:588
 #, fuzzy, c-format
 msgid ""
 "\n"

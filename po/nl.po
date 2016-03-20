@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-19 13:22-0300\n"
+"POT-Creation-Date: 2016-03-20 01:28-0300\n"
 "PO-Revision-Date: 2001-11-14 15:22+0200\n"
 "Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -11,74 +11,79 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: src/axel.c:55
+#: src/axel.c:57
 msgid "Buffer resized for this speed."
 msgstr "Buffer verkleind voor deze snelheid."
 
-#: src/axel.c:91
+#: src/axel.c:93
 msgid "Could not parse URL.\n"
 msgstr "Kan URL niet verwerken.\n"
 
-#: src/axel.c:126
+#: src/axel.c:128
 #, c-format
 msgid "File size: %lld bytes"
 msgstr "Bestandsgrootte: %lld bytes"
 
-#: src/axel.c:143
+#: src/axel.c:147
 #, c-format
 msgid "Opening output file %s"
 msgstr "Openen uitvoerbestand %s"
 
-#: src/axel.c:152
+#: src/axel.c:156
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server niet ondersteund, opnieuw beginnen met 1 verbinding."
 
-#: src/axel.c:171
+#: src/axel.c:179
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr ".st bestand gevonden: %lld bytes gedownload, %lld te gaan."
 
-#: src/axel.c:178 src/axel.c:190
+#: src/axel.c:186 src/axel.c:198
 msgid "Error opening local file"
 msgstr "Fout bij openen lokaal bestand"
 
-#: src/axel.c:202
+#: src/axel.c:210
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Niet-fatale fout in OS/bestandssysteem, omheen werken.."
 
-#: src/axel.c:235
+#: src/axel.c:217
+#, fuzzy
+msgid "Error creating local file"
+msgstr "Fout bij openen lokaal bestand"
+
+#: src/axel.c:246
 msgid "Starting download"
 msgstr "Begin download"
 
-#: src/axel.c:242 src/axel.c:401
+#: src/axel.c:253 src/axel.c:412
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbinding %i gebruikt server %s:%i via interface %s"
 
-#: src/axel.c:249 src/axel.c:411
+#: src/axel.c:260 src/axel.c:422
 msgid "pthread error!!!"
 msgstr "pthread fout!!!"
 
-#: src/axel.c:317
+#: src/axel.c:328
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Fout op verbinding %i! Verbinding gesloten"
 
-#: src/axel.c:331
+#: src/axel.c:342
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Verbinding %i onverwachts gesloten"
 
-#: src/axel.c:335 src/axel.c:352
+#: src/axel.c:346 src/axel.c:363
 #, c-format
 msgid "Connection %i finished"
 msgstr "Verbinding %i klaar"
 
-#: src/axel.c:364
+#: src/axel.c:375
 msgid "Write error!"
 msgstr "Schrijffout!"
 
-#: src/axel.c:376
+#: src/axel.c:387
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Time-out op verbinding %i"
@@ -88,7 +93,7 @@ msgstr "Time-out op verbinding %i"
 msgid "Error in %s line %i.\n"
 msgstr "Fout in %s regel %i.\n"
 
-#: src/conn.c:349 src/ftp.c:124
+#: src/conn.c:349 src/ftp.c:122
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Te veel redirects.\n"
@@ -98,37 +103,37 @@ msgstr "Te veel redirects.\n"
 msgid "Unknown HTTP error.\n"
 msgstr "Onbekende HTTP fout.\n"
 
-#: src/ftp.c:35 src/http.c:61
+#: src/ftp.c:33 src/http.c:61
 #, c-format
 msgid "Unable to connect to server %s:%i\n"
 msgstr "Kan niet verbinden met server %s:%i\n"
 
-#: src/ftp.c:91
+#: src/ftp.c:89
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr ""
 
-#: src/ftp.c:117 src/ftp.c:177
+#: src/ftp.c:115 src/ftp.c:175
 #, c-format
 msgid "File not found.\n"
 msgstr "Bestand niet gevonden.\n"
 
-#: src/ftp.c:179
+#: src/ftp.c:177
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "Meerdere bestanden passen bij deze URL.\n"
 
-#: src/ftp.c:250 src/ftp.c:256
+#: src/ftp.c:248 src/ftp.c:254
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Fout bij het openen van een data verbinding.\n"
 
-#: src/ftp.c:286
+#: src/ftp.c:284
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Fout bij het schrijven van commando %s\n"
 
-#: src/ftp.c:311 src/http.c:151
+#: src/ftp.c:309 src/http.c:161
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Verbinding gesloten.\n"
@@ -137,6 +142,11 @@ msgstr "Verbinding gesloten.\n"
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "Ongeldige proxy string: %s\n"
+
+#: src/http.c:147
+#, fuzzy, c-format
+msgid "Connection gone while writing.\n"
+msgstr "Verbinding gesloten.\n"
 
 #: src/text.c:155
 #, c-format
@@ -242,7 +252,7 @@ msgstr "%i:%02i seconden"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i seconden"
 
-#: src/text.c:541
+#: src/text.c:550
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -276,7 +286,7 @@ msgstr ""
 "-V\tVersie informatie\n"
 "\n"
 
-#: src/text.c:558
+#: src/text.c:567
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -310,7 +320,7 @@ msgstr ""
 "--version\t\t-V\tVersie informatie\n"
 "\n"
 
-#: src/text.c:579
+#: src/text.c:588
 #, fuzzy, c-format
 msgid ""
 "\n"
