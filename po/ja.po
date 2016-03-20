@@ -1,6 +1,6 @@
 # Japanese messages for axel
 # Copyright (C) 2012 Osamu Aoki <osamu@debian.org>
-# This file is distributed under the same license as the axcel package.
+# This file is distributed under the same license as the axel package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
