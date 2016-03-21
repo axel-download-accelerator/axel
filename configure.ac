@@ -1,5 +1,6 @@
-#                                               -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script.
+# Autoconf for axel
+# Copyright 2016 Joao Eriberto Mota Filho
+# This file is under same license of axel (GPLv2+)
 
 AC_PREREQ([2.69])
 AC_INIT([axel], [2.6], [https://github.com/eribertomota/axel/issues])
@@ -31,15 +32,37 @@ AC_CHECK_FUNCS([gettimeofday inet_ntoa memset select setlocale socket strcasecmp
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.19.3])
 
-# Flags
-CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
-LDFLAGS="$LDFLAGS -pthread"
-
 #### Definitions ####
 
 # OS
 arch=$(uname -s)
 AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
+
+# Flags
+CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
+
+case "$arch" in
+FreeBSD | OpenBSD | NetBSD | Darwin )
+    LDFLAGS="$LDFLAGS -lintl -pthread"
+;;
+Linux | GNU/kFreeBSD | GNU )
+    LDFLAGS="$LDFLAGS -pthread"
+;;
+SunOS )
+    LDFLAGS="$LDFLAGS -lintl -pthread -lsocket -lnsl"
+;;
+HP-UX )
+    if [ -d /usr/local/lib/hpux32 ]; then
+       AXEL_EXTRA_FLAGS="-L/usr/local/lib/hpux32"
+    fi
+    LDFLAGS="$LDFLAGS $AXEL_EXTRA_FLAGS -lintl -lpthread"
+;;
+* )
+    LDFLAGS="$LDFLAGS -lintl -pthread"
+;;
+esac
+
+#   ---> WARNING: NetBSD not tested! Using OpenBSD settings.
 
 # etc path
 AC_DEFINE_UNQUOTED([ETCDIR], ["/etc"], ["Define /etc directory path"])
