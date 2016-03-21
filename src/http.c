@@ -34,6 +34,12 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	conn_t tconn[1];
 	int i;
 
+	if (proto == PROTO_HTTPS)
+	{
+		sprintf( conn->headers, _("Unsupported protocol https\n") );
+		return( 0 );
+	}
+
 	strncpy( conn->host, host, MAX_STRING );
 	conn->proto = proto;
 
@@ -96,8 +102,20 @@ void http_get( http_t *conn, char *lurl )
 	*conn->request = 0;
 	if( conn->proxy )
 	{
-		http_addheader( conn, "GET %s://%s%s HTTP/1.0",
-			conn->proto == PROTO_HTTP ? "http" : "ftp", conn->host, lurl );
+		const char* proto;
+		switch( conn->proto )
+		{
+			case PROTO_FTP:
+				proto = "ftp";
+				break;
+			case PROTO_HTTP:
+				proto = "http";
+				break;
+			case PROTO_HTTPS:
+				proto = "https";
+				break;
+		}
+		http_addheader( conn, "GET %s://%s%s HTTP/1.0", proto, conn->host, lurl );
 	}
 	else
 	{
