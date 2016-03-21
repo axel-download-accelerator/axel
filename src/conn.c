@@ -41,10 +41,25 @@ int conn_set( conn_t *conn, char *set_url )
 	}
 	else
 	{
-		if( set_url[0] == 'f' )
+		int proto_len = i - set_url;
+		if( strncmp( set_url, "ftp", proto_len ) == 0 )
+		{
 			conn->proto = PROTO_FTP;
-		else if( set_url[0] == 'h' )
+			conn->port = 21;
+			conn->proto_name = "ftp";
+		}
+		else if( strncmp( set_url, "http", proto_len ) == 0 )
+		{
 			conn->proto = PROTO_HTTP;
+			conn->port = 80;
+			conn->proto_name = "http";
+		}
+		else if( strncmp( set_url, "https", proto_len ) == 0 )
+		{
+			conn->proto = PROTO_HTTPS;
+			conn->port = 443;
+			conn->proto_name = "https";
+		}
 		else
 		{
 			return( 0 );
@@ -61,7 +76,7 @@ int conn_set( conn_t *conn, char *set_url )
 	{
 		*i = 0;
 		snprintf( conn->dir, MAX_STRING, "/%s", i + 1 );
-		if( conn->proto == PROTO_HTTP )
+		if( conn->proto == PROTO_HTTP || conn->proto == PROTO_HTTPS )
 			http_encode( conn->dir );
 	}
 	strncpy( conn->host, url, MAX_STRING );
@@ -120,26 +135,6 @@ int conn_set( conn_t *conn, char *set_url )
 		*i = 0;
 		sscanf( i + 1, "%i", &conn->port );
 	}
-	/* Take default port numbers from /etc/services */
-	else
-	{
-#ifndef DARWIN
-		struct servent *serv;
-
-		if( conn->proto == PROTO_FTP )
-			serv = getservbyname( "ftp", "tcp" );
-		else
-			serv = getservbyname( "www", "tcp" );
-
-		if( serv )
-			conn->port = ntohs( serv->s_port );
-		else
-#endif
-		if( conn->proto == PROTO_HTTP )
-			conn->port = 80;
-		else
-			conn->port = 21;
-	}
 
 	return( conn->port > 0 );
 }
@@ -147,10 +142,7 @@ int conn_set( conn_t *conn, char *set_url )
 /* Generate a nice URL string. */
 char *conn_url( conn_t *conn )
 {
-	if( conn->proto == PROTO_FTP )
-		strcpy( string, "ftp://" );
-	else
-		strcpy( string, "http://" );
+	strcpy( string, conn->proto_name );
 
 	if( *conn->user != 0 && strcmp( conn->user, "anonymous" ) != 0 )
 		sprintf( string + strlen( string ), "%s:%s@",
