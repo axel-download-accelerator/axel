@@ -5,6 +5,7 @@
 <br><br>
 **1. HELP THIS PROJECT**<br>
 **2. WHAT IS AXEL?**
+**3. BUILDING FROM GIT**
 
 
 
@@ -46,3 +47,10 @@ wget clone (and other console based programs) on byte-critical systems.
 Axel was originally developed by Wilmer van der Gaast. Thanks for your
 efforts. Over time, Axel got several contributions from people. Please,
 see the files AUTHORS and CREDITS.
+
+--------------------
+3. BUILDING FROM GIT
+--------------------
+
+Run `./autogen.sh` to create the configure script, then proceed with the
+instructions in [INSTALL](INSTALL).
