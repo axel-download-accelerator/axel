@@ -37,6 +37,8 @@ int conn_set( conn_t *conn, char *set_url )
 	if( ( i = strstr( set_url, "://" ) ) == NULL )
 	{
 		conn->proto = PROTO_DEFAULT;
+		conn->port = PROTO_DEFAULT_PORT;
+		conn->proto_name = PROTO_DEFAULT_NAME;
 		strncpy( url, set_url, MAX_STRING );
 	}
 	else
@@ -45,20 +47,20 @@ int conn_set( conn_t *conn, char *set_url )
 		if( strncmp( set_url, "ftp", proto_len ) == 0 )
 		{
 			conn->proto = PROTO_FTP;
-			conn->port = 21;
-			conn->proto_name = "ftp";
+			conn->port = PROTO_FTP_PORT;
+			conn->proto_name = PROTO_FTP_NAME;
 		}
 		else if( strncmp( set_url, "http", proto_len ) == 0 )
 		{
 			conn->proto = PROTO_HTTP;
-			conn->port = 80;
-			conn->proto_name = "http";
+			conn->port = PROTO_HTTP_PORT;
+			conn->proto_name = PROTO_HTTP_NAME;
 		}
 		else if( strncmp( set_url, "https", proto_len ) == 0 )
 		{
 			conn->proto = PROTO_HTTPS;
-			conn->port = 443;
-			conn->proto_name = "https";
+			conn->port = PROTO_HTTPS_PORT;
+			conn->proto_name = PROTO_HTTPS_NAME;
 		}
 		else
 		{
@@ -143,6 +145,7 @@ int conn_set( conn_t *conn, char *set_url )
 char *conn_url( conn_t *conn )
 {
 	strcpy( string, conn->proto_name );
+	strcat( string, "://" );
 
 	if( *conn->user != 0 && strcmp( conn->user, "anonymous" ) != 0 )
 		sprintf( string + strlen( string ), "%s:%s@",
@@ -161,7 +164,7 @@ void conn_disconnect( conn_t *conn )
 		ftp_disconnect( conn->ftp );
 	else
 		http_disconnect( conn->http );
-	conn->fd = -1;
+	conn->tcp = NULL;
 }
 
 int conn_init( conn_t *conn )
@@ -215,14 +218,14 @@ int conn_init( conn_t *conn )
 			return( 0 );
 		}
 		conn->message = conn->http->headers;
-		conn->fd = conn->http->fd;
+		conn->tcp = &conn->http->tcp;
 	}
 	return( 1 );
 }
 
 int conn_setup( conn_t *conn )
 {
-	if( conn->ftp->fd <= 0 && conn->http->fd <= 0 )
+	if( conn->ftp->tcp.fd <= 0 && conn->http->tcp.fd <= 0 )
 		if( !conn_init( conn ) )
 			return( 0 );
 
@@ -230,7 +233,7 @@ int conn_setup( conn_t *conn )
 	{
 		if( !ftp_data( conn->ftp ) )	/* Set up data connnection */
 			return( 0 );
-		conn->fd = conn->ftp->data_fd;
+		conn->tcp = &conn->ftp->data_tcp;
 
 		if( conn->currentbyte )
 		{

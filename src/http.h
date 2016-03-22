@@ -34,7 +34,7 @@ typedef struct
 	long long int firstbyte;
 	long long int lastbyte;
 	int status;
-	int fd;
+	tcp_t tcp;
 	char *local_if;
 } http_t;
 

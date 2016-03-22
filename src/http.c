@@ -34,12 +34,6 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	conn_t tconn[1];
 	int i;
 
-	if (proto == PROTO_HTTPS)
-	{
-		sprintf( conn->headers, _("Unsupported protocol https\n") );
-		return( 0 );
-	}
-
 	strncpy( conn->host, host, MAX_STRING );
 	conn->proto = proto;
 
@@ -61,7 +55,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		conn->proxy = 0;
 	} }
 
-	if( ( conn->fd = tcp_connect( host, port, conn->local_if ) ) == -1 )
+	if( tcp_connect( &conn->tcp, host, port, proto == PROTO_HTTPS, conn->local_if ) == -1 )
 	{
 		/* We'll put the message in conn->headers, not in request */
 		sprintf( conn->headers, _("Unable to connect to server %s:%i\n"), host, port );
@@ -92,9 +86,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 
 void http_disconnect( http_t *conn )
 {
-	if( conn->fd > 0 )
-		close( conn->fd );
-	conn->fd = -1;
+	tcp_close( &conn->tcp );
 }
 
 void http_get( http_t *conn, char *lurl )
@@ -159,7 +151,7 @@ int http_exec( http_t *conn )
 	http_addheader( conn, "" );
 
 	while ( nwrite < strlen( conn->request ) ) {
-		if( ( i = write( conn->fd, conn->request + nwrite, strlen( conn->request ) - nwrite ) ) < 0 ) {
+		if( ( i = tcp_write( &conn->tcp, conn->request + nwrite, strlen( conn->request ) - nwrite ) ) < 0 ) {
         		if (errno == EINTR || errno == EAGAIN) continue;
 			/* We'll put the message in conn->headers, not in request */
 			sprintf( conn->headers, _("Connection gone while writing.\n") );
@@ -173,7 +165,7 @@ int http_exec( http_t *conn )
 	   actual data */
 	while( 1 )
 	{
-		if( read( conn->fd, s, 1 ) <= 0 )
+		if( tcp_read( &conn->tcp, s, 1 ) <= 0 )
 		{
 			/* We'll put the message in conn->headers, not in request */
 			sprintf( conn->headers, _("Connection gone.\n") );
