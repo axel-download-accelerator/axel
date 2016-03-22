@@ -2,7 +2,10 @@
   Axel -- A lighter download accelerator for Linux and other Unices
 
   Copyright 2001-2007 Wilmer van der Gaast
-  Copyright 2008      Y Giridhar Appaji Nag
+  Copyright 2007-2009 Y Giridhar Appaji Nag
+  Copyright 2008-2009 Philipp Hagemeister
+  Copyright 2015-2016 Joao Eriberto Mota Filho
+  Copyright 2016      Ivan Gimenez
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -19,26 +22,7 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/* FTP control include file */
+/* SSL interface */
 
-#define FTP_PASSIVE	1
-#define FTP_PORT	2
-
-typedef struct
-{
-	char cwd[MAX_STRING];
-	char *message;
-	int status;
-	tcp_t tcp;
-	tcp_t data_tcp;
-	int ftp_mode;
-	char *local_if;
-} ftp_t;
-
-int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass );
-void ftp_disconnect( ftp_t *conn );
-int ftp_wait( ftp_t *conn );
-int ftp_command( ftp_t *conn, char *format, ... );
-int ftp_cwd( ftp_t *conn, char *cwd );
-int ftp_data( ftp_t *conn );
-long long int ftp_size( ftp_t *conn, char *file, int maxredir );
+SSL* ssl_connect( int fd );
+void ssl_disconnect( SSL* ssl );

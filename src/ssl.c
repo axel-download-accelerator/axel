@@ -3,6 +3,9 @@
 
   Copyright 2001-2007 Wilmer van der Gaast
   Copyright 2008      Y Giridhar Appaji Nag
+  Copyright 2008-2009 Philipp Hagemeister
+  Copyright 2015      Joao Eriberto Mota Filho
+  Copyright 2016      Ivan Gimenez
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -19,26 +22,43 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/* FTP control include file */
+/* SSL interface */
 
-#define FTP_PASSIVE	1
-#define FTP_PORT	2
+#include "axel.h"
 
-typedef struct
+static SSL_CTX *ssl_ctx = NULL;
+
+void ssl_init( void )
 {
-	char cwd[MAX_STRING];
-	char *message;
-	int status;
-	tcp_t tcp;
-	tcp_t data_tcp;
-	int ftp_mode;
-	char *local_if;
-} ftp_t;
+	if( ssl_ctx != NULL )
+		return;
 
-int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass );
-void ftp_disconnect( ftp_t *conn );
-int ftp_wait( ftp_t *conn );
-int ftp_command( ftp_t *conn, char *format, ... );
-int ftp_cwd( ftp_t *conn, char *cwd );
-int ftp_data( ftp_t *conn );
-long long int ftp_size( ftp_t *conn, char *file, int maxredir );
+	SSL_library_init();
+	SSL_load_error_strings();
+
+	ssl_ctx = SSL_CTX_new( SSLv23_client_method() );
+}
+
+SSL* ssl_connect( int fd )
+{
+	SSL* ssl;
+
+	ssl_init();
+
+	ssl = SSL_new( ssl_ctx );
+	SSL_set_fd( ssl, fd );
+
+	int err = SSL_connect( ssl );
+	if (err <= 0) {
+		printf("SSL_connect: %d\n", SSL_get_error(ssl, err));
+		return NULL;
+	}
+
+	return ssl;
+}
+
+void ssl_disconnect( SSL* ssl )
+{
+	SSL_shutdown( ssl );
+	SSL_free( ssl );
+}

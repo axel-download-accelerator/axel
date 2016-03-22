@@ -24,7 +24,19 @@
 #define PROTO_FTP	1
 #define PROTO_HTTP	2
 #define PROTO_HTTPS	3
-#define PROTO_DEFAULT	PROTO_FTP
+
+#define PROTO_DEFAULT		PROTO_FTP
+#define PROTO_DEFAULT_PORT	PROTO_FTP_PORT
+#define PROTO_DEFAULT_NAME	PROTO_FTP_NAME
+
+#define	PROTO_FTP_PORT		21
+#define	PROTO_FTP_NAME		"ftp"
+
+#define	PROTO_HTTP_PORT		80
+#define	PROTO_HTTP_NAME		"http"
+
+#define	PROTO_HTTPS_PORT	443
+#define	PROTO_HTTPS_NAME	"https"
 
 typedef struct
 {
@@ -45,7 +57,7 @@ typedef struct
 	long long int size;		/* File size, not 'connection size'.. */
 	long long int currentbyte;
 	long long int lastbyte;
-	int fd;
+	tcp_t *tcp;
 	int enabled;
 	int supported;
 	int last_transfer;

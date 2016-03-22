@@ -111,7 +111,7 @@ int search_makelist( search_t *results, char *url )
 		return( 1 );
 	}
 
-	while( ( i = read( conn->fd, s + j, size - j ) ) > 0 )
+	while( ( i = tcp_read( conn->tcp, s + j, size - j ) ) > 0 )
 	{
 		j += i;
 		if( j + 10 >= size )

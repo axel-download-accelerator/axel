@@ -20,5 +20,15 @@
 
 /* TCP control include file */
 
-int tcp_connect( char *hostname, int port, char *local_if );
+typedef struct {
+	int fd;
+	SSL *ssl;
+} tcp_t;
+
+int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_if );
+void tcp_close( tcp_t *tcp );
+
+int tcp_read( tcp_t *tcp, void *buffer, int size );
+int tcp_write( tcp_t *tcp, void *buffer, int size );
+
 int get_if_ip( char *iface, char *ip );

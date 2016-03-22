@@ -45,22 +45,22 @@ CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
 
 case "$arch" in
 FreeBSD | OpenBSD | NetBSD | Darwin )
-    LDFLAGS="$LDFLAGS -lintl -pthread"
+    LDFLAGS="$LDFLAGS -lintl -lssl -lcrypto -pthread"
 ;;
 Linux | GNU/kFreeBSD | GNU )
-    LDFLAGS="$LDFLAGS -pthread"
+    LDFLAGS="$LDFLAGS -lssl -lcrypto -pthread"
 ;;
 SunOS )
-    LDFLAGS="$LDFLAGS -lintl -pthread -lsocket -lnsl"
+    LDFLAGS="$LDFLAGS -lintl -lssl -lcrypto -pthread -lsocket -lnsl"
 ;;
 HP-UX )
     if [ -d /usr/local/lib/hpux32 ]; then
        AXEL_EXTRA_FLAGS="-L/usr/local/lib/hpux32"
     fi
-    LDFLAGS="$LDFLAGS $AXEL_EXTRA_FLAGS -lintl -lpthread"
+    LDFLAGS="$LDFLAGS $AXEL_EXTRA_FLAGS -lintl -lssl -lcrypto -lpthread"
 ;;
 * )
-    LDFLAGS="$LDFLAGS -lintl -pthread"
+    LDFLAGS="$LDFLAGS -lintl -lssl -lcrypto -pthread"
 ;;
 esac
 

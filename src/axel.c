@@ -343,9 +343,10 @@ void axel_do( axel_t *axel )
 	hifd = 0;
 	for( i = 0; i < axel->conf->num_connections; i ++ )
 	{
-		if( axel->conn[i].enabled )
-			FD_SET( axel->conn[i].fd, fds );
-		hifd = max( hifd, axel->conn[i].fd );
+		if( axel->conn[i].enabled ) {
+			FD_SET( axel->conn[i].tcp->fd, fds );
+			hifd = max( hifd, axel->conn[i].tcp->fd );
+		}
 	}
 	if( hifd == 0 )
 	{
@@ -369,10 +370,10 @@ void axel_do( axel_t *axel )
 	/* Handle connections which need attention */
 	for( i = 0; i < axel->conf->num_connections; i ++ )
 	if( axel->conn[i].enabled ) {
-	if( FD_ISSET( axel->conn[i].fd, fds ) )
+	if( FD_ISSET( axel->conn[i].tcp->fd, fds ) )
 	{
 		axel->conn[i].last_transfer = gettime();
-		size = read( axel->conn[i].fd, buffer, axel->conf->buffer_size );
+		size = tcp_read( axel->conn[i].tcp, buffer, axel->conf->buffer_size );
 		if( size == -1 )
 		{
 			if( axel->conf->verbose )

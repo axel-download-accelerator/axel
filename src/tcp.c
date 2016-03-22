@@ -24,7 +24,7 @@
 #include "axel.h"
 
 /* Get a TCP connection */
-int tcp_connect( char *hostname, int port, char *local_if )
+int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_if )
 {
 	struct sockaddr_in local_addr;
 	const int portstr_len = 10;
@@ -91,8 +91,45 @@ int tcp_connect( char *hostname, int port, char *local_if )
 
 	freeaddrinfo(gai_results);
 
-	return sock_fd;
 
+	if (secure) {
+		tcp->ssl = ssl_connect(sock_fd);
+		if (tcp->ssl == NULL) {
+			close(sock_fd);
+			return -1;
+		}
+	}
+	tcp->fd = sock_fd;
+
+	return 1;
+}
+
+int tcp_read( tcp_t *tcp, void *buffer, int size )
+{
+	if (tcp->ssl != NULL)
+		return SSL_read(tcp->ssl, buffer, size);
+	else
+		return read(tcp->fd, buffer, size);
+}
+
+int tcp_write( tcp_t *tcp, void *buffer, int size )
+{
+	if (tcp->ssl != NULL)
+		return SSL_write(tcp->ssl, buffer, size);
+	else
+		return write(tcp->fd, buffer, size);
+}
+
+void tcp_close( tcp_t *tcp )
+{
+	if (tcp->fd > 0) {
+		if (tcp->ssl != NULL)
+			ssl_disconnect(tcp->ssl);
+		else
+			close(tcp->fd);
+		tcp->fd = -1;
+		tcp->ssl = NULL;
+	}
 }
 
 int get_if_ip( char *iface, char *ip )
