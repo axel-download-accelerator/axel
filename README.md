@@ -4,8 +4,9 @@
 
 <br><br>
 **1. HELP THIS PROJECT**<br>
-**2. WHAT IS AXEL?**
-**3. BUILDING FROM GIT**
+**2. WHAT IS AXEL?**<br>
+**3. BUILDING FROM GIT**<br>
+**4. BUILDING ON OS/X WITH HOMEBREW**<br>
 
 
 
@@ -54,3 +55,21 @@ see the files AUTHORS and CREDITS.
 
 Run `./autogen.sh` to create the configure script, then proceed with the
 instructions in [INSTALL](INSTALL).
+
+---------------------------------
+4. BUILDING ON OS/X WITH HOMEBREW
+---------------------------------
+
+Install the following homebrew packages:
+
+  `homebrew install automake gettext`
+
+You'll need to provide some extra options to `autogen.sh` and `configure` so
+they can find gettext.
+
+```shell
+GETTEXT=/usr/local/opt/gettext
+PATH="$GETTEXT/bin:$PATH"
+./autogen.sh -I$GETTEXT/share/aclocal/
+CFLAGS=-I$GETTEXT/include LDFLAGS=-L$GETTEXT/lib ./configure
+```
