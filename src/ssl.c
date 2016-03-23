@@ -26,6 +26,8 @@
 
 #include "axel.h"
 
+#include <openssl/err.h>
+
 static SSL_CTX *ssl_ctx = NULL;
 
 void ssl_init( void )
@@ -37,6 +39,8 @@ void ssl_init( void )
 	SSL_load_error_strings();
 
 	ssl_ctx = SSL_CTX_new( SSLv23_client_method() );
+	SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_PEER, NULL);
+	SSL_CTX_set_verify_depth(ssl_ctx, 0);
 }
 
 SSL* ssl_connect( int fd )
@@ -49,8 +53,8 @@ SSL* ssl_connect( int fd )
 	SSL_set_fd( ssl, fd );
 
 	int err = SSL_connect( ssl );
-	if (err <= 0) {
-		printf("SSL_connect: %d\n", SSL_get_error(ssl, err));
+	if( err <= 0 ) {
+		fprintf(stderr, "SSL connection failed: %s\n", ERR_reason_error_string(ERR_get_error()));
 		return NULL;
 	}
 
