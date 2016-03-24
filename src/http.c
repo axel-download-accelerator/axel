@@ -48,6 +48,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		}
 		host = tconn->host;
 		port = tconn->port;
+		proto = tconn->proto;
 		conn->proxy = 1;
 	}
 	else
