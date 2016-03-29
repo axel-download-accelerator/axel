@@ -165,6 +165,12 @@ int main( int argc, char *argv[] )
 	if( j > -1 )
 		conf->verbose = j;
 
+	if ( conf->num_connections < 1)
+	{
+		print_help();
+		return( 1 );
+	}
+
 	if( argc - optind == 0 )
 	{
 		print_help();
