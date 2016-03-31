@@ -4,7 +4,9 @@
 
 <br><br>
 **1. HELP THIS PROJECT**<br>
-**2. WHAT IS AXEL?**
+**2. WHAT IS AXEL?**<br>
+**3. BUILDING FROM GIT**<br>
+**4. BUILDING ON OS/X WITH HOMEBREW**<br>
 
 
 
@@ -46,3 +48,28 @@ wget clone (and other console based programs) on byte-critical systems.
 Axel was originally developed by Wilmer van der Gaast. Thanks for your
 efforts. Over time, Axel got several contributions from people. Please,
 see the files AUTHORS and CREDITS.
+
+--------------------
+3. BUILDING FROM GIT
+--------------------
+
+Run `./autogen.sh` to create the configure script, then proceed with the
+instructions in [INSTALL](INSTALL).
+
+---------------------------------
+4. BUILDING ON OS/X WITH HOMEBREW
+---------------------------------
+
+Install the following homebrew packages:
+
+  `homebrew install automake gettext`
+
+You'll need to provide some extra options to `autogen.sh` and `configure` so
+they can find gettext.
+
+```shell
+GETTEXT=/usr/local/opt/gettext
+PATH="$GETTEXT/bin:$PATH"
+./autogen.sh -I$GETTEXT/share/aclocal/
+CFLAGS=-I$GETTEXT/include LDFLAGS=-L$GETTEXT/lib ./configure
+```
