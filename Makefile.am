@@ -4,6 +4,20 @@ man_MANS = man/axel.1
 
 clean-local:
 	-rm -rf autom4te.cache/ \
-	config.h.in~ \
+	m4/
+
+	-rm -f aclocal.m4 \
+	compile \
+	config.* \
+	configure \
+	depcomp \
+	install-sh \
+	Makefile.in \
+	missing \
 	po/*.gmo \
-	po/stamp-po
+	po/Makefile.in.in \
+	po/Makevars.template \
+	po/Rules-quot \
+	po/axel.pot \
+	po/stamp-po \
+	src/Makefile.in
