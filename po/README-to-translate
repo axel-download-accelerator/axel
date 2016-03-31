@@ -2,7 +2,6 @@ To create a translation to a new language (e.g. pt_BR):
 
 $ ./autogen.sh
 $ ./configure
-$ make
 $ cd po/
 $ msginit -l pt_BR   # change pt_BR to your new language
 $ edit pt_BR.po      # likewise
