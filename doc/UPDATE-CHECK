@@ -5,5 +5,6 @@ When updating, change these files (if needed):
 - CREDITS
 - configure.ac (VERSION)
 - src/axel.h (AXEL_VERSION_STRING)
+- src/text.c (years in Copyright lines near EOF)
 
 -> run 'make update-po' in po/ to update the .po files.
