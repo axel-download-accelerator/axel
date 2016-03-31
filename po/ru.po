@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-30 22:57-0300\n"
+"POT-Creation-Date: 2016-03-31 17:29+1100\n"
 "PO-Revision-Date: 2009-04-02 00:05+0200\n"
 "Last-Translator: newhren <colimit@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -56,85 +56,85 @@ msgstr "Ошибка при открытии локального файла"
 msgid "Starting download"
 msgstr "Начинаем скачивание"
 
-#: src/axel.c:253 src/axel.c:412
+#: src/axel.c:253 src/axel.c:413
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Соединение %i скачивает с %s:%i через интерфейс %s"
 
-#: src/axel.c:260 src/axel.c:422
+#: src/axel.c:260 src/axel.c:423
 msgid "pthread error!!!"
 msgstr "ошибка pthread!!!"
 
-#: src/axel.c:328
+#: src/axel.c:329
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Ошибка в соединении %i! Соединение закрыто"
 
-#: src/axel.c:342
+#: src/axel.c:343
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Соединение %i неожиданно закрылось"
 
-#: src/axel.c:346 src/axel.c:363
+#: src/axel.c:347 src/axel.c:364
 #, c-format
 msgid "Connection %i finished"
 msgstr "Соединение %i закончилось"
 
-#: src/axel.c:375
+#: src/axel.c:376
 msgid "Write error!"
 msgstr "Ошибка записи!"
 
-#: src/axel.c:387
+#: src/axel.c:388
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Время соединения %i вышло"
 
-#: src/conf.c:107
+#: src/conf.c:108
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "Ошибка в файле %s линия %i.\n"
 
-#: src/conn.c:349 src/ftp.c:122
+#: src/conn.c:344 src/ftp.c:119
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Слишком много перенаправлений.\n"
 
-#: src/conn.c:368
+#: src/conn.c:363
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "Неизвестная ошибка HTTP.\n"
 
-#: src/ftp.c:33 src/http.c:61
+#: src/ftp.c:33 src/http.c:62
 #, c-format
 msgid "Unable to connect to server %s:%i\n"
 msgstr "Невозможно подсоединиться к серверу %s:%i\n"
 
-#: src/ftp.c:89
+#: src/ftp.c:86
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "Невозможно сменить директорию на %s\n"
 
-#: src/ftp.c:115 src/ftp.c:175
+#: src/ftp.c:112 src/ftp.c:171
 #, c-format
 msgid "File not found.\n"
 msgstr "Файл не найден.\n"
 
-#: src/ftp.c:177
+#: src/ftp.c:173
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "Несколько совпадений для этого URL.\n"
 
-#: src/ftp.c:248 src/ftp.c:254
+#: src/ftp.c:244 src/ftp.c:250
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Ошибка открытия пассивного соединения.\n"
 
-#: src/ftp.c:284
+#: src/ftp.c:280
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Ошибка записи команды %s\n"
 
-#: src/ftp.c:309 src/http.c:161
+#: src/ftp.c:305 src/http.c:172
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Соединение пропало.\n"
@@ -144,69 +144,69 @@ msgstr "Соединение пропало.\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "Некорректная стока прокси: %s\n"
 
-#: src/http.c:147
+#: src/http.c:158
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Соединение пропало.\n"
 
-#: src/text.c:156
+#: src/text.c:160
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Невозможно перенаправить stdout в /dev/null.\n"
 
-#: src/text.c:184
+#: src/text.c:189
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr ""
 
-#: src/text.c:193
+#: src/text.c:198
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "URLs длинной больше %d не поддерживаются\n"
 
-#: src/text.c:198
+#: src/text.c:203
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Начинаю скачивание: %s\n"
 
-#: src/text.c:205
+#: src/text.c:210
 #, c-format
 msgid "Doing search...\n"
 msgstr "Ищем...\n"
 
-#: src/text.c:209
+#: src/text.c:214
 #, c-format
 msgid "File not found\n"
 msgstr "Файл не найден\n"
 
-#: src/text.c:213
+#: src/text.c:218
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Пробуем скорости, это может занять некоторое время...\n"
 
-#: src/text.c:218
+#: src/text.c:223
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "Найдено %i полезных серверов, будут использованы следующие URLs:\n"
 
-#: src/text.c:277
+#: src/text.c:282
 #, c-format
 msgid "Filename too long!\n"
 msgstr ""
 
-#: src/text.c:289
+#: src/text.c:294
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Файл состояния не найден, возобновление невозможно!\n"
 
-#: src/text.c:294
+#: src/text.c:299
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ""
 "Файл состояния найден, но предварительно скачанные данные отсутствуют. "
 "Начинаем заново.\n"
 
-#: src/text.c:425
+#: src/text.c:430
 #, c-format
 msgid ""
 "\n"
@@ -215,47 +215,47 @@ msgstr ""
 "\n"
 "%s скачано за %s. (%.2f КБ/с)\n"
 
-#: src/text.c:447
+#: src/text.c:452
 #, c-format
 msgid "%lld byte"
 msgstr "%lld байт"
 
-#: src/text.c:449
+#: src/text.c:454
 #, c-format
 msgid "%.1f Kilobyte"
 msgstr "%.1f килобайта(ов)"
 
-#: src/text.c:451
+#: src/text.c:456
 #, c-format
 msgid "%.1f Megabyte"
 msgstr "%.1f мегабайта(ов)"
 
-#: src/text.c:453
+#: src/text.c:458
 #, fuzzy, c-format
 msgid "%.1f Gigabyte"
 msgstr "%.1f мегабайта(ов)"
 
-#: src/text.c:462
+#: src/text.c:467
 #, c-format
 msgid "%i second"
 msgstr "%i секунда"
 
-#: src/text.c:464
+#: src/text.c:469
 #, c-format
 msgid "%i seconds"
 msgstr "%i секунд(ы)"
 
-#: src/text.c:466
+#: src/text.c:471
 #, fuzzy, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i секунд(ы)"
 
-#: src/text.c:468
+#: src/text.c:473
 #, fuzzy, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i секунд(ы)"
 
-#: src/text.c:557
+#: src/text.c:562
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -267,6 +267,7 @@ msgid ""
 "-H x\tAdd header string\n"
 "-U x\tSet user agent\n"
 "-N\tJust don't use any proxy server\n"
+"-k\tDon't verify the SSL certificate\n"
 "-q\tLeave stdout alone\n"
 "-v\tMore status information\n"
 "-a\tAlternate progress indicator\n"
@@ -289,8 +290,8 @@ msgstr ""
 "-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:574
-#, c-format
+#: src/text.c:580
+#, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -301,6 +302,7 @@ msgid ""
 "--header=x\t\t-H x\tAdd header string\n"
 "--user-agent=x\t\t-U x\tSet user agent\n"
 "--no-proxy\t\t-N\tJust don't use any proxy server\n"
+"--insecure\t\t-k\tDon't verify the SSL certificate\n"
 "--quiet\t\t\t-q\tLeave stdout alone\n"
 "--verbose\t\t-v\tMore status information\n"
 "--alternate\t\t-a\tAlternate progress indicator\n"
@@ -323,24 +325,29 @@ msgstr ""
 "--version\t\t-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:595
+#: src/text.c:602
 #, fuzzy, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
 msgstr "Axel, версия %s (%s)\n"
 
-#: src/text.c:598
+#: src/text.c:605
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:599
+#: src/text.c:606
 #, c-format
 msgid ""
 "\n"
 "Please, see the CREDITS file.\n"
 "\n"
+msgstr ""
+
+#: src/ssl.c:65
+#, c-format
+msgid "SSL connection failed: %s\n"
 msgstr ""

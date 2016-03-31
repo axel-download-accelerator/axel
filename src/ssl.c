@@ -62,7 +62,7 @@ SSL* ssl_connect( int fd )
 
 	int err = SSL_connect( ssl );
 	if( err <= 0 ) {
-		fprintf(stderr, "SSL connection failed: %s\n", ERR_reason_error_string(ERR_get_error()));
+		fprintf(stderr, _("SSL connection failed: %s\n"), ERR_reason_error_string(ERR_get_error()));
 		return NULL;
 	}
 
