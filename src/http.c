@@ -56,12 +56,9 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		conn->proxy = 0;
 	} }
 
-	if( tcp_connect( &conn->tcp, host, port, proto == PROTO_HTTPS, conn->local_if ) == -1 )
-	{
-		/* We'll put the message in conn->headers, not in request */
-		sprintf( conn->headers, _("Unable to connect to server %s:%i\n"), host, port );
+	if( tcp_connect( &conn->tcp, host, port, proto == PROTO_HTTPS,
+		conn->local_if, conn->headers ) == -1 )
 		return( 0 );
-	}
 
 	if( *user == 0 )
 	{
@@ -153,12 +150,12 @@ int http_exec( http_t *conn )
 
 	while ( nwrite < strlen( conn->request ) ) {
 		if( ( i = tcp_write( &conn->tcp, conn->request + nwrite, strlen( conn->request ) - nwrite ) ) < 0 ) {
-        		if (errno == EINTR || errno == EAGAIN) continue;
+	if (errno == EINTR || errno == EAGAIN) continue;
 			/* We'll put the message in conn->headers, not in request */
 			sprintf( conn->headers, _("Connection gone while writing.\n") );
 			return( 0 );
 		}
-    		nwrite += i;
+		nwrite += i;
 	}
 
 	*conn->headers = 0;
