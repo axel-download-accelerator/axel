@@ -1,5 +1,6 @@
 # Autoconf for axel
 # Copyright 2016 Joao Eriberto Mota Filho
+# Copyright 2016 Stephen Thirlwall
 # This file is under same license of axel (GPLv2+)
 
 AC_PREREQ([2.69])
