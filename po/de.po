@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-30 22:24-0300\n"
+"POT-Creation-Date: 2016-03-30 22:57-0300\n"
 "PO-Revision-Date: 2008-09-15 22:08+0200\n"
 "Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -149,62 +149,62 @@ msgstr "Ungültige Proxy-Angabe: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "Verbindung geschlossen.\n"
 
-#: src/text.c:155
+#: src/text.c:156
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Kann Standardausgabe nicht nach /dev/null umleiten.\n"
 
-#: src/text.c:183
+#: src/text.c:184
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "Fehler beim Lesen der URL (Zu lang?).\n"
 
-#: src/text.c:192
+#: src/text.c:193
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "Kann URLs mit mehr als %d Zeichen nicht nutzen\n"
 
-#: src/text.c:197
+#: src/text.c:198
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Starte Abruf: %s\n"
 
-#: src/text.c:204
+#: src/text.c:205
 #, c-format
 msgid "Doing search...\n"
 msgstr "Suche gestartet...\n"
 
-#: src/text.c:208
+#: src/text.c:209
 #, c-format
 msgid "File not found\n"
 msgstr "Datei nicht gefunden\n"
 
-#: src/text.c:212
+#: src/text.c:213
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Teste Geschwindigkeiten, das kann etwas dauern...\n"
 
-#: src/text.c:217
+#: src/text.c:218
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i benutzbare Server gefunden, werde diese URLs benutzen:\n"
 
-#: src/text.c:276
+#: src/text.c:277
 #, c-format
 msgid "Filename too long!\n"
 msgstr "Dateiname zu lang!\n"
 
-#: src/text.c:288
+#: src/text.c:289
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Keine Status-Datei, Fortsetzung nicht möglich!\n"
 
-#: src/text.c:293
+#: src/text.c:294
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "Status-Datei gefunden, aber noch nichts übertragen. Neustart.\n"
 
-#: src/text.c:424
+#: src/text.c:425
 #, c-format
 msgid ""
 "\n"
@@ -213,47 +213,47 @@ msgstr ""
 "\n"
 "%s abgerufen in %s. (%.2f KB/s)\n"
 
-#: src/text.c:446
+#: src/text.c:447
 #, c-format
 msgid "%lld byte"
 msgstr "%lld byte"
 
-#: src/text.c:448
+#: src/text.c:449
 #, c-format
 msgid "%.1f Kilobyte"
 msgstr "%.1f Kilobytes"
 
-#: src/text.c:450
+#: src/text.c:451
 #, c-format
 msgid "%.1f Megabyte"
 msgstr "%.1f Megabytes"
 
-#: src/text.c:452
+#: src/text.c:453
 #, c-format
 msgid "%.1f Gigabyte"
 msgstr "%.1f Gigabytes"
 
-#: src/text.c:461
+#: src/text.c:462
 #, c-format
 msgid "%i second"
 msgstr "%i Sekunde"
 
-#: src/text.c:463
+#: src/text.c:464
 #, c-format
 msgid "%i seconds"
 msgstr "%i Sekunden"
 
-#: src/text.c:465
+#: src/text.c:466
 #, fuzzy, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i Sekunden"
 
-#: src/text.c:467
+#: src/text.c:468
 #, fuzzy, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i Sekunden"
 
-#: src/text.c:556
+#: src/text.c:557
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -289,7 +289,7 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: src/text.c:573
+#: src/text.c:574
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -325,9 +325,24 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: src/text.c:594
+#: src/text.c:595
 #, fuzzy, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"
+
+#: src/text.c:598
+#, c-format
+msgid ""
+"\n"
+"                    and others."
+msgstr ""
+
+#: src/text.c:599
+#, c-format
+msgid ""
+"\n"
+"Please, see the CREDITS file.\n"
+"\n"
+msgstr ""
