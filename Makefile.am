@@ -15,6 +15,7 @@ clean-local:
 	Makefile.in \
 	missing \
 	po/*.gmo \
+	po/*.po~
 	po/Makefile.in.in \
 	po/Makevars.template \
 	po/Rules-quot \
