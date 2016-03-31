@@ -1,3 +1,11 @@
+2.x version:
+
+- Stephen Thirlwall
+  Removed generated files from source control.
+
+- Mridul Malpotra
+  Fixed num_connections error when invalid values are given
+
 2.6 version:
 
 - Ivan Gimenez <ivan.gimenez@gmail.com>
