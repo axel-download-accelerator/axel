@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: axel 2.6\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-20 01:28-0300\n"
+"POT-Creation-Date: 2016-03-30 22:24-0300\n"
 "PO-Revision-Date: 2016-03-19 13:32-0300\n"
 "Last-Translator: Eriberto Mota <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -159,59 +159,59 @@ msgstr "Conexão perdida enquanto escrevia no disco.\n"
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Não posso redirecionar a saída padrão para /dev/null.\n"
 
-#: src/text.c:177
+#: src/text.c:183
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "Erro ao tentar ler a URL (muito longa?).\n"
 
-#: src/text.c:186
+#: src/text.c:192
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "Não posso manipular URLs com tamanho superior a %d\n"
 
-#: src/text.c:191
+#: src/text.c:197
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Inicializando download: %s\n"
 
-#: src/text.c:198
+#: src/text.c:204
 #, c-format
 msgid "Doing search...\n"
 msgstr "Procurando...\n"
 
-#: src/text.c:202
+#: src/text.c:208
 #, c-format
 msgid "File not found\n"
 msgstr "Arquivo não encontrado\n"
 
-#: src/text.c:206
+#: src/text.c:212
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Testando velocidades. Isso pode demorar um pouco...\n"
 
-#: src/text.c:211
+#: src/text.c:217
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i servidores possíveis encontrados. Serão utilizadas essas URLs:\n"
 
-#: src/text.c:270
+#: src/text.c:276
 #, c-format
 msgid "Filename too long!\n"
 msgstr "Nome de arquivo muito longo!\n"
 
-#: src/text.c:282
+#: src/text.c:288
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Estado do arquivo não encontrado. Não posso reiniciar!\n"
 
-#: src/text.c:287
+#: src/text.c:293
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ""
 "Estado do arquivo encontrado mas não há dados de download. Iniciando do "
 "zero.\n"
 
-#: src/text.c:418
+#: src/text.c:424
 #, c-format
 msgid ""
 "\n"
@@ -220,47 +220,47 @@ msgstr ""
 "\n"
 "Baixados %s em %s. (%.2f KB/s)\n"
 
-#: src/text.c:440
+#: src/text.c:446
 #, c-format
 msgid "%lld byte"
 msgstr "%lld byte(s)"
 
-#: src/text.c:442
+#: src/text.c:448
 #, c-format
 msgid "%.1f Kilobyte"
 msgstr "%.1f Kilobyte(s)"
 
-#: src/text.c:444
+#: src/text.c:450
 #, c-format
 msgid "%.1f Megabyte"
 msgstr "%.1f Megabyte(s)"
 
-#: src/text.c:446
+#: src/text.c:452
 #, c-format
 msgid "%.1f Gigabyte"
 msgstr "%.1f Gigabyte(s)"
 
-#: src/text.c:455
+#: src/text.c:461
 #, c-format
 msgid "%i second"
 msgstr "%i segundo"
 
-#: src/text.c:457
+#: src/text.c:463
 #, c-format
 msgid "%i seconds"
 msgstr "%i segundos"
 
-#: src/text.c:459
+#: src/text.c:465
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i minuto(s)"
 
-#: src/text.c:461
+#: src/text.c:467
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i hora(s)"
 
-#: src/text.c:550
+#: src/text.c:556
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -297,7 +297,7 @@ msgstr ""
 "\n"
 "Visite https://github.com/eribertomota/axel/issues\n"
 
-#: src/text.c:567
+#: src/text.c:573
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -335,7 +335,7 @@ msgstr ""
 "\n"
 "Visite https://github.com/eribertomota/axel/issues to report bugs\n"
 
-#: src/text.c:588
+#: src/text.c:594
 #, c-format
 msgid ""
 "\n"

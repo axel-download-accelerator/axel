@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-20 01:28-0300\n"
+"POT-Creation-Date: 2016-03-30 22:24-0300\n"
 "PO-Revision-Date: 2008-11-08 22:40+0700\n"
 "Last-Translator: Shuge Lee <shuge.lee@gmail.com>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
@@ -156,57 +156,57 @@ msgstr "连接继续。\n"
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "stdout 不能重定向到 /dev/null 。\n"
 
-#: src/text.c:177
+#: src/text.c:183
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr ""
 
-#: src/text.c:186
+#: src/text.c:192
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "不能处理长度超过 %d 的URLs\n"
 
-#: src/text.c:191
+#: src/text.c:197
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "初始化下载: %s\n"
 
-#: src/text.c:198
+#: src/text.c:204
 #, c-format
 msgid "Doing search...\n"
 msgstr "进行搜索中...\n"
 
-#: src/text.c:202
+#: src/text.c:208
 #, c-format
 msgid "File not found\n"
 msgstr "文件找不到\n"
 
-#: src/text.c:206
+#: src/text.c:212
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "c测试速度，这可能有点费时……\n"
 
-#: src/text.c:211
+#: src/text.c:217
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i 可用的服务器没有找到，将使用这些 URLs ：\n"
 
-#: src/text.c:270
+#: src/text.c:276
 #, c-format
 msgid "Filename too long!\n"
 msgstr ""
 
-#: src/text.c:282
+#: src/text.c:288
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "没有状态文件，无法恢复！\n"
 
-#: src/text.c:287
+#: src/text.c:293
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "找到状态文件，但没有已下载数据。重新开始。\n"
 
-#: src/text.c:418
+#: src/text.c:424
 #, c-format
 msgid ""
 "\n"
@@ -215,47 +215,47 @@ msgstr ""
 "\n"
 "%s 已下载，用时 %s。（%.2f 千字节/秒）\n"
 
-#: src/text.c:440
+#: src/text.c:446
 #, c-format
 msgid "%lld byte"
 msgstr "%lld 字节"
 
-#: src/text.c:442
+#: src/text.c:448
 #, c-format
 msgid "%.1f Kilobyte"
 msgstr "%.1f 千字节"
 
-#: src/text.c:444
+#: src/text.c:450
 #, fuzzy, c-format
 msgid "%.1f Megabyte"
 msgstr "%.1f 兆字节"
 
-#: src/text.c:446
+#: src/text.c:452
 #, fuzzy, c-format
 msgid "%.1f Gigabyte"
 msgstr "%.1f 兆字节"
 
-#: src/text.c:455
+#: src/text.c:461
 #, c-format
 msgid "%i second"
 msgstr "%i 秒"
 
-#: src/text.c:457
+#: src/text.c:463
 #, c-format
 msgid "%i seconds"
 msgstr "%i 秒"
 
-#: src/text.c:459
+#: src/text.c:465
 #, fuzzy, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i 秒"
 
-#: src/text.c:461
+#: src/text.c:467
 #, fuzzy, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i 秒"
 
-#: src/text.c:550
+#: src/text.c:556
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -289,7 +289,7 @@ msgstr ""
 "-V\t版本信息\n"
 "\n"
 
-#: src/text.c:567
+#: src/text.c:573
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -323,7 +323,7 @@ msgstr ""
 "--version\t\t-V\t版本信息\n"
 "\n"
 
-#: src/text.c:588
+#: src/text.c:594
 #, fuzzy, c-format
 msgid ""
 "\n"
