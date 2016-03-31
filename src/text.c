@@ -56,6 +56,7 @@ static struct option axel_options[] =
 	{ "help",		0,	NULL,	'h' },
 	{ "version",		0,	NULL,	'V' },
 	{ "alternate",		0,	NULL,	'a' },
+	{ "insecure", 		0,	NULL,	'k' },
 	{ "header",		1,	NULL,	'H' },
 	{ "user-agent",		1,	NULL,	'U' },
 	{ NULL,			0,	NULL,	0 }
@@ -93,7 +94,7 @@ int main( int argc, char *argv[] )
 	{
 		int option;
 
-		option = getopt_long( argc, argv, "s:n:o:S::NqvhVaH:U:", axel_options, NULL );
+		option = getopt_long( argc, argv, "s:n:o:S::NqvhVakH:U:", axel_options, NULL );
 		if( option == -1 )
 			break;
 
@@ -134,6 +135,9 @@ int main( int argc, char *argv[] )
 		case 'a':
 			conf->alternate_output = 1;
 			break;
+		case 'k':
+			conf->insecure = 1;
+			break;
 		case 'N':
 			*conf->http_proxy = 0;
 			break;
@@ -172,6 +176,7 @@ int main( int argc, char *argv[] )
 		print_help();
 		return( 1 );
 	}
+	ssl_init( conf );
 
 	if( argc - optind == 0 )
 	{
@@ -565,6 +570,7 @@ void print_help()
 		"-H x\tAdd header string\n"
 		"-U x\tSet user agent\n"
 		"-N\tJust don't use any proxy server\n"
+		"-k\tDon't verify the SSL certificate\n"
 		"-q\tLeave stdout alone\n"
 		"-v\tMore status information\n"
 		"-a\tAlternate progress indicator\n"
@@ -582,6 +588,7 @@ void print_help()
 		"--header=x\t\t-H x\tAdd header string\n"
 		"--user-agent=x\t\t-U x\tSet user agent\n"
 		"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+		"--insecure\t\t-k\tDon't verify the SSL certificate\n"
 		"--quiet\t\t\t-q\tLeave stdout alone\n"
 		"--verbose\t\t-v\tMore status information\n"
 		"--alternate\t\t-a\tAlternate progress indicator\n"
