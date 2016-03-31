@@ -42,6 +42,7 @@ int main( int argc, char *argv[] )
 	}
 
 	conf_init( conf );
+	ssl_init( conf );
 
 	res = malloc( sizeof( search_t ) * ( conf->search_amount + 1 ) );
 	memset( res, 0, sizeof( search_t ) * ( conf->search_amount + 1 ) );

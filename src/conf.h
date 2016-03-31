@@ -36,6 +36,7 @@ typedef struct
 	int max_speed;
 	int verbose;
 	int alternate_output;
+	int insecure;
 
 	if_t *interfaces;
 
