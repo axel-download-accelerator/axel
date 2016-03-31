@@ -1,5 +1,8 @@
 To create a translation to a new language (e.g. pt_BR):
 
+$ ./autogen.sh
+$ ./configure
+$ make
 $ cd po/
 $ msginit -l pt_BR   # change pt_BR to your new language
 $ edit pt_BR.po      # likewise
@@ -13,4 +16,4 @@ $ make update-po
 
 Run the last command if you are updating a .po file.
 
-  -- Eriberto, Sat, 19 Mar 2016 14:13:52 -0300
+  -- Eriberto, Wed, 30 Mar 2016 22:30:52 -0300
