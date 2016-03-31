@@ -5,7 +5,7 @@
 <br><br>
 **1. HELP THIS PROJECT**<br>
 **2. WHAT IS AXEL?**<br>
-**3. BUILDING FROM GIT**<br>
+**3. BUILDING FROM SOURCE**<br>
 **4. BUILDING ON OS/X WITH HOMEBREW**<br>
 
 
@@ -49,12 +49,15 @@ Axel was originally developed by Wilmer van der Gaast. Thanks for your
 efforts. Over time, Axel got several contributions from people. Please,
 see the files AUTHORS and CREDITS.
 
---------------------
-3. BUILDING FROM GIT
---------------------
+
+-----------------------
+3. BUILDING FROM SOURCE
+-----------------------
 
 Run `./autogen.sh` to create the configure script, then proceed with the
-instructions in [INSTALL](INSTALL).
+instructions in [INSTALL](INSTALL). The basic actions for most users,
+after ./autogen.sh, is running ./configure, make and make install.
+
 
 ---------------------------------
 4. BUILDING ON OS/X WITH HOMEBREW
@@ -64,8 +67,8 @@ Install the following homebrew packages:
 
   `homebrew install automake gettext`
 
-You'll need to provide some extra options to `autogen.sh` and `configure` so
-they can find gettext.
+You'll need to provide some extra options to `autogen.sh` and `configure`
+so they can find gettext.
 
 ```shell
 GETTEXT=/usr/local/opt/gettext
