@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-31 17:29+1100\n"
+"POT-Creation-Date: 2016-03-31 21:56+1100\n"
 "PO-Revision-Date: 2008-11-08 22:40+0700\n"
 "Last-Translator: Shuge Lee <shuge.lee@gmail.com>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
@@ -96,7 +96,7 @@ msgstr "连接超时 %i"
 msgid "Error in %s line %i.\n"
 msgstr "%s %i 行有错误。\n"
 
-#: src/conn.c:344 src/ftp.c:119
+#: src/conn.c:344 src/ftp.c:117
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "太多重定向。\n"
@@ -106,37 +106,32 @@ msgstr "太多重定向。\n"
 msgid "Unknown HTTP error.\n"
 msgstr "未知 HTTP 错误。\n"
 
-#: src/ftp.c:33 src/http.c:62
-#, c-format
-msgid "Unable to connect to server %s:%i\n"
-msgstr "不能连接到服务器 %s:%i\n"
-
-#: src/ftp.c:86
+#: src/ftp.c:84
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "不能变更目录到 %s\n"
 
-#: src/ftp.c:112 src/ftp.c:171
+#: src/ftp.c:110 src/ftp.c:169
 #, c-format
 msgid "File not found.\n"
 msgstr "找不到文件。\n"
 
-#: src/ftp.c:173
+#: src/ftp.c:171
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "这个 URL 有多个匹配。\n"
 
-#: src/ftp.c:244 src/ftp.c:250
+#: src/ftp.c:242
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "打开主动数据连接错误。\n"
 
-#: src/ftp.c:280
+#: src/ftp.c:275
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "写命令出错 %s\n"
 
-#: src/ftp.c:305 src/http.c:172
+#: src/ftp.c:300 src/http.c:169
 #, c-format
 msgid "Connection gone.\n"
 msgstr "连接继续。\n"
@@ -146,7 +141,7 @@ msgstr "连接继续。\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "代理字符串无效： %s\n"
 
-#: src/http.c:158
+#: src/http.c:155
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "连接继续。\n"
@@ -349,5 +344,10 @@ msgstr ""
 
 #: src/ssl.c:65
 #, c-format
-msgid "SSL connection failed: %s\n"
+msgid "SSL error: %s\n"
 msgstr ""
+
+#: src/tcp.c:28
+#, fuzzy, c-format
+msgid "Unable to connect to server %s:%i: %s\n"
+msgstr "不能连接到服务器 %s:%i: %s\n"

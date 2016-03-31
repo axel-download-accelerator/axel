@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-31 17:29+1100\n"
+"POT-Creation-Date: 2016-03-31 21:56+1100\n"
 "PO-Revision-Date: 2012-03-11 00:03+0900\n"
 "Last-Translator: Osamu Aoki <osamu@debian.org>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
@@ -97,7 +97,7 @@ msgstr "接続 %i がタイムアウトしました"
 msgid "Error in %s line %i.\n"
 msgstr "%s の %i 行目でエラー。\n"
 
-#: src/conn.c:344 src/ftp.c:119
+#: src/conn.c:344 src/ftp.c:117
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "リディレクト回数が多すぎます。\n"
@@ -107,37 +107,32 @@ msgstr "リディレクト回数が多すぎます。\n"
 msgid "Unknown HTTP error.\n"
 msgstr "未知の HTTP エラー。\n"
 
-#: src/ftp.c:33 src/http.c:62
-#, c-format
-msgid "Unable to connect to server %s:%i\n"
-msgstr "サーバー %s:%i に接続できません。\n"
-
-#: src/ftp.c:86
+#: src/ftp.c:84
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "ディレクトリーを %s に変更できません\n"
 
-#: src/ftp.c:112 src/ftp.c:171
+#: src/ftp.c:110 src/ftp.c:169
 #, c-format
 msgid "File not found.\n"
 msgstr "ファイルが見つかりません。\n"
 
-#: src/ftp.c:173
+#: src/ftp.c:171
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "この URL には複数のマッチがあります。\n"
 
-#: src/ftp.c:244 src/ftp.c:250
+#: src/ftp.c:242
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "受動的データー接続の開始でエラー。\n"
 
-#: src/ftp.c:280
+#: src/ftp.c:275
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "コマンド %s を書く際にエラー\n"
 
-#: src/ftp.c:305 src/http.c:172
+#: src/ftp.c:300 src/http.c:169
 #, c-format
 msgid "Connection gone.\n"
 msgstr "接続が失われています。\n"
@@ -147,7 +142,7 @@ msgstr "接続が失われています。\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "無効なプロキシストリング: %s\n"
 
-#: src/http.c:158
+#: src/http.c:155
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "接続が失われています。\n"
@@ -357,5 +352,10 @@ msgstr ""
 
 #: src/ssl.c:65
 #, c-format
-msgid "SSL connection failed: %s\n"
+msgid "SSL error: %s\n"
 msgstr ""
+
+#: src/tcp.c:28
+#, fuzzy, c-format
+msgid "Unable to connect to server %s:%i: %s\n"
+msgstr "サーバー %s:%i に接続できません。%s\n"

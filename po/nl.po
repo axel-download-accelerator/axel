@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-31 17:29+1100\n"
+"POT-Creation-Date: 2016-03-31 21:56+1100\n"
 "PO-Revision-Date: 2001-11-14 15:22+0200\n"
 "Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -93,7 +93,7 @@ msgstr "Time-out op verbinding %i"
 msgid "Error in %s line %i.\n"
 msgstr "Fout in %s regel %i.\n"
 
-#: src/conn.c:344 src/ftp.c:119
+#: src/conn.c:344 src/ftp.c:117
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Te veel redirects.\n"
@@ -103,37 +103,32 @@ msgstr "Te veel redirects.\n"
 msgid "Unknown HTTP error.\n"
 msgstr "Onbekende HTTP fout.\n"
 
-#: src/ftp.c:33 src/http.c:62
-#, c-format
-msgid "Unable to connect to server %s:%i\n"
-msgstr "Kan niet verbinden met server %s:%i\n"
-
-#: src/ftp.c:86
+#: src/ftp.c:84
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr ""
 
-#: src/ftp.c:112 src/ftp.c:171
+#: src/ftp.c:110 src/ftp.c:169
 #, c-format
 msgid "File not found.\n"
 msgstr "Bestand niet gevonden.\n"
 
-#: src/ftp.c:173
+#: src/ftp.c:171
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "Meerdere bestanden passen bij deze URL.\n"
 
-#: src/ftp.c:244 src/ftp.c:250
+#: src/ftp.c:242
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Fout bij het openen van een data verbinding.\n"
 
-#: src/ftp.c:280
+#: src/ftp.c:275
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Fout bij het schrijven van commando %s\n"
 
-#: src/ftp.c:305 src/http.c:172
+#: src/ftp.c:300 src/http.c:169
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Verbinding gesloten.\n"
@@ -143,7 +138,7 @@ msgstr "Verbinding gesloten.\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "Ongeldige proxy string: %s\n"
 
-#: src/http.c:158
+#: src/http.c:155
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Verbinding gesloten.\n"
@@ -346,5 +341,10 @@ msgstr ""
 
 #: src/ssl.c:65
 #, c-format
-msgid "SSL connection failed: %s\n"
+msgid "SSL error: %s\n"
 msgstr ""
+
+#: src/tcp.c:28
+#, fuzzy, c-format
+msgid "Unable to connect to server %s:%i: %s\n"
+msgstr "Kan niet verbinden met server %s:%i %s\n"
