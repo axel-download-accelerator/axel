@@ -56,7 +56,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		conn->proxy = 0;
 	} }
 
-	if( tcp_connect( &conn->tcp, host, port, proto == PROTO_HTTPS,
+	if( tcp_connect( &conn->tcp, host, port, PROTO_IS_SECURE(proto),
 		conn->local_if, conn->headers ) == -1 )
 		return( 0 );
 
@@ -92,17 +92,20 @@ void http_get( http_t *conn, char *lurl )
 	*conn->request = 0;
 	if( conn->proxy )
 	{
-		const char* proto;
+		const char* proto = "";
 		switch( conn->proto )
 		{
 			case PROTO_FTP:
-				proto = "ftp";
+				proto = PROTO_FTP_NAME;
+				break;
+			case PROTO_FTPS:
+				proto = PROTO_FTPS_NAME;
 				break;
 			case PROTO_HTTP:
-				proto = "http";
+				proto = PROTO_HTTP_NAME;
 				break;
 			case PROTO_HTTPS:
-				proto = "https";
+				proto = PROTO_HTTPS_NAME;
 				break;
 		}
 		http_addheader( conn, "GET %s://%s%s HTTP/1.0", proto, conn->host, lurl );

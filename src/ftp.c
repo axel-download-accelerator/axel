@@ -23,12 +23,13 @@
 
 #include "axel.h"
 
-int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass )
+int ftp_connect( ftp_t *conn, int proto, char *host, int port, char *user, char *pass )
 {
 	conn->data_tcp.fd = -1;
 	conn->message = malloc( MAX_STRING );
+	conn->proto = proto;
 
-	if( tcp_connect( &conn->tcp, host, port, 0,
+	if( tcp_connect( &conn->tcp, host, port, PROTO_IS_SECURE(conn->proto),
 		conn->local_if, conn->message ) == -1 )
 		return( 0 );
 
@@ -242,8 +243,9 @@ int ftp_data( ftp_t *conn )
 			sprintf( conn->message, _("Error opening passive data connection.\n") );
 			return( 0 );
 		}
-		if( tcp_connect( &conn->data_tcp, host,
-			info[4] * 256 + info[5], 0, conn->local_if, conn->message ) == -1 )
+		if( tcp_connect( &conn->data_tcp, host, info[4] * 256 + info[5],
+		    PROTO_IS_SECURE(conn->proto), conn->local_if,
+		    conn->message ) == -1 )
 			return( 0 );
 
 		return( 1 );
