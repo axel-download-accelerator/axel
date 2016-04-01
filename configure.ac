@@ -28,6 +28,12 @@ AC_TYPE_SIZE_T
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([gettimeofday inet_ntoa memset select setlocale socket strcasecmp strchr strrchr strstr])
+AC_SEARCH_LIBS([SSL_library_init], [ssl], [], [
+    AC_MSG_ERROR([libssl not found])
+])
+AC_SEARCH_LIBS([ERR_get_error], [crypto], [], [
+    AC_MSG_ERROR([libcrypto not found])
+])
 
 # Add Gettext
 AM_GNU_GETTEXT([external])
@@ -44,22 +50,22 @@ CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
 
 case "$arch" in
 FreeBSD | OpenBSD | NetBSD | Darwin )
-    LDFLAGS="$LDFLAGS -lintl -lssl -lcrypto -pthread"
+    LDFLAGS="$LDFLAGS -lintl -pthread"
 ;;
 Linux | GNU/kFreeBSD | GNU )
-    LDFLAGS="$LDFLAGS -lssl -lcrypto -pthread"
+    LDFLAGS="$LDFLAGS -pthread"
 ;;
 SunOS )
-    LDFLAGS="$LDFLAGS -lintl -lssl -lcrypto -pthread -lsocket -lnsl"
+    LDFLAGS="$LDFLAGS -lintl -pthread -lsocket -lnsl"
 ;;
 HP-UX )
     if [ -d /usr/local/lib/hpux32 ]; then
        AXEL_EXTRA_FLAGS="-L/usr/local/lib/hpux32"
     fi
-    LDFLAGS="$LDFLAGS $AXEL_EXTRA_FLAGS -lintl -lssl -lcrypto -lpthread"
+    LDFLAGS="$LDFLAGS $AXEL_EXTRA_FLAGS -lintl -lpthread"
 ;;
 * )
-    LDFLAGS="$LDFLAGS -lintl -lssl -lcrypto -pthread"
+    LDFLAGS="$LDFLAGS -lintl -pthread"
 ;;
 esac
 
