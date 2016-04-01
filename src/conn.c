@@ -44,19 +44,25 @@ int conn_set( conn_t *conn, char *set_url )
 	else
 	{
 		int proto_len = i - set_url;
-		if( strncmp( set_url, "ftp", proto_len ) == 0 )
+		if( strncmp( set_url, PROTO_FTP_NAME, proto_len ) == 0 )
 		{
 			conn->proto = PROTO_FTP;
 			conn->port = PROTO_FTP_PORT;
 			conn->proto_name = PROTO_FTP_NAME;
 		}
-		else if( strncmp( set_url, "http", proto_len ) == 0 )
+		else if( strncmp( set_url, PROTO_FTPS_NAME, proto_len ) == 0 )
+		{
+			conn->proto = PROTO_FTPS;
+			conn->port = PROTO_FTPS_PORT;
+			conn->proto_name = PROTO_FTPS_NAME;
+		}
+		else if( strncmp( set_url, PROTO_HTTP_NAME, proto_len ) == 0 )
 		{
 			conn->proto = PROTO_HTTP;
 			conn->port = PROTO_HTTP_PORT;
 			conn->proto_name = PROTO_HTTP_NAME;
 		}
-		else if( strncmp( set_url, "https", proto_len ) == 0 )
+		else if( strncmp( set_url, PROTO_HTTPS_NAME, proto_len ) == 0 )
 		{
 			conn->proto = PROTO_HTTPS;
 			conn->port = PROTO_HTTPS_PORT;
@@ -112,7 +118,7 @@ int conn_set( conn_t *conn, char *set_url )
 	/* If not: Fill in defaults */
 	else
 	{
-		if( conn->proto == PROTO_FTP )
+		if( PROTO_IS_FTP( conn->proto ) )
 		{
 			/* Dash the password: Save traffic by trying
 			   to avoid multi-line responses */
@@ -160,7 +166,7 @@ char *conn_url( conn_t *conn )
 /* Simple... */
 void conn_disconnect( conn_t *conn )
 {
-	if( conn->proto == PROTO_FTP && !conn->proxy )
+	if( PROTO_IS_FTP( conn->proto ) && !conn->proxy )
 		ftp_disconnect( conn->ftp );
 	else
 		http_disconnect( conn->http );
@@ -191,11 +197,11 @@ int conn_init( conn_t *conn )
 
 	conn->proxy = proxy != NULL;
 
-	if( conn->proto == PROTO_FTP && !conn->proxy )
+	if( PROTO_IS_FTP( conn->proto ) && !conn->proxy )
 	{
 		conn->ftp->local_if = conn->local_if;
 		conn->ftp->ftp_mode = FTP_PASSIVE;
-		if( !ftp_connect( conn->ftp, conn->host, conn->port, conn->user, conn->pass ) )
+		if( !ftp_connect( conn->ftp, conn->proto, conn->host, conn->port, conn->user, conn->pass ) )
 		{
 			conn->message = conn->ftp->message;
 			conn_disconnect( conn );
@@ -229,7 +235,7 @@ int conn_setup( conn_t *conn )
 		if( !conn_init( conn ) )
 			return( 0 );
 
-	if( conn->proto == PROTO_FTP && !conn->proxy )
+	if( PROTO_IS_FTP( conn->proto ) && !conn->proxy )
 	{
 		if( !ftp_data( conn->ftp ) )	/* Set up data connnection */
 			return( 0 );
@@ -261,7 +267,7 @@ int conn_setup( conn_t *conn )
 
 int conn_exec( conn_t *conn )
 {
-	if( conn->proto == PROTO_FTP && !conn->proxy )
+	if( PROTO_IS_FTP( conn->proto ) && !conn->proxy )
 	{
 		if( !ftp_command( conn->ftp, "RETR %s", conn->file ) )
 			return( 0 );
@@ -279,7 +285,7 @@ int conn_exec( conn_t *conn )
 int conn_info( conn_t *conn )
 {
 	/* It's all a bit messed up.. But it works. */
-	if( conn->proto == PROTO_FTP && !conn->proxy )
+	if( PROTO_IS_FTP( conn->proto ) && !conn->proxy )
 	{
 		ftp_command( conn->ftp, "REST %lld", 1 );
 		if( ftp_wait( conn->ftp ) / 100 == 3 ||
