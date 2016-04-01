@@ -4,3 +4,5 @@ src/conn.c
 src/ftp.c
 src/http.c
 src/text.c
+src/ssl.c
+src/tcp.c

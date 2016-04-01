@@ -23,8 +23,14 @@
 
 #include "axel.h"
 
+static void tcp_error( char *buffer, char *hostname, int port, const char *reason )
+{
+	sprintf( buffer, _("Unable to connect to server %s:%i: %s\n"),
+		hostname, port, reason );
+}
+
 /* Get a TCP connection */
-int tcp_connect( char *hostname, int port, char *local_if )
+int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_if, char *message )
 {
 	struct sockaddr_in local_addr;
 	const int portstr_len = 10;
@@ -51,6 +57,7 @@ int tcp_connect( char *hostname, int port, char *local_if )
 
 	ret = getaddrinfo(hostname, portstr, &ai_hints, &gai_results);
 	if (ret != 0) {
+		tcp_error(message, hostname, port, gai_strerror(ret));
 		return -1;
 	}
 
@@ -91,8 +98,49 @@ int tcp_connect( char *hostname, int port, char *local_if )
 
 	freeaddrinfo(gai_results);
 
-	return sock_fd;
+	if (sock_fd == -1) {
+		tcp_error(message, hostname, port, strerror(errno));
+		return -1;
+	}
 
+	if (secure) {
+		tcp->ssl = ssl_connect(sock_fd, message);
+		if (tcp->ssl == NULL) {
+			close(sock_fd);
+			return -1;
+		}
+	}
+	tcp->fd = sock_fd;
+
+	return 1;
+}
+
+int tcp_read( tcp_t *tcp, void *buffer, int size )
+{
+	if (tcp->ssl != NULL)
+		return SSL_read(tcp->ssl, buffer, size);
+	else
+		return read(tcp->fd, buffer, size);
+}
+
+int tcp_write( tcp_t *tcp, void *buffer, int size )
+{
+	if (tcp->ssl != NULL)
+		return SSL_write(tcp->ssl, buffer, size);
+	else
+		return write(tcp->fd, buffer, size);
+}
+
+void tcp_close( tcp_t *tcp )
+{
+	if (tcp->fd > 0) {
+		if (tcp->ssl != NULL)
+			ssl_disconnect(tcp->ssl);
+		else
+			close(tcp->fd);
+		tcp->fd = -1;
+		tcp->ssl = NULL;
+	}
 }
 
 int get_if_ip( char *iface, char *ip )

@@ -89,6 +89,7 @@ int conf_loadfile( conf_t *conf, char *file )
 		get_config_number( max_speed );
 		get_config_number( verbose );
 		get_config_number( alternate_output );
+		get_config_number( insecure );
 
 		get_config_number( search_timeout );
 		get_config_number( search_threads );
@@ -136,6 +137,7 @@ int conf_init( conf_t *conf )
 	conf->max_speed			= 0;
 	conf->verbose			= 1;
 	conf->alternate_output		= 0;
+	conf->insecure			= 0;
 
 	conf->search_timeout		= 10;
 	conf->search_threads		= 3;

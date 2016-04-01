@@ -52,6 +52,7 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
+#include <openssl/ssl.h>
 
 /* Internationalization */
 #define PACKAGE			"axel"
@@ -80,6 +81,7 @@ typedef message_t if_t;
 #include "ftp.h"
 #include "http.h"
 #include "conn.h"
+#include "ssl.h"
 #include "search.h"
 
 #define min( a, b )		( (a) < (b) ? (a) : (b) )
