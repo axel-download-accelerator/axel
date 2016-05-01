@@ -11,6 +11,8 @@ Version 2.7, 2016-05-01
 
   [ Stephen Thirlwall ]
 
+* Add missing m4 path to configure.ac file.
+* Added the autogen.sh script.
 * Cleaned the source code, removing auto generated files.
 
 Version 2.6, 2016-03-20
