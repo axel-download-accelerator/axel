@@ -1,10 +1,10 @@
 2.7 version:
 
-- Stephen Thirlwall
+- Stephen Thirlwall <sdt@dr.com>
   Removed generated files from source control.
 
-- Mridul Malpotra
-  Fixed num_connections error when invalid values are given
+- Mridul Malpotra <mridul.malpotra@gmail.com>
+  Fixed num_connections error when invalid values are given.
 
 2.6 version:
 
@@ -14,7 +14,7 @@
   Patch sent by email on 2016-03-02
   Thanks a lot!
 
-- Stephen Thirlwall
+- Stephen Thirlwall <sdt@dr.com>
   Alterate display expands to terminal width.
 
 2.5 version:
