@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-03-30 22:57-0300\n"
+"POT-Creation-Date: 2016-05-01 00:35-0300\n"
 "PO-Revision-Date: 2008-11-08 22:40+0700\n"
 "Last-Translator: Shuge Lee <shuge.lee@gmail.com>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
@@ -330,14 +330,14 @@ msgid ""
 "Axel version %s (%s)\n"
 msgstr "Axel 版本 %s (%s)\n"
 
-#: src/text.c:598
+#: src/text.c:599
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:599
+#: src/text.c:600
 #, c-format
 msgid ""
 "\n"
