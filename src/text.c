@@ -595,6 +595,7 @@ void print_version()
 	printf( _("\nAxel version %s (%s)\n"), AXEL_VERSION_STRING, ARCH );
 	printf( "\nCopyright 2001-2007 Wilmer van der Gaast," );
 	printf( "\n          2015-2016 Joao Eriberto Mota Filho," );
+	printf( "\n               2016 Stephen Thirlwall," );
 	printf( _("\n                    and others." ));
 	printf ( _("\nPlease, see the CREDITS file.\n\n") );
 }
