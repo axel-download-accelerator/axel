@@ -1,3 +1,18 @@
+Version 2.7, 2016-05-01
+
+  [ Joao Eriberto Mota Filho ]
+
+* Added new architectures to configure.ac.
+* Updated some points in configure.ac and Makefile.am.
+
+  [ Mridul Malpotra ]
+
+* Fixed num_connections error when invalid values are given.
+
+  [ Stephen Thirlwall ]
+
+* Cleaned the source code, removing auto generated files.
+
 Version 2.6, 2016-03-20
 
   [ Joao Eriberto Mota Filho ]
