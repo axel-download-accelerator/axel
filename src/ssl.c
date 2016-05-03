@@ -26,6 +26,8 @@
 
 #include "axel.h"
 
+#ifdef HAVE_OPENSSL
+
 #include <openssl/err.h>
 
 static SSL_CTX *ssl_ctx = NULL;
@@ -74,3 +76,5 @@ void ssl_disconnect( SSL *ssl )
 	SSL_shutdown( ssl );
 	SSL_free( ssl );
 }
+
+#endif /* HAVE_OPENSSL */

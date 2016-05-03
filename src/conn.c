@@ -50,17 +50,18 @@ int conn_set( conn_t *conn, char *set_url )
 			conn->port = PROTO_FTP_PORT;
 			conn->proto_name = PROTO_FTP_NAME;
 		}
-		else if( strncmp( set_url, PROTO_FTPS_NAME, proto_len ) == 0 )
-		{
-			conn->proto = PROTO_FTPS;
-			conn->port = PROTO_FTPS_PORT;
-			conn->proto_name = PROTO_FTPS_NAME;
-		}
 		else if( strncmp( set_url, PROTO_HTTP_NAME, proto_len ) == 0 )
 		{
 			conn->proto = PROTO_HTTP;
 			conn->port = PROTO_HTTP_PORT;
 			conn->proto_name = PROTO_HTTP_NAME;
+		}
+#ifdef HAVE_OPENSSL
+		else if( strncmp( set_url, PROTO_FTPS_NAME, proto_len ) == 0 )
+		{
+			conn->proto = PROTO_FTPS;
+			conn->port = PROTO_FTPS_PORT;
+			conn->proto_name = PROTO_FTPS_NAME;
 		}
 		else if( strncmp( set_url, PROTO_HTTPS_NAME, proto_len ) == 0 )
 		{
@@ -68,6 +69,7 @@ int conn_set( conn_t *conn, char *set_url )
 			conn->port = PROTO_HTTPS_PORT;
 			conn->proto_name = PROTO_HTTPS_NAME;
 		}
+#endif /* HAVE_OPENSSL */
 		else
 		{
 			return( 0 );
