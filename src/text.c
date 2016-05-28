@@ -492,31 +492,32 @@ static void print_alternate_output(axel_t *axel)
 {
 	long long int done=axel->bytes_done;
 	long long int total=axel->size;
-	int i,j=0;
+	int i,j=0,offset,end;
 	double now = gettime();
 	int width = get_term_width() - 30;
+	char progress[width+1];
 
-	printf("\r[%3ld%%] [", min(100,(long)(done*100./total+.5) ) );
+	for(i=0;i<width;i++)
+		progress[i] = '.';
 
 	for(i=0;i<axel->conf->num_connections;i++)
 	{
-		for(;j<((double)axel->conn[i].currentbyte/(total+1)*width)-1;j++)
-			putchar('.');
+		offset = ((double)(axel->conn[i].currentbyte)/(total+1)*(width+1));
 
 		if(axel->conn[i].currentbyte<axel->conn[i].lastbyte)
 		{
 			if(now <= axel->conn[i].last_transfer + axel->conf->connection_timeout/2 )
-				putchar(i+'0');
+				progress[offset] = i+'0';
 			else
-				putchar('#');
-		} else 
-			putchar('.');
-
-		j++;
-
-		for(;j<((double)axel->conn[i].lastbyte/(total+1)*width);j++)
-			putchar(' ');
+				progress[offset] = '#';
+		}
+		end = ((double)(axel->conn[i].lastbyte)/(total+1)*(width+1));
+		for(j=offset+1;j<end;j++)
+			progress[j] = ' ';
 	}
+
+	progress[width] = '\0';
+	printf("\r[%3ld%%] [%s", min(100,(long)(done*100./total+.5) ), progress );
 
 	if(axel->bytes_per_second > 1048576)
 		printf( "] [%6.1fMB/s]", (double) axel->bytes_per_second / (1024*1024) );
