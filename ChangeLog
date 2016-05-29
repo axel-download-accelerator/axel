@@ -1,3 +1,9 @@
+Version X.X, XXXX-XX-XX
+
+  [ Denis Denisov ]
+
+* Implemented the reactivation of connections from state file.
+
 Version 2.7, 2016-05-01
 
   [ Joao Eriberto Mota Filho ]
