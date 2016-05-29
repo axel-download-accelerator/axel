@@ -4,6 +4,7 @@ When updating, change these files (if needed):
 - ChangLog
 - CREDITS
 - configure.ac (VERSION)
+- manapge version and date
 - src/axel.h (AXEL_VERSION_STRING)
 - src/text.c (years in Copyright lines near EOF)
 
