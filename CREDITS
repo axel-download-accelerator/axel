@@ -1,9 +1,11 @@
-2.7 version:
+X.X version:
 
 - Denis Denisov <denji0k@gmail.com>
   Implemented the reactivation of connections from state file, similar to
     'dynamic segmentation', as explained at
     http://www.internetdownloadmanager.com/support/segmentation.html
+
+2.7 version:
 
 - Mridul Malpotra <mridul.malpotra@gmail.com>
   Fixed num_connections error when invalid values are given.
