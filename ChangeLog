@@ -4,6 +4,10 @@ Version X.X, XXXX-XX-XX
 
 * Implemented the reactivation of connections from state file.
 
+  [ Osamu Aoki ]
+
+*  Clarifyed the usage of multiple URLs in manpage.
+
 Version 2.7, 2016-05-01
 
   [ Joao Eriberto Mota Filho ]

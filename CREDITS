@@ -5,6 +5,10 @@ X.X version:
     'dynamic segmentation', as explained at
     http://www.internetdownloadmanager.com/support/segmentation.html
 
+- Osamu Aoki <osamu@debian.org>
+  Clarifyed the usage of multiple URLs in manpage.
+  From Debian bug #621728.
+
 2.7 version:
 
 - Mridul Malpotra <mridul.malpotra@gmail.com>

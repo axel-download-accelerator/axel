@@ -15,10 +15,13 @@ DESCRIPTION
 OPTIONS
  One argument is required, the URL to the file you want to download. When downloading from FTP,
  the filename may contain wildcards and the program will try to resolve the full filename. Multiple
- URL's can be specified as well and the program will use all those URL's for the download. Please
- note that the program does not check whether the files are equal.
+ mirror URLs to an identical file can be specified as well and the program will use all those URLs
+ for the download.
+
+ Please note that the program does not check whether the files are equal.
 
  Other options:
+
  --max-speed=x, -s x  Specify a speed (bytes per second) to try to keep the average speed around this
                       speed. This is useful if you do not want the program to suck up all of your
                       bandwidth.
@@ -66,6 +69,8 @@ RETURN VALUE
 
 EXAMPLES
  The trivial usage to download a file is similar to:
+
+    $ axel http://cdimage.debian.org/debian-cd/8.4.0/amd64/iso-cd/debian-8.4.0-amd64-netinst.iso
 
     $ axel ftp://ftp.nl.kernel.org/pub/linux/kernel/v2.2/linux-2.2.20.tar.bz2
 
