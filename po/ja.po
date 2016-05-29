@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-05-01 00:35-0300\n"
+"POT-Creation-Date: 2016-05-29 11:35-0300\n"
 "PO-Revision-Date: 2012-03-11 00:03+0900\n"
 "Last-Translator: Osamu Aoki <osamu@debian.org>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
@@ -37,57 +37,57 @@ msgid "Server unsupported, starting from scratch with one connection."
 msgstr ""
 "サポートされていないサーバーなので、単一コネクションを使い最初から始めます。"
 
-#: src/axel.c:179
+#: src/axel.c:195
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "状態ファイル発見: %lld バイトがダウンロード済み、あと %lld バイト。"
 
-#: src/axel.c:186 src/axel.c:198
+#: src/axel.c:202 src/axel.c:214
 msgid "Error opening local file"
 msgstr "ローカルファイルをオープンする際にエラー発生しました"
 
-#: src/axel.c:210
+#: src/axel.c:226
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "ファイルシステム/OSがイマイチ。回避します。 :-("
 
-#: src/axel.c:217
+#: src/axel.c:233
 #, fuzzy
 msgid "Error creating local file"
 msgstr "ローカルファイルをオープンする際にエラー発生しました"
 
-#: src/axel.c:246
+#: src/axel.c:291
 msgid "Starting download"
 msgstr "ダウンロード開始します"
 
-#: src/axel.c:253 src/axel.c:412
+#: src/axel.c:304 src/axel.c:466
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "接続 %i は %s:%i から、インターフェース %s でダウンロードします"
 
-#: src/axel.c:260 src/axel.c:422
+#: src/axel.c:311 src/axel.c:476
 msgid "pthread error!!!"
 msgstr "pthread のエラー!!!"
 
-#: src/axel.c:328
+#: src/axel.c:379
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "接続 %i でエラー! コネクションをクローズしました"
 
-#: src/axel.c:342
+#: src/axel.c:393
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "接続 %i が不意にクローズされました"
 
-#: src/axel.c:346 src/axel.c:363
+#: src/axel.c:397 src/axel.c:415
 #, c-format
 msgid "Connection %i finished"
 msgstr "接続 %i が終了しました"
 
-#: src/axel.c:375
+#: src/axel.c:427
 msgid "Write error!"
 msgstr "書き込みエラー!"
 
-#: src/axel.c:387
+#: src/axel.c:441
 #, c-format
 msgid "Connection %i timed out"
 msgstr "接続 %i がタイムアウトしました"
@@ -259,7 +259,7 @@ msgstr "%i:%02i 秒"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i 秒"
 
-#: src/text.c:557
+#: src/text.c:558
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -295,7 +295,7 @@ msgstr ""
 "-V\tバージョン情報\n"
 "\n"
 
-#: src/text.c:574
+#: src/text.c:575
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -331,21 +331,21 @@ msgstr ""
 "--version\t\t-V\tバージョン情報\n"
 "\n"
 
-#: src/text.c:595
+#: src/text.c:596
 #, fuzzy, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
 msgstr "Axel バージョン %s (%s)\n"
 
-#: src/text.c:599
+#: src/text.c:602
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:600
+#: src/text.c:603
 #, c-format
 msgid ""
 "\n"

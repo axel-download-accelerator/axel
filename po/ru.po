@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-05-01 00:35-0300\n"
+"POT-Creation-Date: 2016-05-29 11:35-0300\n"
 "PO-Revision-Date: 2009-04-02 00:05+0200\n"
 "Last-Translator: newhren <colimit@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -33,58 +33,58 @@ msgstr "Открывается выходной файл %s"
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Сервер не поддерживается, начинаем заново с одним соединением."
 
-#: src/axel.c:179
+#: src/axel.c:195
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "Найден файл состояния: %lld байта(ов) скачано, %lld осталось."
 
-#: src/axel.c:186 src/axel.c:198
+#: src/axel.c:202 src/axel.c:214
 msgid "Error opening local file"
 msgstr "Ошибка при открытии локального файла"
 
-#: src/axel.c:210
+#: src/axel.c:226
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr ""
 "Ошибки в файловой системе или операционной системе.. Пробуем исправить :-("
 
-#: src/axel.c:217
+#: src/axel.c:233
 #, fuzzy
 msgid "Error creating local file"
 msgstr "Ошибка при открытии локального файла"
 
-#: src/axel.c:246
+#: src/axel.c:291
 msgid "Starting download"
 msgstr "Начинаем скачивание"
 
-#: src/axel.c:253 src/axel.c:412
+#: src/axel.c:304 src/axel.c:466
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Соединение %i скачивает с %s:%i через интерфейс %s"
 
-#: src/axel.c:260 src/axel.c:422
+#: src/axel.c:311 src/axel.c:476
 msgid "pthread error!!!"
 msgstr "ошибка pthread!!!"
 
-#: src/axel.c:328
+#: src/axel.c:379
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Ошибка в соединении %i! Соединение закрыто"
 
-#: src/axel.c:342
+#: src/axel.c:393
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Соединение %i неожиданно закрылось"
 
-#: src/axel.c:346 src/axel.c:363
+#: src/axel.c:397 src/axel.c:415
 #, c-format
 msgid "Connection %i finished"
 msgstr "Соединение %i закончилось"
 
-#: src/axel.c:375
+#: src/axel.c:427
 msgid "Write error!"
 msgstr "Ошибка записи!"
 
-#: src/axel.c:387
+#: src/axel.c:441
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Время соединения %i вышло"
@@ -255,7 +255,7 @@ msgstr "%i:%02i секунд(ы)"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i секунд(ы)"
 
-#: src/text.c:557
+#: src/text.c:558
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -289,7 +289,7 @@ msgstr ""
 "-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:574
+#: src/text.c:575
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -323,21 +323,21 @@ msgstr ""
 "--version\t\t-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:595
+#: src/text.c:596
 #, fuzzy, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
 msgstr "Axel, версия %s (%s)\n"
 
-#: src/text.c:599
+#: src/text.c:602
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:600
+#: src/text.c:603
 #, c-format
 msgid ""
 "\n"

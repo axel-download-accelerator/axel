@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-05-01 00:35-0300\n"
+"POT-Creation-Date: 2016-05-29 11:35-0300\n"
 "PO-Revision-Date: 2008-09-15 22:08+0200\n"
 "Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -34,57 +34,57 @@ msgstr "Öffne Ausgabedatei: %s"
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server versteht REST nicht, Neustart mit einer Verbindung."
 
-#: src/axel.c:179
+#: src/axel.c:195
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "Status-Datei gefunden: %lld bytes übertragen, %lld verbleiben."
 
-#: src/axel.c:186 src/axel.c:198
+#: src/axel.c:202 src/axel.c:214
 msgid "Error opening local file"
 msgstr "Fehler beim Öffnen der lokalen Datei"
 
-#: src/axel.c:210
+#: src/axel.c:226
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Schlechtes Datei-/Betriebssystem, Umgehung.."
 
-#: src/axel.c:217
+#: src/axel.c:233
 #, fuzzy
 msgid "Error creating local file"
 msgstr "Fehler beim Öffnen der lokalen Datei"
 
-#: src/axel.c:246
+#: src/axel.c:291
 msgid "Starting download"
 msgstr "Starte Abruf"
 
-#: src/axel.c:253 src/axel.c:412
+#: src/axel.c:304 src/axel.c:466
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbindung %i: Abruf von %s:%i über Schnittstelle %s"
 
-#: src/axel.c:260 src/axel.c:422
+#: src/axel.c:311 src/axel.c:476
 msgid "pthread error!!!"
 msgstr "pthread Fehler!!!"
 
-#: src/axel.c:328
+#: src/axel.c:379
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Fehler bei Verbindung %i! Verbindung getrennt"
 
-#: src/axel.c:342
+#: src/axel.c:393
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Verbindung %i unerwartet getrennt"
 
-#: src/axel.c:346 src/axel.c:363
+#: src/axel.c:397 src/axel.c:415
 #, c-format
 msgid "Connection %i finished"
 msgstr "Verbindung %i beendet"
 
-#: src/axel.c:375
+#: src/axel.c:427
 msgid "Write error!"
 msgstr "Schreibfehler!"
 
-#: src/axel.c:387
+#: src/axel.c:441
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Time-out bei Verbindung %i"
@@ -253,7 +253,7 @@ msgstr "%i:%02i Sekunden"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i Sekunden"
 
-#: src/text.c:557
+#: src/text.c:558
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -289,7 +289,7 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: src/text.c:574
+#: src/text.c:575
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -325,21 +325,21 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: src/text.c:595
+#: src/text.c:596
 #, fuzzy, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"
 
-#: src/text.c:599
+#: src/text.c:602
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:600
+#: src/text.c:603
 #, c-format
 msgid ""
 "\n"
