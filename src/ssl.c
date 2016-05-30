@@ -64,7 +64,7 @@ SSL* ssl_connect( int fd, char *message )
 
 	int err = SSL_connect( ssl );
 	if( err <= 0 ) {
-		sprintf(message, "SSL error: %s\n", ERR_reason_error_string(ERR_get_error()));
+		sprintf(message, _("SSL error: %s\n"), ERR_reason_error_string(ERR_get_error()));
 		return NULL;
 	}
 
