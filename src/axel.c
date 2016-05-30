@@ -148,6 +148,10 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	if( strchr( axel->filename, '*' ) || strchr( axel->filename, '?' ) )
 		strncpy( axel->filename, axel->conn[0].file, MAX_STRING );
 
+	if( *axel->conn[0].output_filename != 0 ) {
+		strncpy( axel->filename, axel->conn[0].output_filename, MAX_STRING );
+	}
+
 	return( axel );
 }
 
