@@ -1,7 +1,7 @@
 # Autoconf for axel
 # Copyright 2016 Joao Eriberto Mota Filho
 # Copyright 2016 Stephen Thirlwall
-# This file is under same license of axel (GPLv2+)
+# This file is under same license of Axel
 
 AC_PREREQ([2.69])
 AC_INIT([axel], [2.7], [https://github.com/eribertomota/axel/issues])

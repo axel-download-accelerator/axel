@@ -8,6 +8,12 @@ Version X.X, XXXX-XX-XX
 
 *  Clarifyed the usage of multiple URLs in manpage.
 
+  [ Stephen Thirlwall ]
+
+* HTTPS/FTPS support using OpenSSL.
+
+
+
 Version 2.7, 2016-05-01
 
   [ Joao Eriberto Mota Filho ]
@@ -24,6 +30,8 @@ Version 2.7, 2016-05-01
 * Add missing m4 path to configure.ac file.
 * Added the autogen.sh script.
 * Cleaned the source code, removing auto generated files.
+
+
 
 Version 2.6, 2016-03-20
 
@@ -44,6 +52,8 @@ Version 2.6, 2016-03-20
   [ Stephen Thirlwall ]
 
 * Alterate display expands to terminal width.
+
+
 
 Version 2.5, 2015-11-01
 
@@ -112,6 +122,8 @@ Version 2.5, 2015-11-01
   - Fix Solaris support (Closes: #312092), thanks Sebastian Kayser
   - Add PO-Revision-Date header to ru.po
 
+
+
 Version 2.4
 
 - Fix a buffer overflow caused by wrong size limits  when copying strings (Closes: #311569), thanks Michael Schwendt and the Fedora project members
@@ -122,6 +134,8 @@ Version 2.4
 - Allow special characters in arguments to configure.
 - Add MimeType and fix Categories in the desktop file.
 
+
+
 Version 2.3
 
 - Wait for thread termination in axel.c:axel_do (Closes: #311255), thanks John Ripa
@@ -129,14 +143,20 @@ Version 2.3
 - Fix LFS support for FTP (Closes: #311320)
 - Fix LFS support (Closes: #311324), thanks Rodrigue Le Bayon
 
+
+
 Version 2.2:
 
 - Fix a buffer overflow in http.c:http_encode.
+
+
 
 Version 2.1:
 
 - Fix version string.  2.0 still reported 1.1, thanks Ajay R Ramjatan
 - Fix new MB/s display (was showing B/s).  Thanks Philipp Hagemeister
+
+
 
 Version 2.0:
 
@@ -148,6 +168,8 @@ Version 2.0:
 - Add new RPM spec file thanks bbbush
 
 Finished Sep 12 2008
+
+
 
 Version 1.1:
 
@@ -162,6 +184,8 @@ Version 1.1:
 - Fix segfaults on HTTP404 and HTTP401 responses
 
 Finished Jan 18 2008
+
+
 
 Version 1.0b:
 - Removed spaces between -S[x] in man-pages, etc. They mess things up.

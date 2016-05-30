@@ -5,6 +5,7 @@
   Copyright 2008      Philipp Hagemeister
   Copyright 2008      Y Giridhar Appaji Nag
   Copyright 2016      Ivan Gimenez
+  Copyright 2016      Stephen Thirlwall
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License

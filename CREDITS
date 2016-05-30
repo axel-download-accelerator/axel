@@ -9,6 +9,9 @@ X.X version:
   Clarifyed the usage of multiple URLs in manpage.
   From Debian bug #621728.
 
+- Stephen Thirlwall <sdt@dr.com>
+  HTTPS/FTPS! A great work!
+
 2.7 version:
 
 - Mridul Malpotra <mridul.malpotra@gmail.com>
