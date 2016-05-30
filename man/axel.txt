@@ -41,6 +41,9 @@ OPTIONS
  --no-proxy, -N  Do not use any proxy server to download the file. Not possible when a transparent proxy
                  is active somewhere, of course.
 
+ --insecure, -k  Do not verify the SSL certificate. Only use this if you are getting certificate errors
+                 and you are sure of the sites authenticity.
+
  --verbose, -v  Show more status messages. Use it more than once to see more details.
 
  --quiet, -q  No output to stdout.
