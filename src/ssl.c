@@ -51,7 +51,7 @@ void ssl_startup( void )
 	}
 }
 
-SSL* ssl_connect( int fd )
+SSL* ssl_connect( int fd, char *message )
 {
 	SSL* ssl;
 
@@ -62,14 +62,14 @@ SSL* ssl_connect( int fd )
 
 	int err = SSL_connect( ssl );
 	if( err <= 0 ) {
-		fprintf(stderr, "SSL connection failed: %s\n", ERR_reason_error_string(ERR_get_error()));
+		sprintf(message, "SSL error: %s\n", ERR_reason_error_string(ERR_get_error()));
 		return NULL;
 	}
 
 	return ssl;
 }
 
-void ssl_disconnect( SSL* ssl )
+void ssl_disconnect( SSL *ssl )
 {
 	SSL_shutdown( ssl );
 	SSL_free( ssl );

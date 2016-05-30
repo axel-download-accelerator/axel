@@ -23,8 +23,14 @@
 
 #include "axel.h"
 
+static void tcp_error( char *buffer, char *hostname, int port, const char *reason )
+{
+	sprintf( buffer, _("Unable to connect to server %s:%i: %s\n"),
+		hostname, port, reason );
+}
+
 /* Get a TCP connection */
-int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_if )
+int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_if, char *message )
 {
 	struct sockaddr_in local_addr;
 	const int portstr_len = 10;
@@ -51,6 +57,7 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 
 	ret = getaddrinfo(hostname, portstr, &ai_hints, &gai_results);
 	if (ret != 0) {
+		tcp_error(message, hostname, port, gai_strerror(ret));
 		return -1;
 	}
 
@@ -91,9 +98,13 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 
 	freeaddrinfo(gai_results);
 
+	if (sock_fd == -1) {
+		tcp_error(message, hostname, port, strerror(errno));
+		return -1;
+	}
 
 	if (secure) {
-		tcp->ssl = ssl_connect(sock_fd);
+		tcp->ssl = ssl_connect(sock_fd, message);
 		if (tcp->ssl == NULL) {
 			close(sock_fd);
 			return -1;

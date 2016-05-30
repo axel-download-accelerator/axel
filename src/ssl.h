@@ -25,5 +25,5 @@
 /* SSL interface */
 
 void ssl_init( conf_t *conf );
-SSL* ssl_connect( int fd );
-void ssl_disconnect( SSL* ssl );
+SSL* ssl_connect( int fd, char *message );
+void ssl_disconnect( SSL *ssl );
