@@ -42,6 +42,7 @@ int main( int argc, char *argv[] )
 	}
 
 	conf_init( conf );
+	ssl_init( conf );
 
 	res = malloc( sizeof( search_t ) * ( conf->search_amount + 1 ) );
 	memset( res, 0, sizeof( search_t ) * ( conf->search_amount + 1 ) );
@@ -111,7 +112,7 @@ int search_makelist( search_t *results, char *url )
 		return( 1 );
 	}
 
-	while( ( i = read( conn->fd, s + j, size - j ) ) > 0 )
+	while( ( i = tcp_read( conn->tcp, s + j, size - j ) ) > 0 )
 	{
 		j += i;
 		if( j + 10 >= size )

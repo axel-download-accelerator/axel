@@ -23,16 +23,15 @@
 
 #include "axel.h"
 
-int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass )
+int ftp_connect( ftp_t *conn, int proto, char *host, int port, char *user, char *pass )
 {
-	conn->data_fd = -1;
+	conn->data_tcp.fd = -1;
 	conn->message = malloc( MAX_STRING );
+	conn->proto = proto;
 
-	if( ( conn->fd = tcp_connect( host, port, conn->local_if ) ) == -1 )
-	{
-		sprintf( conn->message, _("Unable to connect to server %s:%i\n"), host, port );
+	if( tcp_connect( &conn->tcp, host, port, PROTO_IS_SECURE(conn->proto),
+		conn->local_if, conn->message ) == -1 )
 		return( 0 );
-	}
 
 	if( ftp_wait( conn ) / 100 != 2 )
 		return( 0 );
@@ -62,10 +61,8 @@ int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass )
 
 void ftp_disconnect( ftp_t *conn )
 {
-	if( conn->fd > 0 )
-		close( conn->fd );
-	if( conn->data_fd > 0 )
-		close( conn->data_fd );
+	tcp_close( &conn->tcp );
+	tcp_close( &conn->data_tcp );
 	if( conn->message )
 	{
 		free( conn->message );
@@ -73,7 +70,6 @@ void ftp_disconnect( ftp_t *conn )
 	}
 
 	*conn->cwd = 0;
-	conn->fd = conn->data_fd = -1;
 }
 
 /* Change current working directory */
@@ -135,7 +131,7 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 	memset( reply, 0, size );
 	*reply = '\n';
 	i = 1;
-	while( ( j = read( conn->data_fd, reply + i, size - i - 3 ) ) > 0 )
+	while( ( j = tcp_read( &conn->data_tcp, reply + i, size - i - 3 ) ) > 0 )
 	{
 		i += j;
 		reply[i] = 0;
@@ -146,8 +142,7 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 			memset( reply + size / 2, 0, size / 2 );
 		}
 	}
-	close( conn->data_fd );
-	conn->data_fd = -1;
+	tcp_close( &conn->data_tcp );
 
 	if( ftp_wait( conn ) / 100 != 2 )
 	{
@@ -223,7 +218,7 @@ int ftp_data( ftp_t *conn )
 	char host[MAX_STRING];
 
 	/* Already done? */
-	if( conn->data_fd > 0 )
+	if( conn->data_tcp.fd > 0 )
 		return( 0 );
 
 /*	if( conn->ftp_mode == FTP_PASSIVE )
@@ -248,12 +243,10 @@ int ftp_data( ftp_t *conn )
 			sprintf( conn->message, _("Error opening passive data connection.\n") );
 			return( 0 );
 		}
-		if( ( conn->data_fd = tcp_connect( host,
-			info[4] * 256 + info[5], conn->local_if ) ) == -1 )
-		{
-			sprintf( conn->message, _("Error opening passive data connection.\n") );
+		if( tcp_connect( &conn->data_tcp, host, info[4] * 256 + info[5],
+		    PROTO_IS_SECURE(conn->proto), conn->local_if,
+		    conn->message ) == -1 )
 			return( 0 );
-		}
 
 		return( 1 );
 /*	}
@@ -279,7 +272,7 @@ int ftp_command( ftp_t *conn, char *format, ... )
 	fprintf( stderr, "fd(%i)<--%s", conn->fd, cmd );
 #endif
 
-	if( write( conn->fd, cmd, strlen( cmd ) ) != strlen( cmd ) )
+	if( tcp_write( &conn->tcp, cmd, strlen( cmd ) ) != strlen( cmd ) )
 	{
 		sprintf( conn->message, _("Error writing command %s\n"), format );
 		return( 0 );
@@ -303,7 +296,7 @@ int ftp_wait( ftp_t *conn )
 	{
 		do
 		{
-			r += i = read( conn->fd, conn->message + r, 1 );
+			r += i = tcp_read( &conn->tcp, conn->message + r, 1 );
 			if( i <= 0 )
 			{
 				sprintf( conn->message, _("Connection gone.\n") );

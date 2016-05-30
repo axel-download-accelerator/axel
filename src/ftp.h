@@ -29,13 +29,14 @@ typedef struct
 	char cwd[MAX_STRING];
 	char *message;
 	int status;
-	int fd;
-	int data_fd;
+	tcp_t tcp;
+	tcp_t data_tcp;
+	int proto;
 	int ftp_mode;
 	char *local_if;
 } ftp_t;
 
-int ftp_connect( ftp_t *conn, char *host, int port, char *user, char *pass );
+int ftp_connect( ftp_t *conn, int proto, char *host, int port, char *user, char *pass );
 void ftp_disconnect( ftp_t *conn );
 int ftp_wait( ftp_t *conn );
 int ftp_command( ftp_t *conn, char *format, ... );

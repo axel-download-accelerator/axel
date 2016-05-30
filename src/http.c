@@ -48,6 +48,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		}
 		host = tconn->host;
 		port = tconn->port;
+		proto = tconn->proto;
 		conn->proxy = 1;
 	}
 	else
@@ -55,12 +56,9 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		conn->proxy = 0;
 	} }
 
-	if( ( conn->fd = tcp_connect( host, port, conn->local_if ) ) == -1 )
-	{
-		/* We'll put the message in conn->headers, not in request */
-		sprintf( conn->headers, _("Unable to connect to server %s:%i\n"), host, port );
+	if( tcp_connect( &conn->tcp, host, port, PROTO_IS_SECURE(proto),
+		conn->local_if, conn->headers ) == -1 )
 		return( 0 );
-	}
 
 	if( *user == 0 )
 	{
@@ -86,9 +84,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 
 void http_disconnect( http_t *conn )
 {
-	if( conn->fd > 0 )
-		close( conn->fd );
-	conn->fd = -1;
+	tcp_close( &conn->tcp );
 }
 
 void http_get( http_t *conn, char *lurl )
@@ -96,8 +92,23 @@ void http_get( http_t *conn, char *lurl )
 	*conn->request = 0;
 	if( conn->proxy )
 	{
-		http_addheader( conn, "GET %s://%s%s HTTP/1.0",
-			conn->proto == PROTO_HTTP ? "http" : "ftp", conn->host, lurl );
+		const char* proto = "";
+		switch( conn->proto )
+		{
+			case PROTO_FTP:
+				proto = PROTO_FTP_NAME;
+				break;
+			case PROTO_FTPS:
+				proto = PROTO_FTPS_NAME;
+				break;
+			case PROTO_HTTP:
+				proto = PROTO_HTTP_NAME;
+				break;
+			case PROTO_HTTPS:
+				proto = PROTO_HTTPS_NAME;
+				break;
+		}
+		http_addheader( conn, "GET %s://%s%s HTTP/1.0", proto, conn->host, lurl );
 	}
 	else
 	{
@@ -141,13 +152,13 @@ int http_exec( http_t *conn )
 	http_addheader( conn, "" );
 
 	while ( nwrite < strlen( conn->request ) ) {
-		if( ( i = write( conn->fd, conn->request + nwrite, strlen( conn->request ) - nwrite ) ) < 0 ) {
-        		if (errno == EINTR || errno == EAGAIN) continue;
+		if( ( i = tcp_write( &conn->tcp, conn->request + nwrite, strlen( conn->request ) - nwrite ) ) < 0 ) {
+	if (errno == EINTR || errno == EAGAIN) continue;
 			/* We'll put the message in conn->headers, not in request */
 			sprintf( conn->headers, _("Connection gone while writing.\n") );
 			return( 0 );
 		}
-    		nwrite += i;
+		nwrite += i;
 	}
 
 	*conn->headers = 0;
@@ -155,7 +166,7 @@ int http_exec( http_t *conn )
 	   actual data */
 	while( 1 )
 	{
-		if( read( conn->fd, s, 1 ) <= 0 )
+		if( tcp_read( &conn->tcp, s, 1 ) <= 0 )
 		{
 			/* We'll put the message in conn->headers, not in request */
 			sprintf( conn->headers, _("Connection gone.\n") );

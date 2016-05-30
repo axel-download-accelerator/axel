@@ -21,9 +21,38 @@
 
 /* Connection stuff */
 
-#define PROTO_FTP	1
-#define PROTO_HTTP	2
-#define PROTO_DEFAULT	PROTO_FTP
+#define PROTO_SECURE_MASK	(1<<0)  /* bit 0 - 0 = insecure, 1 = secure */
+#define PROTO_PROTO_MASK	(1<<1)  /* bit 1 = 0 = ftp,      1 = http   */
+
+#define PROTO_INSECURE		(0<<0)
+#define PROTO_SECURE		(1<<0)
+#define PROTO_PROTO_FTP		(0<<1)
+#define PROTO_PROTO_HTTP	(1<<1)
+
+#define PROTO_IS_FTP(proto) \
+	(((proto) & PROTO_PROTO_MASK) == PROTO_PROTO_FTP)
+#define PROTO_IS_SECURE(proto) \
+	(((proto) & PROTO_SECURE_MASK) == PROTO_SECURE)
+
+#define PROTO_FTP		(PROTO_PROTO_FTP|PROTO_INSECURE)
+#define	PROTO_FTP_PORT		21
+#define	PROTO_FTP_NAME		"ftp"
+
+#define PROTO_FTPS		(PROTO_PROTO_FTP|PROTO_SECURE)
+#define	PROTO_FTPS_PORT		990
+#define	PROTO_FTPS_NAME		"ftps"
+
+#define PROTO_HTTP		(PROTO_PROTO_HTTP|PROTO_INSECURE)
+#define	PROTO_HTTP_PORT		80
+#define	PROTO_HTTP_NAME		"http"
+
+#define PROTO_HTTPS		(PROTO_PROTO_HTTP|PROTO_SECURE)
+#define	PROTO_HTTPS_PORT	443
+#define	PROTO_HTTPS_NAME	"https"
+
+#define PROTO_DEFAULT          PROTO_FTP
+#define PROTO_DEFAULT_PORT     PROTO_FTP_PORT
+#define PROTO_DEFAULT_NAME     PROTO_FTP_NAME
 
 typedef struct
 {
@@ -32,6 +61,7 @@ typedef struct
 	int proto;
 	int port;
 	int proxy;
+	char *proto_name;
 	char host[MAX_STRING];
 	char dir[MAX_STRING];
 	char file[MAX_STRING];
@@ -43,7 +73,7 @@ typedef struct
 	long long int size;		/* File size, not 'connection size'.. */
 	long long int currentbyte;
 	long long int lastbyte;
-	int fd;
+	tcp_t *tcp;
 	int enabled;
 	int supported;
 	int last_transfer;

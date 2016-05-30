@@ -64,14 +64,17 @@ after ./autogen.sh, is running ./configure, make and make install.
 
 Install the following homebrew packages:
 
-  `homebrew install automake gettext`
+  `homebrew install automake gettext openssl`
 
 You'll need to provide some extra options to `autogen.sh` and `configure`
-so they can find gettext.
+so they can find gettext and openssl.
 
 ```shell
 GETTEXT=/usr/local/opt/gettext
+OPENSSL=/usr/local/opt/openssl
 PATH="$GETTEXT/bin:$PATH"
 ./autogen.sh -I$GETTEXT/share/aclocal/
-CFLAGS=-I$GETTEXT/include LDFLAGS=-L$GETTEXT/lib ./configure
+CFLAGS="-I$GETTEXT/include -I$OPENSSL/include" LDFLAGS=-L$GETTEXT/lib ./configure
 ```
+
+You can just run `make` as usual after these steps.
