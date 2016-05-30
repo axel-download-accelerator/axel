@@ -48,8 +48,8 @@ void ssl_startup( void )
 
 	ssl_ctx = SSL_CTX_new( SSLv23_client_method() );
 	if( !conf->insecure ) {
+		SSL_CTX_set_default_verify_paths(ssl_ctx);
 		SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_PEER, NULL);
-		SSL_CTX_set_verify_depth(ssl_ctx, 0);
 	}
 }
 
