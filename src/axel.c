@@ -204,8 +204,10 @@ int axel_open( axel_t *axel )
 		for( i = 0; i < axel->conf->num_connections; i ++ ) {
 			nread = read( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
 			assert( nread == sizeof( axel->conn[i].currentbyte ) );
-			if(!old_format)
-				read( fd, &axel->conn[i].lastbyte, sizeof( axel->conn[i].lastbyte ) ); // TODO: callback & assert
+			if( !old_format ) {
+				nread = read( fd, &axel->conn[i].lastbyte, sizeof( axel->conn[i].lastbyte ) );
+				assert( nread == sizeof( axel->conn[i].lastbyte ) );
+			}
 		}
 
 		axel_message( axel, _("State file found: %lld bytes downloaded, %lld to go."),
@@ -306,11 +308,11 @@ void axel_start( axel_t *axel )
 	if( axel->conf->verbose > 0 )
 		axel_message( axel, _("Starting download") );
 
-   for( i = 0; i < axel->conf->num_connections; i ++ )
-   if( axel->conn[i].currentbyte > axel->conn[i].lastbyte )
-   {
-       reactivate_connection(axel, i);
-   }
+	for( i = 0; i < axel->conf->num_connections; i ++ )
+	if( axel->conn[i].currentbyte > axel->conn[i].lastbyte )
+	{
+		reactivate_connection(axel, i);
+	}
 
 	for( i = 0; i < axel->conf->num_connections; i ++ )
 	if( axel->conn[i].currentbyte <= axel->conn[i].lastbyte )
@@ -596,15 +598,16 @@ void save_state( axel_t *axel )
 	}
 
         nwrite = write( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
-	assert( nwrite == sizeof( axel->conf->num_connections ) ); 
+	assert( nwrite == sizeof( axel->conf->num_connections ) );
 
 	nwrite = write( fd, &axel->bytes_done, sizeof( axel->bytes_done ) );
-	assert( nwrite == sizeof( axel->bytes_done ) ); 
+	assert( nwrite == sizeof( axel->bytes_done ) );
 
 	for( i = 0; i < axel->conf->num_connections; i ++ ) {
 		nwrite = write( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
 		assert( nwrite == sizeof( axel->conn[i].currentbyte ) );
-		write( fd, &axel->conn[i].lastbyte, sizeof( axel->conn[i].lastbyte ) );
+		nwrite = write( fd, &axel->conn[i].lastbyte, sizeof( axel->conn[i].lastbyte ) );
+		assert( nwrite == sizeof( axel->conn[i].lastbyte ) );
 	}
 	close( fd );
 }
