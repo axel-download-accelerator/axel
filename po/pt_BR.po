@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: axel 2.6\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-05-30 21:07-0300\n"
+"POT-Creation-Date: 2016-05-31 19:37-0300\n"
 "PO-Revision-Date: 2016-03-19 13:32-0300\n"
 "Last-Translator: Eriberto Mota <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -17,79 +17,79 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/axel.c:73
+#: src/axel.c:74
 msgid "Buffer resized for this speed."
 msgstr "Buffer redimensionado para esta velocidade."
 
-#: src/axel.c:109
+#: src/axel.c:110
 msgid "Could not parse URL.\n"
 msgstr "Não posso analisar esta URL.\n"
 
-#: src/axel.c:144
+#: src/axel.c:145
 #, c-format
 msgid "File size: %lld bytes"
 msgstr "Tamanho do arquivo: %lld bytes"
 
-#: src/axel.c:163
+#: src/axel.c:168
 #, c-format
 msgid "Opening output file %s"
 msgstr "Abrindo o arquivo de saída %s"
 
-#: src/axel.c:172
+#: src/axel.c:177
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Servidor não suportado. Iniciando do zero com apenas uma conexão."
 
-#: src/axel.c:211
+#: src/axel.c:218
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "Situação do arquivo: %lld bytes baixados, %lld restantes."
 
-#: src/axel.c:218 src/axel.c:230
+#: src/axel.c:225 src/axel.c:237
 msgid "Error opening local file"
 msgstr "Erro ao abrir o arquivo local"
 
-#: src/axel.c:242
+#: src/axel.c:249
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Filesystem/SO ruim... Trabalhando em torno disso. :-("
 
-#: src/axel.c:249
+#: src/axel.c:256
 #, fuzzy
 msgid "Error creating local file"
 msgstr "Erro ao criar o arquivo local"
 
-#: src/axel.c:307
+#: src/axel.c:314
 msgid "Starting download"
 msgstr "Iniciando o download"
 
-#: src/axel.c:320 src/axel.c:483
+#: src/axel.c:327 src/axel.c:490
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Conexão %i baixando a partir de %s:%i, usando interface %s"
 
-#: src/axel.c:327 src/axel.c:493
+#: src/axel.c:334 src/axel.c:500
 msgid "pthread error!!!"
 msgstr "pthread error!!!"
 
-#: src/axel.c:396
+#: src/axel.c:403
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Erro na conexão %i! Conexão fechada."
 
-#: src/axel.c:410
+#: src/axel.c:417
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Conexão %i fechada inesperadamente"
 
-#: src/axel.c:414 src/axel.c:432
+#: src/axel.c:421 src/axel.c:439
 #, c-format
 msgid "Connection %i finished"
 msgstr "Conexão %i finalizada"
 
-#: src/axel.c:444
+#: src/axel.c:451
 msgid "Write error!"
 msgstr "Erro de escrita!"
 
-#: src/axel.c:458
+#: src/axel.c:465
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Tempo esgotado para a conexão %i"
@@ -99,12 +99,12 @@ msgstr "Tempo esgotado para a conexão %i"
 msgid "Error in %s line %i.\n"
 msgstr "Erro em %s linha %i.\n"
 
-#: src/conn.c:367 src/ftp.c:133
+#: src/conn.c:371 src/ftp.c:133
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Redirecionamentos excessivos.\n"
 
-#: src/conn.c:386
+#: src/conn.c:390
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "Erro HTTP desconhecido.\n"
@@ -134,17 +134,17 @@ msgstr "Erro ao abrir conexão passiva.\n"
 msgid "Error writing command %s\n"
 msgstr "Erro ao escrever comando %s\n"
 
-#: src/ftp.c:317 src/http.c:187
+#: src/ftp.c:317 src/http.c:188
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Conexão perdida.\n"
 
-#: src/http.c:61
+#: src/http.c:62
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "String de proxy inválida: %s\n"
 
-#: src/http.c:173
+#: src/http.c:174
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Conexão perdida enquanto escrevia no disco.\n"
