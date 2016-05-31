@@ -1,4 +1,4 @@
-X.X version:
+2.10 version:
 
 - Denis Denisov <denji0k@gmail.com>
   Implemented the reactivation of connections from state file, similar to
