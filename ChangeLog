@@ -1,5 +1,11 @@
 Version X.X, XXXX-XX-XX
 
+  [ Joao Eriberto Mota Filho ]
+
+* Stephen implemented SSL/TLS. Consequently, the licensing for Axel from now on
+  is GPL-2+ with OpenSSL exception. All previous authors agree with that. For
+  details, see https://github.com/eribertomota/axel/issues/15.
+
   [ Denis Denisov ]
 
 * Implemented the reactivation of connections from state file.

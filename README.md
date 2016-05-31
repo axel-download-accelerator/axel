@@ -7,6 +7,7 @@
 **2. WHAT IS AXEL?**<br>
 **3. BUILDING FROM SOURCE**<br>
 **4. BUILDING ON OS/X WITH HOMEBREW**<br>
+**5. LICENSE**<br>
 
 
 
@@ -80,3 +81,10 @@ CFLAGS="-I$GETTEXT/include -I$OPENSSL/include" LDFLAGS=-L$GETTEXT/lib ./configur
 ```
 
 You can just run `make` as usual after these steps.
+
+
+----------
+5. LICENSE
+----------
+
+Axel is under GPL-2+ with OpenSSL exception.
