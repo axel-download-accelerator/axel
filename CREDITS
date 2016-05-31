@@ -9,6 +9,10 @@
   Clarifyed the usage of multiple URLs in manpage.
   From Debian bug #621728.
 
+- Sjjad Hashemian <wolaws@gmail.com>
+  Specify filename from http header Content-Disposition, according to
+  https://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html#sec19.5.1
+
 - Stephen Thirlwall <sdt@dr.com>
   HTTPS/FTPS! A great work!
 

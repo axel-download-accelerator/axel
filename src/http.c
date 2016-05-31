@@ -6,6 +6,7 @@
   Copyright 2008-2009 Philipp Hagemeister
   Copyright 2015      Joao Eriberto Mota Filho
   Copyright 2016      Ivan Gimenez
+  Copyright 2016      Sjjad Hashemian
   Copyright 2016      Stephen Thirlwall
 
   This program is free software; you can redistribute it and/or

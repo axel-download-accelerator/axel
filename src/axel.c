@@ -7,6 +7,7 @@
   Copyright 2015-2016 Joao Eriberto Mota Filho
   Copyright 2016      Denis Denisov
   Copyright 2016      Ivan Gimenez
+  Copyright 2016      Sjjad Hashemian
   Copyright 2016      Stephen Thirlwall
 
   This program is free software; you can redistribute it and/or

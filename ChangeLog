@@ -14,9 +14,13 @@ Version 2.10, XXXX-XX-XX
 
 *  Clarifyed the usage of multiple URLs in manpage.
 
+  [ Sjjad Hashemian ]
+
+* Specify filename from http header Content-Disposition (RFC 2616).
+
   [ Stephen Thirlwall ]
 
-* HTTPS/FTPS support using OpenSSL.
+* HTTPS/FTPS support using OpenSSL. \o/
 
 
 
