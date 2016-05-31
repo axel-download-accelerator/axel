@@ -59,6 +59,7 @@ void http_get( http_t *conn, char *lurl );
 void http_addheader( http_t *conn, char *format, ... );
 int http_exec( http_t *conn );
 char *http_header( http_t *conn, char *header );
+void http_filename( http_t *conn, char *filename );
 long long int http_size( http_t *conn );
 void http_encode( char *s );
 void http_decode( char *s );

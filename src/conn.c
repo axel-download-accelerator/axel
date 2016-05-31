@@ -339,6 +339,9 @@ int conn_info( conn_t *conn )
 				return( 0 );
 			conn_exec( conn );
 			conn_disconnect( conn );
+
+			http_filename(conn->http, conn->output_filename);
+
 			/* Code 3xx == redirect */
 			if( conn->http->status / 100 != 3 )
 				break;

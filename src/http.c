@@ -244,6 +244,26 @@ long long int http_size( http_t *conn )
 	return( j );
 }
 
+void http_filename( http_t *conn, char *filename )
+{
+	char *h;
+	if( ( h = http_header( conn, "Content-Disposition:" ) ) != NULL ) {
+		sscanf( h, "%*s%*[ \t]filename%*[ \t=\"\']%254[^\n\"\' ]", filename );
+
+		http_decode(filename);
+
+		/* Replace common invalid characters in filename
+		  https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
+		h = filename;
+		char *invalid_characters = "/\\?%*:|<>";
+		char replacement = '_';
+		while( ( h = strpbrk( h, invalid_characters ) ) != NULL ) {
+			*h = replacement;
+			h++;
+		}
+	}
+}
+
 /* Decode%20a%20file%20name */
 void http_decode( char *s )
 {
