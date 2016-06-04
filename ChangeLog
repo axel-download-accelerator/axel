@@ -5,22 +5,31 @@ Version 2.10, 2016-06-04
 * Stephen implemented SSL/TLS. Consequently, the licensing for Axel from now on
   will be GPL-2+ with OpenSSL exception. All previous authors agree with that.
   For details, see https://github.com/eribertomota/axel/issues/15.
+* Downgraded gettext minimum version to 0.18 in configure.ac. It will produce a
+  message 'AM_PROG_MKDIR_P macro is deprecated' when building, but that is
+  normal.
+* Fixed some fuzzy translations.
+* New code for autogen.sh, now with clean to vanish the source code.
+* Updated manpage.
 
   [ Denis Denisov ]
 
-* Implemented the reactivation of connections from state file.
+* Implemented the reactivation of connections from state file, similar to
+  dynamic segmentation.
 
   [ Osamu Aoki ]
 
-*  Clarifyed the usage of multiple URLs in manpage.
+*  Clarified the usage of multiple URLs in manpage.
 
   [ Sjjad Hashemian ]
 
-* Specify filename from http header Content-Disposition (RFC 2616).
+* Specify filename from http header Content-Disposition (RFC 2616, Sec. 19.5.1).
 
   [ Stephen Thirlwall ]
 
 * HTTPS/FTPS support using OpenSSL. \o/
+* Implemented the --without-openssl option to build without SSL/TLS.
+* Updated the manpage.
 
 
 
@@ -172,7 +181,7 @@ Version 2.0:
 
 - Large file support thanks thanks David Turnbull
 - Custom Header Support thanks Eli Yukelzon
-- New russian translation thanks newhren
+- New Russian translation thanks newhren
 - Fix segfault in -H option thanks Philipp Hagemeister
 - Honour http_proxy and prefer it over HTTP_PROXY
 - Add new RPM spec file thanks bbbush
