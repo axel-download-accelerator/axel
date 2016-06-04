@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: axel 2.10\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-06-04 18:11-0300\n"
+"POT-Creation-Date: 2016-06-04 18:19-0300\n"
 "PO-Revision-Date: 2016-06-04 18:17-0300\n"
 "Last-Translator: Eriberto Mota <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -53,7 +53,6 @@ msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Filesystem/SO ruim... Trabalhando em torno disso. :-("
 
 #: src/axel.c:256
-#,
 msgid "Error creating local file"
 msgstr "Erro ao criar o arquivo local"
 
