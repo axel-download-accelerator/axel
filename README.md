@@ -45,6 +45,8 @@ speed up a download up to 60% (approximately, according to some tests).
 Axel tries to be as light as possible, so it might be useful as a
 wget clone (and other console based programs) on byte-critical systems.
 
+Axel supports HTTP, HTTPS, FTP and FTPS protocols.
+
 Axel was originally developed by Wilmer van der Gaast. Thanks for your
 efforts. Over time, Axel got several contributions from people. Please,
 see the files AUTHORS and CREDITS.
