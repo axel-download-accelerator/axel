@@ -1,10 +1,10 @@
-Version 2.10, XXXX-XX-XX
+Version 2.10, 2016-06-04
 
   [ Joao Eriberto Mota Filho ]
 
 * Stephen implemented SSL/TLS. Consequently, the licensing for Axel from now on
-  is GPL-2+ with OpenSSL exception. All previous authors agree with that. For
-  details, see https://github.com/eribertomota/axel/issues/15.
+  will be GPL-2+ with OpenSSL exception. All previous authors agree with that.
+  For details, see https://github.com/eribertomota/axel/issues/15.
 
   [ Denis Denisov ]
 
