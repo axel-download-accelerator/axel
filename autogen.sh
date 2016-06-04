@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# autogen.sh with clean option
+# autogen.sh with clean option, v0.2
 # Copyright 2016 Joao Eriberto Mota Filho <eriberto@eriberto.pro.br>
 #
 # This file is under BSD-3-Clause license.
