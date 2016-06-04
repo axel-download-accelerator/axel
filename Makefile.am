@@ -6,7 +6,8 @@ clean-local:
 	-rm -rf autom4te.cache/ \
 	m4/
 
-	-rm -f aclocal.m4 \
+	-rm -f *~ \
+	aclocal.m4 \
 	compile \
 	config.* \
 	configure \
