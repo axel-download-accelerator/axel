@@ -12,6 +12,8 @@ DESCRIPTION
  one single thread. It just saves some time at the end because the program does not have to
  concatenate all the downloaded parts.
 
+ Axel supports HTTP, HTTPS, FTP and FTPS protocols.
+
 OPTIONS
  One argument is required, the URL to the file you want to download. When downloading from FTP,
  the filename may contain wildcards and the program will try to resolve the full filename. Multiple
