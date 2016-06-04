@@ -46,7 +46,7 @@ AS_IF([test "x$with_openssl" != xno], [
 
 # Add Gettext
 AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.19.3])
+AM_GNU_GETTEXT_VERSION([0.18])
 
 #### Definitions ####
 
