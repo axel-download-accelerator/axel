@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: axel 2.6\n"
+"Project-Id-Version: axel 2.10\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-06-04 17:41-0300\n"
-"PO-Revision-Date: 2016-03-19 13:32-0300\n"
+"POT-Creation-Date: 2016-06-04 18:11-0300\n"
+"PO-Revision-Date: 2016-06-04 18:17-0300\n"
 "Last-Translator: Eriberto Mota <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
@@ -53,7 +53,7 @@ msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Filesystem/SO ruim... Trabalhando em torno disso. :-("
 
 #: src/axel.c:256
-#, fuzzy
+#,
 msgid "Error creating local file"
 msgstr "Erro ao criar o arquivo local"
 
@@ -145,7 +145,7 @@ msgid "Invalid proxy string: %s\n"
 msgstr "String de proxy inválida: %s\n"
 
 #: src/http.c:174
-#, fuzzy, c-format
+#, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Conexão perdida enquanto escrevia no disco.\n"
 
@@ -256,7 +256,7 @@ msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i hora(s)"
 
 #: src/text.c:581
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -285,6 +285,7 @@ msgstr ""
 "-H x\tAdiciona uma entrada adicional de cabeçalho\n"
 "-U x\tConfigura um user agent\n"
 "-N\tNão utiliza qualquer servidor proxy\n"
+"-k\tNão verifica o certificado SSL\n"
 "-q\tEvita mensagens na tela\n"
 "-v\tAumenta o número de informações\n"
 "-a\tSubstitui o indicador de progresso\n"
@@ -294,7 +295,7 @@ msgstr ""
 "Visite https://github.com/eribertomota/axel/issues\n"
 
 #: src/text.c:599
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -324,6 +325,7 @@ msgstr ""
 "--header=x\t\t-H x\tAdiciona uma entrada adicional de cabeçalho\n"
 "--user-agent=x\t\t-U x\tConfigura um user agent\n"
 "--no-proxy\t\t-N\tNão utiliza qualquer servidor proxy\n"
+"--insecure\t\t-k\tNão verifica o certificado SSL\n"
 "--quiet\t\t\t-q\tEvita mensagens na tela\n"
 "--verbose\t\t-v\tAumenta o número de informações\n"
 "--alternate\t\t-a\tSubstitui o indicador de progresso\n"
@@ -363,9 +365,9 @@ msgstr ""
 #: src/ssl.c:77
 #, c-format
 msgid "SSL error: %s\n"
-msgstr ""
+msgstr "Erro SSL: %s\n"
 
 #: src/tcp.c:43
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
-msgstr "Não consigo conectar o servidor %s:%i\n"
+msgstr "Não consigo conectar o servidor %s:%i %s\n"

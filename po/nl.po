@@ -345,6 +345,6 @@ msgid "SSL error: %s\n"
 msgstr ""
 
 #: src/tcp.c:43
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
-msgstr "Kan niet verbinden met server %s:%i\n"
+msgstr "Kan niet verbinden met server %s:%i %s\n"

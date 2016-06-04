@@ -348,6 +348,6 @@ msgid "SSL error: %s\n"
 msgstr ""
 
 #: src/tcp.c:43
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
-msgstr "Невозможно подсоединиться к серверу %s:%i\n"
+msgstr "Невозможно подсоединиться к серверу %s:%i %s\n"
