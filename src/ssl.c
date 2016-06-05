@@ -61,6 +61,7 @@ void ssl_startup( void )
 		SSL_CTX_set_default_verify_paths(ssl_ctx);
 		SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_PEER, NULL);
 	}
+	SSL_CTX_set_mode(ssl_ctx, SSL_MODE_AUTO_RETRY);
 }
 
 SSL* ssl_connect( int fd, char *message )
