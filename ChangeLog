@@ -1,3 +1,12 @@
+Version 2.11, 2016-06-05
+
+  [ Sjjad Hashemian ]
+
+* Set SSL auto-retry mode. This fixes SSL WANT_READ error which causes
+  'Connection gone' error sometimes.
+
+
+
 Version 2.10, 2016-06-04
 
   [ Joao Eriberto Mota Filho ]
