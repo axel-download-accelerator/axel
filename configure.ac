@@ -34,7 +34,7 @@ AC_ARG_WITH([openssl],
 
 AS_IF([test "x$with_openssl" != xno], [
     AC_DEFINE([HAVE_OPENSSL], [1], [OpenSSL])
-    AC_SEARCH_LIBS([SSL_library_init], [ssl], [], [
+    AC_SEARCH_LIBS([SSL_new], [ssl], [], [
         AC_MSG_ERROR([libssl not found])
     ])
     AC_SEARCH_LIBS([ERR_get_error], [crypto], [], [
