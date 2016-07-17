@@ -67,6 +67,7 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
+#include <termios.h>
 #include <openssl/ssl.h>
 
 /* Internationalization */

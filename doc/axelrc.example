@@ -100,3 +100,8 @@
 # a scp-alike interface.
 #
 # alternate_output = 1
+
+# If your console supports unicode characters, try unicode output.
+#
+# unicode_output = 1
+#
