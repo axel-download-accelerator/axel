@@ -120,7 +120,7 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 
 #ifdef HAVE_OPENSSL
 	if (secure) {
-		tcp->ssl = ssl_connect(sock_fd, message);
+		tcp->ssl = ssl_connect(sock_fd, hostname, message);
 		if (tcp->ssl == NULL) {
 			close(sock_fd);
 			return -1;

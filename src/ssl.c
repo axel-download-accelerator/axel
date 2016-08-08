@@ -65,7 +65,7 @@ void ssl_startup( void )
 	SSL_CTX_set_mode(ssl_ctx, SSL_MODE_AUTO_RETRY);
 }
 
-SSL* ssl_connect( int fd, char *message )
+SSL* ssl_connect( int fd, char *hostname, char *message )
 {
 	SSL* ssl;
 
@@ -73,6 +73,7 @@ SSL* ssl_connect( int fd, char *message )
 
 	ssl = SSL_new( ssl_ctx );
 	SSL_set_fd( ssl, fd );
+	SSL_set_tlsext_host_name(ssl, hostname);
 
 	int err = SSL_connect( ssl );
 	if( err <= 0 ) {
