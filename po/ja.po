@@ -20,7 +20,7 @@ msgstr "このスピードに合わせバッファーをリサイズします。
 
 #: src/axel.c:110
 msgid "Could not parse URL.\n"
-msgstr "URLを解析できません。\n"
+msgstr "URL を解析できません。\n"
 
 #: src/axel.c:145
 #, c-format
@@ -284,7 +284,7 @@ msgstr ""
 "-H x\tヘッダーストリングを追加\n"
 "-U x\tユーザーエージェントを設定\n"
 "-N\tプロキシサーバーを一切使用しなくする\n"
-"-k\tSSL証明書を検証しない\n"
+"-k\tSSL 証明書を検証しない\n"
 "-q\t標準出力を使用しない\n"
 "-v\t状態情報を増加させる\n"
 "-a\t代替のプログレスインディケーター\n"
@@ -323,7 +323,7 @@ msgstr ""
 "--header=x\t\t-H x\tヘッダーストリングを追加\n"
 "--user-agent=x\t\t-U x\tユーザーエージェントを設定\n"
 "--no-proxy\t\t-N\tプロキシサーバーを一切使用しなくする\n"
-"--insecure\t\t-k\tSSL証明書を検証しない\n"
+"--insecure\t\t-k\tSSL 証明書を検証しない\n"
 "--quiet\t\t\t-q\t標準出力を使用しない\n"
 "--verbose\t\t-v\t状態情報を増加させる\n"
 "--alternate\t\t-a\t代替のプログレスインディケーター\n"
@@ -362,7 +362,7 @@ msgstr ""
 #: src/ssl.c:79
 #, c-format
 msgid "SSL error: %s\n"
-msgstr "SSLエラー: %s\n"
+msgstr "SSL エラー: %s\n"
 
 #: src/tcp.c:43
 #, c-format
