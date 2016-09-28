@@ -373,7 +373,15 @@ int conn_info( conn_t *conn )
 		}
 
 		conn->size = http_size( conn->http );
-		if( conn->http->status == 206 && conn->size >= 0 )
+		i = http_size_from_range( conn->http );
+		if( i > 0 && conn->size != i + 1 ) {
+			/* This means that the server has a bug. This version currently
+			   uses the larger of the reported sizes, but it would be an
+			   alternative to set supported = 0. */
+			conn->supported = 1;
+			conn->size = max(i, conn->size + 1);
+		}
+		else if( conn->http->status == 206 && conn->size >= 0 )
 		{
 			conn->supported = 1;
 			conn->size ++;

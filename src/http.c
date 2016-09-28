@@ -245,6 +245,24 @@ long long int http_size( http_t *conn )
 	return( j );
 }
 
+long long int http_size_from_range( http_t *conn )
+{
+	char *i;
+	long long int j;
+
+	if( ( i = http_header( conn, "Content-Range:" ) ) == NULL )
+		return( -2 );
+
+	i = strchr(i, '/');
+	if( i == NULL )
+		return( -2 );
+
+	if( sscanf( i + 1, "%lld", &j ) != 1 )
+		return( -3 );
+
+	return( j );
+}
+
 void http_filename( http_t *conn, char *filename )
 {
 	char *h;
