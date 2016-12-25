@@ -1,3 +1,23 @@
+2.12 version:
+
+- Denis Denisov <denji0k@gmail.com>
+  Made some adjustments in README.md file.
+
+- Lion Yang <lion@aosc.xyz>
+  Updated translation to ja.
+
+- Mingcong Bai <jeffbai@aosc.xyz>
+  Updated and fixed translation to zh_CN.
+
+- Phillip Berndt <phillip.berndt@googlemail.com>
+  Added a feature to extract file sizes from the Content-Range header. More
+    details here:
+    https://github.com/eribertomota/axel/commit/bcc98626791eb082c992d578fe93be72cfedef51
+
+- Stephen Thirlwall <sdt@dr.com>
+  Fixed rpl_malloc not found when cross-compiling.
+  Help to verify and approve some pull requests.
+
 2.11 version:
 
 - Sjjad Hashemian <wolaws@gmail.com>

@@ -1,3 +1,30 @@
+Version 2.12, 2016-12-25
+
+  [ Denis Denisov ]
+
+* Made some adjustments in README.md file.
+
+  [ Lion Yang ]
+
+* Updated the translation to ja.
+
+  [ Mingcong Bai ]
+
+* Updated and fixed translation to zh_CN.
+
+  [ Phillip Berndt ]
+
+* Added a feature to extract file sizes from the Content-Range header. This
+  fix Axel downloading the file one byte short.
+
+  [ Stephen Thirlwall ]
+
+* Fixed 'rpl_malloc not found' when cross-compiling.
+* Implemented a test on SSL_new rather than OPENSSL_init_ssl to avoid a fail
+  to build from source.
+
+
+
 Version 2.11, 2016-06-05
 
   [ Sjjad Hashemian ]
