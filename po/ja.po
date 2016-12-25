@@ -6,8 +6,8 @@ msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
 "POT-Creation-Date: 2016-06-05 11:11-0300\n"
-"PO-Revision-Date: 2012-03-11 00:03+0900\n"
-"Last-Translator: Osamu Aoki <osamu@debian.org>\n"
+"PO-Revision-Date: 2016-08-21 01:20+0800\n"
+"Last-Translator: Lion Yang <lion@aosc.xyz>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr "このスピードに合わせバッファーをリサイズします。
 
 #: src/axel.c:110
 msgid "Could not parse URL.\n"
-msgstr "URLを解析できません。\n"
+msgstr "URL を解析できません。\n"
 
 #: src/axel.c:145
 #, c-format
@@ -245,17 +245,17 @@ msgid "%i seconds"
 msgstr "%i 秒"
 
 #: src/text.c:489
-#, fuzzy, c-format
+#, c-format
 msgid "%i:%02i minute(s)"
-msgstr "%i:%02i 秒"
+msgstr "%i 分 %02i 秒"
 
 #: src/text.c:491
-#, fuzzy, c-format
+#, c-format
 msgid "%i:%02i:%02i hour(s)"
-msgstr "%i:%02i:%02i 秒"
+msgstr "%i 時 %02i 分 %02i 秒"
 
 #: src/text.c:581
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -284,15 +284,17 @@ msgstr ""
 "-H x\tヘッダーストリングを追加\n"
 "-U x\tユーザーエージェントを設定\n"
 "-N\tプロキシサーバーを一切使用しなくする\n"
+"-k\tSSL 証明書を検証しない\n"
 "-q\t標準出力を使用しない\n"
 "-v\t状態情報を増加させる\n"
 "-a\t代替のプログレスインディケーター\n"
 "-h\tこの情報\n"
 "-V\tバージョン情報\n"
 "\n"
+"https://github.com/eribertomota/axel/issues にバグ報告を行なってください\n"
 
 #: src/text.c:599
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -321,19 +323,23 @@ msgstr ""
 "--header=x\t\t-H x\tヘッダーストリングを追加\n"
 "--user-agent=x\t\t-U x\tユーザーエージェントを設定\n"
 "--no-proxy\t\t-N\tプロキシサーバーを一切使用しなくする\n"
+"--insecure\t\t-k\tSSL 証明書を検証しない\n"
 "--quiet\t\t\t-q\t標準出力を使用しない\n"
 "--verbose\t\t-v\t状態情報を増加させる\n"
 "--alternate\t\t-a\t代替のプログレスインディケーター\n"
 "--help\t\t\t-h\tこの情報\n"
 "--version\t\t-V\tバージョン情報\n"
 "\n"
+"https://github.com/eribertomota/axel/issues にバグ報告を行なってください\n"
 
 #: src/text.c:621
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
-msgstr "Axel バージョン %s (%s)\n"
+msgstr ""
+"\n"
+"Axel バージョン %s (%s)\n"
 
 #: src/text.c:627
 #, c-format
@@ -349,13 +355,16 @@ msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
 msgstr ""
+"\n"
+"CREDITS というファイルを見てみましょう\n"
+"\n"
 
 #: src/ssl.c:79
 #, c-format
 msgid "SSL error: %s\n"
-msgstr ""
+msgstr "SSL エラー: %s\n"
 
 #: src/tcp.c:43
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
-msgstr "サーバー %s:%i に接続できません。\n"
+msgstr "サーバー %s:%i に接続できません: %s\n"
