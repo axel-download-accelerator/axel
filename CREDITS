@@ -3,6 +3,10 @@
 - Denis Denisov <denji0k@gmail.com>
   Made some adjustments in README.md file.
 
+- Joao Eriberto Mota Filho <eriberto@eriberto.pro.br>
+  Using distclean-local instead of clean-local to be compliant with automake
+  rules. https://www.gnu.org/software/automake/manual/html_node/Clean.html
+
 - Lion Yang <lion@aosc.xyz>
   Updated translation to ja.
 

@@ -4,6 +4,10 @@ Version 2.12, 2016-12-25
 
 * Made some adjustments in README.md file.
 
+  [ Joao Eriberto Mota Filho ]
+
+* Little adjustment in Makefile.am.
+
   [ Lion Yang ]
 
 * Updated the translation to ja.
