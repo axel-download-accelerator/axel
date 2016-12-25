@@ -2,7 +2,7 @@ SUBDIRS = src po
 
 man_MANS = man/axel.1
 
-clean-local:
+distclean-local:
 	-rm -rf autom4te.cache/ \
 	m4/
 
