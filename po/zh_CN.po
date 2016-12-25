@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-06-05 11:11-0300\n"
+"POT-Creation-Date: 2016-12-25 18:59-0200\n"
 "PO-Revision-Date: 2016-08-10 10:52+0800\n"
 "Last-Translator: Jeff Bai <jeffbai@aosc.xyz>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
@@ -99,7 +99,7 @@ msgstr "%s 中第 %i 行出错。\n"
 msgid "Too many redirects.\n"
 msgstr "太多重定向。\n"
 
-#: src/conn.c:390
+#: src/conn.c:398
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "未知 HTTP 错误。\n"
@@ -196,8 +196,7 @@ msgstr "没有状态文件，无法继续下载！\n"
 
 #: src/text.c:317
 #, c-format
-msgid ""
-"State file found, but no downloaded data. Starting from scratch.\n"
+msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "找到状态文件，但未有下载数据。重新开始下载。\n"
 
 #: src/text.c:448
@@ -296,8 +295,7 @@ msgid ""
 "--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
 "--num-connections=x\t-n x\tSpecify maximum number of connections\n"
 "--output=f\t\t-o f\tSpecify local output file\n"
-"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x "
-"servers\n"
+"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
 "--header=x\t\t-H x\tAdd header string\n"
 "--user-agent=x\t\t-U x\tSet user agent\n"
 "--no-proxy\t\t-N\tJust don't use any proxy server\n"
