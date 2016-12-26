@@ -86,7 +86,8 @@ SSL* ssl_connect( int fd, char *message )
 void ssl_disconnect( SSL *ssl )
 {
 	SSL_shutdown( ssl );
-	SSL_free( ssl );
+	if (ssl != NULL)
+		SSL_free( ssl );
 }
 
 #endif /* HAVE_OPENSSL */
