@@ -134,7 +134,7 @@ void http_get( http_t *conn, int port, char *lurl )
                   Set port as part of Host header only if it is available and valid.
                   - https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23
                 */
-                if ( port > 0 ) {
+                if ( port > 0 && port != 443 && port != 80 ) {
                         http_addheader( conn, "Host: %s:%d", conn->host, port );
                 } else {
                         http_addheader( conn, "Host: %s", conn->host, port );
