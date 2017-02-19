@@ -38,6 +38,9 @@
 
 /* Main include file */
 
+#ifndef __AXEL_H__
+#define __AXEL_H__
+
 #include "config.h"
 
 #include <time.h>
@@ -125,3 +128,5 @@ void axel_do( axel_t *axel );
 void axel_close( axel_t *axel );
 
 double gettime();
+
+#endif

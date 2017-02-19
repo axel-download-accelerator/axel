@@ -37,6 +37,9 @@
 
 /* Configuration handling include file */
 
+#ifndef __CONF_H__
+#define __CONF_H__
+
 typedef struct
 {
 	char default_filename[MAX_STRING];
@@ -68,3 +71,5 @@ typedef struct
 
 int conf_loadfile( conf_t *conf, char *file );
 int conf_init( conf_t *conf );
+
+#endif //__CONF_H__
