@@ -34,6 +34,9 @@
 
 /* SSL interface */
 
+#ifndef AXEL_SSL_H
+#define AXEL_SSL_H
+
 #ifdef HAVE_OPENSSL
 
 void ssl_init( conf_t *conf );
@@ -41,3 +44,5 @@ SSL* ssl_connect( int fd, char *hostname, char *message );
 void ssl_disconnect( SSL *ssl );
 
 #endif /* HAVE_OPENSSL */
+
+#endif /* AXEL_SSL_H */

@@ -35,6 +35,9 @@
 
 /* TCP control include file */
 
+#ifndef AXEL_TCP_H
+#define AXEL_TCP_H
+
 typedef struct {
 	int fd;
 	SSL *ssl;
@@ -47,3 +50,5 @@ int tcp_read( tcp_t *tcp, void *buffer, int size );
 int tcp_write( tcp_t *tcp, void *buffer, int size );
 
 int get_if_ip( char *iface, char *ip );
+
+#endif /* AXEL_TCP_H */

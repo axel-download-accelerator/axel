@@ -36,6 +36,9 @@
 
 /* FTP control include file */
 
+#ifndef AXEL_FTP_H
+#define AXEL_FTP_H
+
 #define FTP_PASSIVE	1
 #define FTP_PORT	2
 
@@ -58,3 +61,5 @@ int ftp_command( ftp_t *conn, char *format, ... );
 int ftp_cwd( ftp_t *conn, char *cwd );
 int ftp_data( ftp_t *conn );
 long long int ftp_size( ftp_t *conn, char *file, int maxredir );
+
+#endif /* AXEL_FTP_H */

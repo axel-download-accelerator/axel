@@ -38,6 +38,9 @@
 
 /* HTTP control include file */
 
+#ifndef AXEL_HTTP_H
+#define AXEL_HTTP_H
+
 #define MAX_QUERY	2048		/* Should not grow larger.. */
 
 typedef struct
@@ -66,3 +69,5 @@ long long int http_size( http_t *conn );
 long long int http_size_from_range( http_t *conn );
 void http_encode( char *s );
 void http_decode( char *s );
+
+#endif /* AXEL_HTTP_H */

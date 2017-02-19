@@ -37,6 +37,9 @@
 
 /* Connection stuff */
 
+#ifndef AXEL_CONN_H
+#define AXEL_CONN_H
+
 #define PROTO_SECURE_MASK	(1<<0)  /* bit 0 - 0 = insecure, 1 = secure */
 #define PROTO_PROTO_MASK	(1<<1)  /* bit 1 = 0 = ftp,      1 = http   */
 
@@ -108,3 +111,6 @@ int conn_init( conn_t *conn );
 int conn_setup( conn_t *conn );
 int conn_exec( conn_t *conn );
 int conn_info( conn_t *conn );
+
+
+#endif /* AXEL_CONN_H */

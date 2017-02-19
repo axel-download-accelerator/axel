@@ -37,6 +37,9 @@
 
 /* Configuration handling include file */
 
+#ifndef AXEL_CONF_H
+#define AXEL_CONF_H
+
 typedef struct
 {
 	char default_filename[MAX_STRING];
@@ -68,3 +71,5 @@ typedef struct
 
 int conf_loadfile( conf_t *conf, char *file );
 int conf_init( conf_t *conf );
+
+#endif /* AXEL_CONF_H */
