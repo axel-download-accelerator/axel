@@ -30,7 +30,7 @@ AC_CHECK_FUNCS([malloc realloc gettimeofday inet_ntoa memset select setlocale so
 
 # Optional (but included-by-default) openssl support
 AC_ARG_WITH([openssl],
-    AC_HELP_STRING([--without-openssl],[disable TLS support]), [with_openssl=no], [with_openssl=yes])
+    AC_HELP_STRING([--without-openssl],[disable TLS support]), [], [with_openssl=yes])
 
 AS_IF([test "x$with_openssl" != xno], [
     AC_DEFINE([HAVE_OPENSSL], [1], [OpenSSL])
