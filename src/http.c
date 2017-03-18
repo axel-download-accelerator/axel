@@ -77,6 +77,24 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		conn->local_if, conn->headers ) == -1 )
 		return( 0 );
 
+	//For SSl through proxy
+	if( conn->proxy && PROTO_IS_SECURE(conn->proto))
+	  {
+	    char proxybuffer[2000];
+	    sprintf(proxybuffer,"CONNECT %s HTTP/1.1\r\nHost: %s\r\nUser-Agent: Axel\r\n\r\n",conn->host,conn->host);
+
+	    if(write(conn->tcp.fd,proxybuffer,strlen(proxybuffer))==-1)
+	      {
+		return( 0 );
+	      }
+	    if(read(conn->tcp.fd,proxybuffer,2000)==-1)
+	      {
+		return( 0 );
+	      }
+	    if((conn->tcp.ssl = ssl_connect(conn->tcp.fd,conn->headers))==NULL)
+	      return( 0 );
+	  }
+
 	if( *user == 0 )
 	{
 		*conn->auth = 0;
