@@ -85,6 +85,7 @@ SSL* ssl_connect( int fd, char *message )
 
 void ssl_disconnect( SSL *ssl )
 {
+	signal(SIGPIPE, SIG_IGN);
 	SSL_shutdown( ssl );
 	SSL_free( ssl );
 }
