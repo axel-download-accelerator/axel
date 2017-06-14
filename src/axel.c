@@ -62,9 +62,14 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	int i;
 
 	axel = malloc( sizeof( axel_t ) );
+	if( !axel )
+		goto nomem;
+
 	memset( axel, 0, sizeof( axel_t ) );
 	*axel->conf = *conf;
 	axel->conn = malloc( sizeof( conn_t ) * axel->conf->num_connections );
+	if( !axel->conn )
+		goto nomem;
 	memset( axel->conn, 0, sizeof( conn_t ) * axel->conf->num_connections );
 	if( axel->conf->max_speed > 0 )
 	{
@@ -77,24 +82,37 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 		axel->delay_time = (int) ( (float) 1000000 / axel->conf->max_speed * axel->conf->buffer_size * axel->conf->num_connections );
 	}
 	if( buffer == NULL )
-		buffer = malloc( max( MAX_STRING, axel->conf->buffer_size ) );
+	{
+		buffer = malloc( max( MAX_STRING + 1, axel->conf->buffer_size ) );
+		if( !buffer )
+			goto nomem;
+	}
 
 	if( count == 0 )
 	{
 		axel->url = malloc( sizeof( url_t ) );
+		if( !axel->url )
+			goto nomem;
+
 		axel->url->next = axel->url;
 		strncpy( axel->url->text, (char *) url, MAX_STRING );
 	}
 	else
 	{
 		res = (search_t *) url;
+		/* FIXME: Check url == NULL */
+
 		u = axel->url = malloc( sizeof( url_t ) );
+		if( !u )
+			goto nomem;
+
 		for( i = 0; i < count; i ++ )
 		{
 			strncpy( u->text, res[i].url, MAX_STRING );
 			if( i < count - 1 )
 			{
 				u->next = malloc( sizeof( url_t ) );
+				/* FIXME: Check u->next == NULL */
 				u = u->next;
 			}
 			else
@@ -154,6 +172,10 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	}
 
 	return( axel );
+nomem:
+	axel_close( axel );
+	printf( "%s\n", strerror(errno) );
+	return( NULL );
 }
 
 /* Open a local file to store the downloaded data */
