@@ -540,11 +540,22 @@ void axel_close( axel_t *axel )
 	int i;
 	message_t *m;
 
-	/* Terminate any thread still running */
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-		/* don't try to kill non existing thread */
-		if ( *axel->conn[i].setup_thread != 0 )
-			pthread_cancel( *axel->conn[i].setup_thread );
+	if( !axel )
+		return;
+
+	if( axel->conn )
+	{
+		/* Terminate threads and close connections */
+		for( i = 0; i < axel->conf->num_connections; i ++ )
+		{
+			/* don't try to kill non existing thread */
+			if ( *axel->conn[i].setup_thread != 0 )
+				pthread_cancel( *axel->conn[i].setup_thread );
+			conn_disconnect( &axel->conn[i] );
+		}
+
+		free( axel->conn );
+	}
 
 	/* Delete state file if necessary */
 	if( axel->ready == 1 )
@@ -566,12 +577,7 @@ void axel_close( axel_t *axel )
 		free( m );
 	}
 
-	/* Close all connections and local file */
 	close( axel->outfd );
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-		conn_disconnect( &axel->conn[i] );
-
-	free( axel->conn );
 	free( axel );
 }
 
