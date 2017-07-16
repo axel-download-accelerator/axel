@@ -296,7 +296,15 @@ void http_decode( char *s )
 		if( s[i] == '%' )
 			if( sscanf( s + i + 1, "%2x", &k ) )
 			{
-				t[j] = k;
+				/* It fix the file name problem (spaces) */
+				if (k == 0x20) {
+					t[j] = '\\';
+					t[j+1] = ' ';
+					j++;
+				} else {
+					t[j] = k;
+				}
+				i += 2;
 				i += 2;
 			}
 	}
