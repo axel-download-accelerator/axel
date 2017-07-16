@@ -284,25 +284,32 @@ void http_filename( http_t *conn, char *filename )
 	}
 }
 
+inline static char decode_nibble( char n )
+{
+	if( n >= 'a' )
+		return( n - 'a' );
+	if( n >= 'A' )
+		return( n - 'A' );
+	return( n - '0' );
+}
+
 /* Decode%20a%20file%20name */
 void http_decode( char *s )
 {
-	char t[MAX_STRING];
-	int i, j, k;
+	for( ; *s && *s != '%'; s ++ );
+	if( !*s )
+		return;
 
-	for( i = j = 0; s[i]; i ++, j ++ )
-	{
-		t[j] = s[i];
-		if( s[i] == '%' )
-			if( sscanf( s + i + 1, "%2x", &k ) )
-			{
-				t[j] = k;
-				i += 2;
-			}
-	}
-	t[j] = 0;
-
-	strcpy( s, t );
+	char *p = s;
+	do {
+		if( !s[1] || !s[2] )
+			break;
+		*p++ = ( decode_nibble( s[1] ) << 4 ) | decode_nibble( s[2] );
+		s += 3;
+		while( *s && *s != '%' )
+			*p ++ = *s ++;
+	} while( *s == '%' );
+	*p = 0;
 }
 
 void http_encode( char *s )
