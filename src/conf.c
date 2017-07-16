@@ -121,6 +121,7 @@ int conf_loadfile( conf_t *conf, char *file )
 		if( !st )
 		{
 			fprintf( stderr, _("Error in %s line %i.\n"), file, line );
+			fclose( fp );
 			return( 0 );
 		}
 		get_config_number( add_header_count );
