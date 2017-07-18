@@ -337,14 +337,14 @@ void http_encode( char *s )
 		}
 
 		t[j] = s[i];
-		if( s[i] == ' ' )
+		if( s[i] <= 0x20 || s[i] >= 0x7f )
 		{
 			/* Fix buffer overflow */
 			if (j >= MAX_STRING - 3) {
 				break;
 			}
 
-			strcpy( t + j, "%20" );
+			encode_byte( t + j, s[i] );
 			j += 2;
 		}
 	}
