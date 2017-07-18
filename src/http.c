@@ -314,6 +314,7 @@ void http_decode( char *s )
 
 void http_encode( char *s )
 {
+	char urlenc_char[4];
 	char t[MAX_STRING];
 	int i, j;
 
@@ -325,15 +326,21 @@ void http_encode( char *s )
 		}
 
 		t[j] = s[i];
-		if( s[i] == ' ' )
-		{
+
+		switch ((unsigned char) s[i]) {
+		case 0x00 ... 0x1f:
+		case 0x7f ... 0xff:
+		case 0x20:
 			/* Fix buffer overflow */
 			if (j >= MAX_STRING - 3) {
 				break;
 			}
 
-			strcpy( t + j, "%20" );
+			sprintf(urlenc_char, "%%%x", s[i]);
+
+			strcpy( t + j, urlenc_char );
 			j += 2;
+			break;
 		}
 	}
 	t[j] = 0;
