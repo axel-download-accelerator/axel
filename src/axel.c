@@ -646,8 +646,16 @@ void *setup_thread( void *c )
 /* Add a message to the axel->message structure */
 static void axel_message( axel_t *axel, char *format, ... )
 {
-	message_t *m = malloc( sizeof( message_t ) ), *n = axel->message;
+	message_t *m, *n;
 	va_list params;
+
+	if ( !axel )
+		goto nomem;
+
+	n = axel->message;
+	m = malloc( sizeof( message_t ) );
+	if ( !m )
+		goto nomem;
 
 	memset( m, 0, sizeof( message_t ) );
 	va_start( params, format );
@@ -664,6 +672,15 @@ static void axel_message( axel_t *axel, char *format, ... )
 			n = n->next;
 		n->next = m;
 	}
+
+	return;
+
+nomem:
+	/* Flush previous messages */
+	print_messages( axel );
+	va_start( params, format );
+	vprintf( format, params );
+	va_end( params );
 }
 
 /* Divide the file and set the locations for each connection */
