@@ -292,7 +292,6 @@ inline static char decode_nibble( char n )
 		n -= 'a' - 'A';
 	return( n - 'A' + 10 );
 }
-}
 
 /* Decode%20a%20file%20name */
 void http_decode( char *s )
