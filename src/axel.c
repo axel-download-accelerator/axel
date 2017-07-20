@@ -538,7 +538,6 @@ conn_check:
 void axel_close( axel_t *axel )
 {
 	int i;
-	message_t *m;
 
 	if( !axel )
 		return;
@@ -569,13 +568,7 @@ void axel_close( axel_t *axel )
 		save_state( axel );
 	}
 
-	/* Delete any message not processed yet */
-	while( axel->message )
-	{
-		m = axel->message;
-		axel->message = axel->message->next;
-		free( m );
-	}
+	print_messages( axel );
 
 	close( axel->outfd );
 	free( axel );
