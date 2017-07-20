@@ -62,9 +62,20 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	int i;
 
 	axel = malloc( sizeof( axel_t ) );
+	/* Before use axel, we have to check if malloc returned NULL */
+	if (!axel) {
+		fprintf(stderr, "Not enough memory");
+		exit(1);
+	}
+	
 	memset( axel, 0, sizeof( axel_t ) );
 	*axel->conf = *conf;
 	axel->conn = malloc( sizeof( conn_t ) * axel->conf->num_connections );
+	/* And here */
+	if (!(axel->conn)) {
+		axel_message(axel, _("Not enough memory"));
+		axel_close(axel);
+	}
 	memset( axel->conn, 0, sizeof( conn_t ) * axel->conf->num_connections );
 	if( axel->conf->max_speed > 0 )
 	{
@@ -76,25 +87,55 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 		}
 		axel->delay_time = (int) ( (float) 1000000 / axel->conf->max_speed * axel->conf->buffer_size * axel->conf->num_connections );
 	}
-	if( buffer == NULL )
-		buffer = malloc( max( MAX_STRING, axel->conf->buffer_size ) );
+	/* We have to allocate 1 byte (char) more to avoid buffer overflow, and then "segmentation fault" */
+	if( buffer == NULL ) {
+		buffer = malloc( max( MAX_STRING+1, axel->conf->buffer_size ) );
+		/* Idem check here */
+		if (!buffer) {
+			axel_message(axel, _("Not enough memory"));
+			axel_close(axel);
+		}
+	}
 
 	if( count == 0 )
 	{
 		axel->url = malloc( sizeof( url_t ) );
+		/* And here */
+		if (!(axel->url)) {
+			axel_message(axel, _("Not enough memory"));
+			axel_close(axel);
+		}
+		
 		axel->url->next = axel->url;
 		strncpy( axel->url->text, (char *) url, MAX_STRING );
 	}
 	else
 	{
 		res = (search_t *) url;
+		/* And here */
+		if (!url) {
+			axel_message(axel, _("Invalid URL"));
+			axel_close(axel);
+		}
+		
 		u = axel->url = malloc( sizeof( url_t ) );
+		/* And here */
+		if (!u) {
+			axel_message(axel, _("Not enough memory"));
+			axel_close(axel);
+		}
+		
 		for( i = 0; i < count; i ++ )
 		{
 			strncpy( u->text, res[i].url, MAX_STRING );
 			if( i < count - 1 )
 			{
 				u->next = malloc( sizeof( url_t ) );
+				/* And here */
+				if (!(u->next)) {
+					axel_message(axel, _("Not enough memory"));
+					axel_close(axel);
+				}
 				u = u->next;
 			}
 			else
@@ -166,6 +207,7 @@ int axel_open( axel_t *axel )
 
 	if( axel->conf->verbose > 0 )
 		axel_message( axel, _("Opening output file %s"), axel->filename );
+	/* Alternatively, we could print MAX_STRING-1 (if the size of buffer is MAX_STRING) */
 	snprintf( buffer, MAX_STRING, "%s.st", axel->filename );
 
 	axel->outfd = -1;
@@ -560,6 +602,7 @@ void axel_close( axel_t *axel )
 	/* Delete state file if necessary */
 	if( axel->ready == 1 )
 	{
+		/* Idem here could be MAX_STRING-1 */
 		snprintf( buffer, MAX_STRING, "%s.st", axel->filename );
 		unlink( buffer );
 	}
@@ -655,7 +698,13 @@ static void axel_message( axel_t *axel, char *format, ... )
 {
 	message_t *m = malloc( sizeof( message_t ) ), *n = axel->message;
 	va_list params;
-
+	
+	/* And here */
+	if (!m) {
+		axel_message(axel, _("Not enough memory"));
+		axel_close(axel);
+	}
+	
 	memset( m, 0, sizeof( message_t ) );
 	va_start( params, format );
 	vsnprintf( m->text, MAX_STRING, format, params );
