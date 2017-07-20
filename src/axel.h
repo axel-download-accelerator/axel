@@ -123,5 +123,6 @@ int axel_open( axel_t *axel );
 void axel_start( axel_t *axel );
 void axel_do( axel_t *axel );
 void axel_close( axel_t *axel );
+void print_messages( axel_t *axel );
 
 double gettime();
