@@ -53,9 +53,9 @@ static void axel_divide( axel_t *axel );
 static char *buffer = NULL;
 
 /* Create a new axel_t structure */
-axel_t *axel_new( conf_t *conf, int count, void *url )
+axel_t *axel_new( conf_t *conf, int count, const void *url )
 {
-	search_t *res;
+	const search_t *res;
 	axel_t *axel;
 	url_t *u;
 	char *s;
@@ -88,6 +88,13 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 			goto nomem;
 	}
 
+	if( !url )
+	{
+		axel_message( axel, _("Invalid URL") );
+		axel_close( axel );
+		return( NULL );
+	}
+
 	if( count == 0 )
 	{
 		axel->url = malloc( sizeof( url_t ) );
@@ -95,31 +102,22 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 			goto nomem;
 
 		axel->url->next = axel->url;
-		strncpy( axel->url->text, (char *) url, MAX_STRING );
+		strncpy( axel->url->text, url, MAX_STRING );
 	}
 	else
 	{
-		res = (search_t *) url;
-		/* FIXME: Check url == NULL */
-
-		u = axel->url = malloc( sizeof( url_t ) );
+		res = url;
+		u = malloc( sizeof( url_t ) * count );
 		if( !u )
 			goto nomem;
+		axel->url = u;
 
 		for( i = 0; i < count; i ++ )
 		{
-			strncpy( u->text, res[i].url, MAX_STRING );
-			if( i < count - 1 )
-			{
-				u->next = malloc( sizeof( url_t ) );
-				/* FIXME: Check u->next == NULL */
-				u = u->next;
-			}
-			else
-			{
-				u->next = axel->url;
-			}
+			strncpy( u[i].text, res[i].url, MAX_STRING );
+			u[i].next = &u[i + 1];
 		}
+		u[count - 1].next = u;
 	}
 
 	axel->conn[0].conf = axel->conf;
@@ -577,6 +575,8 @@ void axel_close( axel_t *axel )
 
 		free( axel->conn );
 	}
+
+	free( axel->url );
 
 	/* Delete state file if necessary */
 	if( axel->ready == 1 )

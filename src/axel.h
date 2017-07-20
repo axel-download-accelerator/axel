@@ -118,7 +118,7 @@ typedef struct
 	url_t *url;
 } axel_t;
 
-axel_t *axel_new( conf_t *conf, int count, void *url );
+axel_t *axel_new( conf_t *conf, int count, const void *url );
 int axel_open( axel_t *axel );
 void axel_start( axel_t *axel );
 void axel_do( axel_t *axel );
