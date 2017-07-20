@@ -646,13 +646,12 @@ void *setup_thread( void *c )
 /* Add a message to the axel->message structure */
 static void axel_message( axel_t *axel, char *format, ... )
 {
-	message_t *m, *n;
+	message_t *m;
 	va_list params;
 
 	if ( !axel )
 		goto nomem;
 
-	n = axel->message;
 	m = malloc( sizeof( message_t ) );
 	if ( !m )
 		goto nomem;
@@ -664,13 +663,12 @@ static void axel_message( axel_t *axel, char *format, ... )
 
 	if( axel->message == NULL )
 	{
-		axel->message = m;
+		axel->message = axel->last_message = m;
 	}
 	else
 	{
-		while( n->next != NULL )
-			n = n->next;
-		n->next = m;
+		axel->last_message->next = m;
+		axel->last_message = m;
 	}
 
 	return;

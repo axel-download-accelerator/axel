@@ -114,7 +114,7 @@ typedef struct
 	int delay_time;
 	int outfd;
 	int ready;
-	message_t *message;
+	message_t *message, *last_message;
 	url_t *url;
 } axel_t;
 
