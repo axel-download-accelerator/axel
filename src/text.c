@@ -78,7 +78,7 @@ static struct option axel_options[] =
 #endif
 
 /* For returning string values from functions */
-static char string[MAX_STRING];
+static char string[MAX_STRING + 3];
 
 
 int main( int argc, char *argv[] )
