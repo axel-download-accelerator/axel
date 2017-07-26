@@ -348,7 +348,13 @@ void http_encode( char *s )
 				break;
 			}
 
-			sprintf(urlenc_char, "%%%x", s[i]);
+			encode_byte( urlenc_char, s[i] );
+			/*
+			 * HACK: ends string with NULL, to
+			 * comply with strcpy. Should this
+			 * be done inside encode_byte()?
+			 */
+			urlenc_char[3] = 0;
 
 			strcpy( t + j, urlenc_char );
 			j += 2;
