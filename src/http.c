@@ -286,11 +286,23 @@ void http_filename( http_t *conn, char *filename )
 
 inline static char decode_nibble( char n )
 {
+	if( n <= '9' )
+		return( n - '0' );
 	if( n >= 'a' )
-		return( n - 'a' );
-	if( n >= 'A' )
-		return( n - 'A' );
-	return( n - '0' );
+		n -= 'a' - 'A';
+	return( n - 'A' + 10 );
+}
+
+inline static char encode_nibble( char n )
+{
+	return( n > 9 ? n + 'a' - 10 : n + '0' );
+}
+
+inline static void encode_byte( char dst[3], char n )
+{
+	*dst++ = '%';
+	*dst++ = encode_nibble( n >> 4 );
+	*dst = encode_nibble( n & 15 );
 }
 
 /* Decode%20a%20file%20name */

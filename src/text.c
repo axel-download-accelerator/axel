@@ -49,7 +49,6 @@ static void print_commas( long long int bytes_done );
 static void print_alternate_output( axel_t *axel );
 static void print_help();
 static void print_version();
-static void print_messages( axel_t *axel );
 static int get_term_width();
 
 int run = 1;
@@ -78,7 +77,7 @@ static struct option axel_options[] =
 #endif
 
 /* For returning string values from functions */
-static char string[MAX_STRING];
+static char string[MAX_STRING + 3];
 
 
 int main( int argc, char *argv[] )
@@ -633,11 +632,13 @@ void print_messages( axel_t *axel )
 {
 	message_t *m;
 
-	while( axel->message )
+	if ( !axel )
+		return;
+
+	while( (m = axel->message) )
 	{
-		printf( "%s\n", axel->message->text );
-		m = axel->message;
-		axel->message = axel->message->next;
+		printf( "%s\n", m->text );
+		axel->message = m->next;
 		free( m );
 	}
 }

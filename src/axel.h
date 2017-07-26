@@ -114,14 +114,15 @@ typedef struct
 	int delay_time;
 	int outfd;
 	int ready;
-	message_t *message;
+	message_t *message, *last_message;
 	url_t *url;
 } axel_t;
 
-axel_t *axel_new( conf_t *conf, int count, void *url );
+axel_t *axel_new( conf_t *conf, int count, const void *url );
 int axel_open( axel_t *axel );
 void axel_start( axel_t *axel );
 void axel_do( axel_t *axel );
 void axel_close( axel_t *axel );
+void print_messages( axel_t *axel );
 
 double gettime();
