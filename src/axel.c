@@ -180,9 +180,7 @@ nomem:
 int axel_open( axel_t *axel )
 {
 	int i, fd;
-	long long int j;
  	ssize_t nread;
- 	ssize_t nwrite;
 
 	if( axel->conf->verbose > 0 )
 		axel_message( axel, _("Opening output file %s"), axel->filename );
@@ -269,8 +267,10 @@ int axel_open( axel_t *axel )
 			axel_message( axel, _("Crappy filesystem/OS.. Working around. :-(") );
 			lseek( axel->outfd, 0, SEEK_SET );
 			memset( buffer, 0, axel->conf->buffer_size );
-			j = axel->size;
+			long long int j = axel->size;
 			while( j > 0 ) {
+				ssize_t nwrite;
+
 				if( ( nwrite = write( axel->outfd, buffer, min( j, axel->conf->buffer_size ) ) ) < 0 ) {
 					if ( errno == EINTR || errno == EAGAIN) continue;
 					axel_message( axel, _("Error creating local file") );
