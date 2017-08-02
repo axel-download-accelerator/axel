@@ -8,6 +8,7 @@
   Copyright 2016      Denis Denisov
   Copyright 2016      Mridul Malpotra
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
