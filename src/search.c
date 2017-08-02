@@ -133,7 +133,12 @@ int search_makelist( search_t *results, char *url )
 		if( j + 10 >= size )
 		{
 			size *= 2;
-			s = realloc( s, size );
+			char *tmp = realloc( s, size );
+			if (!tmp) {
+				free( s );
+				return( 1 );
+			}
+			s = tmp;
 			memset( s + size / 2, 0, size / 2 );
 		}
 	}
