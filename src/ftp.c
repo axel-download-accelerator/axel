@@ -153,7 +153,12 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 		if( size - i <= 10 )
 		{
 			size *= 2;
-			reply = realloc( reply, size );
+			char *tmp = realloc( reply, size );
+			if (!tmp) {
+				free( reply );
+				return( -1 );
+			}
+			reply = tmp;
 			memset( reply + size / 2, 0, size / 2 );
 		}
 	}
