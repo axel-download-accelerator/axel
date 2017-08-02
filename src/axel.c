@@ -10,6 +10,7 @@
   Copyright 2016      Sjjad Hashemian
   Copyright 2016      Stephen Thirlwall
   Copyright 2017      Ismael Luceno
+  Copyright 2017      nemermollon
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License

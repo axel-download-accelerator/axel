@@ -1,8 +1,8 @@
 /*
   Axel -- A lighter download accelerator for Linux and other Unices
 
-  Copyright 2016 Sjjad Hashemian
-  Copyright 2016 Stephen Thirlwall
+  Copyright 2016      Sjjad Hashemian
+  Copyright 2016-2017 Stephen Thirlwall
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
