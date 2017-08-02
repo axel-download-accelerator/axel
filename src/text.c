@@ -515,17 +515,16 @@ static void print_alternate_output(axel_t *axel)
 {
 	long long int done=axel->bytes_done;
 	long long int total=axel->size;
-	int i,j=0,offset,end;
 	double now = gettime();
 	int width = get_term_width() - 30;
 	char progress[width+1];
 
-	for(i=0;i<width;i++)
+	for(int i=0;i<width;i++)
 		progress[i] = '.';
 
-	for(i=0;i<axel->conf->num_connections;i++)
+	for(int i=0;i<axel->conf->num_connections;i++)
 	{
-		offset = ((double)(axel->conn[i].currentbyte)/(total+1)*(width+1));
+		int offset = ((double)(axel->conn[i].currentbyte)/(total+1)*(width+1));
 
 		if(axel->conn[i].currentbyte<axel->conn[i].lastbyte)
 		{
@@ -534,8 +533,8 @@ static void print_alternate_output(axel_t *axel)
 			else
 				progress[offset] = '#';
 		}
-		end = ((double)(axel->conn[i].lastbyte)/(total+1)*(width+1));
-		for(j=offset+1;j<end;j++)
+		int end = ((double)(axel->conn[i].lastbyte)/(total+1)*(width+1));
+		for(int j=offset+1;j<end;j++)
 			progress[j] = ' ';
 	}
 
