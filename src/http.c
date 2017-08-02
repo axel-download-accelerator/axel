@@ -49,9 +49,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 {
 	char base64_encode[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		"abcdefghijklmnopqrstuvwxyz0123456789+/";
-	char auth[MAX_STRING];
 	conn_t tconn[1];
-	int i;
 
 	strncpy( conn->host, host, MAX_STRING );
 	conn->proto = proto;
@@ -85,9 +83,10 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	}
 	else
 	{
+		char auth[MAX_STRING];
 		memset( auth, 0, MAX_STRING );
 		snprintf( auth, MAX_STRING, "%s:%s", user, pass );
-		for( i = 0; auth[i*3]; i ++ )
+		for( int i = 0; auth[i*3]; i ++ )
 		{
 			conn->auth[i*4] = base64_encode[(auth[i*3]>>2)];
 			conn->auth[i*4+1] = base64_encode[((auth[i*3]&3)<<4)|(auth[i*3+1]>>4)];
