@@ -90,6 +90,8 @@ int conf_loadfile( conf_t *conf, char *file )
 				}
 			strcpy( value, &s[i] );
 		}
+		/* FIXME: could be optimized to re-use the previous loop and
+		   write a single zero. */
 		for( int i = strlen( value ) - 1; isspace( (int) value[i] ); i -- )
 			value[i] = 0;
 
