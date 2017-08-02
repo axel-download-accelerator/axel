@@ -6,20 +6,17 @@ Version 2.13, 2017-08-02
 
   [ Ismael Luceno ]
 
-* Fixed a fd leak in conf_loadfile.
-* Fixed decode_nibble.
-* Fixed NULL dereferences and buffer allocation (based on patch
-  by: nemermollon <nemeralbano@hotmail.com>).
-* Fix size of string[] in text.c.
-* Implemented in-place http_decode.
-* Implement percent-encoding of a single byte (encode_byte function).
+* Fixed NULL dereferences and buffer allocation
+  (based on patch by: nemermollon <nemeralbano@hotmail.com>).
+* Fixed size of string[] buffer in text.c.
+* Implemented percent encoding/decoding primitives.
 * Improved axel_message to work under memory pressure.
-* Improve message_t queuing.
+* Improved message_t queuing.
 * Made axel_close more robust.
 * Print messages instead of discarding them on axel_close.
-* Reduced the scope of variables j and nwrite in src/axel.c.
-* Simplified print_messages.
-* Simplified url_t allocation and fix memory leak.
+* Fixed a couple of NULL derefs when OOM.
+* Fixed various memory leaks and fd leaks.
+* Code cleanup and simplification.
 
   [ Joao Eriberto Mota Filho ]
 
