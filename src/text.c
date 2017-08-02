@@ -519,8 +519,7 @@ static void print_alternate_output(axel_t *axel)
 	int width = get_term_width() - 30;
 	char progress[width+1];
 
-	for(int i=0;i<width;i++)
-		progress[i] = '.';
+	memset(progress, '.', width);
 
 	for(int i=0;i<axel->conf->num_connections;i++)
 	{
