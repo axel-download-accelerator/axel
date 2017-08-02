@@ -1,3 +1,40 @@
+Version 2.13, 2017-08-02
+
+  [ David Polverari ]
+
+* Fixed URI encoding implementation.
+
+  [ Ismael Luceno ]
+
+* Fixed a fd leak in conf_loadfile.
+* Fixed decode_nibble.
+* Fixed NULL dereferences and buffer allocation (based on patch
+  by: nemermollon <nemeralbano@hotmail.com>).
+* Fix size of string[] in text.c.
+* Implemented in-place http_decode.
+* Implement percent-encoding of a single byte (encode_byte function).
+* Improved axel_message to work under memory pressure.
+* Improve message_t queuing.
+* Made axel_close more robust.
+* Print messages instead of discarding them on axel_close.
+* Reduced the scope of variables j and nwrite in src/axel.c.
+* Simplified print_messages.
+* Simplified url_t allocation and fix memory leak.
+
+  [ Joao Eriberto Mota Filho ]
+
+* Some updates in README file.
+
+  [ Stephen Thirlwall ]
+
+* Set TLS hostname in ssl_connect.
+
+  [ Vlad Glagolev ]
+
+* Fixed '--with-openssl' flag in configure.ac file.
+
+
+
 Version 2.12, 2016-12-25
 
   [ Denis Denisov ]
