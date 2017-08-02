@@ -59,7 +59,7 @@ int parse_interfaces( conf_t *conf, char *s );
 
 int conf_loadfile( conf_t *conf, char *file )
 {
-	int i, line = 0;
+	int line = 0;
 	FILE *fp;
 	char s[MAX_STRING], key[MAX_STRING], value[MAX_STRING];
 
@@ -74,20 +74,23 @@ int conf_loadfile( conf_t *conf, char *file )
 		line ++;
 
 		*s = 0;
-		i=fscanf( fp, "%100[^\n#]s", s );
-		i=fscanf( fp, "%*[^\n]s" );
+		fscanf( fp, "%100[^\n#]s", s );
+		fscanf( fp, "%*[^\n]s" );
 		fgetc( fp );			/* Skip newline */
 		if( strchr( s, '=' ) == NULL )
 			continue;		/* Probably empty? */
 		sscanf( s, "%[^= \t]s", key );
-		for( i = 0; s[i]; i ++ )
-			if( s[i] == '=' )
-			{
-				for( i ++; isspace( (int) s[i] ) && s[i]; i ++ );
-				break;
-			}
-		strcpy( value, &s[i] );
-		for( i = strlen( value ) - 1; isspace( (int) value[i] ); i -- )
+		{
+			int i;
+			for( i = 0; s[i]; i ++ )
+				if( s[i] == '=' )
+				{
+					for( i ++; isspace( (int) s[i] ) && s[i]; i ++ );
+					break;
+				}
+			strcpy( value, &s[i] );
+		}
+		for( int i = strlen( value ) - 1; isspace( (int) value[i] ); i -- )
 			value[i] = 0;
 
 		st = 0;
@@ -126,7 +129,7 @@ int conf_loadfile( conf_t *conf, char *file )
 			return( 0 );
 		}
 		get_config_number( add_header_count );
-		for(i=0;i<conf->add_header_count;i++)
+		for(int i=0;i<conf->add_header_count;i++)
 			get_config_string( add_header[i] );
 		get_config_string( user_agent );
 	}
