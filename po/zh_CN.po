@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2016-12-25 18:59-0200\n"
+"POT-Creation-Date: 2017-08-02 17:23-0300\n"
 "PO-Revision-Date: 2016-08-10 10:52+0800\n"
 "Last-Translator: Jeff Bai <jeffbai@aosc.xyz>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
@@ -13,93 +13,97 @@ msgstr ""
 "Last-Revision: Li Jin <punkid.online@gmail.com>\n"
 "X-Generator: Poedit 1.8.8\n"
 
-#: src/axel.c:74
+#: src/axel.c:81
 msgid "Buffer resized for this speed."
 msgstr "为这个速率调整缓冲区大小。"
 
-#: src/axel.c:110
+#: src/axel.c:95
+msgid "Invalid URL"
+msgstr ""
+
+#: src/axel.c:128
 msgid "Could not parse URL.\n"
 msgstr "无法解析 URL。\n"
 
-#: src/axel.c:145
+#: src/axel.c:163
 #, c-format
 msgid "File size: %lld bytes"
 msgstr "文件大小：%lld 字节"
 
-#: src/axel.c:168
+#: src/axel.c:188
 #, c-format
 msgid "Opening output file %s"
 msgstr "正在打开输出文件 %s"
 
-#: src/axel.c:177
+#: src/axel.c:197
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "服务器不支持，使用单个连接从头下载。"
 
-#: src/axel.c:218
+#: src/axel.c:238
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "找到状态文件：已下载 %lld 字节，剩余 %lld 字节。"
 
-#: src/axel.c:225 src/axel.c:237
+#: src/axel.c:245 src/axel.c:257
 msgid "Error opening local file"
 msgstr "无法打开本地文件"
 
-#: src/axel.c:249
+#: src/axel.c:269
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "文件系统/操作系统不讨喜…… 正在寻求解决方法（不开心）。"
 
-#: src/axel.c:256
+#: src/axel.c:278
 msgid "Error creating local file"
 msgstr "无法创建本地文件"
 
-#: src/axel.c:314
+#: src/axel.c:336
 msgid "Starting download"
 msgstr "正在开始下载"
 
-#: src/axel.c:327 src/axel.c:490
+#: src/axel.c:349 src/axel.c:512
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "连接 %1$i 正通过接口 %4$s 从 %2$s:%3$i 下载"
 
-#: src/axel.c:334 src/axel.c:500
+#: src/axel.c:356 src/axel.c:522
 msgid "pthread error!!!"
 msgstr "pthread 出错啦！！！"
 
-#: src/axel.c:403
+#: src/axel.c:425
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "连接 %i 出错！连接中断"
 
-#: src/axel.c:417
+#: src/axel.c:439
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "连接 %i 被异常中断"
 
-#: src/axel.c:421 src/axel.c:439
+#: src/axel.c:443 src/axel.c:461
 #, c-format
 msgid "Connection %i finished"
 msgstr "连接 %i 完成下载"
 
-#: src/axel.c:451
+#: src/axel.c:473
 msgid "Write error!"
 msgstr "写错误！"
 
-#: src/axel.c:465
+#: src/axel.c:487
 #, c-format
 msgid "Connection %i timed out"
 msgstr "连接 %i 超时"
 
-#: src/conf.c:123
+#: src/conf.c:124
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "%s 中第 %i 行出错。\n"
 
-#: src/conn.c:371 src/ftp.c:133
+#: src/conn.c:372 src/ftp.c:133
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "太多重定向。\n"
 
-#: src/conn.c:398
+#: src/conn.c:399
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "未知 HTTP 错误。\n"
@@ -129,17 +133,17 @@ msgstr "无法打开被动数据连接。\n"
 msgid "Error writing command %s\n"
 msgstr "写命令 %s 出错\n"
 
-#: src/ftp.c:317 src/http.c:188
+#: src/ftp.c:317 src/http.c:191
 #, c-format
 msgid "Connection gone.\n"
 msgstr "连接丢失。\n"
 
-#: src/http.c:62
+#: src/http.c:65
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "代理字符串无效：%s\n"
 
-#: src/http.c:174
+#: src/http.c:177
 #, c-format
 msgid "Connection gone while writing.\n"
 msgstr "写入时连接丢失。\n"
@@ -355,7 +359,7 @@ msgstr ""
 "请阅读 CREDITS 文件。\n"
 "\n"
 
-#: src/ssl.c:79
+#: src/ssl.c:80
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL 错误：%s\n"
