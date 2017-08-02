@@ -142,7 +142,7 @@ int conf_loadfile( conf_t *conf, char *file )
 
 int conf_init( conf_t *conf )
 {
-	char s[MAX_STRING], *s2;
+	char *s2;
 	int i;
 
 	/* Set defaults */
@@ -182,6 +182,7 @@ int conf_init( conf_t *conf )
 
 	if( ( s2 = getenv( "HOME" ) ) != NULL )
 	{
+		char s[MAX_STRING];
 		sprintf( s, "%s/%s", s2, ".axelrc" );
 		if( !conf_loadfile( conf, s ) )
 			return( 0 );
