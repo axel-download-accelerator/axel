@@ -288,15 +288,15 @@ int axel_open( axel_t *axel )
 
 void reactivate_connection(axel_t *axel, int thread)
 {
-	long long int max_remaining = 0,remaining;
-	int j, idx = -1;
+	long long int max_remaining = 0;
+	int idx = -1;
 
 	if(axel->conn[thread].enabled || axel->conn[thread].currentbyte <= axel->conn[thread].lastbyte)
 		return;
 	/* find some more work to do */
-	for( j = 0; j < axel->conf->num_connections; j ++ )
+	for( int j = 0; j < axel->conf->num_connections; j ++ )
 	{
-		remaining = axel->conn[j].lastbyte - axel->conn[j].currentbyte + 1;
+		long long int remaining = axel->conn[j].lastbyte - axel->conn[j].currentbyte + 1;
 		if(remaining > max_remaining)
 		{
 			max_remaining = remaining;
