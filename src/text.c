@@ -374,7 +374,7 @@ int main( int argc, char *argv[] )
 
 	while( !axel->ready && run )
 	{
-		long long int prev, done;
+		long long int prev;
 
 		prev = axel->bytes_done;
 		axel_do( axel );
@@ -387,7 +387,7 @@ int main( int argc, char *argv[] )
 		else
 		{
 			/* The infamous wget-like 'interface'.. ;) */
-			done = ( axel->bytes_done / 1024 ) - ( prev / 1024 );
+			long long int done = ( axel->bytes_done / 1024 ) - ( prev / 1024 );
 			if( done && conf->verbose > -1 )
 			{
 				for( i = 0; i < done; i ++ )
