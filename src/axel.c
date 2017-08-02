@@ -559,15 +559,13 @@ conn_check:
 /* Close an axel connection */
 void axel_close( axel_t *axel )
 {
-	int i;
-
 	if( !axel )
 		return;
 
 	if( axel->conn )
 	{
 		/* Terminate threads and close connections */
-		for( i = 0; i < axel->conf->num_connections; i ++ )
+		for( int i = 0; i < axel->conf->num_connections; i ++ )
 		{
 			/* don't try to kill non existing thread */
 			if ( *axel->conn[i].setup_thread != 0 )
