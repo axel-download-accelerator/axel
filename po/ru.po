@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-02 17:23-0300\n"
+"POT-Creation-Date: 2017-08-03 09:29-0300\n"
 "PO-Revision-Date: 2009-04-02 00:05+0200\n"
 "Last-Translator: newhren <colimit@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -93,12 +93,12 @@ msgstr "Ошибка записи!"
 msgid "Connection %i timed out"
 msgstr "Время соединения %i вышло"
 
-#: src/conf.c:124
+#: src/conf.c:129
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "Ошибка в файле %s линия %i.\n"
 
-#: src/conn.c:372 src/ftp.c:133
+#: src/conn.c:372 src/ftp.c:134
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Слишком много перенаправлений.\n"
@@ -108,42 +108,42 @@ msgstr "Слишком много перенаправлений.\n"
 msgid "Unknown HTTP error.\n"
 msgstr "Неизвестная ошибка HTTP.\n"
 
-#: src/ftp.c:100
+#: src/ftp.c:101
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "Невозможно сменить директорию на %s\n"
 
-#: src/ftp.c:126 src/ftp.c:185
+#: src/ftp.c:127 src/ftp.c:191
 #, c-format
 msgid "File not found.\n"
 msgstr "Файл не найден.\n"
 
-#: src/ftp.c:187
+#: src/ftp.c:193
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "Несколько совпадений для этого URL.\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:264
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Ошибка открытия пассивного соединения.\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:298
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Ошибка записи команды %s\n"
 
-#: src/ftp.c:317 src/http.c:191
+#: src/ftp.c:323 src/http.c:190
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Соединение пропало.\n"
 
-#: src/http.c:65
+#: src/http.c:63
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "Некорректная стока прокси: %s\n"
 
-#: src/http.c:177
+#: src/http.c:176
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Соединение пропало.\n"
@@ -254,7 +254,7 @@ msgstr "%i:%02i секунд(ы)"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i секунд(ы)"
 
-#: src/text.c:581
+#: src/text.c:579
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -289,7 +289,7 @@ msgstr ""
 "-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:599
+#: src/text.c:597
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -324,21 +324,21 @@ msgstr ""
 "--version\t\t-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:621
+#: src/text.c:619
 #, fuzzy, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
 msgstr "Axel, версия %s (%s)\n"
 
-#: src/text.c:627
+#: src/text.c:625
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:628
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"

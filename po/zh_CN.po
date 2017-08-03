@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-02 17:23-0300\n"
+"POT-Creation-Date: 2017-08-03 09:29-0300\n"
 "PO-Revision-Date: 2016-08-10 10:52+0800\n"
 "Last-Translator: Jeff Bai <jeffbai@aosc.xyz>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
@@ -93,12 +93,12 @@ msgstr "写错误！"
 msgid "Connection %i timed out"
 msgstr "连接 %i 超时"
 
-#: src/conf.c:124
+#: src/conf.c:129
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "%s 中第 %i 行出错。\n"
 
-#: src/conn.c:372 src/ftp.c:133
+#: src/conn.c:372 src/ftp.c:134
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "太多重定向。\n"
@@ -108,42 +108,42 @@ msgstr "太多重定向。\n"
 msgid "Unknown HTTP error.\n"
 msgstr "未知 HTTP 错误。\n"
 
-#: src/ftp.c:100
+#: src/ftp.c:101
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "无法变更目录到 %s\n"
 
-#: src/ftp.c:126 src/ftp.c:185
+#: src/ftp.c:127 src/ftp.c:191
 #, c-format
 msgid "File not found.\n"
 msgstr "找不到文件。\n"
 
-#: src/ftp.c:187
+#: src/ftp.c:193
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "此 URL 有多个匹配。\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:264
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "无法打开被动数据连接。\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:298
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "写命令 %s 出错\n"
 
-#: src/ftp.c:317 src/http.c:191
+#: src/ftp.c:323 src/http.c:190
 #, c-format
 msgid "Connection gone.\n"
 msgstr "连接丢失。\n"
 
-#: src/http.c:65
+#: src/http.c:63
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "代理字符串无效：%s\n"
 
-#: src/http.c:177
+#: src/http.c:176
 #, c-format
 msgid "Connection gone while writing.\n"
 msgstr "写入时连接丢失。\n"
@@ -252,7 +252,7 @@ msgstr "%i 分 %02i 秒"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i 时 %02i 分 %02i 秒"
 
-#: src/text.c:581
+#: src/text.c:579
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -291,7 +291,7 @@ msgstr ""
 "\n"
 "请前往 https://github.com/eribertomota/axel/issues 报告问题\n"
 
-#: src/text.c:599
+#: src/text.c:597
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -330,7 +330,7 @@ msgstr ""
 "\n"
 "请前往 https://github.com/eribertomota/axel/issues 报告问题\n"
 
-#: src/text.c:621
+#: src/text.c:619
 #, c-format
 msgid ""
 "\n"
@@ -339,7 +339,7 @@ msgstr ""
 "\n"
 "Axel 版本 %s (%s)\n"
 
-#: src/text.c:627
+#: src/text.c:625
 #, c-format
 msgid ""
 "\n"
@@ -348,7 +348,7 @@ msgstr ""
 "\n"
 "                    及其他人。"
 
-#: src/text.c:628
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"

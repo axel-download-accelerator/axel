@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-02 17:23-0300\n"
+"POT-Creation-Date: 2017-08-03 09:29-0300\n"
 "PO-Revision-Date: 2001-11-14 15:22+0200\n"
 "Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -92,12 +92,12 @@ msgstr "Schrijffout!"
 msgid "Connection %i timed out"
 msgstr "Time-out op verbinding %i"
 
-#: src/conf.c:124
+#: src/conf.c:129
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "Fout in %s regel %i.\n"
 
-#: src/conn.c:372 src/ftp.c:133
+#: src/conn.c:372 src/ftp.c:134
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Te veel redirects.\n"
@@ -107,42 +107,42 @@ msgstr "Te veel redirects.\n"
 msgid "Unknown HTTP error.\n"
 msgstr "Onbekende HTTP fout.\n"
 
-#: src/ftp.c:100
+#: src/ftp.c:101
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr ""
 
-#: src/ftp.c:126 src/ftp.c:185
+#: src/ftp.c:127 src/ftp.c:191
 #, c-format
 msgid "File not found.\n"
 msgstr "Bestand niet gevonden.\n"
 
-#: src/ftp.c:187
+#: src/ftp.c:193
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "Meerdere bestanden passen bij deze URL.\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:264
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Fout bij het openen van een data verbinding.\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:298
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Fout bij het schrijven van commando %s\n"
 
-#: src/ftp.c:317 src/http.c:191
+#: src/ftp.c:323 src/http.c:190
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Verbinding gesloten.\n"
 
-#: src/http.c:65
+#: src/http.c:63
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "Ongeldige proxy string: %s\n"
 
-#: src/http.c:177
+#: src/http.c:176
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Verbinding gesloten.\n"
@@ -251,7 +251,7 @@ msgstr "%i:%02i seconden"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i seconden"
 
-#: src/text.c:581
+#: src/text.c:579
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -286,7 +286,7 @@ msgstr ""
 "-V\tVersie informatie\n"
 "\n"
 
-#: src/text.c:599
+#: src/text.c:597
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -321,21 +321,21 @@ msgstr ""
 "--version\t\t-V\tVersie informatie\n"
 "\n"
 
-#: src/text.c:621
+#: src/text.c:619
 #, fuzzy, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
 msgstr "Axel versie %s (%s)\n"
 
-#: src/text.c:627
+#: src/text.c:625
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:628
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"

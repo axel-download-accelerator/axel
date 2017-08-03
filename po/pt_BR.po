@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: axel 2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-02 17:23-0300\n"
+"POT-Creation-Date: 2017-08-03 09:29-0300\n"
 "PO-Revision-Date: 2016-06-04 18:17-0300\n"
 "Last-Translator: Eriberto Mota <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -97,12 +97,12 @@ msgstr "Erro de escrita!"
 msgid "Connection %i timed out"
 msgstr "Tempo esgotado para a conexão %i"
 
-#: src/conf.c:124
+#: src/conf.c:129
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "Erro em %s linha %i.\n"
 
-#: src/conn.c:372 src/ftp.c:133
+#: src/conn.c:372 src/ftp.c:134
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Redirecionamentos excessivos.\n"
@@ -112,42 +112,42 @@ msgstr "Redirecionamentos excessivos.\n"
 msgid "Unknown HTTP error.\n"
 msgstr "Erro HTTP desconhecido.\n"
 
-#: src/ftp.c:100
+#: src/ftp.c:101
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "Não consigo ir para o diretório %s\n"
 
-#: src/ftp.c:126 src/ftp.c:185
+#: src/ftp.c:127 src/ftp.c:191
 #, c-format
 msgid "File not found.\n"
 msgstr "Arquivo não encontrado.\n"
 
-#: src/ftp.c:187
+#: src/ftp.c:193
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "Muitas possibilidades (matches) para esta URL.\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:264
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Erro ao abrir conexão passiva.\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:298
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Erro ao escrever comando %s\n"
 
-#: src/ftp.c:317 src/http.c:191
+#: src/ftp.c:323 src/http.c:190
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Conexão perdida.\n"
 
-#: src/http.c:65
+#: src/http.c:63
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "String de proxy inválida: %s\n"
 
-#: src/http.c:177
+#: src/http.c:176
 #, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Conexão perdida enquanto escrevia no disco.\n"
@@ -258,7 +258,7 @@ msgstr "%i:%02i minuto(s)"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i hora(s)"
 
-#: src/text.c:581
+#: src/text.c:579
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -297,7 +297,7 @@ msgstr ""
 "\n"
 "Visite https://github.com/eribertomota/axel/issues\n"
 
-#: src/text.c:599
+#: src/text.c:597
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -337,7 +337,7 @@ msgstr ""
 "\n"
 "Visite https://github.com/eribertomota/axel/issues to report bugs\n"
 
-#: src/text.c:621
+#: src/text.c:619
 #, c-format
 msgid ""
 "\n"
@@ -346,7 +346,7 @@ msgstr ""
 "\n"
 "Axel versão %s (%s)\n"
 
-#: src/text.c:627
+#: src/text.c:625
 #, c-format
 msgid ""
 "\n"
@@ -355,7 +355,7 @@ msgstr ""
 "\n"
 "                    e outros."
 
-#: src/text.c:628
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"

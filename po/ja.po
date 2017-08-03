@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-02 17:23-0300\n"
+"POT-Creation-Date: 2017-08-03 09:29-0300\n"
 "PO-Revision-Date: 2016-08-21 01:20+0800\n"
 "Last-Translator: Lion Yang <lion@aosc.xyz>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
@@ -96,12 +96,12 @@ msgstr "書き込みエラー!"
 msgid "Connection %i timed out"
 msgstr "接続 %i がタイムアウトしました"
 
-#: src/conf.c:124
+#: src/conf.c:129
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "%s の %i 行目でエラー。\n"
 
-#: src/conn.c:372 src/ftp.c:133
+#: src/conn.c:372 src/ftp.c:134
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "リディレクト回数が多すぎます。\n"
@@ -111,42 +111,42 @@ msgstr "リディレクト回数が多すぎます。\n"
 msgid "Unknown HTTP error.\n"
 msgstr "未知の HTTP エラー。\n"
 
-#: src/ftp.c:100
+#: src/ftp.c:101
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "ディレクトリーを %s に変更できません\n"
 
-#: src/ftp.c:126 src/ftp.c:185
+#: src/ftp.c:127 src/ftp.c:191
 #, c-format
 msgid "File not found.\n"
 msgstr "ファイルが見つかりません。\n"
 
-#: src/ftp.c:187
+#: src/ftp.c:193
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "この URL には複数のマッチがあります。\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:264
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "受動的データー接続の開始でエラー。\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:298
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "コマンド %s を書く際にエラー\n"
 
-#: src/ftp.c:317 src/http.c:191
+#: src/ftp.c:323 src/http.c:190
 #, c-format
 msgid "Connection gone.\n"
 msgstr "接続が失われています。\n"
 
-#: src/http.c:65
+#: src/http.c:63
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "無効なプロキシストリング: %s\n"
 
-#: src/http.c:177
+#: src/http.c:176
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "接続が失われています。\n"
@@ -258,7 +258,7 @@ msgstr "%i 分 %02i 秒"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i 時 %02i 分 %02i 秒"
 
-#: src/text.c:581
+#: src/text.c:579
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -297,7 +297,7 @@ msgstr ""
 "\n"
 "https://github.com/eribertomota/axel/issues にバグ報告を行なってください\n"
 
-#: src/text.c:599
+#: src/text.c:597
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -336,7 +336,7 @@ msgstr ""
 "\n"
 "https://github.com/eribertomota/axel/issues にバグ報告を行なってください\n"
 
-#: src/text.c:621
+#: src/text.c:619
 #, c-format
 msgid ""
 "\n"
@@ -345,14 +345,14 @@ msgstr ""
 "\n"
 "Axel バージョン %s (%s)\n"
 
-#: src/text.c:627
+#: src/text.c:625
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:628
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"

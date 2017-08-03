@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-02 17:23-0300\n"
+"POT-Creation-Date: 2017-08-03 09:29-0300\n"
 "PO-Revision-Date: 2008-09-15 22:08+0200\n"
 "Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -93,12 +93,12 @@ msgstr "Schreibfehler!"
 msgid "Connection %i timed out"
 msgstr "Time-out bei Verbindung %i"
 
-#: src/conf.c:124
+#: src/conf.c:129
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "Fehler in %s Zeile %i.\n"
 
-#: src/conn.c:372 src/ftp.c:133
+#: src/conn.c:372 src/ftp.c:134
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Zu viele Weiterleitungen (redirects).\n"
@@ -108,42 +108,42 @@ msgstr "Zu viele Weiterleitungen (redirects).\n"
 msgid "Unknown HTTP error.\n"
 msgstr "Unbekannter HTTP-Fehler.\n"
 
-#: src/ftp.c:100
+#: src/ftp.c:101
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "Kann nicht in Verzeichnis %s wechseln\n"
 
-#: src/ftp.c:126 src/ftp.c:185
+#: src/ftp.c:127 src/ftp.c:191
 #, c-format
 msgid "File not found.\n"
 msgstr "Datei nicht gefunden.\n"
 
-#: src/ftp.c:187
+#: src/ftp.c:193
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "Mehrere Treffer für diese URL.\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:264
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Fehler beim Öffnen der Passiv-Verbindung.\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:298
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Fehler beim Schreiben des Befehls %s\n"
 
-#: src/ftp.c:317 src/http.c:191
+#: src/ftp.c:323 src/http.c:190
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Verbindung geschlossen.\n"
 
-#: src/http.c:65
+#: src/http.c:63
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "Ungültige Proxy-Angabe: %s\n"
 
-#: src/http.c:177
+#: src/http.c:176
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Verbindung geschlossen.\n"
@@ -252,7 +252,7 @@ msgstr "%i:%02i Sekunden"
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i Sekunden"
 
-#: src/text.c:581
+#: src/text.c:579
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -289,7 +289,7 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: src/text.c:599
+#: src/text.c:597
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -326,21 +326,21 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: src/text.c:621
+#: src/text.c:619
 #, fuzzy, c-format
 msgid ""
 "\n"
 "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"
 
-#: src/text.c:627
+#: src/text.c:625
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:628
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"
