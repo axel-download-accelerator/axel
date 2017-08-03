@@ -44,8 +44,10 @@
 
 char string[MAX_STRING];
 
-/* Convert an URL to a conn_t structure */
-int conn_set( conn_t *conn, char *set_url )
+/**
+ * Convert an URL to a conn_t structure.
+ */
+int conn_set( conn_t *conn, const char *set_url )
 {
 	char url[MAX_STRING];
 	char *i, *j;
