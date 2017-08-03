@@ -620,8 +620,9 @@ void print_version()
 	printf( "\nCopyright 2001-2007 Wilmer van der Gaast," );
 	printf( "\n          2007-2009 Giridhar Appaji Nag," );
 	printf( "\n          2008-2010 Philipp Hagemeister," );
-	printf( "\n          2015-2016 Joao Eriberto Mota Filho," );
-	printf( "\n          2016      Stephen Thirlwall," );
+	printf( "\n          2015-2017 Joao Eriberto Mota Filho," );
+	printf( "\n          2016-2017 Stephen Thirlwall," );
+	printf( "\n          2017      Ismael Luceno," );
 	printf( _("\n                    and others." ));
 	printf ( _("\nPlease, see the CREDITS file.\n\n") );
 }
