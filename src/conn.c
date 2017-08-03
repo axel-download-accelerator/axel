@@ -41,125 +41,73 @@
 /* Connection stuff */
 
 #include "axel.h"
+#include "url.h"
 
 char string[MAX_STRING];
+
+static
+void
+url_field_copy( char *dst, const char **p )
+{
+	const char *src = p[0];
+	size_t len = 0;
+	if( src )
+	{
+		len = p[1] - src;
+
+		if( len >= MAX_STRING - 1 )
+			len = MAX_STRING - 2;
+
+		memcpy( dst, src, len );
+	}
+	dst[len] = 0;
+}
 
 /**
  * Convert an URL to a conn_t structure.
  */
-int conn_set( conn_t *conn, const char *set_url )
+int conn_set( conn_t *conn, const char *url )
 {
-	char url[MAX_STRING];
-	char *i, *j;
-
-	/* protocol:// */
-	if( ( i = strstr( set_url, "://" ) ) == NULL )
-	{
-		conn->proto = PROTO_DEFAULT;
-		conn->port = PROTO_DEFAULT_PORT;
-		strncpy( url, set_url, sizeof( url ) );
+	const char *f[URL_NFIELDS];
+	int proto;
+	const char *p = parse_url(&proto, f, url);
+	if( p ) {
+		// XXX p points to the character that produced the error
+		return( 0 );
 	}
+
+	conn->proto = proto;
+	if( f[URL_PORT] )
+		conn->port = atoi(f[URL_PORT]);
 	else
-	{
-		int proto_len = i - set_url;
-		if( strncmp( set_url, "ftp", proto_len ) == 0 )
+		switch( proto )
 		{
-			conn->proto = PROTO_FTP;
-			conn->port = PROTO_FTP_PORT;
-		}
-		else if( strncmp( set_url, "http", proto_len ) == 0 )
-		{
-			conn->proto = PROTO_HTTP;
+		default:
+		case PROTO_HTTP:
 			conn->port = PROTO_HTTP_PORT;
-		}
-#ifdef HAVE_OPENSSL
-		else if( strncmp( set_url, "ftps", proto_len ) == 0 )
-		{
-			conn->proto = PROTO_FTPS;
-			conn->port = PROTO_FTPS_PORT;
-		}
-		else if( strncmp( set_url, "https", proto_len ) == 0 )
-		{
-			conn->proto = PROTO_HTTPS;
+			break;
+		case PROTO_HTTPS:
 			conn->port = PROTO_HTTPS_PORT;
+			break;
+		case PROTO_FTP:
+			conn->port = PROTO_FTP_PORT;
+			break;
+		case PROTO_FTPS:
+			conn->port = PROTO_FTPS_PORT;
+			break;
 		}
-#endif /* HAVE_OPENSSL */
-		else
-		{
-			return( 0 );
-		}
-		strncpy( url, i + 3, sizeof( url ) );
-	}
 
-	/* Split */
-	if( ( i = strchr( url, '/' ) ) == NULL )
+	url_field_copy( conn->user, f + URL_USER );
+	url_field_copy( conn->pass, f + URL_PASS );
+	url_field_copy( conn->host, f + URL_HOST );
+	url_field_copy( conn->dir,  f + URL_DIR );
+	url_field_copy( conn->file, f + URL_FNAME );
+	if( PROTO_IS_FTP( proto ) && !*conn->user )
 	{
-		strcpy( conn->dir, "/" );
-	}
-	else
-	{
-		*i = 0;
-		snprintf( conn->dir, MAX_STRING, "/%s", i + 1 );
-		if( conn->proto == PROTO_HTTP || conn->proto == PROTO_HTTPS )
-			http_encode( conn->dir );
-	}
-	strncpy( conn->host, url, MAX_STRING );
-	j = strchr( conn->dir, '?' );
-	if( j != NULL )
-		*j = 0;
-	i = strrchr( conn->dir, '/' );
-	if( i != NULL )
-		*i = 0;
-
-	if( j != NULL )
-		*j = '?';
-	if( i == NULL )
-	{
-		strncpy( conn->file, conn->dir, MAX_STRING );
-		strcpy( conn->dir, "/" );
-	}
-	else
-	{
-		strncpy( conn->file, i + 1, MAX_STRING );
-		strcat( conn->dir, "/" );
-	}
-
-	/* Check for username in host field */
-	if( strrchr( conn->host, '@' ) != NULL )
-	{
-		strncpy( conn->user, conn->host, MAX_STRING );
-		i = strrchr( conn->user, '@' );
-		*i = 0;
-		strncpy( conn->host, i + 1, MAX_STRING );
-		*conn->pass = 0;
-	}
-	/* If not: Fill in defaults */
-	else
-	{
-		if( PROTO_IS_FTP( conn->proto ) )
-		{
-			/* Dash the password: Save traffic by trying
-			   to avoid multi-line responses */
-			strcpy( conn->user, "anonymous" );
-			strcpy( conn->pass, "mailto:axel@axel.project" );
-		}
-		else
-		{
-			*conn->user = *conn->pass = 0;
-		}
-	}
-
-	/* Password? */
-	if( ( i = strchr( conn->user, ':' ) ) != NULL )
-	{
-		*i = 0;
-		strncpy( conn->pass, i + 1, MAX_STRING );
-	}
-	/* Port number? */
-	if( ( i = strchr( conn->host, ':' ) ) != NULL )
-	{
-		*i = 0;
-		sscanf( i + 1, "%i", &conn->port );
+		/* Dash the password: Save traffic by trying
+		   to avoid multi-line responses */
+		strcpy( conn->user, "anonymous" );
+		strcpy( conn->pass, "mailto:axel@axel.project" );
 	}
 
 	return( conn->port > 0 );

@@ -65,9 +65,6 @@
 #define PROTO_HTTPS		(PROTO_PROTO_HTTP|PROTO_SECURE)
 #define	PROTO_HTTPS_PORT	443
 
-#define PROTO_DEFAULT          PROTO_HTTP
-#define PROTO_DEFAULT_PORT     PROTO_HTTP_PORT
-
 typedef struct
 {
 	conf_t *conf;
