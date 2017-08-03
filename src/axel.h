@@ -4,7 +4,7 @@
   Copyright 2001-2007 Wilmer van der Gaast
   Copyright 2008      Y Giridhar Appaji Nag
   Copyright 2008-2009 Philipp Hagemeister
-  Copyright 2015-2016 Joao Eriberto Mota Filho
+  Copyright 2015-2017 Joao Eriberto Mota Filho
   Copyright 2016      Stephen Thirlwall
   Copyright 2017      Ismael Luceno
 
@@ -80,7 +80,7 @@
 #define MAX_STRING		1024
 #define MAX_ADD_HEADERS	10
 #define MAX_REDIR		5
-#define AXEL_VERSION_STRING	"2.13"
+#define AXEL_VERSION_STRING	"2.13.1"
 #define DEFAULT_USER_AGENT	"Axel " AXEL_VERSION_STRING " (" ARCH ")"
 
 typedef struct
