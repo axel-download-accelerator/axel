@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-03 09:43-0300\n"
+"POT-Creation-Date: 2017-08-03 10:10-0300\n"
 "PO-Revision-Date: 2016-08-10 10:52+0800\n"
 "Last-Translator: Jeff Bai <jeffbai@aosc.xyz>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
@@ -339,7 +339,7 @@ msgstr ""
 "\n"
 "Axel 版本 %s (%s)\n"
 
-#: src/text.c:625
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"
@@ -348,7 +348,7 @@ msgstr ""
 "\n"
 "                    及其他人。"
 
-#: src/text.c:626
+#: src/text.c:627
 #, c-format
 msgid ""
 "\n"

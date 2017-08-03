@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: axel 2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-03 09:43-0300\n"
+"POT-Creation-Date: 2017-08-03 10:10-0300\n"
 "PO-Revision-Date: 2016-06-04 18:17-0300\n"
 "Last-Translator: Eriberto Mota <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -346,7 +346,7 @@ msgstr ""
 "\n"
 "Axel versão %s (%s)\n"
 
-#: src/text.c:625
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"
@@ -355,7 +355,7 @@ msgstr ""
 "\n"
 "                    e outros."
 
-#: src/text.c:626
+#: src/text.c:627
 #, c-format
 msgid ""
 "\n"

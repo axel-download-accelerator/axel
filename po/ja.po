@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/eribertomota/axel/issues\n"
-"POT-Creation-Date: 2017-08-03 09:43-0300\n"
+"POT-Creation-Date: 2017-08-03 10:10-0300\n"
 "PO-Revision-Date: 2016-08-21 01:20+0800\n"
 "Last-Translator: Lion Yang <lion@aosc.xyz>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
@@ -345,14 +345,14 @@ msgstr ""
 "\n"
 "Axel バージョン %s (%s)\n"
 
-#: src/text.c:625
+#: src/text.c:626
 #, c-format
 msgid ""
 "\n"
 "                    and others."
 msgstr ""
 
-#: src/text.c:626
+#: src/text.c:627
 #, c-format
 msgid ""
 "\n"
