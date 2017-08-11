@@ -52,6 +52,9 @@ AS_IF([test "x$with_openssl" != xno], [
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.18])
 
+# Large file support
+AC_SYS_LARGEFILE
+
 #### Definitions ####
 
 # OS
@@ -59,7 +62,7 @@ arch=$(uname -s)
 AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
 
 # Flags
-CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
+CFLAGS="$CFLAGS -Wall"
 
 case "$arch" in
 FreeBSD | OpenBSD | NetBSD | Darwin )
