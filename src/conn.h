@@ -55,23 +55,18 @@
 
 #define PROTO_FTP		(PROTO_PROTO_FTP|PROTO_INSECURE)
 #define	PROTO_FTP_PORT		21
-#define	PROTO_FTP_NAME		"ftp"
 
 #define PROTO_FTPS		(PROTO_PROTO_FTP|PROTO_SECURE)
 #define	PROTO_FTPS_PORT		990
-#define	PROTO_FTPS_NAME		"ftps"
 
 #define PROTO_HTTP		(PROTO_PROTO_HTTP|PROTO_INSECURE)
 #define	PROTO_HTTP_PORT		80
-#define	PROTO_HTTP_NAME		"http"
 
 #define PROTO_HTTPS		(PROTO_PROTO_HTTP|PROTO_SECURE)
 #define	PROTO_HTTPS_PORT	443
-#define	PROTO_HTTPS_NAME	"https"
 
 #define PROTO_DEFAULT          PROTO_FTP
 #define PROTO_DEFAULT_PORT     PROTO_FTP_PORT
-#define PROTO_DEFAULT_NAME     PROTO_FTP_NAME
 
 typedef struct
 {
@@ -80,7 +75,6 @@ typedef struct
 	int proto;
 	int port;
 	int proxy;
-	char *proto_name;
 	char host[MAX_STRING];
 	char dir[MAX_STRING];
 	char file[MAX_STRING];
@@ -111,6 +105,6 @@ int conn_init( conn_t *conn );
 int conn_setup( conn_t *conn );
 int conn_exec( conn_t *conn );
 int conn_info( conn_t *conn );
-
+const char *scheme_from_proto( int proto );
 
 #endif /* AXEL_CONN_H */

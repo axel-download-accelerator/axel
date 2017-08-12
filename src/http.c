@@ -110,23 +110,8 @@ void http_get( http_t *conn, char *lurl )
 	*conn->request = 0;
 	if( conn->proxy )
 	{
-		const char* proto = "";
-		switch( conn->proto )
-		{
-			case PROTO_FTP:
-				proto = PROTO_FTP_NAME;
-				break;
-			case PROTO_FTPS:
-				proto = PROTO_FTPS_NAME;
-				break;
-			case PROTO_HTTP:
-				proto = PROTO_HTTP_NAME;
-				break;
-			case PROTO_HTTPS:
-				proto = PROTO_HTTPS_NAME;
-				break;
-		}
-		http_addheader( conn, "GET %s://%s%s HTTP/1.0", proto, conn->host, lurl );
+		const char* proto = scheme_from_proto( conn->proto );
+		http_addheader( conn, "GET %s%s%s HTTP/1.0", proto, conn->host, lurl );
 	}
 	else
 	{

@@ -57,36 +57,31 @@ int conn_set( conn_t *conn, const char *set_url )
 	{
 		conn->proto = PROTO_DEFAULT;
 		conn->port = PROTO_DEFAULT_PORT;
-		conn->proto_name = PROTO_DEFAULT_NAME;
 		strncpy( url, set_url, MAX_STRING );
 	}
 	else
 	{
 		int proto_len = i - set_url;
-		if( strncmp( set_url, PROTO_FTP_NAME, proto_len ) == 0 )
+		if( strncmp( set_url, "ftp", proto_len ) == 0 )
 		{
 			conn->proto = PROTO_FTP;
 			conn->port = PROTO_FTP_PORT;
-			conn->proto_name = PROTO_FTP_NAME;
 		}
-		else if( strncmp( set_url, PROTO_HTTP_NAME, proto_len ) == 0 )
+		else if( strncmp( set_url, "http", proto_len ) == 0 )
 		{
 			conn->proto = PROTO_HTTP;
 			conn->port = PROTO_HTTP_PORT;
-			conn->proto_name = PROTO_HTTP_NAME;
 		}
 #ifdef HAVE_OPENSSL
-		else if( strncmp( set_url, PROTO_FTPS_NAME, proto_len ) == 0 )
+		else if( strncmp( set_url, "ftps", proto_len ) == 0 )
 		{
 			conn->proto = PROTO_FTPS;
 			conn->port = PROTO_FTPS_PORT;
-			conn->proto_name = PROTO_FTPS_NAME;
 		}
-		else if( strncmp( set_url, PROTO_HTTPS_NAME, proto_len ) == 0 )
+		else if( strncmp( set_url, "https", proto_len ) == 0 )
 		{
 			conn->proto = PROTO_HTTPS;
 			conn->port = PROTO_HTTPS_PORT;
-			conn->proto_name = PROTO_HTTPS_NAME;
 		}
 #endif /* HAVE_OPENSSL */
 		else
@@ -168,11 +163,26 @@ int conn_set( conn_t *conn, const char *set_url )
 	return( conn->port > 0 );
 }
 
+const char *scheme_from_proto( int proto )
+{
+	switch( proto )
+	{
+	case PROTO_FTP:
+		return "ftp://";
+	case PROTO_FTPS:
+		return "ftps://";
+	default:
+	case PROTO_HTTP:
+		return "http://";
+	case PROTO_HTTPS:
+		return "https://";
+	}
+}
+
 /* Generate a nice URL string. */
 char *conn_url( conn_t *conn )
 {
-	strcpy( string, conn->proto_name );
-	strcat( string, "://" );
+	strcpy( string, scheme_from_proto( conn->proto ) );
 
 	if( *conn->user != 0 && strcmp( conn->user, "anonymous" ) != 0 )
 		sprintf( string + strlen( string ), "%s:%s@",
