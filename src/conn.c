@@ -333,11 +333,13 @@ int conn_info( conn_t *conn )
 	}
 	else
 	{
-		char s[MAX_STRING], *t;
+		char s[MAX_STRING];
 		long long int i = 0;
 
 		do
 		{
+			const char *t;
+
 			conn->currentbyte = 1;
 			if( !conn_setup( conn ) )
 				return( 0 );
@@ -396,7 +398,7 @@ int conn_info( conn_t *conn )
 		}
 		else
 		{
-			t = strchr( conn->message, '\n' );
+			char *t = strchr( conn->message, '\n' );
 			if( t == NULL )
 				sprintf( conn->message, _("Unknown HTTP error.\n") );
 			else

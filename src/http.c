@@ -219,7 +219,7 @@ int http_exec( http_t *conn )
 	return( 1 );
 }
 
-char *http_header( http_t *conn, char *header )
+const char *http_header( const http_t *conn, const char *header )
 {
 	char s[32];
 	int i;
@@ -237,7 +237,7 @@ char *http_header( http_t *conn, char *header )
 
 long long int http_size( http_t *conn )
 {
-	char *i;
+	const char *i;
 	long long int j;
 
 	if( ( i = http_header( conn, "Content-Length:" ) ) == NULL )
@@ -249,7 +249,7 @@ long long int http_size( http_t *conn )
 
 long long int http_size_from_range( http_t *conn )
 {
-	char *i;
+	const char *i;
 	long long int j;
 
 	if( ( i = http_header( conn, "Content-Range:" ) ) == NULL )
@@ -265,9 +265,9 @@ long long int http_size_from_range( http_t *conn )
 	return( j );
 }
 
-void http_filename( http_t *conn, char *filename )
+void http_filename( const http_t *conn, char *filename )
 {
-	char *h;
+	const char *h;
 	if( ( h = http_header( conn, "Content-Disposition:" ) ) != NULL ) {
 		sscanf( h, "%*s%*[ \t]filename%*[ \t=\"\']%254[^\n\"\' ]", filename );
 
@@ -275,12 +275,12 @@ void http_filename( http_t *conn, char *filename )
 
 		/* Replace common invalid characters in filename
 		  https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
-		h = filename;
-		char *invalid_characters = "/\\?%*:|<>";
-		char replacement = '_';
-		while( ( h = strpbrk( h, invalid_characters ) ) != NULL ) {
-			*h = replacement;
-			h++;
+		char *i = filename;
+		const char *invalid_characters = "/\\?%*:|<>";
+		const char replacement = '_';
+		while( ( i = strpbrk( i, invalid_characters ) ) != NULL ) {
+			*i = replacement;
+			i++;
 		}
 	}
 }
