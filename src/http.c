@@ -221,16 +221,19 @@ int http_exec( http_t *conn )
 
 const char *http_header( const http_t *conn, const char *header )
 {
-	char s[32];
-	int i;
+	const char *p = conn->headers;
+	size_t hlen = strlen( header );
 
-	for( i = 1; conn->headers[i]; i ++ )
-		if( conn->headers[i-1] == '\n' )
-		{
-			sscanf( &conn->headers[i], "%31s", s );
-			if( strcasecmp( s, header ) == 0 )
-				return( &conn->headers[i+strlen(header)] );
-		}
+	do
+	{
+		if ( strncasecmp( p, header, hlen ) == 0 )
+			return( p + hlen );
+		while ( *p != '\n' && *p )
+			p++;
+		if ( *p == '\n' )
+			p++;
+	}
+	while ( *p );
 
 	return( NULL );
 }

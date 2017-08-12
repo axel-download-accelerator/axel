@@ -32,7 +32,7 @@ AC_CHECK_HEADERS([arpa/inet.h fcntl.h libintl.h limits.h locale.h netdb.h netine
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([malloc realloc gettimeofday inet_ntoa memset select setlocale socket strcasecmp strchr strrchr strstr])
+AC_CHECK_FUNCS([malloc realloc gettimeofday inet_ntoa memset select setlocale socket strncasecmp strchr strrchr strstr])
 
 # Optional (but included-by-default) openssl support
 AC_ARG_WITH([openssl],
