@@ -9,6 +9,8 @@
   Copyright 2016      Phillip Berndt
   Copyright 2016      Sjjad Hashemian
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      David Polverari
+  Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -47,9 +49,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 {
 	char base64_encode[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		"abcdefghijklmnopqrstuvwxyz0123456789+/";
-	char auth[MAX_STRING];
 	conn_t tconn[1];
-	int i;
 
 	strncpy( conn->host, host, MAX_STRING );
 	conn->proto = proto;
@@ -79,21 +79,21 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 
 	//For SSl through proxy
 	if( conn->proxy && PROTO_IS_SECURE(conn->proto) )
-	  {
+	{
 		char proxybuffer[USER_AGENT_LEN];
 		int buffer_length = sprintf( proxybuffer, "CONNECT %s HTTP/1.1\r\nHost: %s\r\nUser-Agent: %s\r\n\r\n", conn->host, conn->host, DEFAULT_USER_AGENT );
 	    
 		if( write( conn->tcp.fd, proxybuffer, buffer_length ) == -1 )
 		{
 			return( 0 );
-	        }
+		}
 		if( read( conn->tcp.fd, proxybuffer, USER_AGENT_LEN ) == -1 )
-	        {
+        	{
 			return( 0 );
-	        }
-		if( ( conn->tcp.ssl = ssl_connect(conn->tcp.fd, conn->headers) ) == NULL )
+        	}
+		if( ( conn->tcp.ssl = ssl_connect(conn->tcp.fd, conn->host, conn->headers) ) == NULL )
 			return( 0 );
-  	  }
+	}
 	
 	if( *user == 0 )
 	{
@@ -101,9 +101,10 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	}
 	else
 	{
+		char auth[MAX_STRING];
 		memset( auth, 0, MAX_STRING );
 		snprintf( auth, MAX_STRING, "%s:%s", user, pass );
-		for( i = 0; auth[i*3]; i ++ )
+		for( int i = 0; auth[i*3]; i ++ )
 		{
 			conn->auth[i*4] = base64_encode[(auth[i*3]>>2)];
 			conn->auth[i*4+1] = base64_encode[((auth[i*3]&3)<<4)|(auth[i*3+1]>>4)];
@@ -127,23 +128,8 @@ void http_get( http_t *conn, char *lurl )
 	*conn->request = 0;
 	if( conn->proxy )
 	{
-		const char* proto = "";
-		switch( conn->proto )
-		{
-			case PROTO_FTP:
-				proto = PROTO_FTP_NAME;
-				break;
-			case PROTO_FTPS:
-				proto = PROTO_FTPS_NAME;
-				break;
-			case PROTO_HTTP:
-				proto = PROTO_HTTP_NAME;
-				break;
-			case PROTO_HTTPS:
-				proto = PROTO_HTTPS_NAME;
-				break;
-		}
-		http_addheader( conn, "GET %s://%s%s HTTP/1.0", proto, conn->host, lurl );
+		const char* proto = scheme_from_proto( conn->proto );
+		http_addheader( conn, "GET %s%s%s HTTP/1.0", proto, conn->host, lurl );
 	}
 	else
 	{
@@ -236,25 +222,28 @@ int http_exec( http_t *conn )
 	return( 1 );
 }
 
-char *http_header( http_t *conn, char *header )
+const char *http_header( const http_t *conn, const char *header )
 {
-	char s[32];
-	int i;
+	const char *p = conn->headers;
+	size_t hlen = strlen( header );
 
-	for( i = 1; conn->headers[i]; i ++ )
-		if( conn->headers[i-1] == '\n' )
-		{
-			sscanf( &conn->headers[i], "%31s", s );
-			if( strcasecmp( s, header ) == 0 )
-				return( &conn->headers[i+strlen(header)] );
-		}
+	do
+	{
+		if ( strncasecmp( p, header, hlen ) == 0 )
+			return( p + hlen );
+		while ( *p != '\n' && *p )
+			p++;
+		if ( *p == '\n' )
+			p++;
+	}
+	while ( *p );
 
 	return( NULL );
 }
 
 long long int http_size( http_t *conn )
 {
-	char *i;
+	const char *i;
 	long long int j;
 
 	if( ( i = http_header( conn, "Content-Length:" ) ) == NULL )
@@ -266,7 +255,7 @@ long long int http_size( http_t *conn )
 
 long long int http_size_from_range( http_t *conn )
 {
-	char *i;
+	const char *i;
 	long long int j;
 
 	if( ( i = http_header( conn, "Content-Range:" ) ) == NULL )
@@ -282,9 +271,9 @@ long long int http_size_from_range( http_t *conn )
 	return( j );
 }
 
-void http_filename( http_t *conn, char *filename )
+void http_filename( const http_t *conn, char *filename )
 {
-	char *h;
+	const char *h;
 	if( ( h = http_header( conn, "Content-Disposition:" ) ) != NULL ) {
 		sscanf( h, "%*s%*[ \t]filename%*[ \t=\"\']%254[^\n\"\' ]", filename );
 
@@ -292,35 +281,54 @@ void http_filename( http_t *conn, char *filename )
 
 		/* Replace common invalid characters in filename
 		  https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
-		h = filename;
-		char *invalid_characters = "/\\?%*:|<>";
-		char replacement = '_';
-		while( ( h = strpbrk( h, invalid_characters ) ) != NULL ) {
-			*h = replacement;
-			h++;
+		char *i = filename;
+		const char *invalid_characters = "/\\?%*:|<>";
+		const char replacement = '_';
+		while( ( i = strpbrk( i, invalid_characters ) ) != NULL ) {
+			*i = replacement;
+			i++;
 		}
 	}
+}
+
+inline static char decode_nibble( char n )
+{
+	if( n <= '9' )
+		return( n - '0' );
+	if( n >= 'a' )
+		n -= 'a' - 'A';
+	return( n - 'A' + 10 );
+}
+
+inline static char encode_nibble( char n )
+{
+	return( n > 9 ? n + 'a' - 10 : n + '0' );
+}
+
+inline static void encode_byte( char dst[3], char n )
+{
+	*dst++ = '%';
+	*dst++ = encode_nibble( n >> 4 );
+	*dst = encode_nibble( n & 15 );
 }
 
 /* Decode%20a%20file%20name */
 void http_decode( char *s )
 {
-	char t[MAX_STRING];
-	int i, j, k;
+	for( ; *s && *s != '%'; s ++ );
+	if( !*s )
+		return;
 
-	for( i = j = 0; s[i]; i ++, j ++ )
-	{
-		t[j] = s[i];
-		if( s[i] == '%' )
-			if( sscanf( s + i + 1, "%2x", &k ) )
-			{
-				t[j] = k;
-				i += 2;
-			}
-	}
-	t[j] = 0;
-
-	strcpy( s, t );
+	char *p = s;
+	do {
+		if( !s[1] || !s[2] )
+			break;
+		*p++ = ( decode_nibble( s[1] ) << 4 ) | decode_nibble( s[2] );
+		s += 3;
+		while( *s && *s != '%' )
+			*p ++ = *s ++;
+	} while( *s == '%' );
+	*p = 0;
 }
 
 void http_encode( char *s )
@@ -336,14 +344,14 @@ void http_encode( char *s )
 		}
 
 		t[j] = s[i];
-		if( s[i] == ' ' )
+		if( s[i] <= 0x20 || s[i] >= 0x7f )
 		{
 			/* Fix buffer overflow */
 			if (j >= MAX_STRING - 3) {
 				break;
 			}
 
-			strcpy( t + j, "%20" );
+			encode_byte( t + j, s[i] );
 			j += 2;
 		}
 	}

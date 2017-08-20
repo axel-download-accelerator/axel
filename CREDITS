@@ -1,3 +1,19 @@
+2.13 and 2.13.1 versions:
+
+- Ismael Luceno <ismael@iodev.co.uk> is officially coordinating the Axel
+  development.
+
+- Changes in source code by:
+
+  * David Polverari <david.polverari@gmail.com>
+  * Ismael Luceno <ismael@iodev.co.uk>
+  * Joao Eriberto Mota Filho <eriberto@eriberto.pro.br>
+  * nemermollon <nemeralbano@hotmail.com>
+  * Stephen Thirlwall <sdt@dr.com>
+  * Vlad Glagolev <scm@vaygr.net>
+
+  Read the ChangeLog to see the changes.
+
 2.12 version:
 
 - Denis Denisov <denji0k@gmail.com>

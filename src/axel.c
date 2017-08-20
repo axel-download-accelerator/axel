@@ -9,6 +9,8 @@
   Copyright 2016      Ivan Gimenez
   Copyright 2016      Sjjad Hashemian
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      Ismael Luceno
+  Copyright 2017      nemermollon
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -53,18 +55,23 @@ static void axel_divide( axel_t *axel );
 static char *buffer = NULL;
 
 /* Create a new axel_t structure */
-axel_t *axel_new( conf_t *conf, int count, void *url )
+axel_t *axel_new( conf_t *conf, int count, const void *url )
 {
-	search_t *res;
+	const search_t *res;
 	axel_t *axel;
 	url_t *u;
 	char *s;
 	int i;
 
 	axel = malloc( sizeof( axel_t ) );
+	if( !axel )
+		goto nomem;
+
 	memset( axel, 0, sizeof( axel_t ) );
 	*axel->conf = *conf;
 	axel->conn = malloc( sizeof( conn_t ) * axel->conf->num_connections );
+	if( !axel->conn )
+		goto nomem;
 	memset( axel->conn, 0, sizeof( conn_t ) * axel->conf->num_connections );
 	if( axel->conf->max_speed > 0 )
 	{
@@ -77,31 +84,42 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 		axel->delay_time = (int) ( (float) 1000000 / axel->conf->max_speed * axel->conf->buffer_size * axel->conf->num_connections );
 	}
 	if( buffer == NULL )
-		buffer = malloc( max( MAX_STRING, axel->conf->buffer_size ) );
+	{
+		buffer = malloc( max( MAX_STRING + 1, axel->conf->buffer_size ) );
+		if( !buffer )
+			goto nomem;
+	}
+
+	if( !url )
+	{
+		axel_message( axel, _("Invalid URL") );
+		axel_close( axel );
+		return( NULL );
+	}
 
 	if( count == 0 )
 	{
 		axel->url = malloc( sizeof( url_t ) );
+		if( !axel->url )
+			goto nomem;
+
 		axel->url->next = axel->url;
-		strncpy( axel->url->text, (char *) url, MAX_STRING );
+		strncpy( axel->url->text, url, MAX_STRING );
 	}
 	else
 	{
-		res = (search_t *) url;
-		u = axel->url = malloc( sizeof( url_t ) );
+		res = url;
+		u = malloc( sizeof( url_t ) * count );
+		if( !u )
+			goto nomem;
+		axel->url = u;
+
 		for( i = 0; i < count; i ++ )
 		{
-			strncpy( u->text, res[i].url, MAX_STRING );
-			if( i < count - 1 )
-			{
-				u->next = malloc( sizeof( url_t ) );
-				u = u->next;
-			}
-			else
-			{
-				u->next = axel->url;
-			}
+			strncpy( u[i].text, res[i].url, MAX_STRING );
+			u[i].next = &u[i + 1];
 		}
+		u[count - 1].next = u;
 	}
 
 	axel->conn[0].conf = axel->conf;
@@ -154,15 +172,17 @@ axel_t *axel_new( conf_t *conf, int count, void *url )
 	}
 
 	return( axel );
+nomem:
+	axel_close( axel );
+	printf( "%s\n", strerror(errno) );
+	return( NULL );
 }
 
 /* Open a local file to store the downloaded data */
 int axel_open( axel_t *axel )
 {
 	int i, fd;
-	long long int j;
  	ssize_t nread;
- 	ssize_t nwrite;
 
 	if( axel->conf->verbose > 0 )
 		axel_message( axel, _("Opening output file %s"), axel->filename );
@@ -249,8 +269,10 @@ int axel_open( axel_t *axel )
 			axel_message( axel, _("Crappy filesystem/OS.. Working around. :-(") );
 			lseek( axel->outfd, 0, SEEK_SET );
 			memset( buffer, 0, axel->conf->buffer_size );
-			j = axel->size;
+			long long int j = axel->size;
 			while( j > 0 ) {
+				ssize_t nwrite;
+
 				if( ( nwrite = write( axel->outfd, buffer, min( j, axel->conf->buffer_size ) ) ) < 0 ) {
 					if ( errno == EINTR || errno == EAGAIN) continue;
 					axel_message( axel, _("Error creating local file") );
@@ -266,15 +288,15 @@ int axel_open( axel_t *axel )
 
 void reactivate_connection(axel_t *axel, int thread)
 {
-	long long int max_remaining = 0,remaining;
-	int j, idx = -1;
+	long long int max_remaining = 0;
+	int idx = -1;
 
 	if(axel->conn[thread].enabled || axel->conn[thread].currentbyte <= axel->conn[thread].lastbyte)
 		return;
 	/* find some more work to do */
-	for( j = 0; j < axel->conf->num_connections; j ++ )
+	for( int j = 0; j < axel->conf->num_connections; j ++ )
 	{
-		remaining = axel->conn[j].lastbyte - axel->conn[j].currentbyte + 1;
+		long long int remaining = axel->conn[j].lastbyte - axel->conn[j].currentbyte + 1;
 		if(remaining > max_remaining)
 		{
 			max_remaining = remaining;
@@ -537,14 +559,24 @@ conn_check:
 /* Close an axel connection */
 void axel_close( axel_t *axel )
 {
-	int i;
-	message_t *m;
+	if( !axel )
+		return;
 
-	/* Terminate any thread still running */
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-		/* don't try to kill non existing thread */
-		if ( *axel->conn[i].setup_thread != 0 )
-			pthread_cancel( *axel->conn[i].setup_thread );
+	if( axel->conn )
+	{
+		/* Terminate threads and close connections */
+		for( int i = 0; i < axel->conf->num_connections; i ++ )
+		{
+			/* don't try to kill non existing thread */
+			if ( *axel->conn[i].setup_thread != 0 )
+				pthread_cancel( *axel->conn[i].setup_thread );
+			conn_disconnect( &axel->conn[i] );
+		}
+
+		free( axel->conn );
+	}
+
+	free( axel->url );
 
 	/* Delete state file if necessary */
 	if( axel->ready == 1 )
@@ -558,20 +590,9 @@ void axel_close( axel_t *axel )
 		save_state( axel );
 	}
 
-	/* Delete any message not processed yet */
-	while( axel->message )
-	{
-		m = axel->message;
-		axel->message = axel->message->next;
-		free( m );
-	}
+	print_messages( axel );
 
-	/* Close all connections and local file */
 	close( axel->outfd );
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-		conn_disconnect( &axel->conn[i] );
-
-	free( axel->conn );
 	free( axel );
 }
 
@@ -647,8 +668,15 @@ void *setup_thread( void *c )
 /* Add a message to the axel->message structure */
 static void axel_message( axel_t *axel, char *format, ... )
 {
-	message_t *m = malloc( sizeof( message_t ) ), *n = axel->message;
+	message_t *m;
 	va_list params;
+
+	if ( !axel )
+		goto nomem;
+
+	m = malloc( sizeof( message_t ) );
+	if ( !m )
+		goto nomem;
 
 	memset( m, 0, sizeof( message_t ) );
 	va_start( params, format );
@@ -657,14 +685,22 @@ static void axel_message( axel_t *axel, char *format, ... )
 
 	if( axel->message == NULL )
 	{
-		axel->message = m;
+		axel->message = axel->last_message = m;
 	}
 	else
 	{
-		while( n->next != NULL )
-			n = n->next;
-		n->next = m;
+		axel->last_message->next = m;
+		axel->last_message = m;
 	}
+
+	return;
+
+nomem:
+	/* Flush previous messages */
+	print_messages( axel );
+	va_start( params, format );
+	vprintf( format, params );
+	va_end( params );
 }
 
 /* Divide the file and set the locations for each connection */

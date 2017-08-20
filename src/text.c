@@ -8,6 +8,7 @@
   Copyright 2016      Denis Denisov
   Copyright 2016      Mridul Malpotra
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -49,7 +50,6 @@ static void print_commas( long long int bytes_done );
 static void print_alternate_output( axel_t *axel );
 static void print_help();
 static void print_version();
-static void print_messages( axel_t *axel );
 static int get_term_width();
 
 int run = 1;
@@ -78,7 +78,7 @@ static struct option axel_options[] =
 #endif
 
 /* For returning string values from functions */
-static char string[MAX_STRING];
+static char string[MAX_STRING + 3];
 
 
 int main( int argc, char *argv[] )
@@ -374,7 +374,7 @@ int main( int argc, char *argv[] )
 
 	while( !axel->ready && run )
 	{
-		long long int prev, done;
+		long long int prev;
 
 		prev = axel->bytes_done;
 		axel_do( axel );
@@ -387,7 +387,7 @@ int main( int argc, char *argv[] )
 		else
 		{
 			/* The infamous wget-like 'interface'.. ;) */
-			done = ( axel->bytes_done / 1024 ) - ( prev / 1024 );
+			long long int done = ( axel->bytes_done / 1024 ) - ( prev / 1024 );
 			if( done && conf->verbose > -1 )
 			{
 				for( i = 0; i < done; i ++ )
@@ -515,17 +515,15 @@ static void print_alternate_output(axel_t *axel)
 {
 	long long int done=axel->bytes_done;
 	long long int total=axel->size;
-	int i,j=0,offset,end;
 	double now = gettime();
 	int width = get_term_width() - 30;
 	char progress[width+1];
 
-	for(i=0;i<width;i++)
-		progress[i] = '.';
+	memset(progress, '.', width);
 
-	for(i=0;i<axel->conf->num_connections;i++)
+	for(int i=0;i<axel->conf->num_connections;i++)
 	{
-		offset = ((double)(axel->conn[i].currentbyte)/(total+1)*(width+1));
+		int offset = ((double)(axel->conn[i].currentbyte)/(total+1)*(width+1));
 
 		if(axel->conn[i].currentbyte<axel->conn[i].lastbyte)
 		{
@@ -534,8 +532,8 @@ static void print_alternate_output(axel_t *axel)
 			else
 				progress[offset] = '#';
 		}
-		end = ((double)(axel->conn[i].lastbyte)/(total+1)*(width+1));
-		for(j=offset+1;j<end;j++)
+		int end = ((double)(axel->conn[i].lastbyte)/(total+1)*(width+1));
+		for(int j=offset+1;j<end;j++)
 			progress[j] = ' ';
 	}
 
@@ -622,8 +620,9 @@ void print_version()
 	printf( "\nCopyright 2001-2007 Wilmer van der Gaast," );
 	printf( "\n          2007-2009 Giridhar Appaji Nag," );
 	printf( "\n          2008-2010 Philipp Hagemeister," );
-	printf( "\n          2015-2016 Joao Eriberto Mota Filho," );
-	printf( "\n          2016      Stephen Thirlwall," );
+	printf( "\n          2015-2017 Joao Eriberto Mota Filho," );
+	printf( "\n          2016-2017 Stephen Thirlwall," );
+	printf( "\n          2017      Ismael Luceno," );
 	printf( _("\n                    and others." ));
 	printf ( _("\nPlease, see the CREDITS file.\n\n") );
 }
@@ -633,11 +632,13 @@ void print_messages( axel_t *axel )
 {
 	message_t *m;
 
-	while( axel->message )
+	if ( !axel )
+		return;
+
+	while( (m = axel->message) )
 	{
-		printf( "%s\n", axel->message->text );
-		m = axel->message;
-		axel->message = axel->message->next;
+		printf( "%s\n", m->text );
+		axel->message = m->next;
 		free( m );
 	}
 }

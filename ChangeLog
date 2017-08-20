@@ -1,3 +1,45 @@
+Version 2.13.1, 2017-08-03
+
+  [ Joao Eriberto Mota Filho ]
+
+* Updated .po files.
+
+Version 2.13, 2017-08-02
+
+  [ David Polverari ]
+
+* Fixed URI encoding implementation.
+
+  [ Ismael Luceno ]
+
+* Fixed NULL dereferences and buffer allocation
+  (based on patch by: nemermollon <nemeralbano@hotmail.com>).
+* Fixed size of string[] buffer in text.c.
+* Implemented percent encoding/decoding primitives.
+* Improved axel_message to work under memory pressure.
+* Improved message_t queuing.
+* Made axel_close more robust.
+* Print messages instead of discarding them on axel_close.
+* Fixed a couple of NULL derefs when OOM.
+* Fixed various memory leaks and fd leaks.
+* Code cleanup and simplification.
+
+  [ Joao Eriberto Mota Filho ]
+
+* Some updates in README file.
+* Updated the translation for Brazilian Portuguese.
+* Updated the manpage version and date.
+
+  [ Stephen Thirlwall ]
+
+* Set TLS hostname in ssl_connect.
+
+  [ Vlad Glagolev ]
+
+* Fixed '--with-openssl' flag in configure.ac file.
+
+
+
 Version 2.12, 2016-12-25
 
   [ Denis Denisov ]

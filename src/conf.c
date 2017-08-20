@@ -6,6 +6,7 @@
   Copyright 2008      Y Giridhar Appaji Nag
   Copyright 2016      Ivan Gimenez
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -58,7 +59,7 @@ int parse_interfaces( conf_t *conf, char *s );
 
 int conf_loadfile( conf_t *conf, char *file )
 {
-	int i, line = 0;
+	int line = 0;
 	FILE *fp;
 	char s[MAX_STRING], key[MAX_STRING], value[MAX_STRING];
 
@@ -73,20 +74,25 @@ int conf_loadfile( conf_t *conf, char *file )
 		line ++;
 
 		*s = 0;
-		i=fscanf( fp, "%100[^\n#]s", s );
-		i=fscanf( fp, "%*[^\n]s" );
+		fscanf( fp, "%100[^\n#]s", s );
+		fscanf( fp, "%*[^\n]s" );
 		fgetc( fp );			/* Skip newline */
 		if( strchr( s, '=' ) == NULL )
 			continue;		/* Probably empty? */
 		sscanf( s, "%[^= \t]s", key );
-		for( i = 0; s[i]; i ++ )
-			if( s[i] == '=' )
-			{
-				for( i ++; isspace( (int) s[i] ) && s[i]; i ++ );
-				break;
-			}
-		strcpy( value, &s[i] );
-		for( i = strlen( value ) - 1; isspace( (int) value[i] ); i -- )
+		{
+			int i;
+			for( i = 0; s[i]; i ++ )
+				if( s[i] == '=' )
+				{
+					for( i ++; isspace( (int) s[i] ) && s[i]; i ++ );
+					break;
+				}
+			strcpy( value, &s[i] );
+		}
+		/* FIXME: could be optimized to re-use the previous loop and
+		   write a single zero. */
+		for( int i = strlen( value ) - 1; isspace( (int) value[i] ); i -- )
 			value[i] = 0;
 
 		st = 0;
@@ -121,10 +127,11 @@ int conf_loadfile( conf_t *conf, char *file )
 		if( !st )
 		{
 			fprintf( stderr, _("Error in %s line %i.\n"), file, line );
+			fclose( fp );
 			return( 0 );
 		}
 		get_config_number( add_header_count );
-		for(i=0;i<conf->add_header_count;i++)
+		for(int i=0;i<conf->add_header_count;i++)
 			get_config_string( add_header[i] );
 		get_config_string( user_agent );
 	}
@@ -135,7 +142,7 @@ int conf_loadfile( conf_t *conf, char *file )
 
 int conf_init( conf_t *conf )
 {
-	char s[MAX_STRING], *s2;
+	char *s2;
 	int i;
 
 	/* Set defaults */
@@ -175,6 +182,7 @@ int conf_init( conf_t *conf )
 
 	if( ( s2 = getenv( "HOME" ) ) != NULL )
 	{
+		char s[MAX_STRING];
 		sprintf( s, "%s/%s", s2, ".axelrc" );
 		if( !conf_loadfile( conf, s ) )
 			return( 0 );

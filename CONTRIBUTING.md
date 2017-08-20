@@ -28,4 +28,9 @@ To find issues and bugs to fix, you can check these addresses:
 
 If you want to join, please contact me: eriberto at eriberto.pro.br
 
-  -- Eriberto, Sun, 20 Mar 2016 16:27:53 -0300
+There is a group here[2] to discuss and to coordinate the development.
+
+[2] https://groups.google.com/forum/#!forum/axel-accelerator-dev
+
+  -- Eriberto, Sun, 20 Mar 2016 16:27:53 -0300,
+     updated on Sun, 02 Apr 2017 23:13:00 -0300.

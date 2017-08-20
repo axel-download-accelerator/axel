@@ -5,6 +5,7 @@
   Copyright 2008      Y Giridhar Appaji Nag
   Copyright 2010      Philipp Hagemeister
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -81,7 +82,7 @@ int main( int argc, char *argv[] )
 int search_makelist( search_t *results, char *url )
 {
 	int i, size = 8192, j = 0;
-	char *s, *s1, *s2, *s3;
+	char *s, *s1, *s3;
 	conn_t conn[1];
 	double t;
 
@@ -133,7 +134,12 @@ int search_makelist( search_t *results, char *url )
 		if( j + 10 >= size )
 		{
 			size *= 2;
-			s = realloc( s, size );
+			char *tmp = realloc( s, size );
+			if (!tmp) {
+				free( s );
+				return( 1 );
+			}
+			s = tmp;
 			memset( s + size / 2, 0, size / 2 );
 		}
 	}
@@ -151,7 +157,7 @@ int search_makelist( search_t *results, char *url )
 	for( i = 1; strncmp( s1, "</pre>", 6 ) && i < results->conf->search_amount && *s1; i ++ )
 	{
 		s3 = strchr( s1, '\n' ); *s3 = 0;
-		s2 = axel_strrstr( s1, "<a href=" ) + 8;
+		char *s2 = axel_strrstr( s1, "<a href=" ) + 8;
 		*s3 = '\n';
 		s3 = strchr( s2, ' ' ); *s3 = 0;
 		if( strcmp( results[0].url, s2 ) )

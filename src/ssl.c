@@ -1,8 +1,8 @@
 /*
   Axel -- A lighter download accelerator for Linux and other Unices
 
-  Copyright 2016 Sjjad Hashemian
-  Copyright 2016 Stephen Thirlwall
+  Copyright 2016      Sjjad Hashemian
+  Copyright 2016-2017 Stephen Thirlwall
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -65,7 +65,7 @@ void ssl_startup( void )
 	SSL_CTX_set_mode(ssl_ctx, SSL_MODE_AUTO_RETRY);
 }
 
-SSL* ssl_connect( int fd, char *message )
+SSL* ssl_connect( int fd, char *hostname, char *message )
 {
 	SSL* ssl;
 
@@ -73,6 +73,7 @@ SSL* ssl_connect( int fd, char *message )
 
 	ssl = SSL_new( ssl_ctx );
 	SSL_set_fd( ssl, fd );
+	SSL_set_tlsext_host_name(ssl, hostname);
 
 	int err = SSL_connect( ssl );
 	if( err <= 0 ) {

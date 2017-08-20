@@ -3,7 +3,7 @@
 
   Copyright 2001-2007 Wilmer van der Gaast
   Copyright 2010      Mark Smith
-  Copyright 2016      Stephen Thirlwall
+  Copyright 2016-2017 Stephen Thirlwall
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -120,7 +120,7 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 
 #ifdef HAVE_OPENSSL
 	if (secure) {
-		tcp->ssl = ssl_connect(sock_fd, message);
+		tcp->ssl = ssl_connect(sock_fd, hostname, message);
 		if (tcp->ssl == NULL) {
 			close(sock_fd);
 			return -1;

@@ -34,6 +34,9 @@
 
 /* filesearching.com searcher include file */
 
+#ifndef AXEL_SEARCH_H
+#define AXEL_SEARCH_H
+
 typedef struct
 {
 	char url[MAX_STRING];
@@ -46,3 +49,5 @@ typedef struct
 int search_makelist( search_t *results, char *url );
 int search_getspeeds( search_t *results, int count );
 void search_sortlist( search_t *results, int count );
+
+#endif /* AXEL_SEARCH_H */

@@ -38,6 +38,9 @@
 
 /* HTTP control include file */
 
+#ifndef AXEL_HTTP_H
+#define AXEL_HTTP_H
+
 #define MAX_QUERY	2048		/* Should not grow larger.. */
 
 #define USER_AGENT_LEN	2000
@@ -62,9 +65,11 @@ void http_disconnect( http_t *conn );
 void http_get( http_t *conn, char *lurl );
 void http_addheader( http_t *conn, char *format, ... );
 int http_exec( http_t *conn );
-char *http_header( http_t *conn, char *header );
-void http_filename( http_t *conn, char *filename );
+const char *http_header( const http_t *conn, const char *header );
+void http_filename( const http_t *conn, char *filename );
 long long int http_size( http_t *conn );
 long long int http_size_from_range( http_t *conn );
 void http_encode( char *s );
 void http_decode( char *s );
+
+#endif /* AXEL_HTTP_H */

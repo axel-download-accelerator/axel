@@ -4,8 +4,9 @@
   Copyright 2001-2007 Wilmer van der Gaast
   Copyright 2008      Y Giridhar Appaji Nag
   Copyright 2008-2009 Philipp Hagemeister
-  Copyright 2015-2016 Joao Eriberto Mota Filho
+  Copyright 2015-2017 Joao Eriberto Mota Filho
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -37,6 +38,9 @@
 */
 
 /* Main include file */
+
+#ifndef AXEL_AXEL_H
+#define AXEL_AXEL_H
 
 #include "config.h"
 
@@ -79,7 +83,7 @@
 #define MAX_STRING		1024
 #define MAX_ADD_HEADERS	10
 #define MAX_REDIR		5
-#define AXEL_VERSION_STRING	"2.12"
+#define AXEL_VERSION_STRING	"2.13.1"
 #define DEFAULT_USER_AGENT	"Axel " AXEL_VERSION_STRING " (" ARCH ")"
 
 typedef struct
@@ -114,14 +118,17 @@ typedef struct
 	int delay_time;
 	int outfd;
 	int ready;
-	message_t *message;
+	message_t *message, *last_message;
 	url_t *url;
 } axel_t;
 
-axel_t *axel_new( conf_t *conf, int count, void *url );
+axel_t *axel_new( conf_t *conf, int count, const void *url );
 int axel_open( axel_t *axel );
 void axel_start( axel_t *axel );
 void axel_do( axel_t *axel );
 void axel_close( axel_t *axel );
+void print_messages( axel_t *axel );
 
 double gettime();
+
+#endif /* AXEL_AXEL_H */

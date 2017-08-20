@@ -1,10 +1,11 @@
 # Autoconf for axel
 # Copyright 2016 Joao Eriberto Mota Filho
 # Copyright 2016 Stephen Thirlwall
+# Copyright 2017 Vlad Glagolev
 # This file is under same license of Axel
 
 AC_PREREQ([2.69])
-AC_INIT([axel], [2.12], [https://github.com/eribertomota/axel/issues])
+AC_INIT([axel], [2.13.1], [https://github.com/eribertomota/axel/issues])
 AC_CONFIG_SRCDIR([src/conf.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -12,6 +13,11 @@ AM_INIT_AUTOMAKE
 
 # Checks for programs.
 AC_PROG_CC
+AC_PROG_CC_C99
+if test "x$ac_cv_prog_cc_c99" = "xno"; then
+    AC_MSG_ERROR([C99 compiler required])
+fi
+
 AC_CHECK_PROGS([GETTEXT], [gettext], "no")
 if test "x$GETTEXT" = "xno"; then
     AC_MSG_ERROR([axel requires gettext])
@@ -26,11 +32,11 @@ AC_CHECK_HEADERS([arpa/inet.h fcntl.h libintl.h limits.h locale.h netdb.h netine
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([malloc realloc gettimeofday inet_ntoa memset select setlocale socket strcasecmp strchr strrchr strstr])
+AC_CHECK_FUNCS([malloc realloc gettimeofday inet_ntoa memset select setlocale socket strncasecmp strchr strrchr strstr])
 
 # Optional (but included-by-default) openssl support
 AC_ARG_WITH([openssl],
-    AC_HELP_STRING([--without-openssl],[disable TLS support]), [with_openssl=no], [with_openssl=yes])
+    AC_HELP_STRING([--without-openssl],[disable TLS support]), [], [with_openssl=yes])
 
 AS_IF([test "x$with_openssl" != xno], [
     AC_DEFINE([HAVE_OPENSSL], [1], [OpenSSL])
@@ -46,6 +52,9 @@ AS_IF([test "x$with_openssl" != xno], [
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.18])
 
+# Large file support
+AC_SYS_LARGEFILE
+
 #### Definitions ####
 
 # OS
@@ -53,7 +62,7 @@ arch=$(uname -s)
 AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
 
 # Flags
-CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -Wall"
+CFLAGS="$CFLAGS -Wall"
 
 case "$arch" in
 FreeBSD | OpenBSD | NetBSD | Darwin )

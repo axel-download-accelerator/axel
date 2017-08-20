@@ -1,7 +1,7 @@
 /*
   Axel -- A lighter download accelerator for Linux and other Unices
 
-  Copyright 2016 Stephen Thirlwall
+  Copyright 2016-2017 Stephen Thirlwall
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -34,10 +34,15 @@
 
 /* SSL interface */
 
+#ifndef AXEL_SSL_H
+#define AXEL_SSL_H
+
 #ifdef HAVE_OPENSSL
 
 void ssl_init( conf_t *conf );
-SSL* ssl_connect( int fd, char *message );
+SSL* ssl_connect( int fd, char *hostname, char *message );
 void ssl_disconnect( SSL *ssl );
 
 #endif /* HAVE_OPENSSL */
+
+#endif /* AXEL_SSL_H */
