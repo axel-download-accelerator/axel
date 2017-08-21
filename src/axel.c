@@ -59,6 +59,7 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 {
 	const search_t *res;
 	axel_t *axel;
+	int status;
 	url_t *u;
 	char *s;
 	int i;
@@ -140,21 +141,29 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 	if( ( s = strchr( axel->filename, '?' ) ) != NULL && axel->conf->strip_cgi_parameters )
 		*s = 0;		/* Get rid of CGI parameters */
 
-	if( !conn_init( &axel->conn[0] ) )
+	do
 	{
-		axel_message( axel, axel->conn[0].message );
-		axel->ready = -1;
-		return( axel );
-	}
+		if( !conn_init( &axel->conn[0] ) )
+		{
+			axel_message( axel, axel->conn[0].message );
+			axel->ready = -1;
+			return( axel );
+		}
 
-	/* This does more than just checking the file size, it all depends
-	   on the protocol used. */
-	if( !conn_info( &axel->conn[0] ) )
-	{
-		axel_message( axel, axel->conn[0].message );
-		axel->ready = -1;
-		return( axel );
+		/* This does more than just checking the file size, it all
+		 * depends on the protocol used. */
+		status = conn_info( &axel->conn[0] );
+		if( !status )
+		{
+			axel_message( axel, axel->conn[0].message );
+			axel->ready = -1;
+			return( axel );
+		}
 	}
+	/* re-init in case of protocol change. This can happen only once
+	 * because the FTP protocol can't redirect back to HTTP */
+	while( status == -1 );
+
 	s = conn_url( axel->conn );
 	strncpy( axel->url->text, s, MAX_STRING );
 	if( ( axel->size = axel->conn[0].size ) != LLONG_MAX )
