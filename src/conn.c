@@ -377,6 +377,14 @@ int conn_info( conn_t *conn )
 				strncpy( s, conn->http->headers, MAX_STRING );
 			}
 			conn_set( conn, s );
+
+			/* check if the download has been redirected to FTP and
+			 * report it back to the caller */
+			if( PROTO_IS_FTP( conn->proto ) && !conn->proxy )
+			{
+				return ( -1 );
+			}
+
 			i ++;
 		}
 		while( conn->http->status / 100 == 3 && i < MAX_REDIR );
