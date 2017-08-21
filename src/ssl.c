@@ -41,7 +41,7 @@
 
 #include <openssl/err.h>
 
-static SSL_CTX *ssl_ctx = NULL;
+static bool ssl_inited = false;
 static conf_t *conf = NULL;
 
 void ssl_init( conf_t *global_conf )
@@ -51,11 +51,22 @@ void ssl_init( conf_t *global_conf )
 
 void ssl_startup( void )
 {
-	if( ssl_ctx != NULL )
+	if( ssl_inited )
 		return;
 
 	SSL_library_init();
 	SSL_load_error_strings();
+
+	ssl_inited = true;
+}
+
+SSL* ssl_connect( int fd, char *hostname, char *message )
+{
+
+	SSL_CTX* ssl_ctx;
+	SSL* ssl;
+
+	ssl_startup();
 
 	ssl_ctx = SSL_CTX_new( SSLv23_client_method() );
 	if( !conf->insecure ) {
@@ -63,13 +74,6 @@ void ssl_startup( void )
 		SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_PEER, NULL);
 	}
 	SSL_CTX_set_mode(ssl_ctx, SSL_MODE_AUTO_RETRY);
-}
-
-SSL* ssl_connect( int fd, char *hostname, char *message )
-{
-	SSL* ssl;
-
-	ssl_startup();
 
 	ssl = SSL_new( ssl_ctx );
 	SSL_set_fd( ssl, fd );
