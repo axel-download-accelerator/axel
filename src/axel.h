@@ -116,7 +116,7 @@ typedef struct
 	int next_state, finish_time;
 	long long bytes_done, start_byte, size;
 	int bytes_per_second;
-	int delay_time;
+	struct timespec delay_time;
 	int outfd;
 	int ready;
 	message_t *message, *last_message;
@@ -131,5 +131,12 @@ void axel_close( axel_t *axel );
 void print_messages( axel_t *axel );
 
 double gettime();
+
+static inline int axel_nanosleep( struct timespec delay )
+{
+	int res;
+	while( ( res = nanosleep( &delay, &delay ) ) && errno == EINTR );
+	return res;
+}
 
 #endif /* AXEL_AXEL_H */

@@ -60,6 +60,7 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 	const search_t *res;
 	axel_t *axel;
 	int status;
+	long delay;
 	url_t *u;
 	char *s;
 	int i;
@@ -82,7 +83,12 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 				axel_message( axel, _("Buffer resized for this speed.") );
 			axel->conf->buffer_size = axel->conf->max_speed;
 		}
-		axel->delay_time = (int) ( (float) 1000000 / axel->conf->max_speed * axel->conf->buffer_size * axel->conf->num_connections );
+		delay = (int) ( (float) 1000000000 / axel->conf->max_speed *
+				axel->conf->buffer_size *
+				axel->conf->num_connections );
+
+		axel->delay_time.tv_sec = delay / 1000000000;
+		axel->delay_time.tv_nsec = delay % 1000000000;
 	}
 	if( buffer == NULL )
 	{
@@ -383,6 +389,8 @@ void axel_do( axel_t *axel )
 	long long int remaining,size;
 	struct timeval timeval[1];
 	url_t *url_ptr;
+	struct timespec delay = { .tv_sec = 0, .tv_nsec = 100000000 };
+	float max_speed_ratio;
 
 	/* Create statefile if necessary */
 	if( gettime() > axel->next_state )
@@ -404,7 +412,13 @@ void axel_do( axel_t *axel )
 	if( hifd == 0 )
 	{
 		/* No connections yet. Wait... */
-		usleep( 100000 );
+		if ( axel_nanosleep( delay ) < 0 )
+		{
+			axel_message( axel, _("Error while waiting for connection: %s"),
+				      strerror( errno ) );
+			axel->ready = -1;
+			return;
+		}
 		goto conn_check;
 	}
 	else
@@ -556,13 +570,31 @@ conn_check:
 	   down a bit. I think a 5% deviation should be acceptable. */
 	if( axel->conf->max_speed > 0 )
 	{
-		if( (float) axel->bytes_per_second / axel->conf->max_speed > 1.05 )
-			axel->delay_time += 10000;
-		else if( ( (float) axel->bytes_per_second / axel->conf->max_speed < 0.95 ) && ( axel->delay_time >= 10000 ) )
-			axel->delay_time -= 10000;
+		max_speed_ratio = (float) axel->bytes_per_second /
+					  axel->conf->max_speed;
+		if( max_speed_ratio > 1.05 )
+			axel->delay_time.tv_nsec += 10000000;
+		else if( ( max_speed_ratio < 0.95 ) &&
+			 ( axel->delay_time.tv_nsec >= 10000000 ) )
+			axel->delay_time.tv_nsec -= 10000000;
+		else if( ( max_speed_ratio < 0.95 ) &&
+			 ( axel->delay_time.tv_sec > 0 ) )
+		{
+			axel->delay_time.tv_sec--;
+			axel->delay_time.tv_nsec += 999000000;
+		}
 		else if( ( (float) axel->bytes_per_second / axel->conf->max_speed < 0.95 ) )
-			axel->delay_time = 0;
-		usleep( axel->delay_time );
+		{
+			axel->delay_time.tv_sec = 0;
+			axel->delay_time.tv_nsec = 0;
+		}
+		if( axel_nanosleep( axel->delay_time ) < 0 )
+		{
+			axel_message( axel, _("Error while enforcing throttling: %s"),
+				      strerror( errno ) );
+			axel->ready = -1;
+			return;
+		}
 	}
 
 	/* Ready? */
