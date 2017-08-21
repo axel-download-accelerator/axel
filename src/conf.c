@@ -106,6 +106,7 @@ int conf_loadfile( conf_t *conf, char *file )
 		get_config_number( connection_timeout );
 		get_config_number( reconnect_delay );
 		get_config_number( num_connections );
+		get_config_number( max_redirect );
 		get_config_number( buffer_size );
 		get_config_number( max_speed );
 		get_config_number( verbose );
@@ -155,6 +156,7 @@ int conf_init( conf_t *conf )
 	conf->connection_timeout	= 45;
 	conf->reconnect_delay		= 20;
 	conf->num_connections		= 4;
+	conf->max_redirect		= MAX_REDIRECT;
 	conf->buffer_size		= 5120;
 	conf->max_speed			= 0;
 	conf->verbose			= 1;

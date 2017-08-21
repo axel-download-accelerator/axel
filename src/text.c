@@ -54,6 +54,8 @@ static int get_term_width();
 
 int run = 1;
 
+#define MAX_REDIR_OPT	256
+
 #ifdef NOGETOPTLONG
 #define getopt_long( a, b, c, d, e ) getopt( a, b, c )
 #else
@@ -62,6 +64,7 @@ static struct option axel_options[] =
 	/* name			has_arg	flag	val */
 	{ "max-speed",		1,	NULL,	's' },
 	{ "num-connections",	1,	NULL,	'n' },
+	{ "max-redirect",	1,	NULL,   MAX_REDIR_OPT },
 	{ "output",		1,	NULL,	'o' },
 	{ "search",		2,	NULL,	'S' },
 	{ "no-proxy",		0,	NULL,	'N' },
@@ -134,6 +137,13 @@ int main( int argc, char *argv[] )
 				goto free_conf;
 			}
 			break;
+		case MAX_REDIR_OPT:
+			if( !sscanf( optarg, "%i", &conf->max_redirect ) )
+			{
+				print_help();
+				return( 1 );
+			}
+			break;
 		case 'o':
 			strncpy( fn, optarg, sizeof( fn ) );
 			break;
@@ -195,6 +205,12 @@ int main( int argc, char *argv[] )
 	{
 		print_help();
 		goto free_conf;
+	}
+
+	if ( conf->max_redirect < 0)
+	{
+		print_help();
+		return( 1 );
 	}
 
 #ifdef HAVE_OPENSSL
@@ -611,6 +627,7 @@ void print_help()
 		"\n"
 		"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
 		"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
+		"--max-redirect=x\tSpecify maximum number of redirections\n"
 		"--output=f\t\t-o f\tSpecify local output file\n"
 		"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
 		"--header=x\t\t-H x\tAdd header string\n"
