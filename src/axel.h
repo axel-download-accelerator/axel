@@ -60,6 +60,7 @@
 #include <signal.h>
 #include <string.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
