@@ -50,6 +50,7 @@ typedef struct
 	int connection_timeout;
 	int reconnect_delay;
 	int num_connections;
+	int max_redirect;
 	int buffer_size;
 	int max_speed;
 	int verbose;

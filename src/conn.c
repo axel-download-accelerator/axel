@@ -335,7 +335,7 @@ int conn_info( conn_t *conn )
 
 		if( !ftp_cwd( conn->ftp, conn->dir ) )
 			return( 0 );
-		conn->size = ftp_size( conn->ftp, conn->file, MAX_REDIR );
+		conn->size = ftp_size( conn->ftp, conn->file, conn->conf->max_redirect );
 		if( conn->size < 0 )
 			conn->supported = 0;
 		if( conn->size == -1 )
@@ -389,9 +389,9 @@ int conn_info( conn_t *conn )
 
 			i ++;
 		}
-		while( conn->http->status / 100 == 3 && i < MAX_REDIR );
+		while( conn->http->status / 100 == 3 && i < conn->conf->max_redirect );
 
-		if( i == MAX_REDIR )
+		if( i == conn->conf->max_redirect )
 		{
 			sprintf( conn->message, _("Too many redirects.\n") );
 			return( 0 );

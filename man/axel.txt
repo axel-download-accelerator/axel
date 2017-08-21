@@ -30,6 +30,9 @@ OPTIONS
 
  --num-connections=x, -n x  Specify an alternative number of connections.
 
+ --max-redirect=x  Specify an alternative number of redirections to follow when connecting to the
+                   server (default is 20).
+
  --output=x, -o x  Downloaded data will be put in a local file with the same name, unless you specify
                    a different name using this option. You can specify a directory as well, the program
                    will append the filename.
