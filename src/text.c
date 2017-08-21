@@ -242,6 +242,12 @@ int main( int argc, char *argv[] )
 		if( conf->verbose )
 			printf( _("Testing speeds, this can take a while...\n") );
 		j = search_getspeeds( search, i );
+		if ( j < 0 )
+		{
+			fprintf( stderr, _("Speed testing failed\n") );
+			return( 1 );
+		}
+
 		search_sortlist( search, i );
 		if( conf->verbose )
 		{

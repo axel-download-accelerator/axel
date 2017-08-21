@@ -49,7 +49,7 @@ int main( int argc, char *argv[] )
 {
 	conf_t conf[1];
 	search_t *res;
-	int i, j;
+	int i, j, num_mirrors;
 
 	if( argc != 2 )
 	{
@@ -70,7 +70,13 @@ int main( int argc, char *argv[] )
 		fprintf( stderr, "File not found\n" );
 		return( 1 );
 	}
-	printf( "%i usable mirrors:\n", search_getspeeds( res, i ) );
+	num_mirrors = search_getspeeds( res, i );
+	if ( num_mirrors < 0 )
+	{
+		fprintf( stderr, "Speed testing failed\n" );
+		return( 1 );
+	}
+	printf( "%i usable mirrors:\n", num_mirrors );
 	search_sortlist( res, i );
 	for( j = 0; j < i; j ++ )
 		printf( "%-70.70s %5i\n", res[j].url, res[j].speed );
@@ -187,6 +193,7 @@ int search_makelist( search_t *results, char *url )
 int search_getspeeds( search_t *results, int count )
 {
 	int i, running = 0, done = 0, correct = 0;
+	struct timespec delay = { .tv_sec = 0, .tv_nsec = 10000000 };
 
 	for( i = 0; i < count; i ++ ) if( results[i].speed )
 	{
@@ -242,7 +249,8 @@ int search_getspeeds( search_t *results, int count )
 		}
 		if( i == count )
 		{
-			usleep( 100000 );
+			if( axel_nanosleep( delay ) < 0 )
+				return( -1 );
 		}
 	}
 
