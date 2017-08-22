@@ -135,7 +135,7 @@ int main( int argc, char *argv[] )
 			}
 			break;
 		case 'o':
-			strncpy( fn, optarg, MAX_STRING );
+			strncpy( fn, optarg, sizeof( fn ) );
 			break;
 		case 'S':
 			do_search = 1;

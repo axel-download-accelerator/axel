@@ -203,7 +203,7 @@ long long int ftp_size( ftp_t *conn, char *file, int maxredir )
 		strcpy( file, fn );
 
 		/* Get size of the file linked to */
-		strncpy( fn, strstr( s, "->" ) + 3, MAX_STRING );
+		strncpy( fn, strstr( s, "->" ) + 3, sizeof( fn ) );
 		free( reply );
 		if( ( reply = strchr( fn, '\r' ) ) != NULL )
 			*reply = 0;
@@ -285,7 +285,7 @@ int ftp_command( ftp_t *conn, char *format, ... )
 	char cmd[MAX_STRING];
 
 	va_start( params, format );
-	vsnprintf( cmd, MAX_STRING - 3, format, params );
+	vsnprintf( cmd, sizeof( cmd ) - 3, format, params );
 	strcat( cmd, "\r\n" );
 	va_end( params );
 

@@ -84,8 +84,8 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	else
 	{
 		char auth[MAX_STRING];
-		memset( auth, 0, MAX_STRING );
-		snprintf( auth, MAX_STRING, "%s:%s", user, pass );
+		memset( auth, 0, sizeof( auth ) );
+		snprintf( auth, sizeof( auth ), "%s:%s", user, pass );
 		for( int i = 0; auth[i*3]; i ++ )
 		{
 			conn->auth[i*4] = base64_encode[(auth[i*3]>>2)];
@@ -135,7 +135,7 @@ void http_addheader( http_t *conn, char *format, ... )
 	va_list params;
 
 	va_start( params, format );
-	vsnprintf( s, MAX_STRING - 3, format, params );
+	vsnprintf( s, sizeof( s ) - 3, format, params );
 	strcat( s, "\r\n" );
 	va_end( params );
 

@@ -626,7 +626,7 @@ void save_state( axel_t *axel )
 	if( !axel->conn[0].supported )
 		return;
 
-	snprintf( fn, MAX_STRING + 4, "%s.st", axel->filename );
+	snprintf( fn, sizeof( fn ), "%s.st", axel->filename );
 	if( ( fd = open( fn, O_CREAT | O_TRUNC | O_WRONLY, 0666 ) ) == -1 )
 	{
 		return;		/* Not 100% fatal.. */

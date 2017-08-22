@@ -57,7 +57,7 @@ int conn_set( conn_t *conn, const char *set_url )
 	{
 		conn->proto = PROTO_DEFAULT;
 		conn->port = PROTO_DEFAULT_PORT;
-		strncpy( url, set_url, MAX_STRING );
+		strncpy( url, set_url, sizeof( url ) );
 	}
 	else
 	{
@@ -88,7 +88,7 @@ int conn_set( conn_t *conn, const char *set_url )
 		{
 			return( 0 );
 		}
-		strncpy( url, i + 3, MAX_STRING );
+		strncpy( url, i + 3, sizeof( url ) );
 	}
 
 	/* Split */
@@ -285,7 +285,7 @@ int conn_setup( conn_t *conn )
 		char s[MAX_STRING * 2];
 		int i;
 
-		snprintf( s, MAX_STRING * 2, "%s%s", conn->dir, conn->file );
+		snprintf( s, sizeof( s ), "%s%s", conn->dir, conn->file );
 		conn->http->firstbyte = conn->currentbyte;
 		conn->http->lastbyte = conn->lastbyte;
 		http_get( conn->http, s );
@@ -368,13 +368,13 @@ int conn_info( conn_t *conn )
 			{
 				sprintf( conn->http->headers, "%s%s",
 					conn_url( conn ), s );
-				strncpy( s, conn->http->headers, MAX_STRING );
+				strncpy( s, conn->http->headers, sizeof( s ) );
 			}
 			else if( s[0] == '/' )
 			{
 				sprintf( conn->http->headers, "http://%s:%i%s",
 					conn->host, conn->port, s );
-				strncpy( s, conn->http->headers, MAX_STRING );
+				strncpy( s, conn->http->headers, sizeof( s ) );
 			}
 			conn_set( conn, s );
 
