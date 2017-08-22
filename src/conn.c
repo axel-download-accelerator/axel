@@ -339,7 +339,7 @@ int conn_info( conn_t *conn )
 		if( conn->size == -1 )
 			return( 0 );
 		else if( conn->size == -2 )
-			conn->size = INT_MAX;
+			conn->size = LLONG_MAX;
 	}
 	else
 	{
@@ -404,7 +404,7 @@ int conn_info( conn_t *conn )
 		else if( conn->http->status == 200 || conn->http->status == 206 )
 		{
 			conn->supported = 0;
-			conn->size = INT_MAX;
+			conn->size = LLONG_MAX;
 		}
 		else
 		{
