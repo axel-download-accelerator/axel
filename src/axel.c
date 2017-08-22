@@ -572,8 +572,6 @@ void axel_close( axel_t *axel )
 				pthread_cancel( *axel->conn[i].setup_thread );
 			conn_disconnect( &axel->conn[i] );
 		}
-
-		free( axel->conn );
 	}
 
 	free( axel->url );
@@ -593,6 +591,7 @@ void axel_close( axel_t *axel )
 	print_messages( axel );
 
 	close( axel->outfd );
+	free( axel->conn );
 	free( axel );
 }
 
