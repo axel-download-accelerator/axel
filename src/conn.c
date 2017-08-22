@@ -282,10 +282,10 @@ int conn_setup( conn_t *conn )
 	}
 	else
 	{
-		char s[MAX_STRING];
+		char s[MAX_STRING * 2];
 		int i;
 
-		snprintf( s, MAX_STRING, "%s%s", conn->dir, conn->file );
+		snprintf( s, MAX_STRING * 2, "%s%s", conn->dir, conn->file );
 		conn->http->firstbyte = conn->currentbyte;
 		conn->http->lastbyte = conn->lastbyte;
 		http_get( conn->http, s );
