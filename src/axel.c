@@ -85,7 +85,8 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 	}
 	if( buffer == NULL )
 	{
-		buffer = malloc( max( MAX_STRING + 1, axel->conf->buffer_size ) );
+		/* reserve 4 additional bytes for file extension ".st" */
+		buffer = malloc( max( MAX_STRING + 4, axel->conf->buffer_size ) );
 		if( !buffer )
 			goto nomem;
 	}
@@ -186,7 +187,7 @@ int axel_open( axel_t *axel )
 
 	if( axel->conf->verbose > 0 )
 		axel_message( axel, _("Opening output file %s"), axel->filename );
-	snprintf( buffer, MAX_STRING, "%s.st", axel->filename );
+	snprintf( buffer, MAX_STRING + 4, "%s.st", axel->filename );
 
 	axel->outfd = -1;
 
@@ -581,7 +582,7 @@ void axel_close( axel_t *axel )
 	/* Delete state file if necessary */
 	if( axel->ready == 1 )
 	{
-		snprintf( buffer, MAX_STRING, "%s.st", axel->filename );
+		snprintf( buffer, MAX_STRING + 4, "%s.st", axel->filename );
 		unlink( buffer );
 	}
 	/* Else: Create it.. */
@@ -617,7 +618,7 @@ void save_state( axel_t *axel )
 	if( !axel->conn[0].supported )
 		return;
 
-	snprintf( fn, MAX_STRING, "%s.st", axel->filename );
+	snprintf( fn, MAX_STRING + 4, "%s.st", axel->filename );
 	if( ( fd = open( fn, O_CREAT | O_TRUNC | O_WRONLY, 0666 ) ) == -1 )
 	{
 		return;		/* Not 100% fatal.. */
