@@ -108,7 +108,9 @@ int conn_set( conn_t *conn, const char *set_url )
 	if( j != NULL )
 		*j = 0;
 	i = strrchr( conn->dir, '/' );
-	*i = 0;
+	if( i != NULL )
+		*i = 0;
+
 	if( j != NULL )
 		*j = '?';
 	if( i == NULL )
