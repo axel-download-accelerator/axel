@@ -205,6 +205,7 @@ int main( int argc, char *argv[] )
 		s = malloc( MAX_STRING );
 		if (scanf( "%1024[^\n]s", s) != 1) {
 			fprintf( stderr, _("Error when trying to read URL (Too long?).\n") );
+			free( s );
 			return( 1 );
 		}
 	}
