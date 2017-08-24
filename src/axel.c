@@ -546,7 +546,10 @@ conn_check:
 
 	/* Calculate current average speed and finish_time */
 	axel->bytes_per_second = (int) ( (double) ( axel->bytes_done - axel->start_byte ) / ( gettime() - axel->start_time ) );
-	axel->finish_time = (int) ( axel->start_time + (double) ( axel->size - axel->start_byte ) / axel->bytes_per_second );
+	if( axel->bytes_per_second != 0 )
+		axel->finish_time = (int) ( axel->start_time + (double) ( axel->size - axel->start_byte ) / axel->bytes_per_second );
+	else
+		axel->finish_time = INT_MAX;
 
 	/* Check speed. If too high, delay for some time to slow things
 	   down a bit. I think a 5% deviation should be acceptable. */
