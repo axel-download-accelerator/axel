@@ -366,10 +366,6 @@ void axel_start( axel_t *axel )
 			axel_message( axel, _("pthread error!!!") );
 			axel->ready = -1;
 		}
-		else
-		{
-			axel->conn[i].last_transfer = gettime();
-		}
 	}
 
 	/* The real downloading will start now, so let's start counting */
