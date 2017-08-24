@@ -41,23 +41,27 @@
 
 #include <openssl/err.h>
 
+static pthread_mutex_t ssl_lock;
 static bool ssl_inited = false;
 static conf_t *conf = NULL;
 
 void ssl_init( conf_t *global_conf )
 {
+	pthread_mutex_init( &ssl_lock, NULL );
 	conf = global_conf;
 }
 
 void ssl_startup( void )
 {
-	if( ssl_inited )
-		return;
+	pthread_mutex_lock( &ssl_lock );
+	if( !ssl_inited )
+	{
+		SSL_library_init();
+		SSL_load_error_strings();
 
-	SSL_library_init();
-	SSL_load_error_strings();
-
-	ssl_inited = true;
+		ssl_inited = true;
+	}
+	pthread_mutex_unlock( &ssl_lock  );
 }
 
 SSL* ssl_connect( int fd, char *hostname, char *message )
