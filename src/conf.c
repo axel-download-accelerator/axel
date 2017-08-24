@@ -197,6 +197,12 @@ int conf_init( conf_t *conf )
 	return( 1 );
 }
 
+/* release resources allocated by conf_init() */
+void conf_free( conf_t *conf )
+{
+	free( conf->interfaces );
+}
+
 int parse_interfaces( conf_t *conf, char *s )
 {
 	char *s2;

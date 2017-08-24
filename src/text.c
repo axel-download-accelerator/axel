@@ -454,6 +454,7 @@ int main( int argc, char *argv[] )
 	i = axel->ready ? 0 : 2;
 
 	axel_close( axel );
+	conf_free( conf );
 
 	return( i );
 }
