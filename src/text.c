@@ -184,7 +184,11 @@ int main( int argc, char *argv[] )
 		}
 	}
 	conf->add_header_count = cur_head;
-	if( j > -1 )
+
+	/* disable alternate output and verbosity when quiet is specified */
+	if( conf->verbose < 0 )
+		conf->alternate_output = 0;
+	else if( j > -1 )
 		conf->verbose = j;
 
 	if ( conf->num_connections < 1)
