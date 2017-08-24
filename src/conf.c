@@ -43,13 +43,13 @@
 
 /* Some nifty macro's.. */
 #define get_config_string( name )				\
-	if( strcmp( key, #name ) == 0 )				\
+	if( value && strcmp( key, #name ) == 0 )		\
 	{							\
 		st = 1;						\
 		strcpy( conf->name, value );			\
 	}
 #define get_config_number( name )				\
-	if( strcmp( key, #name ) == 0 )				\
+	if( value && strcmp( key, #name ) == 0 )		\
 	{							\
 		st = 1;						\
 		sscanf( value, "%i", &conf->name );		\
@@ -61,7 +61,7 @@ int conf_loadfile( conf_t *conf, char *file )
 {
 	int line = 0;
 	FILE *fp;
-	char s[MAX_STRING], key[MAX_STRING], value[MAX_STRING];
+	char s[MAX_STRING], key[MAX_STRING];
 
 	fp = fopen( file, "r" );
 	if( fp == NULL )
@@ -69,6 +69,7 @@ int conf_loadfile( conf_t *conf, char *file )
 
 	while( !feof( fp ) )
 	{
+		char *tmp, *value = NULL;
 		int st;
 
 		line ++;
@@ -77,23 +78,18 @@ int conf_loadfile( conf_t *conf, char *file )
 		fscanf( fp, "%100[^\n#]s", s );
 		fscanf( fp, "%*[^\n]s" );
 		fgetc( fp );			/* Skip newline */
-		if( strchr( s, '=' ) == NULL )
+		tmp = strchr( s, '=' );
+		if( tmp == NULL )
 			continue;		/* Probably empty? */
+
 		sscanf( s, "%[^= \t]s", key );
-		{
-			int i;
-			for( i = 0; s[i]; i ++ )
-				if( s[i] == '=' )
-				{
-					for( i ++; isspace( (int) s[i] ) && s[i]; i ++ );
-					break;
-				}
-			strcpy( value, &s[i] );
-		}
-		/* FIXME: could be optimized to re-use the previous loop and
-		   write a single zero. */
-		for( int i = strlen( value ) - 1; isspace( (int) value[i] ); i -- )
-			value[i] = 0;
+
+		/* Skip the "=" and any spaces following it */
+		while( isspace( * ++ tmp ) ); /* XXX isspace('\0') is false */
+		value = tmp;
+		/* Get to the end of the value string */
+		while ( *tmp && !isspace( *tmp ) ) tmp++;
+		*tmp = '\0';
 
 		st = 0;
 
