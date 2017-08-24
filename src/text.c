@@ -88,7 +88,7 @@ int main( int argc, char *argv[] )
 	search_t *search;
 	conf_t conf[1];
 	axel_t *axel;
-	int i, j, cur_head = 0;
+	int i, j, cur_head = 0, ret = 1;
 	char *s;
 
 /* Set up internationalization (i18n) */
@@ -124,14 +124,14 @@ int main( int argc, char *argv[] )
 			if( !sscanf( optarg, "%i", &conf->max_speed ) )
 			{
 				print_help();
-				return( 1 );
+				goto free_conf;
 			}
 			break;
 		case 'n':
 			if( !sscanf( optarg, "%i", &conf->num_connections ) )
 			{
 				print_help();
-				return( 1 );
+				goto free_conf;
 			}
 			break;
 		case 'o':
@@ -143,7 +143,7 @@ int main( int argc, char *argv[] )
 			if( !sscanf( optarg, "%i", &conf->search_top ) )
 			{
 				print_help();
-				return( 1 );
+				goto free_conf;
 			}
 			break;
 		case 'a':
@@ -157,7 +157,8 @@ int main( int argc, char *argv[] )
 			break;
 		case 'h':
 			print_help();
-			return( 0 );
+			ret = 0;
+			goto free_conf;
 		case 'v':
 			if( j == -1 )
 				j = 1;
@@ -166,19 +167,20 @@ int main( int argc, char *argv[] )
 			break;
 		case 'V':
 			print_version();
-			return( 0 );
+			ret = 0;
+			goto free_conf;
 		case 'q':
 			close( 1 );
 			conf->verbose = -1;
 			if( open( "/dev/null", O_WRONLY ) != 1 )
 			{
 				fprintf( stderr, _("Can't redirect stdout to /dev/null.\n") );
-				return( 1 );
+				goto free_conf;
 			}
 			break;
 		default:
 			print_help();
-			return( 1 );
+			goto free_conf;
 		}
 	}
 	conf->add_header_count = cur_head;
@@ -188,7 +190,7 @@ int main( int argc, char *argv[] )
 	if ( conf->num_connections < 1)
 	{
 		print_help();
-		return( 1 );
+		goto free_conf;
 	}
 
 #ifdef HAVE_OPENSSL
@@ -198,7 +200,7 @@ int main( int argc, char *argv[] )
 	if( argc - optind == 0 )
 	{
 		print_help();
-		return( 1 );
+		goto free_conf;
 	}
 	else if( strcmp( argv[optind], "-" ) == 0 )
 	{
@@ -206,7 +208,7 @@ int main( int argc, char *argv[] )
 		if (scanf( "%1024[^\n]s", s) != 1) {
 			fprintf( stderr, _("Error when trying to read URL (Too long?).\n") );
 			free( s );
-			return( 1 );
+			goto free_conf;
 		}
 	}
 	else
@@ -215,7 +217,7 @@ int main( int argc, char *argv[] )
 		if( strlen( s ) > MAX_STRING )
 		{
 			fprintf( stderr, _("Can't handle URLs of length over %d\n" ), MAX_STRING );
-			return( 1 );
+			goto free_conf;
 		}
 	}
 
@@ -231,7 +233,7 @@ int main( int argc, char *argv[] )
 		if( i < 0 )
 		{
 			fprintf( stderr, _("File not found\n" ) );
-			return( 1 );
+			goto free_conf;
 		}
 		if( conf->verbose )
 			printf( _("Testing speeds, this can take a while...\n") );
@@ -251,8 +253,7 @@ int main( int argc, char *argv[] )
 		if( axel->ready == -1 )
 		{
 			print_messages( axel );
-			axel_close( axel );
-			return( 1 );
+			goto close_axel;
 		}
 	}
 	else if( argc - optind == 1 )
@@ -261,8 +262,7 @@ int main( int argc, char *argv[] )
 		if( axel->ready == -1 )
 		{
 			print_messages( axel );
-			axel_close( axel );
-			return( 1 );
+			goto close_axel;
 		}
 	}
 	else
@@ -276,8 +276,7 @@ int main( int argc, char *argv[] )
 		if( axel->ready == -1 )
 		{
 			print_messages( axel );
-			axel_close( axel );
-			return( 1 );
+			goto close_axel;
 		}
 	}
 	print_messages( axel );
@@ -299,7 +298,7 @@ int main( int argc, char *argv[] )
 
 				if (fnlen + 1 + axelfnlen + 1 > MAX_STRING) {
 					fprintf( stderr, _("Filename too long!\n"));
-					return ( 1 );
+					goto close_axel;
 				}
 
 				fn[fnlen] = '/';
@@ -311,7 +310,7 @@ int main( int argc, char *argv[] )
 		if( access( fn, F_OK ) == 0 && access( string, F_OK ) != 0 )
 		{
 			fprintf( stderr, _("No state file, cannot resume!\n") );
-			return( 1 );
+			goto close_axel;
 		}
 		if( access( string, F_OK ) == 0 && access( fn, F_OK ) != 0 )
 		{
@@ -349,7 +348,7 @@ int main( int argc, char *argv[] )
 	if( !axel_open( axel ) )
 	{
 		print_messages( axel );
-		return( 1 );
+		goto close_axel;
 	}
 	print_messages( axel );
 	axel_start( axel );
@@ -451,12 +450,14 @@ int main( int argc, char *argv[] )
 		time_human( gettime() - axel->start_time ),
 		(double) axel->bytes_per_second / 1024 );
 
-	i = axel->ready ? 0 : 2;
+	ret = axel->ready ? 0 : 2;
 
+close_axel:
 	axel_close( axel );
+free_conf:
 	conf_free( conf );
 
-	return( i );
+	return( ret );
 }
 
 /* SIGINT/SIGTERM handler */
