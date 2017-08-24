@@ -539,6 +539,7 @@ conn_check:
 				{
 					pthread_cancel( *axel->conn[i].setup_thread );
 					axel->conn[i].state = 0;
+					pthread_join( *axel->conn[i].setup_thread, NULL );
 				}
 			}
 		}
@@ -582,7 +583,10 @@ void axel_close( axel_t *axel )
 		{
 			/* don't try to kill non existing thread */
 			if ( *axel->conn[i].setup_thread != 0 )
+			{
 				pthread_cancel( *axel->conn[i].setup_thread );
+				pthread_join( *axel->conn[i].setup_thread, NULL );
+			}
 			conn_disconnect( &axel->conn[i] );
 		}
 	}
