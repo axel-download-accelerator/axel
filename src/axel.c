@@ -329,13 +329,15 @@ void reactivate_connection(axel_t *axel, int thread)
 void axel_start( axel_t *axel )
 {
 	int i;
+	url_t *url_ptr;
 
 	/* HTTP might've redirected and FTP handles wildcards, so
 	   re-scan the URL for every conn */
+	url_ptr = axel->url;
 	for( i = 0; i < axel->conf->num_connections; i ++ )
 	{
-		conn_set( &axel->conn[i], axel->url->text );
-		axel->url = axel->url->next;
+		conn_set( &axel->conn[i], url_ptr->text );
+		url_ptr = url_ptr->next;
 		axel->conn[i].local_if = axel->conf->interfaces->text;
 		axel->conf->interfaces = axel->conf->interfaces->next;
 		axel->conn[i].conf = axel->conf;
@@ -380,6 +382,7 @@ void axel_do( axel_t *axel )
 	int hifd, i;
 	long long int remaining,size;
 	struct timeval timeval[1];
+	url_t *url_ptr;
 
 	/* Create statefile if necessary */
 	if( gettime() > axel->next_state )
@@ -501,6 +504,7 @@ void axel_do( axel_t *axel )
 
 conn_check:
 	/* Look for aborted connections and attempt to restart them. */
+	url_ptr = axel->url;
 	for( i = 0; i < axel->conf->num_connections; i ++ )
 	{
 		if( !axel->conn[i].enabled && axel->conn[i].currentbyte < axel->conn[i].lastbyte )
@@ -510,8 +514,8 @@ conn_check:
 				// Wait for termination of this thread
 				pthread_join(*(axel->conn[i].setup_thread), NULL);
 
-				conn_set( &axel->conn[i], axel->url->text );
-				axel->url = axel->url->next;
+				conn_set( &axel->conn[i], url_ptr->text );
+				url_ptr = url_ptr->next;
 				/* axel->conn[i].local_if = axel->conf->interfaces->text;
 				axel->conf->interfaces = axel->conf->interfaces->next; */
 				if( axel->conf->verbose >= 2 )
