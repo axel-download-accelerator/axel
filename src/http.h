@@ -60,7 +60,7 @@ typedef struct
 
 int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, char *user, char *pass );
 void http_disconnect( http_t *conn );
-void http_get( http_t *conn, char *lurl );
+void http_get( http_t *conn, int port, char *lurl );
 void http_addheader( http_t *conn, char *format, ... );
 int http_exec( http_t *conn );
 const char *http_header( const http_t *conn, const char *header );

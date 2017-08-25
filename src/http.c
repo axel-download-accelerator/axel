@@ -105,7 +105,7 @@ void http_disconnect( http_t *conn )
 	tcp_close( &conn->tcp );
 }
 
-void http_get( http_t *conn, char *lurl )
+void http_get( http_t *conn, int port, char *lurl )
 {
 	*conn->request = 0;
 	if( conn->proxy )
@@ -116,7 +116,15 @@ void http_get( http_t *conn, char *lurl )
 	else
 	{
 		http_addheader( conn, "GET %s HTTP/1.0", lurl );
-		http_addheader( conn, "Host: %s", conn->host );
+                /*
+                  Set port as part of Host header only if it is available and valid.
+                  - https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23
+                */
+                if ( port > 0 && port != 443 && port != 80 ) {
+                        http_addheader( conn, "Host: %s:%d", conn->host, port );
+                } else {
+                        http_addheader( conn, "Host: %s", conn->host, port );
+                }
 	}
 	if( *conn->auth )
 		http_addheader( conn, "Authorization: Basic %s", conn->auth );

@@ -290,7 +290,7 @@ int conn_setup( conn_t *conn )
 		snprintf( s, sizeof( s ), "%s%s", conn->dir, conn->file );
 		conn->http->firstbyte = conn->currentbyte;
 		conn->http->lastbyte = conn->lastbyte;
-		http_get( conn->http, s );
+		http_get( conn->http, conn->port, s );
 		http_addheader( conn->http, "User-Agent: %s", conn->conf->user_agent );
 		for( i = 0; i < conn->conf->add_header_count; i++)
 			http_addheader( conn->http, "%s", conn->conf->add_header[i] );
