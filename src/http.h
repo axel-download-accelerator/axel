@@ -43,6 +43,8 @@
 
 #define MAX_QUERY	2048		/* Should not grow larger.. */
 
+#define USER_AGENT_LEN	2000
+
 typedef struct
 {
 	char host[MAX_STRING];

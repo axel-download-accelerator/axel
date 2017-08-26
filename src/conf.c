@@ -75,8 +75,10 @@ int conf_loadfile( conf_t *conf, char *file )
 		line ++;
 
 		*s = 0;
-		fscanf( fp, "%100[^\n#]s", s );
-		fscanf( fp, "%*[^\n]s" );
+		if( fscanf( fp, "%100[^\n#]s", s ) == 0 )
+			fprintf( stderr, _("Error in %s line %i.\n"), file, line );
+		if( fscanf( fp, "%*[^\n]s" ) == 0 )
+			fprintf( stderr, _("Error in %s line %i.\n"), file, line );
 		fgetc( fp );			/* Skip newline */
 		tmp = strchr( s, '=' );
 		if( tmp == NULL )
