@@ -57,6 +57,26 @@
 
 int parse_interfaces( conf_t *conf, char *s );
 
+static int axel_fscanf( FILE *fp, const char *format, ...)
+{
+	va_list params;
+	int ret;
+
+	va_start( params, format );
+	ret = vfscanf( fp, format, params );
+	va_end( params );
+
+	if( ret == EOF  && ferror(fp) )
+	{
+		fprintf( stderr, _("I/O error while reading config file: %s\n"),
+			 strerror(errno) );
+		fclose( fp );
+		return( 0 );
+	}
+
+	return( 1 );
+}
+
 int conf_loadfile( conf_t *conf, char *file )
 {
 	int line = 0;
@@ -75,8 +95,16 @@ int conf_loadfile( conf_t *conf, char *file )
 		line ++;
 
 		*s = 0;
-		fscanf( fp, "%100[^\n#]s", s );
-		fscanf( fp, "%*[^\n]s" );
+		if( !axel_fscanf( fp, "%100[^\n#]s", s ) )
+		{
+			fclose( fp );
+			return( 0 );
+		}
+		if( !axel_fscanf( fp, "%*[^\n]s" ) )
+		{
+			fclose( fp );
+			return( 0 );
+		}
 		fgetc( fp );			/* Skip newline */
 		tmp = strchr( s, '=' );
 		if( tmp == NULL )
