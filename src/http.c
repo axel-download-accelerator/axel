@@ -52,6 +52,7 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	conn_t tconn[1];
 
 	strncpy( conn->host, host, MAX_STRING );
+	conn->port = port;
 	conn->proto = proto;
 
 	if( proxy != NULL ) { if( *proxy != 0 )
@@ -116,7 +117,11 @@ void http_get( http_t *conn, char *lurl )
 	else
 	{
 		http_addheader( conn, "GET %s HTTP/1.0", lurl );
-		http_addheader( conn, "Host: %s", conn->host );
+		if ( ( conn->proto == PROTO_HTTP && conn->port != PROTO_HTTP_PORT ) ||
+		     ( conn->proto == PROTO_HTTPS && conn->port != PROTO_HTTPS_PORT ) )
+			http_addheader( conn, "Host: %s:%i", conn->host, conn->port );
+		else
+			http_addheader( conn, "Host: %s", conn->host );
 	}
 	if( *conn->auth )
 		http_addheader( conn, "Authorization: Basic %s", conn->auth );
