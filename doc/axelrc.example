@@ -21,6 +21,11 @@
 #
 # num_connections = 4
 
+# Set the maximum number of redirects that Axel is allowed to follow. The
+# default value is 20.
+#
+# max_redirect = 20
+
 # If no data comes from a connection for this number of seconds, abort (and
 # resume) the connection.
 #
