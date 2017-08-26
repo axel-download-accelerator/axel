@@ -49,6 +49,7 @@ typedef struct
 	char auth[MAX_STRING];
 	char request[MAX_QUERY];
 	char headers[MAX_QUERY];
+	int port;
 	int proto;			/* FTP through HTTP proxies */
 	int proxy;
 	long long int firstbyte;
