@@ -65,7 +65,10 @@ AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
 CFLAGS="$CFLAGS -Wall"
 
 case "$arch" in
-FreeBSD | OpenBSD | NetBSD | Darwin )
+Darwin )
+    LDFLAGS="$LDFLAGS -lintl"
+;;
+FreeBSD | OpenBSD | NetBSD )
     LDFLAGS="$LDFLAGS -lintl -pthread"
 ;;
 Linux | GNU/kFreeBSD | GNU )
