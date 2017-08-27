@@ -110,7 +110,7 @@ typedef message_t if_t;
 typedef struct
 {
 	conn_t *conn;
-	conf_t conf[1];
+	conf_t *conf;
 	char filename[MAX_STRING];
 	double start_time;
 	int next_state, finish_time;
