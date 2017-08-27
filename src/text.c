@@ -557,7 +557,7 @@ static void print_alternate_output(axel_t *axel)
 	}
 
 	width -= 30;
-	progress = malloc(width);
+	progress = malloc( width + 1 );
 	memset(progress, '.', width);
 
 	for(int i=0;i<axel->conf->num_connections;i++)
