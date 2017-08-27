@@ -45,28 +45,46 @@
 
 #include "axel.h"
 
+inline static char chain_next(const char ***p)
+{
+	while( **p && !***p ) ++ *p;
+	return **p ? *(**p)++ : 0;
+}
+
 static void http_auth_token( char *token, char *user, char *pass )
 {
-	char base64_encode[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		"abcdefghijklmnopqrstuvwxyz0123456789+/";
-	char auth[MAX_STRING];
-	int i;
+	const char base64_encode[64] =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		"abcdefghijklmnopqrstuvwxyz"
+		"0123456789+/";
+	const char *auth[] = { user, ":", pass, NULL };
+	const char **p = auth;
 
-	memset( auth, 0, sizeof( auth ) );
-	snprintf( auth, sizeof( auth ), "%s:%s", user, pass );
-
-	for( i = 0; auth[i * 3]; i ++ )
+	while( *p && **p )
 	{
-		token[i * 4] = base64_encode[( auth[i * 3] >> 2 )];
-		token[i * 4 + 1] = base64_encode[( ( auth[i * 3] & 3 ) << 4) |
-						 ( auth[i * 3 + 1] >> 4 )];
-		token[i * 4 + 2] = base64_encode[( ( auth[i * 3 + 1] & 15) << 2 ) |
-						 ( auth[i * 3 + 2] >> 6 )];
-		token[i * 4 + 3] = base64_encode[auth[i * 3 + 2] & 63];
-		if( auth[i * 3 + 2] == 0 )
-			token[i * 4 + 3] = '=';
-		if( auth[i * 3 + 1] == 0 )
-			token[i * 4 + 2] = '=';
+		char a = chain_next(&p);
+		*token++ = base64_encode[ a >> 2 ];
+		char b = chain_next(&p);
+		*token++ = base64_encode[ ( ( a & 3 ) << 4 ) | ( b >> 4 ) ];
+		if( !b )
+		{
+			*token++ = '=';
+			*token++ = '=';
+			break;
+		}
+		else
+		{
+			char c = chain_next(&p);
+			*token++ = base64_encode[( ( b & 15) << 2 )
+						 | ( c >> 6 )];
+			if( !c )
+			{
+				*token++ = '=';
+				break;
+			}
+			else
+				*token++ = base64_encode[c & 63];
+		}
 	}
 }
 
