@@ -67,6 +67,8 @@ static struct option axel_options[] =
 	{ "max-redirect",	1,	NULL,   MAX_REDIR_OPT },
 	{ "output",		1,	NULL,	'o' },
 	{ "search",		2,	NULL,	'S' },
+	{ "ipv4",		0,	NULL,	'4' },
+	{ "ipv6",		0,	NULL,	'6' },
 	{ "no-proxy",		0,	NULL,	'N' },
 	{ "quiet",		0,	NULL,	'q' },
 	{ "verbose",		0,	NULL,	'v' },
@@ -111,7 +113,7 @@ int main( int argc, char *argv[] )
 	{
 		int option;
 
-		option = getopt_long( argc, argv, "s:n:o:S::NqvhVakH:U:", axel_options, NULL );
+		option = getopt_long( argc, argv, "s:n:o:S::46NqvhVakH:U:", axel_options, NULL );
 		if( option == -1 )
 			break;
 
@@ -155,6 +157,12 @@ int main( int argc, char *argv[] )
 				print_help();
 				goto free_conf;
 			}
+			break;
+		case '6':
+			conf->ai_family = AF_INET6;
+			break;
+		case '4':
+			conf->ai_family = AF_INET;
 			break;
 		case 'a':
 			conf->alternate_output = 1;
@@ -623,6 +631,8 @@ void print_help()
 		"-n x\tSpecify maximum number of connections\n"
 		"-o f\tSpecify local output file\n"
 		"-S [x]\tSearch for mirrors and download from x servers\n"
+		"-4\tConnect using IPv4\n"
+		"-6\tConnect using IPv6\n"
 		"-H x\tAdd header string\n"
 		"-U x\tSet user agent\n"
 		"-N\tJust don't use any proxy server\n"
@@ -642,6 +652,8 @@ void print_help()
 		"--max-redirect=x\tSpecify maximum number of redirections\n"
 		"--output=f\t\t-o f\tSpecify local output file\n"
 		"--search[=x]\t\t-S [x]\tSearch for mirrors and download from x servers\n"
+		"--ipv4\t\t-4\tUse the IPv4 protocol\n"
+		"--ipv6\t\t-6\tUse the IPv6 protocol\n"
 		"--header=x\t\t-H x\tAdd header string\n"
 		"--user-agent=x\t\t-U x\tSet user agent\n"
 		"--no-proxy\t\t-N\tJust don't use any proxy server\n"

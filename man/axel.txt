@@ -43,6 +43,10 @@ OPTIONS
                       time-consuming because the program tests every server's speed, and it checks
                       whether the file's still available.
 
+ --ipv6, -6  Use the IPv6 protocol only when connecting to the host.
+
+ --ipv4, -4  Use the IPv4 protocol only when connecting to the host.
+
  --no-proxy, -N  Do not use any proxy server to download the file. Not possible when a transparent proxy
                  is active somewhere, of course.
 

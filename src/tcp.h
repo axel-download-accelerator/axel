@@ -40,6 +40,7 @@
 
 typedef struct {
 	int fd;
+	sa_family_t ai_family;
 	SSL *ssl;
 } tcp_t;
 
