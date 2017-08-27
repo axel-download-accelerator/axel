@@ -70,7 +70,7 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 		goto nomem;
 
 	memset( axel, 0, sizeof( axel_t ) );
-	*axel->conf = *conf;
+	axel->conf = conf;
 	axel->conn = malloc( sizeof( conn_t ) * axel->conf->num_connections );
 	if( !axel->conn )
 		goto nomem;
