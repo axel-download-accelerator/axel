@@ -23,6 +23,7 @@ ChangeLog file (version 2.5 and later releases). I also maintain Axel
 packaged in Debian[2].
 
 If you are interested to help Axel, read the [CONTRIBUTING.md](CONTRIBUTING.md) file. Additionally, there is a group to discuss and to coordinate the development process[3].
+You can also find other developers in the #axel channel on freenode.
 
 [1] https://alioth.debian.org/projects/axel
 [2] https://packages.qa.debian.org/a/axel.html
