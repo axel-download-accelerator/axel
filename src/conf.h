@@ -59,6 +59,8 @@ typedef struct
 
 	if_t *interfaces;
 
+	sa_family_t ai_family;
+
 	int search_timeout;
 	int search_threads;
 	int search_amount;

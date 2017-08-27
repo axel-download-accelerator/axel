@@ -56,7 +56,7 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 	int sock_fd = -1;
 
 
-	if (local_if && *local_if) {
+	if (tcp->ai_family == AF_INET && local_if && *local_if) {
 		local_addr.sin_family = AF_INET;
 		local_addr.sin_port = 0;
 		local_addr.sin_addr.s_addr = inet_addr(local_if);
@@ -65,7 +65,7 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 	snprintf(portstr, portstr_len, "%d", port);
 
 	memset(&ai_hints, 0, sizeof(ai_hints));
-	ai_hints.ai_family = AF_UNSPEC;
+	ai_hints.ai_family = tcp->ai_family;
 	ai_hints.ai_socktype = SOCK_STREAM;
 	ai_hints.ai_flags = AI_ADDRCONFIG;
 	ai_hints.ai_protocol = 0;

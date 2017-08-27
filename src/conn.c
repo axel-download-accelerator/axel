@@ -234,6 +234,7 @@ int conn_init( conn_t *conn )
 	{
 		conn->ftp->local_if = conn->local_if;
 		conn->ftp->ftp_mode = FTP_PASSIVE;
+		conn->ftp->tcp.ai_family = conn->conf->ai_family;
 		if( !ftp_connect( conn->ftp, conn->proto, conn->host, conn->port, conn->user, conn->pass ) )
 		{
 			conn->message = conn->ftp->message;
@@ -250,6 +251,7 @@ int conn_init( conn_t *conn )
 	else
 	{
 		conn->http->local_if = conn->local_if;
+		conn->http->tcp.ai_family = conn->conf->ai_family;
 		if( !http_connect( conn->http, conn->proto, proxy, conn->host, conn->port, conn->user, conn->pass ) )
 		{
 			conn->message = conn->http->headers;

@@ -34,6 +34,14 @@
 # Set proxies. no_proxy is a comma-separated list of domains which are
 # local, axel won't use any proxy for them. You don't have to specify full
 # hostnames there.
+
+# Choose the IP protocol to use among IPv4 and IPv6. When a protocol is
+# chosen, no connection attempt will be performed with the other. Possible
+# value are "ipv4" or "ipv6". By default anyone will be used based on
+# the address returned by the resolv library.
+#
+# use_protocol= ipv4
+
 #
 # Note: If the HTTP_PROXY environment variable is set correctly already,
 # you don't have to set it again here. The setting should be in the same

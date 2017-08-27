@@ -68,6 +68,21 @@ static int axel_fscanf( FILE *fp, const char *format, ...)
 	return( ret );
 }
 
+static int parse_protocol( conf_t *conf, const char *value )
+{
+	if( strcasecmp( value, "ipv4" ) == 0 )
+		conf->ai_family = AF_INET;
+	else if( strcasecmp( value, "ipv6" ) == 0 )
+		conf->ai_family = AF_INET6;
+	else
+	{
+		fprintf( stderr, _( "Unknown protocol %s\n" ), value );
+		return( 0 );
+	}
+
+	return( 1 );
+}
+
 int conf_loadfile( conf_t *conf, char *file )
 {
 	int line = 0, ret = 1;
@@ -150,6 +165,11 @@ int conf_loadfile( conf_t *conf, char *file )
 			if( parse_interfaces( conf, value ) )
 				continue;
 		}
+		else if( strcmp( key, "use_protocol" ) == 0 )
+		{
+			if( parse_protocol( conf, value ) )
+				continue;
+		}
 
 #if 0
 		/* FIXME broken code */
@@ -194,6 +214,9 @@ int conf_init( conf_t *conf )
 	conf->search_amount		= 15;
 	conf->search_top		= 3;
 	conf->add_header_count		= 0;
+
+	conf->ai_family			= AF_UNSPEC;
+
 	strncpy( conf->user_agent, DEFAULT_USER_AGENT, MAX_STRING );
 
 	conf->interfaces = malloc( sizeof( if_t ) );
