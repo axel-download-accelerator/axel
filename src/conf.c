@@ -145,6 +145,11 @@ int conf_loadfile( conf_t *conf, char *file )
 		/* Option defunct but shouldn't be an error */
 		if( strcmp( key, "speed_type" ) == 0 )
 			continue;
+		else if( strcmp( key, "interfaces" ) == 0 )
+		{
+			if( parse_interfaces( conf, value ) )
+				continue;
+		}
 
 #if 0
 		/* FIXME broken code */
@@ -152,10 +157,6 @@ int conf_loadfile( conf_t *conf, char *file )
 		for(int i=0;i<conf->add_header_count;i++)
 			get_config_string( add_header[i] );
 #endif
-
-		if( strcmp( key, "interfaces" ) == 0 )
-			if( parse_interfaces( conf, value ) )
-				continue;
 
 		fprintf( stderr, _("Error in %s line %i.\n"), file, line );
 		ret = 0;
