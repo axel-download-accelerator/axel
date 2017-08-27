@@ -385,8 +385,8 @@ void axel_start( axel_t *axel )
 void axel_do( axel_t *axel )
 {
 	fd_set fds[1];
-	int hifd, i;
-	long long int remaining,size;
+	int hifd, i, status;
+	long long int remaining, size, wsize;
 	struct timeval timeval[1];
 	url_t *url_ptr;
 	struct timespec delay = { .tv_sec = 0, .tv_nsec = 100000000 };
@@ -427,7 +427,13 @@ void axel_do( axel_t *axel )
 		timeval->tv_usec = 100000;
 		/* A select() error probably means it was interrupted
 		   by a signal, or that something else's very wrong... */
-		if( select( hifd + 1, fds, NULL, NULL, timeval ) == -1 )
+		do
+		{
+			status = select( hifd + 1, fds, NULL, NULL, timeval );
+		}
+		while(status == -1 && errno == EINTR);
+
+		if(status == -1)
 		{
 			axel->ready = -1;
 			return;
@@ -440,7 +446,12 @@ void axel_do( axel_t *axel )
 	if( FD_ISSET( axel->conn[i].tcp->fd, fds ) )
 	{
 		axel->conn[i].last_transfer = gettime();
-		size = tcp_read( axel->conn[i].tcp, buffer, axel->conf->buffer_size );
+		do
+		{
+			size = tcp_read( axel->conn[i].tcp, buffer, axel->conf->buffer_size );
+		}
+		while(size == -1 && errno == EINTR); /* call was interupted by a signal */
+
 		if( size == -1 )
 		{
 			if( axel->conf->verbose )
@@ -490,9 +501,14 @@ void axel_do( axel_t *axel )
 		}
 		/* This should always succeed.. */
 		lseek( axel->outfd, axel->conn[i].currentbyte, SEEK_SET );
-		if( write( axel->outfd, buffer, size ) != size )
+		do
 		{
+			wsize = write( axel->outfd, buffer, size );
+		}
+		while(wsize == -1 && errno == EINTR); /* call was interupted by a signal */
 
+		if(wsize != size)
+		{
 			axel_message( axel, _("Write error!") );
 			axel->ready = -1;
 			return;

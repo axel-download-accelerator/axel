@@ -54,6 +54,7 @@ typedef struct
 	int buffer_size;
 	int max_speed;
 	int verbose;
+	int unicode_output;
 	int alternate_output;
 	int insecure;
 

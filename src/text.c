@@ -48,6 +48,7 @@ static char *size_human( long long int value );
 static char *time_human( int value );
 static void print_commas( long long int bytes_done );
 static void print_alternate_output( axel_t *axel );
+static void print_unicode_output( axel_t *axel );
 static void print_help();
 static void print_version();
 static int get_term_width();
@@ -73,6 +74,7 @@ static struct option axel_options[] =
 	{ "help",		0,	NULL,	'h' },
 	{ "version",		0,	NULL,	'V' },
 	{ "alternate",		0,	NULL,	'a' },
+	{ "unicode",		0,	NULL,	'u' },
 	{ "insecure", 		0,	NULL,	'k' },
 	{ "header",		1,	NULL,	'H' },
 	{ "user-agent",		1,	NULL,	'U' },
@@ -83,6 +85,41 @@ static struct option axel_options[] =
 /* For returning string values from functions */
 static char string[MAX_STRING + 3];
 
+void console_resized(int signal)
+{
+    char *envColumns;
+    int columns;
+#ifdef TIOCGSIZE
+    struct ttysize ts = {0};
+#elif defined(TIOCGWINSZ)
+    struct winsize ts = {0};
+#elif defined(WIOCGETD)
+    struct uwdata ts = {0};
+#endif
+
+    if (!isatty(STDIN_FILENO))
+        return;
+
+    /* First try the env variables, later overridden by ioctl(...) */
+    envColumns = getenv("COLUMNS");
+    if (envColumns != NULL && (columns = atoi(envColumns)) > 0)
+        console_width = columns;
+
+#ifdef TIOCGSIZE
+    if(ioctl(STDIN_FILENO, TIOCGSIZE, &ts)!=-1 && ts.ts_cols > 1)
+        console_width = ts.ts_cols;
+#elif defined(TIOCGWINSZ)
+    if(ioctl(STDIN_FILENO, TIOCGWINSZ, &ts) != -1 && ts.ws_col > 1)
+        console_width = ts.ws_col;
+#elif defined(WIOCGETD)
+    if(ioctl(STDIN_FILENO, WIOCGETD, &ts) != -1 && ts.uw_width > 0)
+        console_width = (int) (ts.uw_width / ts.uw_hs);
+#endif
+
+#ifdef DEBUG
+    fprintf( stderr, "\nConsole width is %d\n", console_width);
+#endif
+}
 
 int main( int argc, char *argv[] )
 {
@@ -93,11 +130,15 @@ int main( int argc, char *argv[] )
 	axel_t *axel;
 	int i, j, cur_head = 0, ret = 1;
 	char *s;
+	struct sigaction sa;
 
 /* Set up internationalization (i18n) */
 	setlocale( LC_ALL, "" );
 	bindtextdomain( PACKAGE, LOCALEDIR );
 	textdomain( PACKAGE );
+
+	/* Load initial size of a terminal */
+	console_resized(0);
 
 	if( !conf_init( conf ) )
 	{
@@ -111,7 +152,7 @@ int main( int argc, char *argv[] )
 	{
 		int option;
 
-		option = getopt_long( argc, argv, "s:n:o:S::NqvhVakH:U:", axel_options, NULL );
+		option = getopt_long( argc, argv, "s:n:o:S::NqvhVaukH:U:", axel_options, NULL );
 		if( option == -1 )
 			break;
 
@@ -161,6 +202,10 @@ int main( int argc, char *argv[] )
 			break;
 		case 'k':
 			conf->insecure = 1;
+			break;
+		case 'u':
+			conf->unicode_output = 1;
+			conf->alternate_output = 1;
 			break;
 		case 'N':
 			*conf->http_proxy = 0;
@@ -398,6 +443,17 @@ int main( int argc, char *argv[] )
 	signal( SIGINT, stop );
 	signal( SIGTERM, stop );
 
+	/* Monitor change of the terminal width, after SIGWINCH signal
+	 * system calls will be restarted if possible */
+	sa.sa_handler = console_resized;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGWINCH, &sa, NULL) == -1)
+	{
+		print_messages( axel );
+		return( 1 );
+	}
+
 	while( !axel->ready && run )
 	{
 		long long int prev;
@@ -408,7 +464,12 @@ int main( int argc, char *argv[] )
 		if( conf->alternate_output )
 		{
 			if( !axel->message && prev != axel->bytes_done )
-				print_alternate_output( axel );
+			{
+				if(conf->unicode_output)
+					print_unicode_output( axel );
+				else
+					print_alternate_output( axel );
+			}
 		}
 		else
 		{
@@ -459,7 +520,12 @@ int main( int argc, char *argv[] )
 				if(conf->alternate_output!=1)
 					print_commas( axel->bytes_done );
 				else
-					print_alternate_output(axel);
+				{
+					if(conf->unicode_output)
+						print_unicode_output(axel);
+					else
+						print_alternate_output(axel);
+				}
 			}
 		}
 		else if( axel->ready )
@@ -596,10 +662,133 @@ static void print_alternate_output(axel_t *axel)
 
 static int get_term_width()
 {
-	struct winsize w;
+#ifdef TIOCGSIZE
+    struct ttysize w = {0};
+#elif defined(TIOCGWINSZ)
+    struct winsize w = {0};
+#elif defined(WIOCGETD)
+    struct uwdata w = {0};
+#endif
+    // char *env_columns;
+    // int columns;
 
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	return w.ws_col;
+    if (!isatty(STDIN_FILENO))
+        return;
+
+    /* First try the env variables, later overridden by ioctl(...) */
+    // env_columns = getenv("COLUMNS");
+    // if (env_columns != NULL && (columns = atoi(env_columns)) > 0)
+    //     return columns;
+
+#ifdef TIOCGSIZE
+    if(ioctl(STDIN_FILENO, TIOCGSIZE, &w)!=-1 && w.w_cols > 1)
+        return w.w_cols;
+#elif defined(TIOCGWINSZ)
+    if(ioctl(STDIN_FILENO, TIOCGWINSZ, &w) != -1 && w.ws_col > 1)
+        return w.ws_col;
+#elif defined(WIOCGETD)
+    if(ioctl(STDIN_FILENO, WIOCGETD, &w) != -1 && w.uw_width > 0)
+        return (int) (w.uw_width / w.uw_hs);
+#endif
+}
+
+static const char *unicode_blocks[11] = {
+	" ", /*space*/
+	"\342\226\217",/*left 1/8 block*/
+	"\342\226\216",
+	"\342\226\215",
+	"\342\226\214", /*left half block*/
+	"\342\226\213",
+	"\342\226\212",
+	"\342\226\211",
+	"\342\226\210", /*full block*/
+	"\342\226\225", /*right 1/8 block*/
+	"\342\226\220"  /*right half block*/
+	/*Curse you unicode for providing only two right blocks!*/
+};
+
+static void print_unicode_output(axel_t *axel)
+{
+	long long int done=axel->bytes_done;
+	long long int total=axel->size;
+	int i,j=0;
+	double now = gettime();
+
+	int width = get_term_width() - 30;
+	long long int missing[width];
+	long long int blocksize[width];
+	char hasleft[width];
+	long long int pos = 0;
+
+	if(total <= 8*width)
+		return;
+
+	for(i=1;i<=width;i++)
+	{
+		long long int next = i*total/width;
+		blocksize[i-1] = next - pos;
+		missing[i-1] = 0;
+		hasleft[i-1] = 1;
+		pos = next;
+	}
+
+	printf("\r[%3ld%%] [", min(100,(long)(done*100./total+.5) ) );
+
+	if(width>0)
+	{
+		for(i=0;i<axel->conf->num_connections;i++)
+		{
+			int b1 = axel->conn[i].currentbyte * width / total;
+			int b2 = axel->conn[i].lastbyte * width / total;
+
+			for(j=b1; j<=b2; j++)
+			    missing[j] += blocksize[j];
+
+			missing[b1] -= axel->conn[i].currentbyte - b1 * total / width;
+			missing[b2] -= (b2+1) * total / width - 1 - axel->conn[i].lastbyte;
+			if(b1 < b2)
+			{
+			    hasleft[b2] = 0;
+			}
+		}
+	}
+
+	for(i=0; i<width; i++)
+	{
+		long long int complete = blocksize[i] - max(0, missing[i]);
+		if(hasleft[i] || complete == blocksize[i] || complete == 0)
+		{
+			printf("%s", unicode_blocks[(7*complete + blocksize[i]-2)/(blocksize[i]-1)]);
+		}
+		else
+		{
+			printf("%s", unicode_blocks[ 9 + (complete*2 >= blocksize[i]) ]);
+		}
+	}
+
+	if(axel->bytes_per_second > 1048576)
+		printf( "] [%6.1fMB/s]", (double) axel->bytes_per_second / (1024*1024) );
+	else if(axel->bytes_per_second > 1024)
+		printf( "] [%6.1fKB/s]", (double) axel->bytes_per_second / 1024 );
+	else
+		printf( "] [%6.1fB/s]", (double) axel->bytes_per_second );
+
+	if(done<total)
+	{
+		int seconds,minutes,hours,days;
+		seconds=axel->finish_time - now;
+		minutes=seconds/60;seconds-=minutes*60;
+		hours=minutes/60;minutes-=hours*60;
+		days=hours/24;hours-=days*24;
+		if(days)
+			printf(" [%2dd%2d]",days,hours);
+		else if(hours)
+			printf(" [%2dh%02d]",hours,minutes);
+		else
+			printf(" [%02d:%02d]",minutes,seconds);
+	}
+
+	fflush( stdout );
 }
 
 void print_help()
@@ -618,6 +807,7 @@ void print_help()
 		"-q\tLeave stdout alone\n"
 		"-v\tMore status information\n"
 		"-a\tAlternate progress indicator\n"
+		"-u\tUnicode progress indicator\n"
 		"-h\tThis information\n"
 		"-V\tVersion information\n"
 		"\n"
@@ -637,6 +827,7 @@ void print_help()
 		"--quiet\t\t\t-q\tLeave stdout alone\n"
 		"--verbose\t\t-v\tMore status information\n"
 		"--alternate\t\t-a\tAlternate progress indicator\n"
+		"--unicode\t\t-u\tUnicode progress indicator\n"
 		"--help\t\t\t-h\tThis information\n"
 		"--version\t\t-V\tVersion information\n"
 		"\n"
