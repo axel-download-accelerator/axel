@@ -42,18 +42,10 @@
 #include "axel.h"
 
 /* Some nifty macro's.. */
-#define get_config_string( name )				\
-	if( value && strcmp( key, #name ) == 0 )		\
-	{							\
-		st = 1;						\
-		strcpy( conf->name, value );			\
-	}
-#define get_config_number( name )				\
-	if( value && strcmp( key, #name ) == 0 )		\
-	{							\
-		st = 1;						\
-		sscanf( value, "%i", &conf->name );		\
-	}
+#define MATCH if( 0 );
+#define KEY( name )				\
+	else if( !strcmp( key, #name ) )	\
+		dst = &conf->name;
 
 int parse_interfaces( conf_t *conf, char *s );
 
@@ -66,20 +58,19 @@ static int axel_fscanf( FILE *fp, const char *format, ...)
 	ret = vfscanf( fp, format, params );
 	va_end( params );
 
-	if( ret == EOF  && ferror(fp) )
+	ret = !( ret == EOF  && ferror(fp) );
+	if( !ret )
 	{
 		fprintf( stderr, _("I/O error while reading config file: %s\n"),
 			 strerror(errno) );
-		fclose( fp );
-		return( 0 );
 	}
 
-	return( 1 );
+	return( ret );
 }
 
 int conf_loadfile( conf_t *conf, char *file )
 {
-	int line = 0;
+	int line = 0, ret = 1;
 	FILE *fp;
 	char s[MAX_STRING], key[MAX_STRING];
 
@@ -90,21 +81,16 @@ int conf_loadfile( conf_t *conf, char *file )
 	while( !feof( fp ) )
 	{
 		char *tmp, *value = NULL;
-		int st;
+		void *dst;
 
 		line ++;
 
 		*s = 0;
-		if( !axel_fscanf( fp, "%100[^\n#]s", s ) )
-		{
-			fclose( fp );
-			return( 0 );
-		}
-		if( !axel_fscanf( fp, "%*[^\n]s" ) )
-		{
-			fclose( fp );
-			return( 0 );
-		}
+
+		if( !( ret = axel_fscanf( fp, "%100[^\n#]s", s ) ) )
+			break;
+		if( !( ret = axel_fscanf( fp, "%*[^\n]s" ) ) )
+			break;
 		fgetc( fp );			/* Skip newline */
 		tmp = strchr( s, '=' );
 		if( tmp == NULL )
@@ -119,50 +105,65 @@ int conf_loadfile( conf_t *conf, char *file )
 		while ( *tmp && !isspace( *tmp ) ) tmp++;
 		*tmp = '\0';
 
-		st = 0;
+		/* String options */
+		MATCH
+			KEY( default_filename )
+			KEY( http_proxy )
+			KEY( no_proxy )
+			KEY( user_agent )
+		else goto num_keys;
 
-		/* Long live macros!! */
-		get_config_string( default_filename );
-		get_config_string( http_proxy );
-		get_config_string( no_proxy );
-		get_config_number( strip_cgi_parameters );
-		get_config_number( save_state_interval );
-		get_config_number( connection_timeout );
-		get_config_number( reconnect_delay );
-		get_config_number( num_connections );
-		get_config_number( max_redirect );
-		get_config_number( buffer_size );
-		get_config_number( max_speed );
-		get_config_number( verbose );
-		get_config_number( alternate_output );
-		get_config_number( insecure );
+		/* Save string option */
+		strcpy( dst, value );
+		continue;
 
-		get_config_number( search_timeout );
-		get_config_number( search_threads );
-		get_config_number( search_amount );
-		get_config_number( search_top );
+		/* Numeric options */
+	num_keys:
+		MATCH
+			KEY( strip_cgi_parameters )
+			KEY( save_state_interval )
+			KEY( connection_timeout )
+			KEY( reconnect_delay )
+			KEY( num_connections )
+			KEY( max_redirect )
+			KEY( buffer_size )
+			KEY( max_speed )
+			KEY( verbose )
+			KEY( alternate_output )
+			KEY( insecure )
+			KEY( search_timeout )
+			KEY( search_threads )
+			KEY( search_amount )
+			KEY( search_top )
+		else goto other_keys;
 
+		/* Save numeric option */
+		*( ( int * ) dst ) = atoi( value );
+		continue;
+
+	other_keys:
 		/* Option defunct but shouldn't be an error */
 		if( strcmp( key, "speed_type" ) == 0 )
-			st = 1;
+			continue;
 
-		if( strcmp( key, "interfaces" ) == 0 )
-			st = parse_interfaces( conf, value );
-
-		if( !st )
-		{
-			fprintf( stderr, _("Error in %s line %i.\n"), file, line );
-			fclose( fp );
-			return( 0 );
-		}
+#if 0
+		/* FIXME broken code */
 		get_config_number( add_header_count );
 		for(int i=0;i<conf->add_header_count;i++)
 			get_config_string( add_header[i] );
-		get_config_string( user_agent );
+#endif
+
+		if( strcmp( key, "interfaces" ) == 0 )
+			if( parse_interfaces( conf, value ) )
+				continue;
+
+		fprintf( stderr, _("Error in %s line %i.\n"), file, line );
+		ret = 0;
+		break;
 	}
 
 	fclose( fp );
-	return( 1 );
+	return( ret );
 }
 
 int conf_init( conf_t *conf )
