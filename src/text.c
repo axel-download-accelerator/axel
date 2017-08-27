@@ -545,9 +545,19 @@ static void print_alternate_output(axel_t *axel)
 	long long int done=axel->bytes_done;
 	long long int total=axel->size;
 	double now = gettime();
-	int width = get_term_width() - 30;
-	char progress[width+1];
+	int width = get_term_width();
+	char *progress;
 
+	if( width < 40 )
+	{
+		fprintf( stderr, _("Can't setup alternate output. Deactivating.\n" ) );
+		axel->conf->alternate_output = 0;
+
+		return;
+	}
+
+	width -= 30;
+	progress = malloc(width);
 	memset(progress, '.', width);
 
 	for(int i=0;i<axel->conf->num_connections;i++)
@@ -592,6 +602,8 @@ static void print_alternate_output(axel_t *axel)
 	}
 
 	fflush( stdout );
+
+	free( progress );
 }
 
 static int get_term_width()
