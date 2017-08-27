@@ -35,4 +35,4 @@ script:
     - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
         export OSX_FLAGS="-I/usr/local/opt/openssl/include";
       fi
-    - ./autogen.sh && ./configure CFLAGS="-O3 $OSX_FLAGS" && make
+    - ./autogen.sh && ./configure CFLAGS="-O3 -Werror $OSX_FLAGS" && make
