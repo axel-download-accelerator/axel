@@ -45,10 +45,34 @@
 
 #include "axel.h"
 
-int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, char *user, char *pass )
+static void http_auth_token( char *token, char *user, char *pass )
 {
 	char base64_encode[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		"abcdefghijklmnopqrstuvwxyz0123456789+/";
+	char auth[MAX_STRING];
+	int i;
+
+	memset( auth, 0, sizeof( auth ) );
+	snprintf( auth, sizeof( auth ), "%s:%s", user, pass );
+
+	for( i = 0; auth[i * 3]; i ++ )
+	{
+		token[i * 4] = base64_encode[( auth[i * 3] >> 2 )];
+		token[i * 4 + 1] = base64_encode[( ( auth[i * 3] & 3 ) << 4) |
+						 ( auth[i * 3 + 1] >> 4 )];
+		token[i * 4 + 2] = base64_encode[( ( auth[i * 3 + 1] & 15) << 2 ) |
+						 ( auth[i * 3 + 2] >> 6 )];
+		token[i * 4 + 3] = base64_encode[auth[i * 3 + 2] & 63];
+		if( auth[i * 3 + 2] == 0 )
+			token[i * 4 + 3] = '=';
+		if( auth[i * 3 + 1] == 0 )
+			token[i * 4 + 2] = '=';
+	}
+}
+
+int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, char *user, char *pass )
+{
+	char *puser, *ppass;
 	conn_t tconn[1];
 
 	strncpy( conn->host, host, MAX_STRING );
@@ -67,6 +91,8 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 		host = tconn->host;
 		port = tconn->port;
 		proto = tconn->proto;
+		puser = tconn->user;
+		ppass = tconn->pass;
 		conn->proxy = 1;
 	}
 	else
@@ -84,18 +110,16 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 	}
 	else
 	{
-		char auth[MAX_STRING];
-		memset( auth, 0, sizeof( auth ) );
-		snprintf( auth, sizeof( auth ), "%s:%s", user, pass );
-		for( int i = 0; auth[i*3]; i ++ )
-		{
-			conn->auth[i*4] = base64_encode[(auth[i*3]>>2)];
-			conn->auth[i*4+1] = base64_encode[((auth[i*3]&3)<<4)|(auth[i*3+1]>>4)];
-			conn->auth[i*4+2] = base64_encode[((auth[i*3+1]&15)<<2)|(auth[i*3+2]>>6)];
-			conn->auth[i*4+3] = base64_encode[auth[i*3+2]&63];
-			if( auth[i*3+2] == 0 ) conn->auth[i*4+3] = '=';
-			if( auth[i*3+1] == 0 ) conn->auth[i*4+2] = '=';
-		}
+		http_auth_token( conn->auth, user, pass );
+	}
+
+	if( !conn->proxy || *puser == 0 )
+	{
+		*conn->proxy_auth = 0;
+	}
+	else
+	{
+		http_auth_token( conn->proxy_auth, puser, ppass );
 	}
 
 	return( 1 );
@@ -125,6 +149,8 @@ void http_get( http_t *conn, char *lurl )
 	}
 	if( *conn->auth )
 		http_addheader( conn, "Authorization: Basic %s", conn->auth );
+	if( *conn->proxy_auth )
+		http_addheader( conn, "Proxy-Authorization: Basic %s", conn->proxy_auth );
 	if( conn->firstbyte )
 	{
 		if( conn->lastbyte )
