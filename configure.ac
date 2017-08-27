@@ -62,7 +62,7 @@ arch=$(uname -s)
 AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
 
 # Flags
-CFLAGS="$CFLAGS -Wall"
+CFLAGS="$CFLAGS -Wall -Werror"
 
 case "$arch" in
 FreeBSD | OpenBSD | NetBSD | Darwin )
