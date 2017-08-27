@@ -29,8 +29,9 @@ To find issues and bugs to fix, you can check these addresses:
 If you want to join, please contact me: eriberto at eriberto.pro.br
 
 There is a group here[2] to discuss and to coordinate the development.
+You can also find other developers in the #axel channel on freenode.
 
 [2] https://groups.google.com/forum/#!forum/axel-accelerator-dev
 
   -- Eriberto, Sun, 20 Mar 2016 16:27:53 -0300,
-     updated on Sun, 02 Apr 2017 23:13:00 -0300.
+     updated on Sun, 27 Aug 2017 06:33:00 -0300.
