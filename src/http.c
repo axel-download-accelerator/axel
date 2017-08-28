@@ -51,7 +51,7 @@ inline static char chain_next(const char ***p)
 	return **p ? *(**p)++ : 0;
 }
 
-static void http_auth_token( char *token, char *user, char *pass )
+static void http_auth_token( char *token, const char *user, const char *pass )
 {
 	const char base64_encode[64] =
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
