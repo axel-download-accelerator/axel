@@ -670,7 +670,7 @@ void print_help()
 
 void print_version()
 {
-	printf( _("\nAxel version %s (%s)\n"), AXEL_VERSION_STRING, ARCH );
+	printf( _("\nAxel version " VERSION " (" ARCH ")\n") );
 	printf( "\nCopyright 2001-2007 Wilmer van der Gaast," );
 	printf( "\n          2007-2009 Giridhar Appaji Nag," );
 	printf( "\n          2008-2010 Philipp Hagemeister," );

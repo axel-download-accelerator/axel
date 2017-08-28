@@ -84,8 +84,7 @@
 #define MAX_STRING		1024
 #define MAX_ADD_HEADERS	10
 #define MAX_REDIRECT		20
-#define AXEL_VERSION_STRING	"2.14"
-#define DEFAULT_USER_AGENT	"Axel " AXEL_VERSION_STRING " (" ARCH ")"
+#define DEFAULT_USER_AGENT	"Axel " VERSION " (" ARCH ")"
 
 typedef struct
 {
