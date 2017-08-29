@@ -70,6 +70,7 @@ static struct option axel_options[] =
 	{ "ipv4",		0,	NULL,	'4' },
 	{ "ipv6",		0,	NULL,	'6' },
 	{ "no-proxy",		0,	NULL,	'N' },
+	{ "no-clobber",		0,	NULL,	'c' },
 	{ "quiet",		0,	NULL,	'q' },
 	{ "verbose",		0,	NULL,	'v' },
 	{ "help",		0,	NULL,	'h' },
@@ -113,7 +114,7 @@ int main( int argc, char *argv[] )
 	{
 		int option;
 
-		option = getopt_long( argc, argv, "s:n:o:S::46NqvhVakH:U:", axel_options, NULL );
+		option = getopt_long( argc, argv, "s:n:o:S::46NcqvhVakH:U:", axel_options, NULL );
 		if( option == -1 )
 			break;
 
@@ -343,8 +344,16 @@ int main( int argc, char *argv[] )
 		sprintf( string, "%s.st", fn );
 		if( access( fn, F_OK ) == 0 && access( string, F_OK ) != 0 )
 		{
-			fprintf( stderr, _("No state file, cannot resume!\n") );
-			goto close_axel;
+			if( conf->no_clobber )
+			{
+				printf("File %s exists\n", fn );
+				goto close_axel;
+			}
+			else
+			{
+				fprintf( stderr, _("No state file, cannot resume!\n") );
+				goto free_conf;
+			}
 		}
 		if( access( string, F_OK ) == 0 && access( fn, F_OK ) != 0 )
 		{
@@ -363,6 +372,11 @@ int main( int argc, char *argv[] )
 			sprintf( string, "%s.st", axel->filename );
 			if( access( axel->filename, F_OK ) == 0 )
 			{
+				if( conf->no_clobber && access( string, F_OK ) != 0 )
+				{
+					printf("File %s exists\n", axel->filename );
+					goto close_axel;
+				}
 				if( axel->conn[0].supported )
 				{
 					if( access( string, F_OK ) == 0 )
@@ -636,6 +650,7 @@ void print_help()
 		"-H x\tAdd header string\n"
 		"-U x\tSet user agent\n"
 		"-N\tJust don't use any proxy server\n"
+		"-c\tSkip download existing file\n"
 		"-k\tDon't verify the SSL certificate\n"
 		"-q\tLeave stdout alone\n"
 		"-v\tMore status information\n"
@@ -657,6 +672,7 @@ void print_help()
 		"--header=x\t\t-H x\tAdd header string\n"
 		"--user-agent=x\t\t-U x\tSet user agent\n"
 		"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+		"--no-clobber\t\t-c\tSkip download existing file\n"
 		"--insecure\t\t-k\tDon't verify the SSL certificate\n"
 		"--quiet\t\t\t-q\tLeave stdout alone\n"
 		"--verbose\t\t-v\tMore status information\n"
