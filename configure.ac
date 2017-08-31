@@ -63,28 +63,22 @@ AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
 
 # Flags
 CFLAGS="$CFLAGS -Wall"
+LDFLAGS="$LDFLAGS $LIBINTL"
 
 case "$arch" in
 Darwin )
-    LDFLAGS="$LDFLAGS -lintl"
-;;
-FreeBSD | OpenBSD | NetBSD )
-    LDFLAGS="$LDFLAGS -lintl -pthread"
-;;
-Linux | GNU/kFreeBSD | GNU )
-    LDFLAGS="$LDFLAGS -pthread"
 ;;
 SunOS )
-    LDFLAGS="$LDFLAGS -lintl -pthread -lsocket -lnsl"
+    LDFLAGS="$LDFLAGS -pthread -lsocket -lnsl"
 ;;
 HP-UX )
     if [ -d /usr/local/lib/hpux32 ]; then
        AXEL_EXTRA_FLAGS="-L/usr/local/lib/hpux32"
     fi
-    LDFLAGS="$LDFLAGS $AXEL_EXTRA_FLAGS -lintl -lpthread"
+    LDFLAGS="$LDFLAGS $AXEL_EXTRA_FLAGS -lpthread"
 ;;
 * )
-    LDFLAGS="$LDFLAGS -lintl -pthread"
+    LDFLAGS="$LDFLAGS -pthread"
 ;;
 esac
 
