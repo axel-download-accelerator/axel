@@ -4,9 +4,9 @@
 # Copyright 2016-2017 Joao Eriberto Mota Filho <eriberto@eriberto.pro.br>
 # This file is under BSD-3-Clause
 
-P_DATE="02 August 2017"
+P_DATE=$(LANG=C date '+%d %B %Y')
 P_NAME=axel
-P_VERSION=2.13
+P_VERSION=$(awk -F'], *[[]' '/^AC_INIT/{print $2;quit}' ../configure.ac)
 P_MANLEVEL=1
 P_DESCRIPT="light command line download accelerator"
 
