@@ -223,11 +223,19 @@ int axel_open( axel_t *axel )
 		lseek(fd,0,SEEK_SET);
 
 		nread = read( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
-		assert( nread == sizeof( axel->conf->num_connections ) );
+		if( nread != sizeof( axel->conf->num_connections ) )
+		{
+			printf( "%s.st: Error, truncated state file\n",
+				axel->filename );
+			close( fd );
+			return( 0 );
+		}
 
 		if(stsize < sizeof( axel->conf->num_connections ) + sizeof( axel->bytes_done )
 			+ 2 * axel->conf->num_connections * sizeof( axel->conn[i].currentbyte ))
 		{
+			/* FIXME this might be wrong, the file may have been
+			 * truncated, we need another way to check. */
 #ifdef DEBUG
 			printf( "State file has old format.\n" );
 #endif
