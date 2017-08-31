@@ -575,7 +575,12 @@ static void print_alternate_output(axel_t *axel)
 		if(axel->conn[i].currentbyte<axel->conn[i].lastbyte)
 		{
 			if(now <= axel->conn[i].last_transfer + axel->conf->connection_timeout/2 )
-				progress[offset] = i+'0';
+			{
+				if( i < 10 )
+					progress[offset] = i + '0';
+				else
+					progress[offset] = i - 10 + 'A';
+			}
 			else
 				progress[offset] = '#';
 		}
