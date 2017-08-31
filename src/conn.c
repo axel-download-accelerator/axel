@@ -326,20 +326,20 @@ int conn_info( conn_t *conn )
 		if( ftp_wait( conn->ftp ) / 100 == 3 ||
 		    conn->ftp->status / 100 == 2 )
 		{
-			conn->supported = 1;
+			conn->supported = true;
 			ftp_command( conn->ftp, "REST %lld", 0 );
 			ftp_wait( conn->ftp );
 		}
 		else
 		{
-			conn->supported = 0;
+			conn->supported = false;
 		}
 
 		if( !ftp_cwd( conn->ftp, conn->dir ) )
 			return( 0 );
 		conn->size = ftp_size( conn->ftp, conn->file, conn->conf->max_redirect );
 		if( conn->size < 0 )
-			conn->supported = 0;
+			conn->supported = false;
 		if( conn->size == -1 )
 			return( 0 );
 		else if( conn->size == -2 )
@@ -404,18 +404,18 @@ int conn_info( conn_t *conn )
 		if( i > 0 && conn->size != i + 1 ) {
 			/* This means that the server has a bug. This version currently
 			   uses the larger of the reported sizes, but it would be an
-			   alternative to set supported = 0. */
-			conn->supported = 1;
+			   alternative to set supported = false. */
+			conn->supported = true;
 			conn->size = max(i, conn->size + 1);
 		}
 		else if( conn->http->status == 206 && conn->size >= 0 )
 		{
-			conn->supported = 1;
+			conn->supported = true;
 			conn->size ++;
 		}
 		else if( conn->http->status == 200 || conn->http->status == 206 )
 		{
-			conn->supported = 0;
+			conn->supported = false;
 			conn->size = LLONG_MAX;
 		}
 		else
