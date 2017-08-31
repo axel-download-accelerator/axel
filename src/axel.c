@@ -347,7 +347,7 @@ void axel_start( axel_t *axel )
 		axel->conn[i].local_if = axel->conf->interfaces->text;
 		axel->conf->interfaces = axel->conf->interfaces->next;
 		axel->conn[i].conf = axel->conf;
-		if( i ) axel->conn[i].supported = 1;
+		if( i ) axel->conn[i].supported = true;
 	}
 
 	if( axel->conf->verbose > 0 )
@@ -368,7 +368,7 @@ void axel_start( axel_t *axel )
 		        	      i, axel->conn[i].host, axel->conn[i].port, axel->conn[i].local_if );
 		}
 
-		axel->conn[i].state = 1;
+		axel->conn[i].state = true;
 		if( pthread_create( axel->conn[i].setup_thread, NULL, setup_thread, &axel->conn[i] ) != 0 )
 		{
 			axel_message( axel, _("pthread error!!!") );
@@ -448,7 +448,7 @@ void axel_do( axel_t *axel )
 				axel_message( axel, _("Error on connection %i! "
 					"Connection closed"), i );
 			}
-			axel->conn[i].enabled = 0;
+			axel->conn[i].enabled = false;
 			conn_disconnect( &axel->conn[i] );
 			continue;
 		}
@@ -470,7 +470,7 @@ void axel_do( axel_t *axel )
 			{
 				axel->ready = 1;
 			}
-			axel->conn[i].enabled = 0;
+			axel->conn[i].enabled = false;
 			conn_disconnect( &axel->conn[i] );
 			reactivate_connection(axel,i);
 			continue;
@@ -483,7 +483,7 @@ void axel_do( axel_t *axel )
 			{
 				axel_message( axel, _("Connection %i finished"), i );
 			}
-			axel->conn[i].enabled = 0;
+			axel->conn[i].enabled = false;
 			conn_disconnect( &axel->conn[i] );
 			size = remaining;
 			/* Don't terminate, still stuff to write! */
@@ -509,7 +509,7 @@ void axel_do( axel_t *axel )
 			if( axel->conf->verbose )
 				axel_message( axel, _("Connection %i timed out"), i );
 			conn_disconnect( &axel->conn[i] );
-			axel->conn[i].enabled = 0;
+			axel->conn[i].enabled = false;
 		}
 	} }
 
@@ -523,7 +523,7 @@ conn_check:
 	{
 		if( !axel->conn[i].enabled && axel->conn[i].currentbyte < axel->conn[i].lastbyte )
 		{
-			if( axel->conn[i].state == 0 )
+			if( !axel->conn[i].state )
 			{
 				// Wait for termination of this thread
 				pthread_join(*(axel->conn[i].setup_thread), NULL);
@@ -536,7 +536,7 @@ conn_check:
 					axel_message( axel, _("Connection %i downloading from %s:%i using interface %s"),
 				        	      i, axel->conn[i].host, axel->conn[i].port, axel->conn[i].local_if );
 
-				axel->conn[i].state = 1;
+				axel->conn[i].state = true;
 				if( pthread_create( axel->conn[i].setup_thread, NULL, setup_thread, &axel->conn[i] ) == 0 )
 				{
 					axel->conn[i].last_transfer = gettime();
@@ -552,7 +552,7 @@ conn_check:
 				if( gettime() > axel->conn[i].last_transfer + axel->conf->reconnect_delay )
 				{
 					pthread_cancel( *axel->conn[i].setup_thread );
-					axel->conn[i].state = 0;
+					axel->conn[i].state = false;
 					pthread_join( *axel->conn[i].setup_thread, NULL );
 				}
 			}
@@ -702,14 +702,14 @@ void *setup_thread( void *c )
 		if( conn_exec( conn ) )
 		{
 			conn->last_transfer = gettime();
-			conn->enabled = 1;
-			conn->state = 0;
+			conn->enabled = true;
+			conn->state = false;
 			return( NULL );
 		}
 	}
 
 	conn_disconnect( conn );
-	conn->state = 0;
+	conn->state = false;
 	return( NULL );
 }
 

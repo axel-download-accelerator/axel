@@ -88,13 +88,13 @@ typedef struct
 	long long int currentbyte;
 	long long int lastbyte;
 	tcp_t *tcp;
-	int enabled;
-	int supported;
+	bool enabled;
+	bool supported;
 	int last_transfer;
 	char *message;
 	char *local_if;
 
-	int state;
+	bool state;
 	pthread_t setup_thread[1];
 } conn_t;
 
