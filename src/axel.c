@@ -642,6 +642,7 @@ void axel_close( axel_t *axel )
 	close( axel->outfd );
 	free( axel->conn );
 	free( axel );
+	free( buffer );
 }
 
 /* time() with more precision */
