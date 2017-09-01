@@ -1,5 +1,7 @@
 # AXEL
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c829f1d07caf49ad9cb49883f218ba75)](https://www.codacy.com/app/ordex/axel?utm_source=github.com&utm_medium=referral&utm_content=axel-download-accelerator/axel&utm_campaign=badger)
+
 #### Axel — Light command line download accelerator for Linux and Unix
 
 * Help this project
