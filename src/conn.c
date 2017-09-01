@@ -204,6 +204,7 @@ void conn_disconnect( conn_t *conn )
 	else
 		http_disconnect( conn->http );
 	conn->tcp = NULL;
+	conn->enabled = false;
 }
 
 int conn_init( conn_t *conn )
