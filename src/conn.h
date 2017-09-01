@@ -96,6 +96,7 @@ typedef struct
 
 	bool state;
 	pthread_t setup_thread[1];
+	pthread_mutex_t lock;
 } conn_t;
 
 int conn_set( conn_t *conn, const char *set_url );
