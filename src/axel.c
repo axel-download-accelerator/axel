@@ -460,7 +460,6 @@ void axel_do( axel_t *axel )
 				axel_message( axel, _("Error on connection %i! "
 					"Connection closed"), i );
 			}
-			axel->conn[i].enabled = false;
 			conn_disconnect( &axel->conn[i] );
 			continue;
 		}
@@ -482,7 +481,6 @@ void axel_do( axel_t *axel )
 			{
 				axel->ready = 1;
 			}
-			axel->conn[i].enabled = false;
 			conn_disconnect( &axel->conn[i] );
 			reactivate_connection(axel,i);
 			continue;
@@ -495,7 +493,6 @@ void axel_do( axel_t *axel )
 			{
 				axel_message( axel, _("Connection %i finished"), i );
 			}
-			axel->conn[i].enabled = false;
 			conn_disconnect( &axel->conn[i] );
 			size = remaining;
 			/* Don't terminate, still stuff to write! */
@@ -521,7 +518,6 @@ void axel_do( axel_t *axel )
 			if( axel->conf->verbose )
 				axel_message( axel, _("Connection %i timed out"), i );
 			conn_disconnect( &axel->conn[i] );
-			axel->conn[i].enabled = false;
 		}
 	} }
 	pthread_mutex_unlock( &axel->conn[i].lock );
