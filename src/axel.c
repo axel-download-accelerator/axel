@@ -75,6 +75,10 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 	if( !axel->conn )
 		goto nomem;
 	memset( axel->conn, 0, sizeof( conn_t ) * axel->conf->num_connections );
+
+	for( i = 0; i < axel->conf->num_connections; i ++ )
+		pthread_mutex_init( &axel->conn[i].lock, NULL );
+
 	if( axel->conf->max_speed > 0 )
 	{
 		if( (float) axel->conf->max_speed / axel->conf->buffer_size < 0.5 )
@@ -404,9 +408,14 @@ void axel_do( axel_t *axel )
 	hifd = 0;
 	for( i = 0; i < axel->conf->num_connections; i ++ )
 	{
-		if( axel->conn[i].enabled ) {
-			FD_SET( axel->conn[i].tcp->fd, fds );
-			hifd = max( hifd, axel->conn[i].tcp->fd );
+		/* skip connection if setup thread hasn't released the lock yet */
+		if( !pthread_mutex_trylock( &axel->conn[i].lock ) )
+		{
+			if( axel->conn[i].enabled ) {
+				FD_SET( axel->conn[i].tcp->fd, fds );
+				hifd = max( hifd, axel->conn[i].tcp->fd );
+			}
+			pthread_mutex_unlock( &axel->conn[i].lock );
 		}
 	}
 	if( hifd == 0 )
@@ -435,7 +444,10 @@ void axel_do( axel_t *axel )
 	}
 
 	/* Handle connections which need attention */
-	for( i = 0; i < axel->conf->num_connections; i ++ )
+	for( i = 0; i < axel->conf->num_connections; i ++ ) {
+	/* skip connection if setup thread hasn't released the lock yet */
+	if( pthread_mutex_trylock( &axel->conn[i].lock ) )
+		continue;
 	if( axel->conn[i].enabled ) {
 	if( FD_ISSET( axel->conn[i].tcp->fd, fds ) )
 	{
@@ -512,6 +524,8 @@ void axel_do( axel_t *axel )
 			axel->conn[i].enabled = false;
 		}
 	} }
+	pthread_mutex_unlock( &axel->conn[i].lock );
+	}
 
 	if( axel->ready )
 		return;
@@ -521,6 +535,10 @@ conn_check:
 	url_ptr = axel->url;
 	for( i = 0; i < axel->conf->num_connections; i ++ )
 	{
+		/* skip connection if setup thread hasn't released the lock yet */
+		if( pthread_mutex_trylock( &axel->conn[i].lock ) )
+			continue;
+
 		if( !axel->conn[i].enabled && axel->conn[i].currentbyte < axel->conn[i].lastbyte )
 		{
 			if( !axel->conn[i].state )
@@ -557,6 +575,7 @@ conn_check:
 				}
 			}
 		}
+		pthread_mutex_unlock( &axel->conn[i].lock );
 	}
 
 	/* Calculate current average speed and finish_time */
@@ -696,6 +715,7 @@ void *setup_thread( void *c )
 	pthread_setcancelstate( PTHREAD_CANCEL_ENABLE, &oldstate );
 	pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate );
 
+	pthread_mutex_lock( &conn->lock );
 	if( conn_setup( conn ) )
 	{
 		conn->last_transfer = gettime();
@@ -703,13 +723,15 @@ void *setup_thread( void *c )
 		{
 			conn->last_transfer = gettime();
 			conn->enabled = true;
-			conn->state = false;
-			return( NULL );
+			goto out;
 		}
 	}
 
 	conn_disconnect( conn );
+out:
 	conn->state = false;
+	pthread_mutex_unlock( &conn->lock );
+
 	return( NULL );
 }
 
