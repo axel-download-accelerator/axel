@@ -113,3 +113,11 @@
 # a scp-alike interface.
 #
 # alternate_output = 1
+#
+# Set this to 1 to avoid axel to download a file if one with the same name
+# already exists in the current folder and no state file is found.
+# Normally, axel will add .<number> to the name of the file in cases where
+# that file already exists. With the no_clobber option, axel will skip
+# downloading this file altogether.
+#
+# no_clobber = 1

@@ -76,6 +76,7 @@ static struct option axel_options[] =
 	{ "version",		0,	NULL,	'V' },
 	{ "alternate",		0,	NULL,	'a' },
 	{ "insecure", 		0,	NULL,	'k' },
+	{ "no-clobber",		0,	NULL,	'c' },
 	{ "header",		1,	NULL,	'H' },
 	{ "user-agent",		1,	NULL,	'U' },
 	{ NULL,			0,	NULL,	0 }
@@ -113,7 +114,7 @@ int main( int argc, char *argv[] )
 	{
 		int option;
 
-		option = getopt_long( argc, argv, "s:n:o:S::46NqvhVakH:U:", axel_options, NULL );
+		option = getopt_long( argc, argv, "s:n:o:S::46NqvhVakcH:U:", axel_options, NULL );
 		if( option == -1 )
 			break;
 
@@ -169,6 +170,9 @@ int main( int argc, char *argv[] )
 			break;
 		case 'k':
 			conf->insecure = 1;
+			break;
+		case 'c':
+			conf->no_clobber = 1;
 			break;
 		case 'N':
 			*conf->http_proxy = 0;
@@ -642,6 +646,7 @@ void print_help()
 		"-U x\tSet user agent\n"
 		"-N\tJust don't use any proxy server\n"
 		"-k\tDon't verify the SSL certificate\n"
+		"-c\tSkip download if file already exists\n"
 		"-q\tLeave stdout alone\n"
 		"-v\tMore status information\n"
 		"-a\tAlternate progress indicator\n"
@@ -663,6 +668,7 @@ void print_help()
 		"--user-agent=x\t\t-U x\tSet user agent\n"
 		"--no-proxy\t\t-N\tJust don't use any proxy server\n"
 		"--insecure\t\t-k\tDon't verify the SSL certificate\n"
+		"--no-clobber\t\t-c\tSkip download if file already exists\n"
 		"--quiet\t\t\t-q\tLeave stdout alone\n"
 		"--verbose\t\t-v\tMore status information\n"
 		"--alternate\t\t-a\tAlternate progress indicator\n"

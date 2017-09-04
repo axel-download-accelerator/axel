@@ -152,6 +152,25 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 	if( ( s = strchr( axel->filename, '?' ) ) != NULL && axel->conf->strip_cgi_parameters )
 		*s = 0;		/* Get rid of CGI parameters */
 
+	if( axel->conf->no_clobber && access( axel->filename, F_OK ) == 0 )
+	{
+		char stfile[MAX_STRING + 3];
+
+		sprintf( stfile, "%s.st", axel->filename );
+		if( access( stfile, F_OK ) == 0 )
+		{
+			printf( _("Incomplete download found, ignoring "
+				  "no-clobber option\n") );
+		}
+		else
+		{
+			printf( _("File '%s' already there; not retrieving.\n"),
+				axel->filename );
+			axel->ready = -1;
+			return( axel );
+		}
+	}
+
 	do
 	{
 		if( !conn_init( &axel->conn[0] ) )
