@@ -56,6 +56,7 @@ typedef struct
 	int verbose;
 	int alternate_output;
 	int insecure;
+	int no_clobber;
 
 	if_t *interfaces;
 
