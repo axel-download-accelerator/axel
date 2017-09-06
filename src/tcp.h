@@ -41,7 +41,7 @@
 typedef struct {
 	int fd;
 	sa_family_t ai_family;
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 	SSL *ssl;
 #endif
 } tcp_t;

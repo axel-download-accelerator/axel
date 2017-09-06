@@ -72,7 +72,7 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 #include <openssl/ssl.h>
 #endif
 
