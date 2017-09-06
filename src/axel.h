@@ -72,7 +72,9 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
+#ifdef HAVE_OPENSSL
 #include <openssl/ssl.h>
+#endif
 
 /* Internationalization */
 #define PACKAGE			"axel"
