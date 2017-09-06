@@ -157,12 +157,14 @@ void tcp_close( tcp_t *tcp )
 	if (tcp->fd > 0) {
 #ifdef HAVE_OPENSSL
 		if (tcp->ssl != NULL)
+		{
 			ssl_disconnect(tcp->ssl);
+			tcp->ssl = NULL;
+		}
 		else
 #endif /* HAVE_OPENSSL */
 			close(tcp->fd);
 		tcp->fd = -1;
-		tcp->ssl = NULL;
 	}
 }
 

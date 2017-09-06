@@ -41,7 +41,9 @@
 typedef struct {
 	int fd;
 	sa_family_t ai_family;
+#ifdef HAVE_OPENSSL
 	SSL *ssl;
+#endif
 } tcp_t;
 
 int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_if, char *message );
