@@ -72,7 +72,7 @@ int conn_set( conn_t *conn, const char *set_url )
 			conn->proto = PROTO_HTTP;
 			conn->port = PROTO_HTTP_PORT;
 		}
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 		else if( strncmp( set_url, "ftps", proto_len ) == 0 )
 		{
 			conn->proto = PROTO_FTPS;
@@ -83,7 +83,7 @@ int conn_set( conn_t *conn, const char *set_url )
 			conn->proto = PROTO_HTTPS;
 			conn->port = PROTO_HTTPS_PORT;
 		}
-#endif /* HAVE_OPENSSL */
+#endif /* HAVE_SSL */
 		else
 		{
 			return( 0 );

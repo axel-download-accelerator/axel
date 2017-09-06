@@ -118,7 +118,7 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 		return -1;
 	}
 
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 	if (secure) {
 		tcp->ssl = ssl_connect(sock_fd, hostname, message);
 		if (tcp->ssl == NULL) {
@@ -126,7 +126,7 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 			return -1;
 		}
 	}
-#endif /* HAVE_OPENSSL */
+#endif /* HAVE_SSL */
 	tcp->fd = sock_fd;
 
 	return 1;
@@ -134,35 +134,35 @@ int tcp_connect( tcp_t *tcp, char *hostname, int port, int secure, char *local_i
 
 int tcp_read( tcp_t *tcp, void *buffer, int size )
 {
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 	if (tcp->ssl != NULL)
 		return SSL_read(tcp->ssl, buffer, size);
 	else
-#endif /* HAVE_OPENSSL */
+#endif /* HAVE_SSL */
 		return read(tcp->fd, buffer, size);
 }
 
 int tcp_write( tcp_t *tcp, void *buffer, int size )
 {
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 	if (tcp->ssl != NULL)
 		return SSL_write(tcp->ssl, buffer, size);
 	else
-#endif /* HAVE_OPENSSL */
+#endif /* HAVE_SSL */
 		return write(tcp->fd, buffer, size);
 }
 
 void tcp_close( tcp_t *tcp )
 {
 	if (tcp->fd > 0) {
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 		if (tcp->ssl != NULL)
 		{
 			ssl_disconnect(tcp->ssl);
 			tcp->ssl = NULL;
 		}
 		else
-#endif /* HAVE_OPENSSL */
+#endif /* HAVE_SSL */
 			close(tcp->fd);
 		tcp->fd = -1;
 	}

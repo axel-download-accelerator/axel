@@ -37,7 +37,7 @@
 
 #include "axel.h"
 
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 
 #include <openssl/err.h>
 
@@ -98,4 +98,4 @@ void ssl_disconnect( SSL *ssl )
 	SSL_free( ssl );
 }
 
-#endif /* HAVE_OPENSSL */
+#endif /* HAVE_SSL */

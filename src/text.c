@@ -225,9 +225,9 @@ int main( int argc, char *argv[] )
 		return( 1 );
 	}
 
-#ifdef HAVE_OPENSSL
+#ifdef HAVE_SSL
 	ssl_init( conf );
-#endif /* HAVE_OPENSSL */
+#endif /* HAVE_SSL */
 
 	if( argc - optind == 0 )
 	{

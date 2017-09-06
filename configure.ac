@@ -34,19 +34,19 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_CHECK_FUNCS([malloc realloc gettimeofday inet_ntoa memset select setlocale socket strncasecmp strchr strrchr strstr])
 
-# Optional (but included-by-default) openssl support
-AC_ARG_WITH([openssl],
-    AC_HELP_STRING([--without-openssl],[disable TLS support]), [], [with_openssl=yes])
+# Optional (but included-by-default) ssl support
+AC_ARG_WITH([ssl],
+    AC_HELP_STRING([--without-ssl],[disable TLS support]), [], [with_ssl=yes])
 
-AS_IF([test "x$with_openssl" != xno], [
-    AC_DEFINE([HAVE_OPENSSL], [1], [OpenSSL])
+AS_IF([test "x$with_ssl" != xno], [
+    AC_DEFINE([HAVE_SSL], [1], [SSL])
     AC_SEARCH_LIBS([SSL_new], [ssl], [], [
         AC_MSG_ERROR([libssl not found])
     ])
     AC_SEARCH_LIBS([ERR_get_error], [crypto], [], [
         AC_MSG_ERROR([libcrypto not found])
     ])
-], AC_MSG_NOTICE([OpenSSL support disabled]))
+], AC_MSG_NOTICE([SSL support disabled]))
 
 # Add Gettext
 AM_GNU_GETTEXT([external])
