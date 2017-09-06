@@ -14,6 +14,16 @@ matrix:
     - os: osx
       osx_image: xcode8.3
       compiler: clang
+    - os: linux
+      compiler: gcc
+      env: CONF_FLAGS="--without-ssl"
+    - os: linux
+      compiler: clang
+      env: CONF_FLAGS="--without-ssl"
+    - os: osx
+      osx_image: xcode8.3
+      compiler: clang
+      env: CONF_FLAGS="--without-ssl"
 
 addons:
   apt:
@@ -40,5 +50,5 @@ script:
         export OSX_LDFLAGS="-L$GETTEXT/lib";
       fi
     - ./autogen.sh $OSX_AG_FLAGS &&
-        ./configure CFLAGS="-O3 -Werror $OSX_CFLAGS" LDFLAGS="$OSX_LDFLAGS" &&
+        ./configure $CONF_FLAGS CFLAGS="-O3 -Werror $OSX_CFLAGS" LDFLAGS="$OSX_LDFLAGS" &&
         make
