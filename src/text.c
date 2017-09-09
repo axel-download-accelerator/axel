@@ -653,7 +653,7 @@ void print_help()
 		"-h\tThis information\n"
 		"-V\tVersion information\n"
 		"\n"
-		"Visit https://github.com/eribertomota/axel/issues\n") );
+		"Visit https://github.com/axel-download-accelerator/axel/issues\n") );
 #else
 	printf(	_("Usage: axel [options] url1 [url2] [url...]\n"
 		"\n"
@@ -675,7 +675,7 @@ void print_help()
 		"--help\t\t\t-h\tThis information\n"
 		"--version\t\t-V\tVersion information\n"
 		"\n"
-		"Visit https://github.com/eribertomota/axel/issues to report bugs\n") );
+		"Visit https://github.com/axel-download-accelerator/axel/issues to report bugs\n") );
 #endif
 }
 
@@ -688,6 +688,7 @@ void print_version()
 	printf( "\n          2015-2017 Joao Eriberto Mota Filho," );
 	printf( "\n          2016-2017 Stephen Thirlwall," );
 	printf( "\n          2017      Ismael Luceno," );
+	printf( "\n          2017      Antonio Quartulli," );
 	printf( _("\n                    and others." ));
 	printf ( _("\nPlease, see the CREDITS file.\n\n") );
 }

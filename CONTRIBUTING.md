@@ -1,6 +1,6 @@
 ## HOW TO CONTRIBUTE TO AXEL DEVELOPMENT
 
-Axel is available at https://github.com/eribertomota/axel
+Axel is available at https://github.com/axel-download-accelerator/axel
 
 If you are interested in contribute to axel development, please, follow
 these steps:

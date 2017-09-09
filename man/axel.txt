@@ -111,7 +111,7 @@ FILES
 COPYRIGHT
  Axel was originally written by Wilmer van der Gaast and other authors over time. Please, see the AUTHORS and CREDITS files.
 
- The current Axel homepage (since 2015) is https://github.com/eribertomota/axel
+ The current Axel homepage (since 2015) is https://github.com/axel-download-accelerator/axel
 
 HELP THIS PROJECT
  If you intent to help, please, read the CONTRIBUTING.md file. On Debian systems, this file will be available at

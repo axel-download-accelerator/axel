@@ -86,7 +86,7 @@ Version 2.10, 2016-06-04
 
 * Stephen implemented SSL/TLS. Consequently, the licensing for Axel from now on
   will be GPL-2+ with OpenSSL exception. All previous authors agree with that.
-  For details, see https://github.com/eribertomota/axel/issues/15.
+  For details, see https://github.com/axel-download-accelerator/axel/issues/15.
 * Downgraded gettext minimum version to 0.18 in configure.ac. It will produce a
   message 'AM_PROG_MKDIR_P macro is deprecated' when building, but that is
   normal.
