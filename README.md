@@ -15,15 +15,16 @@
 Axel needs your help. **If you are a programmer** and if you wants to
 help a nice project, this is your opportunity.
 
-My name is Eriberto and **I am not a C developer**. I imported Axel from
-its old repository[1] to GitHub (the original homepage and developers
-are inactive). After this, I applied all patches found in Debian project
-and other places for this program. All my initial work was registered in
-ChangeLog file (version 2.5 and later releases). I also maintain Axel
-packaged in Debian[2].
+Axel was imported from its old repository[1] to GitHub (the original
+homepage and developers are inactive). After this, all patches found
+in Debian project and other places for this program were applied. All
+initial work was registered in ChangeLog file (version 2.5 and later
+releases). Axel is being packaged in Debian[2].
 
-If you are interested to help Axel, read the [CONTRIBUTING.md](CONTRIBUTING.md) file. Additionally, there is a group to discuss and to coordinate the development process[3].
-You can also find other developers in the #axel channel on freenode.
+If you are interested to help Axel, read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+Additionally, there is a group to discuss and to coordinate the
+development process[3]. You can also find other developers in the
+#axel channel on freenode.
 
 [1] https://alioth.debian.org/projects/axel
 [2] https://packages.qa.debian.org/a/axel.html
@@ -45,7 +46,7 @@ Axel supports HTTP, HTTPS, FTP and FTPS protocols.
 
 Axel was originally developed by Wilmer van der Gaast. Thanks for your
 efforts. Over time, Axel got several contributions from people. Please,
-see the files AUTHORS and CREDITS.
+see AUTHORS and CREDITS files in source code.
 
 ## 3. Building from source ##
 
