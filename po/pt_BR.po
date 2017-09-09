@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: axel 2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"POT-Creation-Date: 2017-09-08 23:52-0300\n"
-"PO-Revision-Date: 2016-06-04 18:17-0300\n"
-"Last-Translator: Eriberto Mota <eriberto@eriberto.pro.br>\n"
+"POT-Creation-Date: 2017-09-09 00:23-0300\n"
+"PO-Revision-Date: 2017-09-09 00:23-0300\n"
+"Last-Translator: Joao Eriberto Mota Filho <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: src/axel.c:87
 msgid "Buffer resized for this speed."
@@ -33,12 +34,12 @@ msgstr "Não posso analisar esta URL.\n"
 #: src/axel.c:162
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
-msgstr ""
+msgstr "Encontrado um download incompleto, ignorando opção no-clobber\n"
 
 #: src/axel.c:167
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
-msgstr ""
+msgstr "Arquivo '%s' já existe; ignorando novo download do mesmo.\n"
 
 #: src/axel.c:202
 #, c-format
@@ -85,9 +86,9 @@ msgid "pthread error!!!"
 msgstr "pthread error!!!"
 
 #: src/axel.c:453
-#, fuzzy, c-format
+#, c-format
 msgid "Error while waiting for connection: %s"
-msgstr "Erro ao escrever comando %s\n"
+msgstr "Erro ao esperar por conexão: %s"
 
 #: src/axel.c:487
 #, c-format
@@ -116,17 +117,17 @@ msgstr "Tempo esgotado para a conexão %i"
 #: src/axel.c:635
 #, c-format
 msgid "Error while enforcing throttling: %s"
-msgstr ""
+msgstr "Erro ao forçar controle: %s"
 
 #: src/conf.c:64
 #, c-format
 msgid "I/O error while reading config file: %s\n"
-msgstr ""
+msgstr "Erro de I/O ao ler arquivo de configuração: %s\n"
 
 #: src/conf.c:79
 #, c-format
 msgid "Unknown protocol %s\n"
-msgstr ""
+msgstr "Protocolo desconhecido %s\n"
 
 #: src/conf.c:182
 #, c-format
@@ -221,7 +222,7 @@ msgstr "Testando velocidades. Isso pode demorar um pouco...\n"
 #: src/text.c:275
 #, c-format
 msgid "Speed testing failed\n"
-msgstr ""
+msgstr "Falha no teste de velocidade\n"
 
 #: src/text.c:282
 #, c-format
@@ -297,10 +298,10 @@ msgstr "%i:%02i:%02i hora(s)"
 #: src/text.c:565
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
-msgstr ""
+msgstr "Não posso configurar uma saída alternativa. Desativando.\n"
 
 #: src/text.c:637
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -329,10 +330,13 @@ msgstr ""
 "-n x\tEspecifica o número máximo de conexões\n"
 "-o f\tEspecifica o arquivo de saída\n"
 "-S [x]\tProcura por mirrors e baixa a partir de x servidores\n"
+"-4\tConectar usando IPv4\n"
+"-6\tConectar usando IPv6\n"
 "-H x\tAdiciona uma entrada adicional de cabeçalho\n"
 "-U x\tConfigura um user agent\n"
 "-N\tNão utiliza qualquer servidor proxy\n"
 "-k\tNão verifica o certificado SSL\n"
+"-c\tIgnora download se o arquivo já existir\n"
 "-q\tEvita mensagens na tela\n"
 "-v\tAumenta o número de informações\n"
 "-a\tSubstitui o indicador de progresso\n"
@@ -342,7 +346,7 @@ msgstr ""
 "Visite https://github.com/axel-download-accelerator/axel/issues\n"
 
 #: src/text.c:658
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -371,13 +375,17 @@ msgstr ""
 "\n"
 "--max-speed=x\t\t-s x\tEspecifica a velocidade máxima (bytes por segundo)\n"
 "--num-connections=x\t-n x\tEspecifica o número máximo de conexões\n"
+"--max-redirect=x\tEspecifica a quantidade máxima de redirecionamentos\n"
 "--output=f\t\t-o f\tEspecifica o arquivo de saída\n"
 "--search[=x]\t\t-S [x]\tProcura por mirrors e baixa a partir de x "
 "servidores\n"
+"--ipv4\t\t-4\tUsar o protocolo IPv4\n"
+"--ipv6\t\t-6\tUsar o protocolo IPv6\n"
 "--header=x\t\t-H x\tAdiciona uma entrada adicional de cabeçalho\n"
 "--user-agent=x\t\t-U x\tConfigura um user agent\n"
 "--no-proxy\t\t-N\tNão utiliza qualquer servidor proxy\n"
 "--insecure\t\t-k\tNão verifica o certificado SSL\n"
+"--no-clobber\t\t-c\tIgnora o download se o arquivo já existir\n"
 "--quiet\t\t\t-q\tEvita mensagens na tela\n"
 "--verbose\t\t-v\tAumenta o número de informações\n"
 "--alternate\t\t-a\tSubstitui o indicador de progresso\n"
@@ -388,13 +396,13 @@ msgstr ""
 "bugs\n"
 
 #: src/text.c:684
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Axel version "
 msgstr ""
 "\n"
-"Axel versão %s (%s)\n"
+"Axel versão "
 
 #: src/text.c:692
 #, c-format
