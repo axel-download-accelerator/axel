@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
 "POT-Creation-Date: 2017-09-09 00:23-0300\n"
-"PO-Revision-Date: 2017-09-09 00:23-0300\n"
+"PO-Revision-Date: 2017-09-10 12:31-0300\n"
 "Last-Translator: Joao Eriberto Mota Filho <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
@@ -117,7 +117,7 @@ msgstr "Tempo esgotado para a conexão %i"
 #: src/axel.c:635
 #, c-format
 msgid "Error while enforcing throttling: %s"
-msgstr "Erro ao forçar controle: %s"
+msgstr "Erro ao aplicar regulagem de velocidade: %s"
 
 #: src/conf.c:64
 #, c-format
@@ -373,7 +373,8 @@ msgid ""
 msgstr ""
 "Uso: axel [opções] url1 [url2] [url...]\n"
 "\n"
-"--max-speed=x\t\t-s x\tEspecifica a velocidade máxima (bytes por segundo)\n"
+"--max-speed=x\t\t-s x\tEspecifica a velocidade máxima (bytes por "
+"segundo)\n"
 "--num-connections=x\t-n x\tEspecifica o número máximo de conexões\n"
 "--max-redirect=x\tEspecifica a quantidade máxima de redirecionamentos\n"
 "--output=f\t\t-o f\tEspecifica o arquivo de saída\n"
