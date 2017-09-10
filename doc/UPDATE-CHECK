@@ -6,5 +6,6 @@ When updating, change these files (if needed):
 - configure.ac (VERSION)
 - manpage version and date
 - src/text.c (years in Copyright lines near EOF)
+- test Debian packaging
 
 -> run 'make update-po' in po/ to update the .po files.
