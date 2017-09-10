@@ -1,8 +1,73 @@
+Version 2.14, 2017-09-10
+
+  [ Antonio Quartulli and Ismael Luceno ]
+
+* Added basic travis-ci support.
+* Added --no-clobber option.
+* Added port to Host HTTP header when different from service default.
+* Allow user to choose between IPv4 and IPv6.
+* Alternate-output: use better representation.
+* Avoid memory leak in case of failure in main function.
+* Avoid segfault when quiet and alternate behaviour are both specified.
+* Convert usleep to nanosleep.
+* Don't include openssl.h when without-openssl is specified.
+* Don't leak buffer on program termination.
+* Don't link with -pthread on OSX.
+* Ensure alternate output can be setup and prevent crash.
+* Ensure 'progress' has space for null terminator.
+* Fixed a NULL dereference.
+* Fixed race segfault upon connection to HTTPS server.
+* Fixed use-after-free of axel->conn member.
+* Implemented HTTP proxy authentication.
+* Improved code in option parsing routine.
+* Improved http_auth_token to avoid buffering.
+* Increased default number of max redirects to 20 and make it configurable.
+* Make axel thread safe.
+* Mention IRC channel in README and CONTRIBUTING files.
+* Reset 'enabled' attribute in conn_disconnect().
+* SSL: don't declare tcp->ssl if OpenSSL is disabled.
+* Use boolean variables as such.
+
+  [ Antonio Quartulli ]
+
+* Avoid bad-free when deallocating multiple URLs.
+* Avoid racy access to last_transfer.
+* Fixed a memory leak.
+* Make SSL initialization race free.
+* Some minor fixes and changes.
+
+  [ Ismael Luceno ]
+
+* Added -D_DEFAULT_SOURCE and -D_BSD_SOURCE to CPPFLAGS.
+* Added guard to header files.
+* conf: Reorder check for "interfaces" key.
+* configure: Force a C99 compiler.
+* configure: Let autoconf take care of LFS.
+* Fixed conn_set prototype.
+* Fixed http_header and http_filename prototypes.
+* Improve configuration parsing code.
+* Report truncated state file properly.
+* Some minor fixes and changes.
+
+  [ Joao Eriberto Mota Filho ]
+
+* Added i18n for new messages.
+* Updated general docs, as AUTHORS and ChangeLog files.
+* Updated project homepage in all files.
+* Updated the copyright notices in all headers.
+* Updated the pt_BR translation.
+* Updated the README.md file.
+* Final tests, release and Debian packaging.
+
+
+
 Version 2.13.1, 2017-08-03
 
   [ Joao Eriberto Mota Filho ]
 
 * Updated .po files.
+
+
 
 Version 2.13, 2017-08-02
 
