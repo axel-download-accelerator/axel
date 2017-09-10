@@ -9,6 +9,7 @@
   Copyright 2016      Phillip Berndt
   Copyright 2016      Sjjad Hashemian
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      Antonio Quartulli
   Copyright 2017      David Polverari
   Copyright 2017      Ismael Luceno
 

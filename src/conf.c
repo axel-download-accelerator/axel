@@ -6,6 +6,7 @@
   Copyright 2008      Y Giridhar Appaji Nag
   Copyright 2016      Ivan Gimenez
   Copyright 2016      Stephen Thirlwall
+  Copyright 2017      Antonio Quartulli
   Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or

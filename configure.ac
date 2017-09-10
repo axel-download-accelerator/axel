@@ -1,6 +1,8 @@
 # Autoconf for axel
 # Copyright 2016 Joao Eriberto Mota Filho
 # Copyright 2016 Stephen Thirlwall
+# Copyright 2017 Antonio Quartulli
+# Copyright 2017 Ismael Luceno
 # Copyright 2017 Vlad Glagolev
 # This file is under same license of Axel
 

@@ -4,6 +4,8 @@
   Copyright 2001-2007 Wilmer van der Gaast
   Copyright 2010      Mark Smith
   Copyright 2016-2017 Stephen Thirlwall
+  Copyright 2017      Antonio Quartulli
+  Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
