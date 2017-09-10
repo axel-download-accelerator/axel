@@ -84,7 +84,7 @@ RETURN VALUE
 EXAMPLES
  The trivial usage to download a file is similar to:
 
-    $ axel http://cdimage.debian.org/debian-cd/8.4.0/amd64/iso-cd/debian-8.4.0-amd64-netinst.iso
+    $ axel http://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.1.0-amd64-netinst.iso
 
     $ axel ftp://ftp.nl.kernel.org/pub/linux/kernel/v2.2/linux-2.2.20.tar.bz2
 
