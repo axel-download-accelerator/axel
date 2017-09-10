@@ -1,7 +1,7 @@
 When updating, change these files (if needed):
 
 - AUTHORS
-- ChangeLog
+- ChangeLog (**)
 - CREDITS
 - configure.ac (VERSION)
 - manpage version and date
@@ -9,3 +9,5 @@ When updating, change these files (if needed):
 - test Debian packaging
 
 -> run 'make update-po' in po/ to update the .po files.
+
+(**) $ git shortlog -w80,0 --format='* %s' 2.13.1..v2.14
