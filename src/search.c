@@ -7,6 +7,7 @@
   Copyright 2016      Stephen Thirlwall
   Copyright 2017      Antonio Quartulli
   Copyright 2017      Ismael Luceno
+  Copyright 2017      Joao Eriberto Mota Filho
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -54,7 +55,7 @@ int main( int argc, char *argv[] )
 
 	if( argc != 2 )
 	{
-		fprintf( stderr, "Incorrect amount of arguments\n" );
+		fprintf( stderr, _("Incorrect amount of arguments\n") );
 		return( 1 );
 	}
 
@@ -68,16 +69,16 @@ int main( int argc, char *argv[] )
 	i = search_makelist( res, argv[1] );
 	if( i == -1 )
 	{
-		fprintf( stderr, "File not found\n" );
+		fprintf( stderr, _("File not found\n") );
 		return( 1 );
 	}
 	num_mirrors = search_getspeeds( res, i );
 	if ( num_mirrors < 0 )
 	{
-		fprintf( stderr, "Speed testing failed\n" );
+		fprintf( stderr, _("Speed testing failed\n") );
 		return( 1 );
 	}
-	printf( "%i usable mirrors:\n", num_mirrors );
+	printf( _("%i usable mirrors:\n"), num_mirrors );
 	search_sortlist( res, i );
 	for( j = 0; j < i; j ++ )
 		printf( "%-70.70s %5i\n", res[j].url, res[j].speed );

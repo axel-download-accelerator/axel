@@ -4,7 +4,7 @@
   Copyright 2001-2007 Wilmer van der Gaast
   Copyright 2007-2009 Y Giridhar Appaji Nag
   Copyright 2008-2009 Philipp Hagemeister
-  Copyright 2015-2016 Joao Eriberto Mota Filho
+  Copyright 2015-2017 Joao Eriberto Mota Filho
   Copyright 2016      Denis Denisov
   Copyright 2016      Ivan Gimenez
   Copyright 2016      Sjjad Hashemian
@@ -249,7 +249,7 @@ int axel_open( axel_t *axel )
 		nread = read( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
 		if( nread != sizeof( axel->conf->num_connections ) )
 		{
-			printf( "%s.st: Error, truncated state file\n",
+			printf( _("%s.st: Error, truncated state file\n"),
 				axel->filename );
 			close( fd );
 			return( 0 );
@@ -261,7 +261,7 @@ int axel_open( axel_t *axel )
 			/* FIXME this might be wrong, the file may have been
 			 * truncated, we need another way to check. */
 #ifdef DEBUG
-			printf( "State file has old format.\n" );
+			printf( _("State file has old format.\n") );
 #endif
 			old_format = 1;
 		}
@@ -355,7 +355,7 @@ void reactivate_connection(axel_t *axel, int thread)
 	if(max_remaining >= 100 * 1024 && idx != -1)
 	{
 #ifdef DEBUG
-		printf("\nReactivate connection %d\n",thread);
+		printf( _("\nReactivate connection %d\n"),thread);
 #endif
 		axel->conn[thread].lastbyte = axel->conn[idx].lastbyte;
 		axel->conn[idx].lastbyte = axel->conn[idx].currentbyte + max_remaining/2;
@@ -808,13 +808,13 @@ static void axel_divide( axel_t *axel )
 	for( i = 1; i < axel->conf->num_connections; i ++ )
 	{
 #ifdef DEBUG
-		printf( "Downloading %lld-%lld using conn. %i\n", axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
+		printf( _("Downloading %lld-%lld using conn. %i\n"), axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
 #endif
 		axel->conn[i].currentbyte = axel->conn[i-1].lastbyte + 1;
 		axel->conn[i].lastbyte = axel->conn[i].currentbyte + axel->size / axel->conf->num_connections;
 	}
 	axel->conn[axel->conf->num_connections-1].lastbyte = axel->size - 1;
 #ifdef DEBUG
-	printf( "Downloading %lld-%lld using conn. %i\n", axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
+	printf( _("Downloading %lld-%lld using conn. %i\n"), axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
 #endif
 }

@@ -282,7 +282,7 @@ int main( int argc, char *argv[] )
 		{
 			printf( _("%i usable servers found, will use these URLs:\n"), j );
 			j = min( j, conf->search_top );
-			printf( "%-60s %15s\n", "URL", "Speed" );
+			printf( "%-60s %15s\n", "URL", _("Speed") );
 			for( i = 0; i < j; i ++ )
 				printf( "%-70.70s %5i\n", search[i].url, search[i].speed );
 			printf( "\n" );
