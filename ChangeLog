@@ -2,48 +2,46 @@ Version 2.14, 2017-09-10
 
   [ Antonio Quartulli ]
 
-* Added basic travis-ci support.
+* Fixed redirection from HTTP to FTP.
+* Added Travis-CI support.
 * Added --no-clobber option.
 * Added port to Host HTTP header when different from service default.
-* Allow user to choose between IPv4 and IPv6.
+* Added option to choose between IPv4 and IPv6.
 * Alternate-output: use better representation.
 * Avoid bad-free when deallocating multiple URLs.
-* Avoid memory leak in case of failure in main function.
-* Avoid racy access to last_transfer.
 * Avoid segfault when quiet and alternate behaviour are both specified.
 * Convert usleep to nanosleep.
-* Don't include openssl.h when without-openssl is specified.
-* Don't leak buffer on program termination.
-* Don't link with -pthread on OSX.
+* Fixed compilation without SSL.
+* Fixed linking in macOS (don't link pthread).
 * Ensure alternate output can be setup and prevent crash.
 * Ensure 'progress' has space for null terminator.
-* Fixed a memory leak.
+* Fixed several memory leaks.
 * Fixed a NULL dereference.
-* Fixed race segfault upon connection to HTTPS server.
 * Fixed use-after-free of axel->conn member.
 * Implemented HTTP proxy authentication.
 * Improved code in option parsing routine.
-* Improved http_auth_token to avoid buffering.
-* Increased default number of max redirects to 20 and make it configurable.
-* Make axel thread safe.
-* Make SSL initialization race free.
-* Mention IRC channel in README and CONTRIBUTING files.
+* Increased default number of max redirects to 20 and made it configurable.
+* Made axel thread safe.
+* Made SSL initialization race free.
+* Fixed race segfault upon connection to HTTPS server.
+* Fixed racy access to last_transfer.
+* Added mention to IRC channel in README and CONTRIBUTING files.
 * Reset 'enabled' attribute in conn_disconnect().
-* SSL: don't declare tcp->ssl if OpenSSL is disabled.
 * Use boolean variables as such.
 * Some minor fixes and changes.
+* Fixed build warnings.
 
   [ Ismael Luceno ]
 
-* Added -D_DEFAULT_SOURCE and -D_BSD_SOURCE to CPPFLAGS.
-* conf: Reorder check for "interfaces" key.
-* configure: Force a C99 compiler.
-* configure: Let autoconf take care of LFS.
-* Fixed conn_set prototype.
-* Fixed http_header and http_filename prototypes.
-* Improve configuration parsing code.
+* Simplified http_header.
+* Made HTTP the default protocol.
 * Report truncated state file properly.
-* Some minor fixes and changes.
+* Fixed linking against libintl in non-standard path.
+* Improved http_auth_token to avoid buffering.
+* Improved configuration parsing code.
+* Build system improvements.
+* Miscellaneous fixes and improvements.
+* Fixed several function prototypes.
 
   [ Joao Eriberto Mota Filho ]
 
@@ -56,7 +54,7 @@ Version 2.14, 2017-09-10
 * Updated the README.md file.
 * Final tests, release and Debian packaging.
 
-  [ sumit agrawal ]
+  [ Sumit Agrawal ]
 
 * Added guard to header files.
 
