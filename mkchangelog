@@ -1,0 +1,38 @@
+#!/bin/sh
+# This script creates a template to update the ChangeLog.
+
+get_ver() {
+	git describe --abbrev=0 --tags --match 'v*' "$@"
+}
+
+set -- "$@" HEAD
+cur="$(get_ver "$1")"
+prev="$(get_ver "$cur^")"
+
+git shortlog --format='* %s' -w80,0 "$prev".."$cur" |
+awk '
+!/^\*/ && /:$/ {
+	$NF=""
+	author = $0
+	next
+}
+!/^$/ {
+	print author, ">", $0
+}
+' | sort |
+awk -vver="${cur#v}" -F'  > ' '
+BEGIN {
+	printf "Version: %s, %s\n", ver, strftime("%Y-%m-%d")
+}
+END {
+	print "\n\n"
+}
+author != $1 {
+       print "\n  [", $1, "]\n"
+       author = $1
+}
+{
+	sub(/^[^>]*> /, "")
+	print
+}
+'
