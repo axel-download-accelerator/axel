@@ -489,7 +489,7 @@ void axel_do( axel_t *axel )
 					"Connection closed"), i );
 			}
 			conn_disconnect( &axel->conn[i] );
-			continue;
+			goto next_conn;
 		}
 		else if( size == 0 )
 		{
@@ -511,7 +511,7 @@ void axel_do( axel_t *axel )
 			}
 			conn_disconnect( &axel->conn[i] );
 			reactivate_connection(axel,i);
-			continue;
+			goto next_conn;
 		}
 		/* remaining == Bytes to go */
 		remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
@@ -532,6 +532,7 @@ void axel_do( axel_t *axel )
 
 			axel_message( axel, _("Write error!") );
 			axel->ready = -1;
+			pthread_mutex_unlock( &axel->conn[i].lock );
 			return;
 		}
 		axel->conn[i].currentbyte += size;
@@ -548,6 +549,7 @@ void axel_do( axel_t *axel )
 			conn_disconnect( &axel->conn[i] );
 		}
 	} }
+next_conn:
 	pthread_mutex_unlock( &axel->conn[i].lock );
 	}
 
