@@ -461,10 +461,10 @@ void axel_do( axel_t *axel )
 
 	timeval->tv_sec = 0;
 	timeval->tv_usec = 100000;
-	/* A select() error probably means it was interrupted
-	   by a signal, or that something else's very wrong... */
 	if( select( hifd + 1, fds, NULL, NULL, timeval ) == -1 )
 	{
+		/* A select() error probably means it was interrupted
+		 * by a signal, or that something else's very wrong... */
 		axel->ready = -1;
 		return;
 	}
