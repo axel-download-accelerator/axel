@@ -471,12 +471,26 @@ void axel_do( axel_t *axel )
 
 	/* Handle connections which need attention */
 	for( i = 0; i < axel->conf->num_connections; i ++ ) {
-	/* skip connection if setup thread hasn't released the lock yet */
-	if( pthread_mutex_trylock( &axel->conn[i].lock ) )
-		continue;
-	if( axel->conn[i].enabled ) {
-	if( FD_ISSET( axel->conn[i].tcp->fd, fds ) )
-	{
+		/* skip connection if setup thread hasn't released the lock yet */
+		if( pthread_mutex_trylock( &axel->conn[i].lock ) )
+			continue;
+
+		if( !axel->conn[i].enabled )
+			goto next_conn;
+
+		if( !FD_ISSET( axel->conn[i].tcp->fd, fds ) )
+		{
+			time_t timeout = axel->conn[i].last_transfer +
+					 axel->conf->connection_timeout;
+			if( gettime() > timeout )
+			{
+				if( axel->conf->verbose )
+					axel_message( axel, _("Connection %i timed out"), i );
+				conn_disconnect( &axel->conn[i] );
+			}
+			goto next_conn;
+		}
+
 		axel->conn[i].last_transfer = gettime();
 		size = tcp_read( axel->conn[i].tcp, buffer, axel->conf->buffer_size );
 		if( size == -1 )
@@ -484,12 +498,13 @@ void axel_do( axel_t *axel )
 			if( axel->conf->verbose )
 			{
 				axel_message( axel, _("Error on connection %i! "
-					"Connection closed"), i );
+						      "Connection closed"), i );
 			}
 			conn_disconnect( &axel->conn[i] );
 			goto next_conn;
 		}
-		else if( size == 0 )
+
+		if( size == 0 )
 		{
 			if( axel->conf->verbose )
 			{
@@ -511,6 +526,7 @@ void axel_do( axel_t *axel )
 			reactivate_connection(axel,i);
 			goto next_conn;
 		}
+
 		/* remaining == Bytes to go */
 		remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
 		if( remaining < size )
@@ -527,7 +543,6 @@ void axel_do( axel_t *axel )
 		lseek( axel->outfd, axel->conn[i].currentbyte, SEEK_SET );
 		if( write( axel->outfd, buffer, size ) != size )
 		{
-
 			axel_message( axel, _("Write error!") );
 			axel->ready = -1;
 			pthread_mutex_unlock( &axel->conn[i].lock );
@@ -537,18 +552,9 @@ void axel_do( axel_t *axel )
 		axel->bytes_done += size;
 		if( remaining == size )
 			reactivate_connection(axel,i);
-	}
-	else
-	{
-		if( gettime() > axel->conn[i].last_transfer + axel->conf->connection_timeout )
-		{
-			if( axel->conf->verbose )
-				axel_message( axel, _("Connection %i timed out"), i );
-			conn_disconnect( &axel->conn[i] );
-		}
-	} }
+
 next_conn:
-	pthread_mutex_unlock( &axel->conn[i].lock );
+		pthread_mutex_unlock( &axel->conn[i].lock );
 	}
 
 	if( axel->ready )
