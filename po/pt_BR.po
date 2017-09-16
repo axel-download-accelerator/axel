@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: axel 2.13\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"POT-Creation-Date: 2017-09-10 13:43-0300\n"
+"POT-Creation-Date: 2017-09-16 18:51-0300\n"
 "PO-Revision-Date: 2017-09-10 13:42-0300\n"
 "Last-Translator: Joao Eriberto Mota Filho <eriberto@eriberto.pro.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -95,12 +95,12 @@ msgstr ""
 msgid "Starting download"
 msgstr "Iniciando o download"
 
-#: src/axel.c:399 src/axel.c:578
+#: src/axel.c:399 src/axel.c:580
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Conexão %i baixando a partir de %s:%i, usando interface %s"
 
-#: src/axel.c:406 src/axel.c:588
+#: src/axel.c:406 src/axel.c:590
 msgid "pthread error!!!"
 msgstr "pthread error!!!"
 
@@ -128,17 +128,17 @@ msgstr "Conexão %i finalizada"
 msgid "Write error!"
 msgstr "Erro de escrita!"
 
-#: src/axel.c:547
+#: src/axel.c:548
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Tempo esgotado para a conexão %i"
 
-#: src/axel.c:636
+#: src/axel.c:638
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "Erro ao aplicar regulagem de velocidade: %s"
 
-#: src/axel.c:811 src/axel.c:818
+#: src/axel.c:813 src/axel.c:820
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr "Baixando %lld-%lld usando conexão %i\n"

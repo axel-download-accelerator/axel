@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"POT-Creation-Date: 2017-09-10 13:43-0300\n"
+"POT-Creation-Date: 2017-09-16 18:51-0300\n"
 "PO-Revision-Date: 2008-09-15 22:08+0200\n"
 "Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -88,12 +88,12 @@ msgstr ""
 msgid "Starting download"
 msgstr "Starte Abruf"
 
-#: src/axel.c:399 src/axel.c:578
+#: src/axel.c:399 src/axel.c:580
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbindung %i: Abruf von %s:%i über Schnittstelle %s"
 
-#: src/axel.c:406 src/axel.c:588
+#: src/axel.c:406 src/axel.c:590
 msgid "pthread error!!!"
 msgstr "pthread Fehler!!!"
 
@@ -121,17 +121,17 @@ msgstr "Verbindung %i beendet"
 msgid "Write error!"
 msgstr "Schreibfehler!"
 
-#: src/axel.c:547
+#: src/axel.c:548
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Time-out bei Verbindung %i"
 
-#: src/axel.c:636
+#: src/axel.c:638
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr ""
 
-#: src/axel.c:811 src/axel.c:818
+#: src/axel.c:813 src/axel.c:820
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr ""

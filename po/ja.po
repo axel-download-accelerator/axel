@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"POT-Creation-Date: 2017-09-10 13:43-0300\n"
+"POT-Creation-Date: 2017-09-16 18:51-0300\n"
 "PO-Revision-Date: 2016-08-21 01:20+0800\n"
 "Last-Translator: Lion Yang <lion@aosc.xyz>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
@@ -91,12 +91,12 @@ msgstr ""
 msgid "Starting download"
 msgstr "ダウンロード開始します"
 
-#: src/axel.c:399 src/axel.c:578
+#: src/axel.c:399 src/axel.c:580
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "接続 %i は %s:%i から、インターフェース %s でダウンロードします"
 
-#: src/axel.c:406 src/axel.c:588
+#: src/axel.c:406 src/axel.c:590
 msgid "pthread error!!!"
 msgstr "pthread のエラー!!!"
 
@@ -124,17 +124,17 @@ msgstr "接続 %i が終了しました"
 msgid "Write error!"
 msgstr "書き込みエラー!"
 
-#: src/axel.c:547
+#: src/axel.c:548
 #, c-format
 msgid "Connection %i timed out"
 msgstr "接続 %i がタイムアウトしました"
 
-#: src/axel.c:636
+#: src/axel.c:638
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr ""
 
-#: src/axel.c:811 src/axel.c:818
+#: src/axel.c:813 src/axel.c:820
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr ""
