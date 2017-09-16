@@ -7,7 +7,7 @@
 # This file is under same license of Axel
 
 AC_PREREQ([2.69])
-AC_INIT([axel], [2.14], [https://github.com/axel-download-accelerator/axel/issues])
+AC_INIT([axel], [2.14.1], [https://github.com/axel-download-accelerator/axel/issues])
 AC_CONFIG_SRCDIR([src/conf.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
