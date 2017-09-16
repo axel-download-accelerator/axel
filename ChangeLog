@@ -1,3 +1,19 @@
+Version 2.14.1, 2017-09-16
+
+  [ Antonio Quartulli ]
+
+* Avoid stall due to missing unlock.
+
+  [ Ismael Luceno ]
+
+* Added some automation to help update the ChangeLog (mkchangelog).
+
+  [ Joao Eriberto Mota Filho ]
+
+* Updated ChangeLog, CREDITS .po files and configure.ac.
+
+
+
 Version 2.14, 2017-09-10
 
   [ Antonio Quartulli ]
