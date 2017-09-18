@@ -254,7 +254,14 @@ conf_init(conf_t *conf)
 
 	if ((s2 = getenv("HOME")) != NULL) {
 		char s[MAX_STRING];
-		sprintf(s, "%s/%s", s2, ".axelrc");
+		int ret;
+
+		ret = snprintf(s, sizeof(s), "%s/.axelrc", s2);
+		if (ret >= sizeof(s)) {
+			fprintf(stderr, _("HOME env variable too long\n") );
+			return 0;
+		}
+
 		if (!conf_loadfile(conf, s))
 			return 0;
 	}
