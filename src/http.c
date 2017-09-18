@@ -92,7 +92,7 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	char *puser, *ppass;
 	conn_t tconn[1];
 
-	strncpy(conn->host, host, MAX_STRING);
+	strncpy(conn->host, host, sizeof(conn->host) - 1);
 	conn->port = port;
 	conn->proto = proto;
 

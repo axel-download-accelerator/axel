@@ -120,11 +120,12 @@ main(int argc, char *argv[])
 
 		switch (option) {
 		case 'U':
-			strncpy(conf->user_agent, optarg, MAX_STRING);
+			strncpy(conf->user_agent, optarg,
+				sizeof(conf->user_agent) - 1);
 			break;
 		case 'H':
 			strncpy(conf->add_header[cur_head++], optarg,
-				MAX_STRING);
+				sizeof(conf->add_header[cur_head - 1]) - 1);
 			break;
 		case 's':
 			if (!sscanf(optarg, "%i", &conf->max_speed)) {
@@ -145,7 +146,8 @@ main(int argc, char *argv[])
 			}
 			break;
 		case 'o':
-			strncpy(fn, optarg, sizeof(fn));
+			strncpy(fn, optarg, sizeof(fn) - 1);
+			fn[sizeof(fn) - 1] = '\0';
 			break;
 		case 'S':
 			do_search = 1;
@@ -290,7 +292,8 @@ main(int argc, char *argv[])
 		search = malloc(sizeof(search_t) * (argc - optind));
 		memset(search, 0, sizeof(search_t) * (argc - optind));
 		for (i = 0; i < (argc - optind); i++)
-			strncpy(search[i].url, argv[optind + i], MAX_STRING);
+			strncpy(search[i].url, argv[optind + i],
+				sizeof(search[i].url) - 1);
 		axel = axel_new(conf, argc - optind, search);
 		free(search);
 		if (axel->ready == -1) {

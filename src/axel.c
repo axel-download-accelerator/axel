@@ -115,7 +115,7 @@ axel_new(conf_t *conf, int count, const void *url)
 			goto nomem;
 
 		axel->url->next = axel->url;
-		strncpy(axel->url->text, url, MAX_STRING);
+		strncpy(axel->url->text, url, sizeof(axel->url->text) - 1);
 	} else {
 		res = url;
 		u = malloc(sizeof(url_t) * count);
@@ -124,7 +124,7 @@ axel_new(conf_t *conf, int count, const void *url)
 		axel->url = u;
 
 		for (i = 0; i < count; i++) {
-			strncpy(u[i].text, res[i].url, MAX_STRING);
+			strncpy(u[i].text, res[i].url, sizeof(u[i].text) - 1);
 			u[i].next = &u[i + 1];
 		}
 		u[count - 1].next = u;
@@ -140,11 +140,11 @@ axel_new(conf_t *conf, int count, const void *url)
 	axel->conn[0].local_if = axel->conf->interfaces->text;
 	axel->conf->interfaces = axel->conf->interfaces->next;
 
-	strncpy(axel->filename, axel->conn[0].file, MAX_STRING);
+	strncpy(axel->filename, axel->conn[0].file, sizeof(axel->filename) - 1);
 	http_decode(axel->filename);
 	if (*axel->filename == 0)	/* Index page == no fn */
 		strncpy(axel->filename, axel->conf->default_filename,
-			MAX_STRING);
+			sizeof(axel->filename) - 1);
 	if ((s = strchr(axel->filename, '?')) != NULL &&
 	    axel->conf->strip_cgi_parameters)
 		*s = 0;		/* Get rid of CGI parameters */
@@ -185,7 +185,7 @@ axel_new(conf_t *conf, int count, const void *url)
 	while (status == -1);
 
 	s = conn_url(axel->conn);
-	strncpy(axel->url->text, s, MAX_STRING);
+	strncpy(axel->url->text, s, sizeof(axel->url->text) - 1);
 	if ((axel->size = axel->conn[0].size) != LLONG_MAX) {
 		if (axel->conf->verbose > 0)
 			axel_message(axel, _("File size: %lld bytes"),
@@ -194,11 +194,12 @@ axel_new(conf_t *conf, int count, const void *url)
 
 	/* Wildcards in URL --> Get complete filename */
 	if (strchr(axel->filename, '*') || strchr(axel->filename, '?'))
-		strncpy(axel->filename, axel->conn[0].file, MAX_STRING);
+		strncpy(axel->filename, axel->conn[0].file,
+			sizeof(axel->filename) - 1);
 
 	if (*axel->conn[0].output_filename != 0) {
 		strncpy(axel->filename, axel->conn[0].output_filename,
-			MAX_STRING);
+			sizeof(axel->filename) - 1);
 	}
 
 	return axel;

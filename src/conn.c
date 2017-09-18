@@ -59,7 +59,8 @@ conn_set(conn_t *conn, const char *set_url)
 	if ((i = strstr(set_url, "://")) == NULL) {
 		conn->proto = PROTO_DEFAULT;
 		conn->port = PROTO_DEFAULT_PORT;
-		strncpy(url, set_url, sizeof(url));
+		strncpy(url, set_url, sizeof(url) - 1);
+		url[sizeof(url) - 1] = '\0';
 	} else {
 		int proto_len = i - set_url;
 		if (strncmp(set_url, "ftp", proto_len) == 0) {
@@ -81,7 +82,8 @@ conn_set(conn_t *conn, const char *set_url)
 		else {
 			return 0;
 		}
-		strncpy(url, i + 3, sizeof(url));
+		strncpy(url, i + 3, sizeof(url) - 1);
+		url[sizeof(url) - 1] = '\0';
 	}
 
 	/* Split */
@@ -93,7 +95,7 @@ conn_set(conn_t *conn, const char *set_url)
 		if (conn->proto == PROTO_HTTP || conn->proto == PROTO_HTTPS)
 			http_encode(conn->dir);
 	}
-	strncpy(conn->host, url, MAX_STRING);
+	strncpy(conn->host, url, sizeof(conn->host) - 1);
 	j = strchr(conn->dir, '?');
 	if (j != NULL)
 		*j = 0;
@@ -104,23 +106,22 @@ conn_set(conn_t *conn, const char *set_url)
 	if (j != NULL)
 		*j = '?';
 	if (i == NULL) {
-		strncpy(conn->file, conn->dir, MAX_STRING);
+		strncpy(conn->file, conn->dir, sizeof(conn->file) - 1);
 		strcpy(conn->dir, "/");
 	} else {
-		strncpy(conn->file, i + 1, MAX_STRING);
+		strncpy(conn->file, i + 1, sizeof(conn->file) - 1);
 		strcat(conn->dir, "/");
 	}
 
 	/* Check for username in host field */
 	if (strrchr(conn->host, '@') != NULL) {
-		strncpy(conn->user, conn->host, MAX_STRING);
+		strncpy(conn->user, conn->host, sizeof(conn->user) - 1);
 		i = strrchr(conn->user, '@');
 		*i = 0;
-		strncpy(conn->host, i + 1, MAX_STRING);
+		strncpy(conn->host, i + 1, sizeof(conn->host) - 1);
 		*conn->pass = 0;
-	}
-	/* If not: Fill in defaults */
-	else {
+	} else {
+		/* If not: Fill in defaults */
 		if (PROTO_IS_FTP(conn->proto)) {
 			/* Dash the password: Save traffic by trying
 			   to avoid multi-line responses */
@@ -134,7 +135,7 @@ conn_set(conn_t *conn, const char *set_url)
 	/* Password? */
 	if ((i = strchr(conn->user, ':')) != NULL) {
 		*i = 0;
-		strncpy(conn->pass, i + 1, MAX_STRING);
+		strncpy(conn->pass, i + 1, sizeof(conn->pass) - 1);
 	}
 	/* Port number? */
 	if ((i = strchr(conn->host, ':')) != NULL) {
@@ -340,11 +341,13 @@ conn_info(conn_t *conn)
 			if (strstr(s, "://") == NULL) {
 				sprintf(conn->http->headers, "%s%s",
 					conn_url(conn), s);
-				strncpy(s, conn->http->headers, sizeof(s));
+				strncpy(s, conn->http->headers, sizeof(s) - 1);
+				s[sizeof(s) - 1] = '\0';
 			} else if (s[0] == '/') {
 				sprintf(conn->http->headers, "http://%s:%i%s",
 					conn->host, conn->port, s);
-				strncpy(s, conn->http->headers, sizeof(s));
+				strncpy(s, conn->http->headers, sizeof(s) - 1);
+				s[sizeof(s) - 1] = '\0';
 			}
 			conn_set(conn, s);
 

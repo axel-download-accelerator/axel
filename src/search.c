@@ -165,7 +165,7 @@ search_makelist(search_t *results, char *url)
 		s3 = strchr(s2, ' ');
 		*s3 = 0;
 		if (strcmp(results[0].url, s2)) {
-			strncpy(results[i].url, s2, MAX_STRING);
+			strncpy(results[i].url, s2, sizeof(results[i].url) - 1);
 			results[i].size = results[0].size;
 			results[i].conf = results->conf;
 		} else {
