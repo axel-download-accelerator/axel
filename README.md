@@ -54,7 +54,7 @@ Run `./autogen.sh` to create the configure script, then proceed with the
 instructions in [INSTALL](INSTALL). The basic actions for most users,
 after ./autogen.sh, is running ./configure, make and make install.
 
-To build without SSL/TLS support, use ./configure --without-openssl
+To build without SSL/TLS support, use ./configure --without-ssl
 
 ## 4. Install on macOS with Homebrew ##
 
