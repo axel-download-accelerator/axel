@@ -79,7 +79,7 @@
 
 /* Internationalization */
 #define PACKAGE			"axel"
-#define _( x )			gettext( x )
+#define _(x)			gettext(x)
 #include <libintl.h>
 #include <locale.h>
 
@@ -89,8 +89,7 @@
 #define MAX_REDIRECT		20
 #define DEFAULT_USER_AGENT	"Axel " VERSION " (" ARCH ")"
 
-typedef struct
-{
+typedef struct {
 	void *next;
 	char text[MAX_STRING];
 } message_t;
@@ -106,11 +105,10 @@ typedef message_t if_t;
 #include "ssl.h"
 #include "search.h"
 
-#define min( a, b )		( (a) < (b) ? (a) : (b) )
-#define max( a, b )		( (a) > (b) ? (a) : (b) )
+#define min(a, b)		((a) < (b) ? (a) : (b))
+#define max(a, b)		((a) > (b) ? (a) : (b))
 
-typedef struct
-{
+typedef struct {
 	conn_t *conn;
 	conf_t *conf;
 	char filename[MAX_STRING];
@@ -125,20 +123,21 @@ typedef struct
 	url_t *url;
 } axel_t;
 
-axel_t *axel_new( conf_t *conf, int count, const void *url );
-int axel_open( axel_t *axel );
-void axel_start( axel_t *axel );
-void axel_do( axel_t *axel );
-void axel_close( axel_t *axel );
-void print_messages( axel_t *axel );
+axel_t *axel_new(conf_t * conf, int count, const void *url);
+int axel_open(axel_t * axel);
+void axel_start(axel_t * axel);
+void axel_do(axel_t * axel);
+void axel_close(axel_t * axel);
+void print_messages(axel_t * axel);
 
 double gettime();
 
-static inline int axel_nanosleep( struct timespec delay )
+static inline int
+axel_nanosleep(struct timespec delay)
 {
 	int res;
-	while( ( res = nanosleep( &delay, &delay ) ) && errno == EINTR );
+	while ((res = nanosleep(&delay, &delay)) && errno == EINTR) ;
 	return res;
 }
 
-#endif /* AXEL_AXEL_H */
+#endif				/* AXEL_AXEL_H */
