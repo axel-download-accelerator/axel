@@ -48,15 +48,16 @@
 #include "assert.h"
 
 /* Axel */
-static void save_state( axel_t *axel );
-static void *setup_thread( void * );
-static void axel_message( axel_t *axel, char *format, ... );
-static void axel_divide( axel_t *axel );
+static void save_state(axel_t * axel);
+static void *setup_thread(void *);
+static void axel_message(axel_t * axel, char *format, ...);
+static void axel_divide(axel_t * axel);
 
 static char *buffer = NULL;
 
 /* Create a new axel_t structure */
-axel_t *axel_new( conf_t *conf, int count, const void *url )
+axel_t *
+axel_new(conf_t * conf, int count, const void *url)
 {
 	const search_t *res;
 	axel_t *axel;
@@ -66,305 +67,310 @@ axel_t *axel_new( conf_t *conf, int count, const void *url )
 	char *s;
 	int i;
 
-	axel = malloc( sizeof( axel_t ) );
-	if( !axel )
+	axel = malloc(sizeof(axel_t));
+	if (!axel)
 		goto nomem;
 
-	memset( axel, 0, sizeof( axel_t ) );
+	memset(axel, 0, sizeof(axel_t));
 	axel->conf = conf;
-	axel->conn = malloc( sizeof( conn_t ) * axel->conf->num_connections );
-	if( !axel->conn )
+	axel->conn = malloc(sizeof(conn_t) * axel->conf->num_connections);
+	if (!axel->conn)
 		goto nomem;
-	memset( axel->conn, 0, sizeof( conn_t ) * axel->conf->num_connections );
+	memset(axel->conn, 0, sizeof(conn_t) * axel->conf->num_connections);
 
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-		pthread_mutex_init( &axel->conn[i].lock, NULL );
+	for (i = 0; i < axel->conf->num_connections; i++)
+		pthread_mutex_init(&axel->conn[i].lock, NULL);
 
-	if( axel->conf->max_speed > 0 )
-	{
-		if( (float) axel->conf->max_speed / axel->conf->buffer_size < 0.5 )
-		{
-			if( axel->conf->verbose >= 2 )
-				axel_message( axel, _("Buffer resized for this speed.") );
+	if (axel->conf->max_speed > 0) {
+		if ((float)axel->conf->max_speed / axel->conf->buffer_size <
+		    0.5) {
+			if (axel->conf->verbose >= 2)
+				axel_message(axel,
+					     _("Buffer resized for this speed."));
 			axel->conf->buffer_size = axel->conf->max_speed;
 		}
-		delay = (int) ( (float) 1000000000 / axel->conf->max_speed *
-				axel->conf->buffer_size *
-				axel->conf->num_connections );
+		delay = (int)((float)1000000000 / axel->conf->max_speed *
+			      axel->conf->buffer_size *
+			      axel->conf->num_connections);
 
 		axel->delay_time.tv_sec = delay / 1000000000;
 		axel->delay_time.tv_nsec = delay % 1000000000;
 	}
-	if( buffer == NULL )
-	{
+	if (buffer == NULL) {
 		/* reserve 4 additional bytes for file extension ".st" */
-		buffer = malloc( max( MAX_STRING + 4, axel->conf->buffer_size ) );
-		if( !buffer )
+		buffer = malloc(max(MAX_STRING + 4, axel->conf->buffer_size));
+		if (!buffer)
 			goto nomem;
 	}
 
-	if( !url )
-	{
-		axel_message( axel, _("Invalid URL") );
-		axel_close( axel );
-		return( NULL );
+	if (!url) {
+		axel_message(axel, _("Invalid URL"));
+		axel_close(axel);
+		return NULL;
 	}
 
-	if( count == 0 )
-	{
-		axel->url = malloc( sizeof( url_t ) );
-		if( !axel->url )
+	if (count == 0) {
+		axel->url = malloc(sizeof(url_t));
+		if (!axel->url)
 			goto nomem;
 
 		axel->url->next = axel->url;
-		strncpy( axel->url->text, url, MAX_STRING );
-	}
-	else
-	{
+		strncpy(axel->url->text, url, MAX_STRING);
+	} else {
 		res = url;
-		u = malloc( sizeof( url_t ) * count );
-		if( !u )
+		u = malloc(sizeof(url_t) * count);
+		if (!u)
 			goto nomem;
 		axel->url = u;
 
-		for( i = 0; i < count; i ++ )
-		{
-			strncpy( u[i].text, res[i].url, MAX_STRING );
+		for (i = 0; i < count; i++) {
+			strncpy(u[i].text, res[i].url, MAX_STRING);
 			u[i].next = &u[i + 1];
 		}
 		u[count - 1].next = u;
 	}
 
 	axel->conn[0].conf = axel->conf;
-	if( !conn_set( &axel->conn[0], axel->url->text ) )
-	{
-		axel_message( axel, _("Could not parse URL.\n") );
+	if (!conn_set(&axel->conn[0], axel->url->text)) {
+		axel_message(axel, _("Could not parse URL.\n"));
 		axel->ready = -1;
-		return( axel );
+		return axel;
 	}
 
 	axel->conn[0].local_if = axel->conf->interfaces->text;
 	axel->conf->interfaces = axel->conf->interfaces->next;
 
-	strncpy( axel->filename, axel->conn[0].file, MAX_STRING );
-	http_decode( axel->filename );
-	if( *axel->filename == 0 )	/* Index page == no fn */
-		strncpy( axel->filename, axel->conf->default_filename, MAX_STRING );
-	if( ( s = strchr( axel->filename, '?' ) ) != NULL && axel->conf->strip_cgi_parameters )
+	strncpy(axel->filename, axel->conn[0].file, MAX_STRING);
+	http_decode(axel->filename);
+	if (*axel->filename == 0)	/* Index page == no fn */
+		strncpy(axel->filename, axel->conf->default_filename,
+			MAX_STRING);
+	if ((s = strchr(axel->filename, '?')) != NULL &&
+	    axel->conf->strip_cgi_parameters)
 		*s = 0;		/* Get rid of CGI parameters */
 
-	if( axel->conf->no_clobber && access( axel->filename, F_OK ) == 0 )
-	{
+	if (axel->conf->no_clobber && access(axel->filename, F_OK) == 0) {
 		char stfile[MAX_STRING + 3];
 
-		sprintf( stfile, "%s.st", axel->filename );
-		if( access( stfile, F_OK ) == 0 )
-		{
-			printf( _("Incomplete download found, ignoring "
-				  "no-clobber option\n") );
-		}
-		else
-		{
-			printf( _("File '%s' already there; not retrieving.\n"),
-				axel->filename );
+		sprintf(stfile, "%s.st", axel->filename);
+		if (access(stfile, F_OK) == 0) {
+			printf(_("Incomplete download found, ignoring "
+				 "no-clobber option\n"));
+		} else {
+			printf(_("File '%s' already there; not retrieving.\n"),
+			       axel->filename);
 			axel->ready = -1;
-			return( axel );
+			return axel;
 		}
 	}
 
-	do
-	{
-		if( !conn_init( &axel->conn[0] ) )
-		{
-			axel_message( axel, axel->conn[0].message );
+	do {
+		if (!conn_init(&axel->conn[0])) {
+			axel_message(axel, axel->conn[0].message);
 			axel->ready = -1;
-			return( axel );
+			return axel;
 		}
 
 		/* This does more than just checking the file size, it all
 		 * depends on the protocol used. */
-		status = conn_info( &axel->conn[0] );
-		if( !status )
-		{
-			axel_message( axel, axel->conn[0].message );
+		status = conn_info(&axel->conn[0]);
+		if (!status) {
+			axel_message(axel, axel->conn[0].message);
 			axel->ready = -1;
-			return( axel );
+			return axel;
 		}
 	}
 	/* re-init in case of protocol change. This can happen only once
 	 * because the FTP protocol can't redirect back to HTTP */
-	while( status == -1 );
+	while (status == -1);
 
-	s = conn_url( axel->conn );
-	strncpy( axel->url->text, s, MAX_STRING );
-	if( ( axel->size = axel->conn[0].size ) != LLONG_MAX )
-	{
-		if( axel->conf->verbose > 0 )
-			axel_message( axel, _("File size: %lld bytes"), axel->size );
+	s = conn_url(axel->conn);
+	strncpy(axel->url->text, s, MAX_STRING);
+	if ((axel->size = axel->conn[0].size) != LLONG_MAX) {
+		if (axel->conf->verbose > 0)
+			axel_message(axel, _("File size: %lld bytes"),
+				     axel->size);
 	}
 
 	/* Wildcards in URL --> Get complete filename */
-	if( strchr( axel->filename, '*' ) || strchr( axel->filename, '?' ) )
-		strncpy( axel->filename, axel->conn[0].file, MAX_STRING );
+	if (strchr(axel->filename, '*') || strchr(axel->filename, '?'))
+		strncpy(axel->filename, axel->conn[0].file, MAX_STRING);
 
-	if( *axel->conn[0].output_filename != 0 ) {
-		strncpy( axel->filename, axel->conn[0].output_filename, MAX_STRING );
+	if (*axel->conn[0].output_filename != 0) {
+		strncpy(axel->filename, axel->conn[0].output_filename,
+			MAX_STRING);
 	}
 
-	return( axel );
-nomem:
-	axel_close( axel );
-	printf( "%s\n", strerror(errno) );
-	return( NULL );
+	return axel;
+ nomem:
+	axel_close(axel);
+	printf("%s\n", strerror(errno));
+	return NULL;
 }
 
 /* Open a local file to store the downloaded data */
-int axel_open( axel_t *axel )
+int
+axel_open(axel_t * axel)
 {
 	int i, fd;
- 	ssize_t nread;
+	ssize_t nread;
 
-	if( axel->conf->verbose > 0 )
-		axel_message( axel, _("Opening output file %s"), axel->filename );
-	snprintf( buffer, MAX_STRING + 4, "%s.st", axel->filename );
+	if (axel->conf->verbose > 0)
+		axel_message(axel, _("Opening output file %s"), axel->filename);
+	snprintf(buffer, MAX_STRING + 4, "%s.st", axel->filename);
 
 	axel->outfd = -1;
 
 	/* Check whether server knows about RESTart and switch back to
 	   single connection download if necessary */
-	if( !axel->conn[0].supported )
-	{
-		axel_message( axel, _("Server unsupported, "
-			"starting from scratch with one connection.") );
+	if (!axel->conn[0].supported) {
+		axel_message(axel, _("Server unsupported, "
+				     "starting from scratch with one connection."));
 		axel->conf->num_connections = 1;
-		axel->conn = realloc( axel->conn, sizeof( conn_t ) );
-		axel_divide( axel );
-	}
-	else if( ( fd = open( buffer, O_RDONLY ) ) != -1 )
-	{
+		axel->conn = realloc(axel->conn, sizeof(conn_t));
+		axel_divide(axel);
+	} else if ((fd = open(buffer, O_RDONLY)) != -1) {
 		int old_format = 0;
-		off_t stsize = lseek(fd,0,SEEK_END);
-		lseek(fd,0,SEEK_SET);
+		off_t stsize = lseek(fd, 0, SEEK_END);
+		lseek(fd, 0, SEEK_SET);
 
-		nread = read( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
-		if( nread != sizeof( axel->conf->num_connections ) )
-		{
-			printf( _("%s.st: Error, truncated state file\n"),
-				axel->filename );
-			close( fd );
-			return( 0 );
+		nread =
+		    read(fd, &axel->conf->num_connections,
+			 sizeof(axel->conf->num_connections));
+		if (nread != sizeof(axel->conf->num_connections)) {
+			printf(_("%s.st: Error, truncated state file\n"),
+			       axel->filename);
+			close(fd);
+			return 0;
 		}
 
-		if(stsize < sizeof( axel->conf->num_connections ) + sizeof( axel->bytes_done )
-			+ 2 * axel->conf->num_connections * sizeof( axel->conn[i].currentbyte ))
-		{
+		if (stsize <
+		    sizeof(axel->conf->num_connections) +
+		    sizeof(axel->bytes_done)
+		    +
+		    2 * axel->conf->num_connections *
+		    sizeof(axel->conn[i].currentbyte)) {
 			/* FIXME this might be wrong, the file may have been
 			 * truncated, we need another way to check. */
 #ifdef DEBUG
-			printf( _("State file has old format.\n") );
+			printf(_("State file has old format.\n"));
 #endif
 			old_format = 1;
 		}
 
-		axel->conn = realloc( axel->conn, sizeof( conn_t ) * axel->conf->num_connections );
-		memset( axel->conn + 1, 0, sizeof( conn_t ) * ( axel->conf->num_connections - 1 ) );
+		axel->conn =
+		    realloc(axel->conn,
+			    sizeof(conn_t) * axel->conf->num_connections);
+		memset(axel->conn + 1, 0,
+		       sizeof(conn_t) * (axel->conf->num_connections - 1));
 
-		if(old_format)
-			axel_divide( axel );
+		if (old_format)
+			axel_divide(axel);
 
-		nread = read( fd, &axel->bytes_done, sizeof( axel->bytes_done ) );
-		assert( nread == sizeof( axel->bytes_done ) );
-		for( i = 0; i < axel->conf->num_connections; i ++ ) {
-			nread = read( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
-			assert( nread == sizeof( axel->conn[i].currentbyte ) );
-			if( !old_format ) {
-				nread = read( fd, &axel->conn[i].lastbyte, sizeof( axel->conn[i].lastbyte ) );
-				assert( nread == sizeof( axel->conn[i].lastbyte ) );
+		nread = read(fd, &axel->bytes_done, sizeof(axel->bytes_done));
+		assert(nread == sizeof(axel->bytes_done));
+		for (i = 0; i < axel->conf->num_connections; i++) {
+			nread =
+			    read(fd, &axel->conn[i].currentbyte,
+				 sizeof(axel->conn[i].currentbyte));
+			assert(nread == sizeof(axel->conn[i].currentbyte));
+			if (!old_format) {
+				nread =
+				    read(fd, &axel->conn[i].lastbyte,
+					 sizeof(axel->conn[i].lastbyte));
+				assert(nread == sizeof(axel->conn[i].lastbyte));
 			}
 		}
 
-		axel_message( axel, _("State file found: %lld bytes downloaded, %lld to go."),
-			axel->bytes_done, axel->size - axel->bytes_done );
+		axel_message(axel,
+			     _("State file found: %lld bytes downloaded, %lld to go."),
+			     axel->bytes_done, axel->size - axel->bytes_done);
 
-		close( fd );
+		close(fd);
 
-		if( ( axel->outfd = open( axel->filename, O_WRONLY, 0666 ) ) == -1 )
-		{
-			axel_message( axel, _("Error opening local file") );
-			return( 0 );
+		if ((axel->outfd = open(axel->filename, O_WRONLY, 0666)) == -1) {
+			axel_message(axel, _("Error opening local file"));
+			return 0;
 		}
 	}
 
 	/* If outfd == -1 we have to start from scrath now */
-	if( axel->outfd == -1 )
-	{
-		axel_divide( axel );
+	if (axel->outfd == -1) {
+		axel_divide(axel);
 
-		if( ( axel->outfd = open( axel->filename, O_CREAT | O_WRONLY, 0666 ) ) == -1 )
-		{
-			axel_message( axel, _("Error opening local file") );
-			return( 0 );
+		if ((axel->outfd =
+		     open(axel->filename, O_CREAT | O_WRONLY, 0666)) == -1) {
+			axel_message(axel, _("Error opening local file"));
+			return 0;
 		}
 
 		/* And check whether the filesystem can handle seeks to
 		   past-EOF areas.. Speeds things up. :) AFAIK this
 		   should just not happen: */
-		if( lseek( axel->outfd, axel->size, SEEK_SET ) == -1 && axel->conf->num_connections > 1 )
-		{
+		if (lseek(axel->outfd, axel->size, SEEK_SET) == -1 &&
+		    axel->conf->num_connections > 1) {
 			/* But if the OS/fs does not allow to seek behind
 			   EOF, we have to fill the file with zeroes before
 			   starting. Slow.. */
-			axel_message( axel, _("Crappy filesystem/OS.. Working around. :-(") );
-			lseek( axel->outfd, 0, SEEK_SET );
-			memset( buffer, 0, axel->conf->buffer_size );
+			axel_message(axel,
+				     _("Crappy filesystem/OS.. Working around. :-("));
+			lseek(axel->outfd, 0, SEEK_SET);
+			memset(buffer, 0, axel->conf->buffer_size);
 			long long int j = axel->size;
-			while( j > 0 ) {
+			while (j > 0) {
 				ssize_t nwrite;
 
-				if( ( nwrite = write( axel->outfd, buffer, min( j, axel->conf->buffer_size ) ) ) < 0 ) {
-					if ( errno == EINTR || errno == EAGAIN) continue;
-					axel_message( axel, _("Error creating local file") );
-					return( 0 );
+				if ((nwrite =
+				     write(axel->outfd, buffer,
+					   min(j,
+					       axel->conf->buffer_size))) < 0) {
+					if (errno == EINTR || errno == EAGAIN)
+						continue;
+					axel_message(axel,
+						     _("Error creating local file"));
+					return 0;
 				}
 				j -= nwrite;
 			}
 		}
 	}
 
-	return( 1 );
+	return 1;
 }
 
-void reactivate_connection(axel_t *axel, int thread)
+void
+reactivate_connection(axel_t * axel, int thread)
 {
 	long long int max_remaining = 0;
 	int idx = -1;
 
-	if(axel->conn[thread].enabled || axel->conn[thread].currentbyte <= axel->conn[thread].lastbyte)
+	if (axel->conn[thread].enabled ||
+	    axel->conn[thread].currentbyte <= axel->conn[thread].lastbyte)
 		return;
 	/* find some more work to do */
-	for( int j = 0; j < axel->conf->num_connections; j ++ )
-	{
-		long long int remaining = axel->conn[j].lastbyte - axel->conn[j].currentbyte + 1;
-		if(remaining > max_remaining)
-		{
+	for (int j = 0; j < axel->conf->num_connections; j++) {
+		long long int remaining =
+		    axel->conn[j].lastbyte - axel->conn[j].currentbyte + 1;
+		if (remaining > max_remaining) {
 			max_remaining = remaining;
 			idx = j;
 		}
 	}
 	/* do not reactivate for less than 100KB */
-	if(max_remaining >= 100 * 1024 && idx != -1)
-	{
+	if (max_remaining >= 100 * 1024 && idx != -1) {
 #ifdef DEBUG
-		printf( _("\nReactivate connection %d\n"),thread);
+		printf(_("\nReactivate connection %d\n"), thread);
 #endif
 		axel->conn[thread].lastbyte = axel->conn[idx].lastbyte;
-		axel->conn[idx].lastbyte = axel->conn[idx].currentbyte + max_remaining/2;
+		axel->conn[idx].lastbyte =
+		    axel->conn[idx].currentbyte + max_remaining / 2;
 		axel->conn[thread].currentbyte = axel->conn[idx].lastbyte + 1;
 	}
 }
 
 /* Start downloading */
-void axel_start( axel_t *axel )
+void
+axel_start(axel_t * axel)
 {
 	int i;
 	url_t *url_ptr;
@@ -372,41 +378,42 @@ void axel_start( axel_t *axel )
 	/* HTTP might've redirected and FTP handles wildcards, so
 	   re-scan the URL for every conn */
 	url_ptr = axel->url;
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-	{
-		conn_set( &axel->conn[i], url_ptr->text );
+	for (i = 0; i < axel->conf->num_connections; i++) {
+		conn_set(&axel->conn[i], url_ptr->text);
 		url_ptr = url_ptr->next;
 		axel->conn[i].local_if = axel->conf->interfaces->text;
 		axel->conf->interfaces = axel->conf->interfaces->next;
 		axel->conn[i].conf = axel->conf;
-		if( i ) axel->conn[i].supported = true;
+		if (i)
+			axel->conn[i].supported = true;
 	}
 
-	if( axel->conf->verbose > 0 )
-		axel_message( axel, _("Starting download") );
+	if (axel->conf->verbose > 0)
+		axel_message(axel, _("Starting download"));
 
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-	if( axel->conn[i].currentbyte > axel->conn[i].lastbyte )
-	{
-		reactivate_connection(axel, i);
-	}
-
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-	if( axel->conn[i].currentbyte <= axel->conn[i].lastbyte )
-	{
-		if( axel->conf->verbose >= 2 )
-		{
-			axel_message( axel, _("Connection %i downloading from %s:%i using interface %s"),
-		        	      i, axel->conn[i].host, axel->conn[i].port, axel->conn[i].local_if );
+	for (i = 0; i < axel->conf->num_connections; i++)
+		if (axel->conn[i].currentbyte > axel->conn[i].lastbyte) {
+			reactivate_connection(axel, i);
 		}
 
-		axel->conn[i].state = true;
-		if( pthread_create( axel->conn[i].setup_thread, NULL, setup_thread, &axel->conn[i] ) != 0 )
-		{
-			axel_message( axel, _("pthread error!!!") );
-			axel->ready = -1;
+	for (i = 0; i < axel->conf->num_connections; i++)
+		if (axel->conn[i].currentbyte <= axel->conn[i].lastbyte) {
+			if (axel->conf->verbose >= 2) {
+				axel_message(axel,
+					     _("Connection %i downloading from %s:%i using interface %s"),
+					     i, axel->conn[i].host,
+					     axel->conn[i].port,
+					     axel->conn[i].local_if);
+			}
+
+			axel->conn[i].state = true;
+			if (pthread_create
+			    (axel->conn[i].setup_thread, NULL, setup_thread,
+			     &axel->conn[i]) != 0) {
+				axel_message(axel, _("pthread error!!!"));
+				axel->ready = -1;
+			}
 		}
-	}
 
 	/* The real downloading will start now, so let's start counting */
 	axel->start_time = gettime();
@@ -414,45 +421,42 @@ void axel_start( axel_t *axel )
 }
 
 /* Main 'loop' */
-void axel_do( axel_t *axel )
+void
+axel_do(axel_t * axel)
 {
 	fd_set fds[1];
 	int hifd, i;
-	long long int remaining,size;
+	long long int remaining, size;
 	struct timeval timeval[1];
 	url_t *url_ptr;
-	struct timespec delay = { .tv_sec = 0, .tv_nsec = 100000000 };
+	struct timespec delay = {.tv_sec = 0, .tv_nsec = 100000000};
 	float max_speed_ratio;
 
 	/* Create statefile if necessary */
-	if( gettime() > axel->next_state )
-	{
-		save_state( axel );
+	if (gettime() > axel->next_state) {
+		save_state(axel);
 		axel->next_state = gettime() + axel->conf->save_state_interval;
 	}
 
 	/* Wait for data on (one of) the connections */
-	FD_ZERO( fds );
+	FD_ZERO(fds);
 	hifd = 0;
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-	{
+	for (i = 0; i < axel->conf->num_connections; i++) {
 		/* skip connection if setup thread hasn't released the lock yet */
-		if( !pthread_mutex_trylock( &axel->conn[i].lock ) )
-		{
-			if( axel->conn[i].enabled ) {
-				FD_SET( axel->conn[i].tcp->fd, fds );
-				hifd = max( hifd, axel->conn[i].tcp->fd );
+		if (!pthread_mutex_trylock(&axel->conn[i].lock)) {
+			if (axel->conn[i].enabled) {
+				FD_SET(axel->conn[i].tcp->fd, fds);
+				hifd = max(hifd, axel->conn[i].tcp->fd);
 			}
-			pthread_mutex_unlock( &axel->conn[i].lock );
+			pthread_mutex_unlock(&axel->conn[i].lock);
 		}
 	}
-	if( hifd == 0 )
-	{
+	if (hifd == 0) {
 		/* No connections yet. Wait... */
-		if ( axel_nanosleep( delay ) < 0 )
-		{
-			axel_message( axel, _("Error while waiting for connection: %s"),
-				      strerror( errno ) );
+		if (axel_nanosleep(delay) < 0) {
+			axel_message(axel,
+				     _("Error while waiting for connection: %s"),
+				     strerror(errno));
 			axel->ready = -1;
 			return;
 		}
@@ -461,8 +465,7 @@ void axel_do( axel_t *axel )
 
 	timeval->tv_sec = 0;
 	timeval->tv_usec = 100000;
-	if( select( hifd + 1, fds, NULL, NULL, timeval ) == -1 )
-	{
+	if (select(hifd + 1, fds, NULL, NULL, timeval) == -1) {
 		/* A select() error probably means it was interrupted
 		 * by a signal, or that something else's very wrong... */
 		axel->ready = -1;
@@ -470,357 +473,366 @@ void axel_do( axel_t *axel )
 	}
 
 	/* Handle connections which need attention */
-	for( i = 0; i < axel->conf->num_connections; i ++ ) {
+	for (i = 0; i < axel->conf->num_connections; i++) {
 		/* skip connection if setup thread hasn't released the lock yet */
-		if( pthread_mutex_trylock( &axel->conn[i].lock ) )
+		if (pthread_mutex_trylock(&axel->conn[i].lock))
 			continue;
 
-		if( !axel->conn[i].enabled )
+		if (!axel->conn[i].enabled)
 			goto next_conn;
 
-		if( !FD_ISSET( axel->conn[i].tcp->fd, fds ) )
-		{
+		if (!FD_ISSET(axel->conn[i].tcp->fd, fds)) {
 			time_t timeout = axel->conn[i].last_transfer +
-					 axel->conf->connection_timeout;
-			if( gettime() > timeout )
-			{
-				if( axel->conf->verbose )
-					axel_message( axel, _("Connection %i timed out"), i );
-				conn_disconnect( &axel->conn[i] );
+			    axel->conf->connection_timeout;
+			if (gettime() > timeout) {
+				if (axel->conf->verbose)
+					axel_message(axel,
+						     _("Connection %i timed out"),
+						     i);
+				conn_disconnect(&axel->conn[i]);
 			}
 			goto next_conn;
 		}
 
 		axel->conn[i].last_transfer = gettime();
-		size = tcp_read( axel->conn[i].tcp, buffer, axel->conf->buffer_size );
-		if( size == -1 )
-		{
-			if( axel->conf->verbose )
-			{
-				axel_message( axel, _("Error on connection %i! "
-						      "Connection closed"), i );
+		size =
+		    tcp_read(axel->conn[i].tcp, buffer,
+			     axel->conf->buffer_size);
+		if (size == -1) {
+			if (axel->conf->verbose) {
+				axel_message(axel, _("Error on connection %i! "
+						     "Connection closed"), i);
 			}
-			conn_disconnect( &axel->conn[i] );
+			conn_disconnect(&axel->conn[i]);
 			goto next_conn;
 		}
 
-		if( size == 0 )
-		{
-			if( axel->conf->verbose )
-			{
+		if (size == 0) {
+			if (axel->conf->verbose) {
 				/* Only abnormal behaviour if: */
-				if( axel->conn[i].currentbyte < axel->conn[i].lastbyte && axel->size != LLONG_MAX )
-				{
-					axel_message( axel, _("Connection %i unexpectedly closed"), i );
-				}
-				else
-				{
-					axel_message( axel, _("Connection %i finished"), i );
+				if (axel->conn[i].currentbyte <
+				    axel->conn[i].lastbyte &&
+				    axel->size != LLONG_MAX) {
+					axel_message(axel,
+						     _("Connection %i unexpectedly closed"),
+						     i);
+				} else {
+					axel_message(axel,
+						     _("Connection %i finished"),
+						     i);
 				}
 			}
-			if( !axel->conn[0].supported )
-			{
+			if (!axel->conn[0].supported) {
 				axel->ready = 1;
 			}
-			conn_disconnect( &axel->conn[i] );
-			reactivate_connection(axel,i);
+			conn_disconnect(&axel->conn[i]);
+			reactivate_connection(axel, i);
 			goto next_conn;
 		}
 
 		/* remaining == Bytes to go */
-		remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
-		if( remaining < size )
-		{
-			if( axel->conf->verbose )
-			{
-				axel_message( axel, _("Connection %i finished"), i );
+		remaining =
+		    axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
+		if (remaining < size) {
+			if (axel->conf->verbose) {
+				axel_message(axel, _("Connection %i finished"),
+					     i);
 			}
-			conn_disconnect( &axel->conn[i] );
+			conn_disconnect(&axel->conn[i]);
 			size = remaining;
 			/* Don't terminate, still stuff to write! */
 		}
 		/* This should always succeed.. */
-		lseek( axel->outfd, axel->conn[i].currentbyte, SEEK_SET );
-		if( write( axel->outfd, buffer, size ) != size )
-		{
-			axel_message( axel, _("Write error!") );
+		lseek(axel->outfd, axel->conn[i].currentbyte, SEEK_SET);
+		if (write(axel->outfd, buffer, size) != size) {
+			axel_message(axel, _("Write error!"));
 			axel->ready = -1;
-			pthread_mutex_unlock( &axel->conn[i].lock );
+			pthread_mutex_unlock(&axel->conn[i].lock);
 			return;
 		}
 		axel->conn[i].currentbyte += size;
 		axel->bytes_done += size;
-		if( remaining == size )
-			reactivate_connection(axel,i);
+		if (remaining == size)
+			reactivate_connection(axel, i);
 
-next_conn:
-		pthread_mutex_unlock( &axel->conn[i].lock );
+ next_conn:
+		pthread_mutex_unlock(&axel->conn[i].lock);
 	}
 
-	if( axel->ready )
+	if (axel->ready)
 		return;
 
-conn_check:
+ conn_check:
 	/* Look for aborted connections and attempt to restart them. */
 	url_ptr = axel->url;
-	for( i = 0; i < axel->conf->num_connections; i ++ )
-	{
+	for (i = 0; i < axel->conf->num_connections; i++) {
 		/* skip connection if setup thread hasn't released the lock yet */
-		if( pthread_mutex_trylock( &axel->conn[i].lock ) )
+		if (pthread_mutex_trylock(&axel->conn[i].lock))
 			continue;
 
-		if( !axel->conn[i].enabled && axel->conn[i].currentbyte < axel->conn[i].lastbyte )
-		{
-			if( !axel->conn[i].state )
-			{
+		if (!axel->conn[i].enabled &&
+		    axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
+			if (!axel->conn[i].state) {
 				// Wait for termination of this thread
-				pthread_join(*(axel->conn[i].setup_thread), NULL);
+				pthread_join(*(axel->conn[i].setup_thread),
+					     NULL);
 
-				conn_set( &axel->conn[i], url_ptr->text );
+				conn_set(&axel->conn[i], url_ptr->text);
 				url_ptr = url_ptr->next;
 				/* axel->conn[i].local_if = axel->conf->interfaces->text;
-				axel->conf->interfaces = axel->conf->interfaces->next; */
-				if( axel->conf->verbose >= 2 )
-					axel_message( axel, _("Connection %i downloading from %s:%i using interface %s"),
-				        	      i, axel->conn[i].host, axel->conn[i].port, axel->conn[i].local_if );
+				   axel->conf->interfaces = axel->conf->interfaces->next; */
+				if (axel->conf->verbose >= 2)
+					axel_message(axel,
+						     _("Connection %i downloading from %s:%i using interface %s"),
+						     i, axel->conn[i].host,
+						     axel->conn[i].port,
+						     axel->conn[i].local_if);
 
 				axel->conn[i].state = true;
-				if( pthread_create( axel->conn[i].setup_thread, NULL, setup_thread, &axel->conn[i] ) == 0 )
-				{
+				if (pthread_create
+				    (axel->conn[i].setup_thread, NULL,
+				     setup_thread, &axel->conn[i]) == 0) {
 					axel->conn[i].last_transfer = gettime();
-				}
-				else
-				{
-					axel_message( axel, _("pthread error!!!") );
+				} else {
+					axel_message(axel,
+						     _("pthread error!!!"));
 					axel->ready = -1;
 				}
-			}
-			else
-			{
-				if( gettime() > axel->conn[i].last_transfer + axel->conf->reconnect_delay )
-				{
-					pthread_cancel( *axel->conn[i].setup_thread );
+			} else {
+				if (gettime() > (axel->conn[i].last_transfer +
+						 axel->conf->reconnect_delay)) {
+					pthread_cancel(*axel->conn[i].setup_thread);
 					axel->conn[i].state = false;
-					pthread_join( *axel->conn[i].setup_thread, NULL );
+					pthread_join(*axel->conn[i].
+						     setup_thread, NULL);
 				}
 			}
 		}
-		pthread_mutex_unlock( &axel->conn[i].lock );
+		pthread_mutex_unlock(&axel->conn[i].lock);
 	}
 
 	/* Calculate current average speed and finish_time */
-	axel->bytes_per_second = (int) ( (double) ( axel->bytes_done - axel->start_byte ) / ( gettime() - axel->start_time ) );
-	if( axel->bytes_per_second != 0 )
-		axel->finish_time = (int) ( axel->start_time + (double) ( axel->size - axel->start_byte ) / axel->bytes_per_second );
+	axel->bytes_per_second =
+	    (int)((double)(axel->bytes_done - axel->start_byte) /
+		  (gettime() - axel->start_time));
+	if (axel->bytes_per_second != 0)
+		axel->finish_time =
+		    (int)(axel->start_time +
+			  (double)(axel->size - axel->start_byte) /
+			  axel->bytes_per_second);
 	else
 		axel->finish_time = INT_MAX;
 
 	/* Check speed. If too high, delay for some time to slow things
 	   down a bit. I think a 5% deviation should be acceptable. */
-	if( axel->conf->max_speed > 0 )
-	{
-		max_speed_ratio = (float) axel->bytes_per_second /
-					  axel->conf->max_speed;
-		if( max_speed_ratio > 1.05 )
+	if (axel->conf->max_speed > 0) {
+		max_speed_ratio = (float)axel->bytes_per_second /
+		    axel->conf->max_speed;
+		if (max_speed_ratio > 1.05)
 			axel->delay_time.tv_nsec += 10000000;
-		else if( ( max_speed_ratio < 0.95 ) &&
-			 ( axel->delay_time.tv_nsec >= 10000000 ) )
+		else if ((max_speed_ratio < 0.95) &&
+			 (axel->delay_time.tv_nsec >= 10000000))
 			axel->delay_time.tv_nsec -= 10000000;
-		else if( ( max_speed_ratio < 0.95 ) &&
-			 ( axel->delay_time.tv_sec > 0 ) )
-		{
+		else if ((max_speed_ratio < 0.95) &&
+			 (axel->delay_time.tv_sec > 0)) {
 			axel->delay_time.tv_sec--;
 			axel->delay_time.tv_nsec += 999000000;
-		}
-		else if( ( (float) axel->bytes_per_second / axel->conf->max_speed < 0.95 ) )
-		{
+		} else
+		    if (((float)axel->bytes_per_second / axel->conf->max_speed <
+			 0.95)) {
 			axel->delay_time.tv_sec = 0;
 			axel->delay_time.tv_nsec = 0;
 		}
-		if( axel_nanosleep( axel->delay_time ) < 0 )
-		{
-			axel_message( axel, _("Error while enforcing throttling: %s"),
-				      strerror( errno ) );
+		if (axel_nanosleep(axel->delay_time) < 0) {
+			axel_message(axel,
+				     _("Error while enforcing throttling: %s"),
+				     strerror(errno));
 			axel->ready = -1;
 			return;
 		}
 	}
 
 	/* Ready? */
-	if( axel->bytes_done == axel->size )
+	if (axel->bytes_done == axel->size)
 		axel->ready = 1;
 }
 
 /* Close an axel connection */
-void axel_close( axel_t *axel )
+void
+axel_close(axel_t * axel)
 {
-	if( !axel )
+	if (!axel)
 		return;
 
-	if( axel->conn )
-	{
+	if (axel->conn) {
 		/* Terminate threads and close connections */
-		for( int i = 0; i < axel->conf->num_connections; i ++ )
-		{
+		for (int i = 0; i < axel->conf->num_connections; i++) {
 			/* don't try to kill non existing thread */
-			if ( *axel->conn[i].setup_thread != 0 )
-			{
-				pthread_cancel( *axel->conn[i].setup_thread );
-				pthread_join( *axel->conn[i].setup_thread, NULL );
+			if (*axel->conn[i].setup_thread != 0) {
+				pthread_cancel(*axel->conn[i].setup_thread);
+				pthread_join(*axel->conn[i].setup_thread, NULL);
 			}
-			conn_disconnect( &axel->conn[i] );
+			conn_disconnect(&axel->conn[i]);
 		}
 	}
 
-	free( axel->url );
+	free(axel->url);
 
 	/* Delete state file if necessary */
-	if( axel->ready == 1 )
-	{
-		snprintf( buffer, MAX_STRING + 4, "%s.st", axel->filename );
-		unlink( buffer );
+	if (axel->ready == 1) {
+		snprintf(buffer, MAX_STRING + 4, "%s.st", axel->filename);
+		unlink(buffer);
 	}
 	/* Else: Create it.. */
-	else if( axel->bytes_done > 0 )
-	{
-		save_state( axel );
+	else if (axel->bytes_done > 0) {
+		save_state(axel);
 	}
 
-	print_messages( axel );
+	print_messages(axel);
 
-	close( axel->outfd );
-	free( axel->conn );
-	free( axel );
-	free( buffer );
+	close(axel->outfd);
+	free(axel->conn);
+	free(axel);
+	free(buffer);
 }
 
 /* time() with more precision */
-double gettime()
+double
+gettime()
 {
 	struct timeval time[1];
 
-	gettimeofday( time, 0 );
-	return( (double) time->tv_sec + (double) time->tv_usec / 1000000 );
+	gettimeofday(time, 0);
+	return (double)time->tv_sec + (double)time->tv_usec / 1000000;
 }
 
 /* Save the state of the current download */
-void save_state( axel_t *axel )
+void
+save_state(axel_t * axel)
 {
 	int fd, i;
-	char fn[MAX_STRING+4];
+	char fn[MAX_STRING + 4];
 	ssize_t nwrite;
 
 	/* No use for such a file if the server doesn't support
 	   resuming anyway.. */
-	if( !axel->conn[0].supported )
+	if (!axel->conn[0].supported)
 		return;
 
-	snprintf( fn, sizeof( fn ), "%s.st", axel->filename );
-	if( ( fd = open( fn, O_CREAT | O_TRUNC | O_WRONLY, 0666 ) ) == -1 )
-	{
+	snprintf(fn, sizeof(fn), "%s.st", axel->filename);
+	if ((fd = open(fn, O_CREAT | O_TRUNC | O_WRONLY, 0666)) == -1) {
 		return;		/* Not 100% fatal.. */
 	}
 
-        nwrite = write( fd, &axel->conf->num_connections, sizeof( axel->conf->num_connections ) );
-	assert( nwrite == sizeof( axel->conf->num_connections ) );
+	nwrite =
+	    write(fd, &axel->conf->num_connections,
+		  sizeof(axel->conf->num_connections));
+	assert(nwrite == sizeof(axel->conf->num_connections));
 
-	nwrite = write( fd, &axel->bytes_done, sizeof( axel->bytes_done ) );
-	assert( nwrite == sizeof( axel->bytes_done ) );
+	nwrite = write(fd, &axel->bytes_done, sizeof(axel->bytes_done));
+	assert(nwrite == sizeof(axel->bytes_done));
 
-	for( i = 0; i < axel->conf->num_connections; i ++ ) {
-		nwrite = write( fd, &axel->conn[i].currentbyte, sizeof( axel->conn[i].currentbyte ) );
-		assert( nwrite == sizeof( axel->conn[i].currentbyte ) );
-		nwrite = write( fd, &axel->conn[i].lastbyte, sizeof( axel->conn[i].lastbyte ) );
-		assert( nwrite == sizeof( axel->conn[i].lastbyte ) );
+	for (i = 0; i < axel->conf->num_connections; i++) {
+		nwrite =
+		    write(fd, &axel->conn[i].currentbyte,
+			  sizeof(axel->conn[i].currentbyte));
+		assert(nwrite == sizeof(axel->conn[i].currentbyte));
+		nwrite =
+		    write(fd, &axel->conn[i].lastbyte,
+			  sizeof(axel->conn[i].lastbyte));
+		assert(nwrite == sizeof(axel->conn[i].lastbyte));
 	}
-	close( fd );
+	close(fd);
 }
 
 /* Thread used to set up a connection */
-void *setup_thread( void *c )
+void *
+setup_thread(void *c)
 {
 	conn_t *conn = c;
 	int oldstate;
 
 	/* Allow this thread to be killed at any time. */
-	pthread_setcancelstate( PTHREAD_CANCEL_ENABLE, &oldstate );
-	pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate );
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &oldstate);
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldstate);
 
-	pthread_mutex_lock( &conn->lock );
-	if( conn_setup( conn ) )
-	{
+	pthread_mutex_lock(&conn->lock);
+	if (conn_setup(conn)) {
 		conn->last_transfer = gettime();
-		if( conn_exec( conn ) )
-		{
+		if (conn_exec(conn)) {
 			conn->last_transfer = gettime();
 			conn->enabled = true;
 			goto out;
 		}
 	}
 
-	conn_disconnect( conn );
-out:
+	conn_disconnect(conn);
+ out:
 	conn->state = false;
-	pthread_mutex_unlock( &conn->lock );
+	pthread_mutex_unlock(&conn->lock);
 
-	return( NULL );
+	return NULL;
 }
 
 /* Add a message to the axel->message structure */
-static void axel_message( axel_t *axel, char *format, ... )
+static void
+axel_message(axel_t * axel, char *format, ...)
 {
 	message_t *m;
 	va_list params;
 
-	if ( !axel )
+	if (!axel)
 		goto nomem;
 
-	m = malloc( sizeof( message_t ) );
-	if ( !m )
+	m = malloc(sizeof(message_t));
+	if (!m)
 		goto nomem;
 
-	memset( m, 0, sizeof( message_t ) );
-	va_start( params, format );
-	vsnprintf( m->text, MAX_STRING, format, params );
-	va_end( params );
+	memset(m, 0, sizeof(message_t));
+	va_start(params, format);
+	vsnprintf(m->text, MAX_STRING, format, params);
+	va_end(params);
 
-	if( axel->message == NULL )
-	{
+	if (axel->message == NULL) {
 		axel->message = axel->last_message = m;
-	}
-	else
-	{
+	} else {
 		axel->last_message->next = m;
 		axel->last_message = m;
 	}
 
 	return;
 
-nomem:
+ nomem:
 	/* Flush previous messages */
-	print_messages( axel );
-	va_start( params, format );
-	vprintf( format, params );
-	va_end( params );
+	print_messages(axel);
+	va_start(params, format);
+	vprintf(format, params);
+	va_end(params);
 }
 
 /* Divide the file and set the locations for each connection */
-static void axel_divide( axel_t *axel )
+static void
+axel_divide(axel_t * axel)
 {
 	int i;
 
 	axel->conn[0].currentbyte = 0;
 	axel->conn[0].lastbyte = axel->size / axel->conf->num_connections - 1;
-	for( i = 1; i < axel->conf->num_connections; i ++ )
-	{
+	for (i = 1; i < axel->conf->num_connections; i++) {
 #ifdef DEBUG
-		printf( _("Downloading %lld-%lld using conn. %i\n"), axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
+		printf(_("Downloading %lld-%lld using conn. %i\n"),
+		       axel->conn[i - 1].currentbyte,
+		       axel->conn[i - 1].lastbyte, i - 1);
 #endif
-		axel->conn[i].currentbyte = axel->conn[i-1].lastbyte + 1;
-		axel->conn[i].lastbyte = axel->conn[i].currentbyte + axel->size / axel->conf->num_connections;
+		axel->conn[i].currentbyte = axel->conn[i - 1].lastbyte + 1;
+		axel->conn[i].lastbyte =
+		    axel->conn[i].currentbyte +
+		    axel->size / axel->conf->num_connections;
 	}
-	axel->conn[axel->conf->num_connections-1].lastbyte = axel->size - 1;
+	axel->conn[axel->conf->num_connections - 1].lastbyte = axel->size - 1;
 #ifdef DEBUG
-	printf( _("Downloading %lld-%lld using conn. %i\n"), axel->conn[i-1].currentbyte, axel->conn[i-1].lastbyte, i - 1 );
+	printf(_("Downloading %lld-%lld using conn. %i\n"),
+	       axel->conn[i - 1].currentbyte, axel->conn[i - 1].lastbyte,
+	       i - 1);
 #endif
 }
