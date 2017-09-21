@@ -63,6 +63,9 @@ main(int argc, char *argv[])
 	ssl_init(conf);
 
 	res = malloc(sizeof(search_t) * (conf->search_amount + 1));
+	if (!res)
+		goto out;
+
 	memset(res, 0, sizeof(search_t) * (conf->search_amount + 1));
 	res->conf = conf;
 
@@ -110,6 +113,8 @@ search_makelist(search_t *results, char *url)
 	results[0].size = conn->size;
 
 	s = malloc(size);
+	if (!s)
+		return -1;
 
 	sprintf(s, "http://www.filesearching.com/cgi-bin/s?q=%s&w=a&l=en&"
 		"t=f&e=on&m=%i&o=n&s1=%lld&s2=%lld&x=15&y=15",

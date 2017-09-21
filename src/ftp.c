@@ -45,6 +45,9 @@ ftp_connect(ftp_t *conn, int proto, char *host, int port, char *user,
 {
 	conn->data_tcp.fd = -1;
 	conn->message = malloc(MAX_STRING);
+	if (!conn->message)
+		return 0;
+
 	conn->proto = proto;
 
 	if (tcp_connect(&conn->tcp, host, port, PROTO_IS_SECURE(conn->proto),
@@ -138,6 +141,9 @@ ftp_size(ftp_t *conn, char *file, int maxredir)
 
 	/* Read reply from the server. */
 	reply = malloc(size);
+	if (!reply)
+		return -1;
+
 	memset(reply, 0, size);
 	*reply = '\n';
 	i = 1;
@@ -298,8 +304,12 @@ ftp_wait(ftp_t *conn)
 {
 	int size = MAX_STRING, r = 0, complete, i, j;
 	char *s;
+	void *new_msg;
 
-	conn->message = realloc(conn->message, size);
+	new_msg = realloc(conn->message, size);
+	if (!new_msg)
+		return -1;
+	conn->message = new_msg;
 
 	do {
 		do {
@@ -310,7 +320,10 @@ ftp_wait(ftp_t *conn)
 			}
 			if ((r + 10) >= size) {
 				size += MAX_STRING;
-				conn->message = realloc(conn->message, size);
+				void *new_msg = realloc(conn->message, size);
+				if (!new_msg)
+					return -1;
+				conn->message = new_msg;
 			}
 		}
 		while (conn->message[r - 1] != '\n');

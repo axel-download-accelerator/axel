@@ -229,6 +229,9 @@ main(int argc, char *argv[])
 		goto free_conf;
 	} else if (strcmp(argv[optind], "-") == 0) {
 		s = malloc(MAX_STRING);
+		if (!s)
+			goto free_conf;
+
 		if (scanf("%1024[^\n]s", s) != 1) {
 			fprintf(stderr,
 				_("Error when trying to read URL (Too long?).\n"));
@@ -248,6 +251,9 @@ main(int argc, char *argv[])
 	printf(_("Initializing download: %s\n"), s);
 	if (do_search) {
 		search = malloc(sizeof(search_t) * (conf->search_amount + 1));
+		if (!search)
+			goto free_conf;
+
 		memset(search, 0, sizeof(search_t) * (conf->search_amount + 1));
 		search[0].conf = conf;
 		if (conf->verbose)
@@ -290,6 +296,9 @@ main(int argc, char *argv[])
 		}
 	} else {
 		search = malloc(sizeof(search_t) * (argc - optind));
+		if (!search)
+			goto free_conf;
+
 		memset(search, 0, sizeof(search_t) * (argc - optind));
 		for (i = 0; i < (argc - optind); i++)
 			strncpy(search[i].url, argv[optind + i],
@@ -540,6 +549,9 @@ print_alternate_output(axel_t *axel)
 
 	width -= 30;
 	progress = malloc(width + 1);
+	if (!progress)
+		return;
+
 	memset(progress, '.', width);
 
 	for (int i = 0; i < axel->conf->num_connections; i++) {

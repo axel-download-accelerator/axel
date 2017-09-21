@@ -228,6 +228,9 @@ conf_init(conf_t *conf)
 	strncpy(conf->user_agent, DEFAULT_USER_AGENT, MAX_STRING);
 
 	conf->interfaces = malloc(sizeof(if_t));
+	if (!conf->interfaces)
+		return 0;
+
 	memset(conf->interfaces, 0, sizeof(if_t));
 	conf->interfaces->next = conf->interfaces;
 
@@ -280,6 +283,9 @@ parse_interfaces(conf_t *conf, char *s)
 
 	if (!*s) {
 		conf->interfaces = malloc(sizeof(if_t));
+		if (!conf->interfaces)
+			return 0;
+
 		memset(conf->interfaces, 0, sizeof(if_t));
 		conf->interfaces->next = conf->interfaces;
 		return 1;
@@ -287,6 +293,9 @@ parse_interfaces(conf_t *conf, char *s)
 
 	s[strlen(s) + 1] = 0;
 	conf->interfaces = iface = malloc(sizeof(if_t));
+	if (!conf->interfaces)
+		return 0;
+
 	while (1) {
 		while ((*s == ' ' || *s == '\t') && *s)
 			s++;
@@ -299,6 +308,9 @@ parse_interfaces(conf_t *conf, char *s)
 		s = s2 + 1;
 		if (*s) {
 			iface->next = malloc(sizeof(if_t));
+			if (!iface->next)
+				return 0;
+
 			iface = iface->next;
 		} else {
 			iface->next = conf->interfaces;

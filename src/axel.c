@@ -228,7 +228,11 @@ axel_open(axel_t *axel)
 		axel_message(axel, _("Server unsupported, "
 				     "starting from scratch with one connection."));
 		axel->conf->num_connections = 1;
-		axel->conn = realloc(axel->conn, sizeof(conn_t));
+		void *new_conn = realloc(axel->conn, sizeof(conn_t));
+		if (!new_conn)
+			return 0;
+
+		axel->conn = new_conn;
 		axel_divide(axel);
 	} else if ((fd = open(buffer, O_RDONLY)) != -1) {
 		int old_format = 0;
@@ -256,8 +260,14 @@ axel_open(axel_t *axel)
 			old_format = 1;
 		}
 
-		axel->conn = realloc(axel->conn, sizeof(conn_t) *
-				     axel->conf->num_connections);
+		void *new_conn = realloc(axel->conn, sizeof(conn_t) *
+					 axel->conf->num_connections);
+		if (!new_conn) {
+			close(fd);
+			return 0;
+		}
+		axel->conn = new_conn;
+
 		memset(axel->conn + 1, 0,
 		       sizeof(conn_t) * (axel->conf->num_connections - 1));
 
