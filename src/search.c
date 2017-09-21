@@ -104,7 +104,8 @@ search_makelist(search_t *results, char *url)
 	if (!conn_info(conn))
 		return -1;
 
-	strcpy(results[0].url, url);
+	strncpy(results[0].url, url, sizeof(results[0].url) - 1);
+	results[0].url[sizeof(results[0].url) - 1] = '\0';
 	results[0].speed = 1 + 1000 * (gettime() - t);
 	results[0].size = conn->size;
 
