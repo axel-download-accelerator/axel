@@ -151,6 +151,7 @@ search_makelist(search_t *results, char *url)
 			memset(s + size / 2, 0, size / 2);
 		}
 	}
+	s[j] = '\0';
 
 	conn_disconnect(conn);
 
