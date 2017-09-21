@@ -151,11 +151,10 @@ main(int argc, char *argv[])
 			break;
 		case 'S':
 			do_search = 1;
-			if (optarg != NULL)
-				if (!sscanf(optarg, "%i", &conf->search_top)) {
-					print_help();
-					goto free_conf;
-				}
+			if (!sscanf(optarg, "%i", &conf->search_top)) {
+				print_help();
+				goto free_conf;
+			}
 			break;
 		case '6':
 			conf->ai_family = AF_INET6;
