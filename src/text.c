@@ -278,13 +278,13 @@ main(int argc, char *argv[])
 		}
 		axel = axel_new(conf, j, search);
 		free(search);
-		if (axel->ready == -1) {
+		if (!axel || axel->ready == -1) {
 			print_messages(axel);
 			goto close_axel;
 		}
 	} else if (argc - optind == 1) {
 		axel = axel_new(conf, 0, s);
-		if (axel->ready == -1) {
+		if (!axel || axel->ready == -1) {
 			print_messages(axel);
 			goto close_axel;
 		}
@@ -296,7 +296,7 @@ main(int argc, char *argv[])
 				sizeof(search[i].url) - 1);
 		axel = axel_new(conf, argc - optind, search);
 		free(search);
-		if (axel->ready == -1) {
+		if (!axel || axel->ready == -1) {
 			print_messages(axel);
 			goto close_axel;
 		}
