@@ -183,7 +183,8 @@ get_if_ip(char *iface, char *ip)
 
 	memset(&ifr, 0, sizeof(struct ifreq));
 
-	strcpy(ifr.ifr_name, iface);
+	strncpy(ifr.ifr_name, iface, sizeof(ifr.ifr_name) - 1);
+	ifr.ifr_name[sizeof(ifr.ifr_name) - 1] = '\0';
 	ifr.ifr_addr.sa_family = AF_INET;
 	if (ioctl(fd, SIOCGIFADDR, &ifr) == 0) {
 		struct sockaddr_in *x = (struct sockaddr_in *)&ifr.ifr_addr;
