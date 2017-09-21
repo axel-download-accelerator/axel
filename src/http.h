@@ -61,16 +61,16 @@ typedef struct {
 	char *local_if;
 } http_t;
 
-int http_connect(http_t * conn, int proto, char *proxy, char *host, int port,
+int http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 		 char *user, char *pass);
-void http_disconnect(http_t * conn);
-void http_get(http_t * conn, char *lurl);
-void http_addheader(http_t * conn, char *format, ...);
-int http_exec(http_t * conn);
-const char *http_header(const http_t * conn, const char *header);
-void http_filename(const http_t * conn, char *filename);
-long long int http_size(http_t * conn);
-long long int http_size_from_range(http_t * conn);
+void http_disconnect(http_t *conn);
+void http_get(http_t *conn, char *lurl);
+void http_addheader(http_t *conn, char *format, ...);
+int http_exec(http_t *conn);
+const char *http_header(const http_t *conn, const char *header);
+void http_filename(const http_t *conn, char *filename);
+long long int http_size(http_t *conn);
+long long int http_size_from_range(http_t *conn);
 void http_encode(char *s);
 void http_decode(char *s);
 

@@ -50,7 +50,7 @@ char string[MAX_STRING];
  * Convert an URL to a conn_t structure.
  */
 int
-conn_set(conn_t * conn, const char *set_url)
+conn_set(conn_t *conn, const char *set_url)
 {
 	char url[MAX_STRING];
 	char *i, *j;
@@ -163,7 +163,7 @@ scheme_from_proto(int proto)
 
 /* Generate a nice URL string. */
 char *
-conn_url(conn_t * conn)
+conn_url(conn_t *conn)
 {
 	strcpy(string, scheme_from_proto(conn->proto));
 
@@ -179,7 +179,7 @@ conn_url(conn_t * conn)
 
 /* Simple... */
 void
-conn_disconnect(conn_t * conn)
+conn_disconnect(conn_t *conn)
 {
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy)
 		ftp_disconnect(conn->ftp);
@@ -190,7 +190,7 @@ conn_disconnect(conn_t * conn)
 }
 
 int
-conn_init(conn_t * conn)
+conn_init(conn_t *conn)
 {
 	char *proxy = conn->conf->http_proxy, *host = conn->conf->no_proxy;
 	int i;
@@ -229,9 +229,8 @@ conn_init(conn_t * conn)
 	} else {
 		conn->http->local_if = conn->local_if;
 		conn->http->tcp.ai_family = conn->conf->ai_family;
-		if (!http_connect
-		    (conn->http, conn->proto, proxy, conn->host, conn->port,
-		     conn->user, conn->pass)) {
+		if (!http_connect(conn->http, conn->proto, proxy, conn->host,
+                          conn->port, conn->user, conn->pass)) {
 			conn->message = conn->http->headers;
 			conn_disconnect(conn);
 			return 0;
@@ -243,7 +242,7 @@ conn_init(conn_t * conn)
 }
 
 int
-conn_setup(conn_t * conn)
+conn_setup(conn_t *conn)
 {
 	if (conn->ftp->tcp.fd <= 0 && conn->http->tcp.fd <= 0)
 		if (!conn_init(conn))
@@ -278,7 +277,7 @@ conn_setup(conn_t * conn)
 }
 
 int
-conn_exec(conn_t * conn)
+conn_exec(conn_t *conn)
 {
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
 		if (!ftp_command(conn->ftp, "RETR %s", conn->file))
@@ -293,7 +292,7 @@ conn_exec(conn_t * conn)
 
 /* Get file size and other information */
 int
-conn_info(conn_t * conn)
+conn_info(conn_t *conn)
 {
 	/* It's all a bit messed up.. But it works. */
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
@@ -357,7 +356,8 @@ conn_info(conn_t * conn)
 
 			i++;
 		}
-		while (conn->http->status / 100 == 3 && i < conn->conf->max_redirect);
+		while (conn->http->status / 100 == 3 &&
+		       i < conn->conf->max_redirect);
 
 		if (i == conn->conf->max_redirect) {
 			sprintf(conn->message, _("Too many redirects.\n"));

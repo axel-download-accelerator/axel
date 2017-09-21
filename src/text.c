@@ -48,7 +48,7 @@ static void stop(int signal);
 static char *size_human(long long int value);
 static char *time_human(int value);
 static void print_commas(long long int bytes_done);
-static void print_alternate_output(axel_t * axel);
+static void print_alternate_output(axel_t *axel);
 static void print_help();
 static void print_version();
 static int get_term_width();
@@ -519,7 +519,7 @@ print_commas(long long int bytes_done)
 }
 
 static void
-print_alternate_output(axel_t * axel)
+print_alternate_output(axel_t *axel)
 {
 	long long int done = axel->bytes_done;
 	long long int total = axel->size;
@@ -671,7 +671,7 @@ print_version()
 
 /* Print any message in the axel structure */
 void
-print_messages(axel_t * axel)
+print_messages(axel_t *axel)
 {
 	message_t *m;
 

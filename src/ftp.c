@@ -40,7 +40,7 @@
 #include "axel.h"
 
 int
-ftp_connect(ftp_t * conn, int proto, char *host, int port, char *user,
+ftp_connect(ftp_t *conn, int proto, char *host, int port, char *user,
 	    char *pass)
 {
 	conn->data_tcp.fd = -1;
@@ -74,7 +74,7 @@ ftp_connect(ftp_t * conn, int proto, char *host, int port, char *user,
 }
 
 void
-ftp_disconnect(ftp_t * conn)
+ftp_disconnect(ftp_t *conn)
 {
 	tcp_close(&conn->tcp);
 	tcp_close(&conn->data_tcp);
@@ -88,7 +88,7 @@ ftp_disconnect(ftp_t * conn)
 
 /* Change current working directory */
 int
-ftp_cwd(ftp_t * conn, char *cwd)
+ftp_cwd(ftp_t *conn, char *cwd)
 {
 	/* Necessary at all? */
 	if (strncmp(conn->cwd, cwd, MAX_STRING) == 0)
@@ -107,7 +107,7 @@ ftp_cwd(ftp_t * conn, char *cwd)
 
 /* Get file size. Should work with all reasonable servers now */
 long long int
-ftp_size(ftp_t * conn, char *file, int maxredir)
+ftp_size(ftp_t *conn, char *file, int maxredir)
 {
 	long long int i, j, size = MAX_STRING;
 	char *reply, *s, fn[MAX_STRING];
@@ -222,7 +222,7 @@ ftp_size(ftp_t * conn, char *file, int maxredir)
 
 /* Open a data connection. Only Passive mode supported yet, easier.. */
 int
-ftp_data(ftp_t * conn)
+ftp_data(ftp_t *conn)
 {
 	int i, info[6];
 	char host[MAX_STRING];
@@ -231,9 +231,10 @@ ftp_data(ftp_t * conn)
 	if (conn->data_tcp.fd > 0)
 		return 0;
 
-/*	if( conn->ftp_mode == FTP_PASSIVE )
+/*	if (conn->ftp_mode == FTP_PASSIVE)
 	{
-*/ ftp_command(conn, "PASV");
+*/
+	ftp_command(conn, "PASV");
 	if (ftp_wait(conn) / 100 != 2)
 		return 0;
 	*host = 0;
@@ -260,14 +261,14 @@ ftp_data(ftp_t * conn)
 /*	}
 	else
 	{
-		sprintf( conn->message, _("Active FTP not implemented yet.\n" ) );
-		return( 0 );
+		sprintf(conn->message, _("Active FTP not implemented yet.\n"));
+		return 0;
 	} */
 }
 
 /* Send a command to the server */
 int
-ftp_command(ftp_t * conn, char *format, ...)
+ftp_command(ftp_t *conn, char *format, ...)
 {
 	va_list params;
 	char cmd[MAX_STRING];
@@ -292,7 +293,7 @@ ftp_command(ftp_t * conn, char *format, ...)
 /* Read status from server. Should handle multi-line replies correctly.
    Multi-line replies suck... */
 int
-ftp_wait(ftp_t * conn)
+ftp_wait(ftp_t *conn)
 {
 	int size = MAX_STRING, r = 0, complete, i, j;
 	char *s;

@@ -100,13 +100,13 @@ typedef struct {
 	pthread_mutex_t lock;
 } conn_t;
 
-int conn_set(conn_t * conn, const char *set_url);
-char *conn_url(conn_t * conn);
-void conn_disconnect(conn_t * conn);
-int conn_init(conn_t * conn);
-int conn_setup(conn_t * conn);
-int conn_exec(conn_t * conn);
-int conn_info(conn_t * conn);
+int conn_set(conn_t *conn, const char *set_url);
+char *conn_url(conn_t *conn);
+void conn_disconnect(conn_t *conn);
+int conn_init(conn_t *conn);
+int conn_setup(conn_t *conn);
+int conn_exec(conn_t *conn);
+int conn_info(conn_t *conn);
 const char *scheme_from_proto(int proto);
 
 #endif				/* AXEL_CONN_H */

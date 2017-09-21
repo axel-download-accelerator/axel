@@ -46,8 +46,8 @@ typedef struct {
 	conf_t *conf;
 } search_t;
 
-int search_makelist(search_t * results, char *url);
-int search_getspeeds(search_t * results, int count);
-void search_sortlist(search_t * results, int count);
+int search_makelist(search_t *results, char *url);
+int search_getspeeds(search_t *results, int count);
+void search_sortlist(search_t *results, int count);
 
 #endif				/* AXEL_SEARCH_H */

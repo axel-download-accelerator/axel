@@ -50,7 +50,7 @@ inline static char
 chain_next(const char ***p)
 {
 	while (**p && !***p)
-		++ * p;
+		++(*p);
 	return **p ? *(**p)++ : 0;
 }
 
@@ -86,7 +86,7 @@ http_auth_token(char *token, const char *user, const char *pass)
 }
 
 int
-http_connect(http_t * conn, int proto, char *proxy, char *host, int port,
+http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	     char *user, char *pass)
 {
 	char *puser, *ppass;
@@ -136,13 +136,13 @@ http_connect(http_t * conn, int proto, char *proxy, char *host, int port,
 }
 
 void
-http_disconnect(http_t * conn)
+http_disconnect(http_t *conn)
 {
 	tcp_close(&conn->tcp);
 }
 
 void
-http_get(http_t * conn, char *lurl)
+http_get(http_t *conn, char *lurl)
 {
 	*conn->request = 0;
 	if (conn->proxy) {
@@ -176,7 +176,7 @@ http_get(http_t * conn, char *lurl)
 }
 
 void
-http_addheader(http_t * conn, char *format, ...)
+http_addheader(http_t *conn, char *format, ...)
 {
 	char s[MAX_STRING];
 	va_list params;
@@ -190,7 +190,7 @@ http_addheader(http_t * conn, char *format, ...)
 }
 
 int
-http_exec(http_t * conn)
+http_exec(http_t *conn)
 {
 	int i = 0;
 	ssize_t nwrite = 0;
@@ -254,7 +254,7 @@ http_exec(http_t * conn)
 }
 
 const char *
-http_header(const http_t * conn, const char *header)
+http_header(const http_t *conn, const char *header)
 {
 	const char *p = conn->headers;
 	size_t hlen = strlen(header);
@@ -273,7 +273,7 @@ http_header(const http_t * conn, const char *header)
 }
 
 long long int
-http_size(http_t * conn)
+http_size(http_t *conn)
 {
 	const char *i;
 	long long int j;
@@ -286,7 +286,7 @@ http_size(http_t * conn)
 }
 
 long long int
-http_size_from_range(http_t * conn)
+http_size_from_range(http_t *conn)
 {
 	const char *i;
 	long long int j;
@@ -305,7 +305,7 @@ http_size_from_range(http_t * conn)
 }
 
 void
-http_filename(const http_t * conn, char *filename)
+http_filename(const http_t *conn, char *filename)
 {
 	const char *h;
 	if ((h = http_header(conn, "Content-Disposition:")) != NULL) {

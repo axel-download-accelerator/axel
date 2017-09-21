@@ -74,8 +74,8 @@ typedef struct {
 	char user_agent[MAX_STRING];
 } conf_t;
 
-int conf_loadfile(conf_t * conf, char *file);
-int conf_init(conf_t * conf);
-void conf_free(conf_t * conf);
+int conf_loadfile(conf_t *conf, char *file);
+int conf_init(conf_t *conf);
+void conf_free(conf_t *conf);
 
 #endif				/* AXEL_CONF_H */

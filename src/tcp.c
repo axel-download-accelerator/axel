@@ -49,7 +49,7 @@ tcp_error(char *buffer, char *hostname, int port, const char *reason)
 
 /* Get a TCP connection */
 int
-tcp_connect(tcp_t * tcp, char *hostname, int port, int secure, char *local_if,
+tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 	    char *message)
 {
 	struct sockaddr_in local_addr;
@@ -138,7 +138,7 @@ tcp_connect(tcp_t * tcp, char *hostname, int port, int secure, char *local_if,
 }
 
 int
-tcp_read(tcp_t * tcp, void *buffer, int size)
+tcp_read(tcp_t *tcp, void *buffer, int size)
 {
 #ifdef HAVE_SSL
 	if (tcp->ssl != NULL)
@@ -149,7 +149,7 @@ tcp_read(tcp_t * tcp, void *buffer, int size)
 }
 
 int
-tcp_write(tcp_t * tcp, void *buffer, int size)
+tcp_write(tcp_t *tcp, void *buffer, int size)
 {
 #ifdef HAVE_SSL
 	if (tcp->ssl != NULL)
@@ -160,7 +160,7 @@ tcp_write(tcp_t * tcp, void *buffer, int size)
 }
 
 void
-tcp_close(tcp_t * tcp)
+tcp_close(tcp_t *tcp)
 {
 	if (tcp->fd > 0) {
 #ifdef HAVE_SSL

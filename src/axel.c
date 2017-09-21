@@ -48,16 +48,16 @@
 #include "assert.h"
 
 /* Axel */
-static void save_state(axel_t * axel);
+static void save_state(axel_t *axel);
 static void *setup_thread(void *);
-static void axel_message(axel_t * axel, char *format, ...);
-static void axel_divide(axel_t * axel);
+static void axel_message(axel_t *axel, char *format, ...);
+static void axel_divide(axel_t *axel);
 
 static char *buffer = NULL;
 
 /* Create a new axel_t structure */
 axel_t *
-axel_new(conf_t * conf, int count, const void *url)
+axel_new(conf_t *conf, int count, const void *url)
 {
 	const search_t *res;
 	axel_t *axel;
@@ -210,7 +210,7 @@ axel_new(conf_t * conf, int count, const void *url)
 
 /* Open a local file to store the downloaded data */
 int
-axel_open(axel_t * axel)
+axel_open(axel_t *axel)
 {
 	int i, fd;
 	ssize_t nread;
@@ -234,9 +234,8 @@ axel_open(axel_t * axel)
 		off_t stsize = lseek(fd, 0, SEEK_END);
 		lseek(fd, 0, SEEK_SET);
 
-		nread =
-		    read(fd, &axel->conf->num_connections,
-			 sizeof(axel->conf->num_connections));
+		nread = read(fd, &axel->conf->num_connections,
+			     sizeof(axel->conf->num_connections));
 		if (nread != sizeof(axel->conf->num_connections)) {
 			printf(_("%s.st: Error, truncated state file\n"),
 			       axel->filename);
@@ -244,12 +243,10 @@ axel_open(axel_t * axel)
 			return 0;
 		}
 
-		if (stsize <
-		    sizeof(axel->conf->num_connections) +
-		    sizeof(axel->bytes_done)
-		    +
-		    2 * axel->conf->num_connections *
-		    sizeof(axel->conn[i].currentbyte)) {
+		if (stsize < (sizeof(axel->conf->num_connections) +
+			      sizeof(axel->bytes_done) +
+			      2 * axel->conf->num_connections *
+			      sizeof(axel->conn[0].currentbyte))) {
 			/* FIXME this might be wrong, the file may have been
 			 * truncated, we need another way to check. */
 #ifdef DEBUG
@@ -258,9 +255,8 @@ axel_open(axel_t * axel)
 			old_format = 1;
 		}
 
-		axel->conn =
-		    realloc(axel->conn,
-			    sizeof(conn_t) * axel->conf->num_connections);
+		axel->conn = realloc(axel->conn, sizeof(conn_t) *
+				     axel->conf->num_connections);
 		memset(axel->conn + 1, 0,
 		       sizeof(conn_t) * (axel->conf->num_connections - 1));
 
@@ -270,14 +266,12 @@ axel_open(axel_t * axel)
 		nread = read(fd, &axel->bytes_done, sizeof(axel->bytes_done));
 		assert(nread == sizeof(axel->bytes_done));
 		for (i = 0; i < axel->conf->num_connections; i++) {
-			nread =
-			    read(fd, &axel->conn[i].currentbyte,
-				 sizeof(axel->conn[i].currentbyte));
+			nread = read(fd, &axel->conn[i].currentbyte,
+				     sizeof(axel->conn[i].currentbyte));
 			assert(nread == sizeof(axel->conn[i].currentbyte));
 			if (!old_format) {
-				nread =
-				    read(fd, &axel->conn[i].lastbyte,
-					 sizeof(axel->conn[i].lastbyte));
+				nread = read(fd, &axel->conn[i].lastbyte,
+					     sizeof(axel->conn[i].lastbyte));
 				assert(nread == sizeof(axel->conn[i].lastbyte));
 			}
 		}
@@ -339,7 +333,7 @@ axel_open(axel_t * axel)
 }
 
 void
-reactivate_connection(axel_t * axel, int thread)
+reactivate_connection(axel_t *axel, int thread)
 {
 	long long int max_remaining = 0;
 	int idx = -1;
@@ -370,7 +364,7 @@ reactivate_connection(axel_t * axel, int thread)
 
 /* Start downloading */
 void
-axel_start(axel_t * axel)
+axel_start(axel_t *axel)
 {
 	int i;
 	url_t *url_ptr;
@@ -422,7 +416,7 @@ axel_start(axel_t * axel)
 
 /* Main 'loop' */
 void
-axel_do(axel_t * axel)
+axel_do(axel_t *axel)
 {
 	fd_set fds[1];
 	int hifd, i;
@@ -659,7 +653,7 @@ axel_do(axel_t * axel)
 
 /* Close an axel connection */
 void
-axel_close(axel_t * axel)
+axel_close(axel_t *axel)
 {
 	if (!axel)
 		return;
@@ -708,7 +702,7 @@ gettime()
 
 /* Save the state of the current download */
 void
-save_state(axel_t * axel)
+save_state(axel_t *axel)
 {
 	int fd, i;
 	char fn[MAX_STRING + 4];
@@ -776,7 +770,7 @@ setup_thread(void *c)
 
 /* Add a message to the axel->message structure */
 static void
-axel_message(axel_t * axel, char *format, ...)
+axel_message(axel_t *axel, char *format, ...)
 {
 	message_t *m;
 	va_list params;
@@ -812,7 +806,7 @@ axel_message(axel_t * axel, char *format, ...)
 
 /* Divide the file and set the locations for each connection */
 static void
-axel_divide(axel_t * axel)
+axel_divide(axel_t *axel)
 {
 	int i;
 

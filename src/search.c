@@ -86,7 +86,7 @@ main(int argc, char *argv[])
 #endif
 
 int
-search_makelist(search_t * results, char *url)
+search_makelist(search_t *results, char *url)
 {
 	int i, size = 8192, j = 0;
 	char *s, *s1, *s3;
@@ -186,7 +186,7 @@ search_makelist(search_t * results, char *url)
 #define SPEED_DONE	-3	/* Or >0 */
 
 int
-search_getspeeds(search_t * results, int count)
+search_getspeeds(search_t *results, int count)
 {
 	int i, running = 0, done = 0, correct = 0;
 	struct timespec delay = {.tv_sec = 0,.tv_nsec = 10000000 };
@@ -290,7 +290,7 @@ axel_strrstr(char *haystack, char *needle)
 }
 
 void
-search_sortlist(search_t * results, int count)
+search_sortlist(search_t *results, int count)
 {
 	qsort(results, count, sizeof(search_t), search_sortlist_qsort);
 }

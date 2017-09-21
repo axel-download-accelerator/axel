@@ -48,10 +48,10 @@
 	else if (!strcmp(key, #name))	\
 		dst = &conf->name;
 
-int parse_interfaces(conf_t * conf, char *s);
+int parse_interfaces(conf_t *conf, char *s);
 
 static int
-axel_fscanf(FILE * fp, const char *format, ...)
+axel_fscanf(FILE *fp, const char *format, ...)
 {
 	va_list params;
 	int ret;
@@ -70,7 +70,7 @@ axel_fscanf(FILE * fp, const char *format, ...)
 }
 
 static int
-parse_protocol(conf_t * conf, const char *value)
+parse_protocol(conf_t *conf, const char *value)
 {
 	if (strcasecmp(value, "ipv4") == 0)
 		conf->ai_family = AF_INET;
@@ -85,7 +85,7 @@ parse_protocol(conf_t * conf, const char *value)
 }
 
 int
-conf_loadfile(conf_t * conf, char *file)
+conf_loadfile(conf_t *conf, char *file)
 {
 	int line = 0, ret = 1;
 	FILE *fp;
@@ -189,7 +189,7 @@ conf_loadfile(conf_t * conf, char *file)
 }
 
 int
-conf_init(conf_t * conf)
+conf_init(conf_t *conf)
 {
 	char *s2;
 	int i;
@@ -252,13 +252,13 @@ conf_init(conf_t * conf)
 
 /* release resources allocated by conf_init() */
 void
-conf_free(conf_t * conf)
+conf_free(conf_t *conf)
 {
 	free(conf->interfaces);
 }
 
 int
-parse_interfaces(conf_t * conf, char *s)
+parse_interfaces(conf_t *conf, char *s)
 {
 	char *s2;
 	if_t *iface;

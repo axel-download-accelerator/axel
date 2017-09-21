@@ -48,7 +48,7 @@ static bool ssl_inited = false;
 static conf_t *conf = NULL;
 
 void
-ssl_init(conf_t * global_conf)
+ssl_init(conf_t *global_conf)
 {
 	pthread_mutex_init(&ssl_lock, NULL);
 	conf = global_conf;
@@ -98,7 +98,7 @@ ssl_connect(int fd, char *hostname, char *message)
 }
 
 void
-ssl_disconnect(SSL * ssl)
+ssl_disconnect(SSL *ssl)
 {
 	SSL_shutdown(ssl);
 	SSL_free(ssl);
