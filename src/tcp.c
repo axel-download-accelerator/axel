@@ -181,6 +181,9 @@ get_if_ip(char *iface, char *ip)
 	struct ifreq ifr;
 	int fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
 
+	if (fd < 0)
+		return 0;
+
 	memset(&ifr, 0, sizeof(struct ifreq));
 
 	strncpy(ifr.ifr_name, iface, sizeof(ifr.ifr_name) - 1);
