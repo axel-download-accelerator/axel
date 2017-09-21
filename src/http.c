@@ -194,7 +194,7 @@ http_exec(http_t *conn)
 {
 	int i = 0;
 	ssize_t nwrite = 0;
-	char s[2] = " ", *s2;
+	char s[2] = {0}, *s2;
 
 #ifdef DEBUG
 	fprintf(stderr, "--- Sending request ---\n%s--- End of request ---\n",
@@ -226,6 +226,7 @@ http_exec(http_t *conn)
 			sprintf(conn->headers, _("Connection gone.\n"));
 			return 0;
 		}
+
 		if (*s == '\r') {
 			continue;
 		} else if (*s == '\n') {
