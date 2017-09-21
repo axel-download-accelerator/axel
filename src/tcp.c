@@ -60,6 +60,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 	int ret;
 	int sock_fd = -1;
 
+	memset(&local_addr, 0, sizeof(local_addr));
 	if (tcp->ai_family == AF_INET && local_if && *local_if) {
 		local_addr.sin_family = AF_INET;
 		local_addr.sin_port = 0;
