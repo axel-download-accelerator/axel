@@ -89,7 +89,7 @@ int
 http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	     char *user, char *pass)
 {
-	char *puser, *ppass;
+	char *puser = NULL, *ppass = "";
 	conn_t tconn[1];
 
 	strncpy(conn->host, host, sizeof(conn->host) - 1);
@@ -126,7 +126,7 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 		http_auth_token(conn->auth, user, pass);
 	}
 
-	if (!conn->proxy || *puser == 0) {
+	if (!conn->proxy || !puser || *puser == 0) {
 		*conn->proxy_auth = 0;
 	} else {
 		http_auth_token(conn->proxy_auth, puser, ppass);
