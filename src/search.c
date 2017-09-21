@@ -52,7 +52,7 @@ main(int argc, char *argv[])
 {
 	conf_t conf[1];
 	search_t *res;
-	int i, j, num_mirrors;
+	int i, j, num_mirrors, ret = 1;
 
 	if (argc != 2) {
 		fprintf(stderr, _("Incorrect amount of arguments\n"));
@@ -72,19 +72,23 @@ main(int argc, char *argv[])
 	i = search_makelist(res, argv[1]);
 	if (i == -1) {
 		fprintf(stderr, _("File not found\n"));
-		return 1;
+		goto out;
 	}
 	num_mirrors = search_getspeeds(res, i);
 	if (num_mirrors < 0) {
 		fprintf(stderr, _("Speed testing failed\n"));
-		return 1;
+		goto out;
 	}
 	printf(_("%i usable mirrors:\n"), num_mirrors);
 	search_sortlist(res, i);
 	for (j = 0; j < i; j++)
 		printf("%-70.70s %5i\n", res[j].url, res[j].speed);
 
-	return 0;
+	ret = 0;
+out:
+	free(res);
+
+	return ret;
 }
 #endif
 
