@@ -42,8 +42,8 @@
 #ifndef AXEL_CONN_H
 #define AXEL_CONN_H
 
-#define PROTO_SECURE_MASK	(1<<0)  /* bit 0 - 0 = insecure, 1 = secure */
-#define PROTO_PROTO_MASK	(1<<1)  /* bit 1 = 0 = ftp,      1 = http   */
+#define PROTO_SECURE_MASK	(1<<0)	/* bit 0 - 0 = insecure, 1 = secure */
+#define PROTO_PROTO_MASK	(1<<1)	/* bit 1 = 0 = ftp,      1 = http   */
 
 #define PROTO_INSECURE		(0<<0)
 #define PROTO_SECURE		(1<<0)
@@ -70,8 +70,7 @@
 #define PROTO_DEFAULT          PROTO_HTTP
 #define PROTO_DEFAULT_PORT     PROTO_HTTP_PORT
 
-typedef struct
-{
+typedef struct {
 	conf_t *conf;
 
 	int proto;
@@ -86,7 +85,7 @@ typedef struct
 
 	ftp_t ftp[1];
 	http_t http[1];
-	long long int size;		/* File size, not 'connection size'.. */
+	long long int size;	/* File size, not 'connection size'.. */
 	long long int currentbyte;
 	long long int lastbyte;
 	tcp_t *tcp;
@@ -101,13 +100,13 @@ typedef struct
 	pthread_mutex_t lock;
 } conn_t;
 
-int conn_set( conn_t *conn, const char *set_url );
-char *conn_url( conn_t *conn );
-void conn_disconnect( conn_t *conn );
-int conn_init( conn_t *conn );
-int conn_setup( conn_t *conn );
-int conn_exec( conn_t *conn );
-int conn_info( conn_t *conn );
-const char *scheme_from_proto( int proto );
+int conn_set(conn_t * conn, const char *set_url);
+char *conn_url(conn_t * conn);
+void conn_disconnect(conn_t * conn);
+int conn_init(conn_t * conn);
+int conn_setup(conn_t * conn);
+int conn_exec(conn_t * conn);
+int conn_info(conn_t * conn);
+const char *scheme_from_proto(int proto);
 
-#endif /* AXEL_CONN_H */
+#endif				/* AXEL_CONN_H */
