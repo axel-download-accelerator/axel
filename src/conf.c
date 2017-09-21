@@ -135,7 +135,8 @@ conf_loadfile(conf_t *conf, char *file)
 			goto num_keys;
 
 		/* Save string option */
-		strcpy(dst, value);
+		strncpy(dst, value, MAX_STRING - 1);
+		((char *)dst)[MAX_STRING - 1] = '\0';
 		continue;
 
 		/* Numeric options */
