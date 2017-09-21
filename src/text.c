@@ -134,7 +134,7 @@ main(int argc, char *argv[])
 			}
 			break;
 		case 'n':
-			if (!sscanf(optarg, "%i", &conf->num_connections)) {
+			if (!sscanf(optarg, "%hi", &conf->num_connections)) {
 				print_help();
 				goto free_conf;
 			}

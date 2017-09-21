@@ -146,7 +146,6 @@ conf_loadfile(conf_t *conf, char *file)
 			KEY(save_state_interval)
 			KEY(connection_timeout)
 			KEY(reconnect_delay)
-			KEY(num_connections)
 			KEY(max_redirect)
 			KEY(buffer_size)
 			KEY(max_speed)
@@ -175,6 +174,17 @@ conf_loadfile(conf_t *conf, char *file)
 		} else if (strcmp(key, "use_protocol") == 0) {
 			if (parse_protocol(conf, value))
 				continue;
+		} else if (strcmp(key, "num_connections") == 0) {
+			int num = atoi(value);
+
+			if (num <= USHRT_MAX) {
+				conf->num_connections = num;
+				continue;
+			}
+
+			fprintf(stderr,
+				_("Requested too may connections, max is %i\n"),
+				USHRT_MAX);
 		}
 #if 0
 		/* FIXME broken code */

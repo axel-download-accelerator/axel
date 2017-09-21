@@ -46,11 +46,11 @@ typedef struct {
 	char default_filename[MAX_STRING];
 	char http_proxy[MAX_STRING];
 	char no_proxy[MAX_STRING];
+	uint16_t num_connections;
 	int strip_cgi_parameters;
 	int save_state_interval;
 	int connection_timeout;
 	int reconnect_delay;
-	int num_connections;
 	int max_redirect;
 	int buffer_size;
 	int max_speed;
