@@ -107,7 +107,10 @@ conf_loadfile(conf_t *conf, char *file)
 			break;
 		if (!(ret = axel_fscanf(fp, "%*[^\n]s")))
 			break;
-		fgetc(fp);	/* Skip newline */
+		if (fgetc(fp) != '\n') {	/* Skip newline */
+			fprintf(stderr, "Expected newline\n");
+			goto error;
+		}
 		tmp = strchr(s, '=');
 		if (tmp == NULL)
 			continue;	/* Probably empty? */
@@ -179,6 +182,7 @@ conf_loadfile(conf_t *conf, char *file)
 			get_config_string(add_header[i]);
 #endif
 
+error:
 		fprintf(stderr, _("Error in %s line %i.\n"), file, line);
 		ret = 0;
 		break;
