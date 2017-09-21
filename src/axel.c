@@ -248,6 +248,13 @@ axel_open(axel_t *axel)
 			return 0;
 		}
 
+		if (axel->conf->num_connections < 1) {
+			fprintf(stderr,
+				_("Bogus number of connections stored in state file\n"));
+			close(fd);
+			return 0;
+		}
+
 		if (stsize < (sizeof(axel->conf->num_connections) +
 			      sizeof(axel->bytes_done) +
 			      2 * axel->conf->num_connections *
