@@ -179,7 +179,7 @@ int
 get_if_ip(char *iface, char *ip)
 {
 	struct ifreq ifr;
-	int fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
+	int ret, fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
 
 	if (fd < 0)
 		return 0;
@@ -189,11 +189,13 @@ get_if_ip(char *iface, char *ip)
 	strncpy(ifr.ifr_name, iface, sizeof(ifr.ifr_name) - 1);
 	ifr.ifr_name[sizeof(ifr.ifr_name) - 1] = '\0';
 	ifr.ifr_addr.sa_family = AF_INET;
-	if (ioctl(fd, SIOCGIFADDR, &ifr) == 0) {
+
+	ret = !ioctl(fd, SIOCGIFADDR, &ifr);
+	if (ret) {
 		struct sockaddr_in *x = (struct sockaddr_in *)&ifr.ifr_addr;
 		strcpy(ip, inet_ntoa(x->sin_addr));
-		return 1;
-	} else {
-		return 0;
 	}
+	close(fd);
+
+	return ret;
 }
