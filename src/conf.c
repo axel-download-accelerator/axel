@@ -107,7 +107,7 @@ conf_loadfile(conf_t *conf, char *file)
 			break;
 		if (!(ret = axel_fscanf(fp, "%*[^\n]s")))
 			break;
-		if (fgetc(fp) != '\n') {	/* Skip newline */
+		if ((fgetc(fp) != '\n') && !feof(fp)) {	/* Skip newline */
 			fprintf(stderr, "Expected newline\n");
 			goto error;
 		}
