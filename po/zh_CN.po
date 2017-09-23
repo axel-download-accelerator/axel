@@ -20,7 +20,7 @@ msgstr "为这个速率调整缓冲区大小。"
 
 #: src/axel.c:108
 msgid "Invalid URL"
-msgstr ""
+msgstr "不可用的URL。"
 
 #: src/axel.c:141
 msgid "Could not parse URL.\n"
@@ -29,12 +29,12 @@ msgstr "无法解析 URL。\n"
 #: src/axel.c:163
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
-msgstr ""
+msgstr "发现不完整的下载，忽略no-clobber选项\n"
 
 #: src/axel.c:168
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
-msgstr ""
+msgstr "文件'%s' 已存在\n"
 
 #: src/axel.c:203
 #, c-format
@@ -53,12 +53,12 @@ msgstr "服务器不支持，使用单个连接从头下载。"
 #: src/axel.c:252
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
-msgstr ""
+msgstr "%s.st: 错误，已清空的状态文件\n"
 
 #: src/axel.c:264
 #, c-format
 msgid "State file has old format.\n"
-msgstr ""
+msgstr "状态文件版本陈旧\n"
 
 #: src/axel.c:286
 #, c-format
@@ -83,6 +83,8 @@ msgid ""
 "\n"
 "Reactivate connection %d\n"
 msgstr ""
+"\n"
+"重新激活链接:%d \n"
 
 #: src/axel.c:386
 msgid "Starting download"
@@ -129,22 +131,22 @@ msgstr "连接 %i 超时"
 #: src/axel.c:638
 #, c-format
 msgid "Error while enforcing throttling: %s"
-msgstr ""
+msgstr "强制调整流量时出错：%s"
 
 #: src/axel.c:813 src/axel.c:820
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
-msgstr ""
+msgstr "使用链接下载 %lld-%lld [%i]\n"
 
 #: src/conf.c:65
 #, c-format
 msgid "I/O error while reading config file: %s\n"
-msgstr ""
+msgstr "配置文件I/O错误:%s\n"
 
 #: src/conf.c:80
 #, c-format
 msgid "Unknown protocol %s\n"
-msgstr ""
+msgstr "未知的协议 %s\n"
 
 #: src/conf.c:183
 #, c-format
@@ -239,7 +241,7 @@ msgstr "正在测试速度，可能需要一些时间…\n"
 #: src/text.c:276
 #, c-format
 msgid "Speed testing failed\n"
-msgstr ""
+msgstr "速度测试失败\n"
 
 #: src/text.c:283
 #, c-format
@@ -248,7 +250,7 @@ msgstr "找到 %i 个可用的服务器，将使用这些 URL：\n"
 
 #: src/text.c:285
 msgid "Speed"
-msgstr ""
+msgstr "速度"
 
 #: src/text.c:339
 #, c-format
@@ -317,7 +319,7 @@ msgstr "%i 时 %02i 分 %02i 秒"
 #: src/text.c:566
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
-msgstr ""
+msgstr "无法设置备用输出，挂起."
 
 #: src/text.c:638
 #, fuzzy, c-format
