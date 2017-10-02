@@ -1,0 +1,475 @@
+# Italian translations for axel package.
+# Copyright (C) 2017 Nicol Dalla Longa
+# This file is distributed under the same license as the axel package.
+# Nicol Dalla Longa <nicol.dallalonga@gmail.com>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: axel 2.14.1\n"
+"Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
+"issues\n"
+"POT-Creation-Date: 2017-09-23 00:31+0800\n"
+"PO-Revision-Date: 2017-10-02 14:06+0700\n"
+"Last-Translator: Mahyuddin <mhy> <yudi.al@gmail.com>\n"
+"Language-Team: Indonesian (Indonesia) <yudi.al@gmail.com>\n"
+"Language: id_ID\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: src/axel.c:89
+msgid "Buffer resized for this speed."
+msgstr "Buffer diubah ukurannya untuk kecepatan ini."
+
+#: src/axel.c:107
+msgid "Invalid URL"
+msgstr "URL tidak valid"
+
+#: src/axel.c:135
+msgid "Could not parse URL.\n"
+msgstr "Tidak bisa mengurai URL.\n"
+
+#: src/axel.c:157
+#, c-format
+msgid "Incomplete download found, ignoring no-clobber option\n"
+msgstr "Unduhan tidak lengkap ditemukan, mengabaikan opsi no-clobber\n"
+
+#: src/axel.c:160
+#, c-format
+msgid "File '%s' already there; not retrieving.\n"
+msgstr "Berkas '%s' sudah ada; tidak mengambil.\n"
+
+#: src/axel.c:191
+#, c-format
+msgid "File size: %lld bytes"
+msgstr "Ukuran berkas: %lld bytes"
+
+#: src/axel.c:220
+#, c-format
+msgid "Opening output file %s"
+msgstr "Membuka berkas keluaran %s"
+
+#: src/axel.c:228
+msgid "Server unsupported, starting from scratch with one connection."
+msgstr "Server tidak didukung, mulai dari dasar dengan satu koneksi."
+
+#: src/axel.c:245
+#, c-format
+msgid "%s.st: Error, truncated state file\n"
+msgstr "%s.st: Galat, bagian berkas terpotong\n"
+
+#: src/axel.c:253
+#, c-format
+msgid "Bogus number of connections stored in state file\n"
+msgstr "Jumlah koneksi palsu tersimpan dalam bagian berkas\n"
+
+#: src/axel.c:265
+#, c-format
+msgid "State file has old format.\n"
+msgstr "Bagian berkas memiliki format lama..\n"
+
+#: src/axel.c:298
+#, c-format
+msgid "State file found: %lld bytes downloaded, %lld to go."
+msgstr "Bagian berkas ditemukan: %lld bytes diunduh, %lld untuk berjalan."
+
+#: src/axel.c:304 src/axel.c:315
+msgid "Error opening local file"
+msgstr "Galat saat membuka berkas lokal"
+
+#: src/axel.c:328
+msgid "Crappy filesystem/OS.. Working around. :-("
+msgstr "Filesystem/OS jelek.. Bekerja di sekitar. :-("
+
+#: src/axel.c:342
+msgid "Error creating local file"
+msgstr "Galat membuat berkas lokal"
+
+#: src/axel.c:374
+#, c-format
+msgid ""
+"\n"
+"Reactivate connection %d\n"
+msgstr ""
+"\n"
+"Aktifkan kembali koneksi %d\n"
+
+#: src/axel.c:404
+msgid "Starting download"
+msgstr "Mulai mengunduh"
+
+#: src/axel.c:415 src/axel.c:598
+#, c-format
+msgid "Connection %i downloading from %s:%i using interface %s"
+msgstr "Sambungan %i diunduh dari %s:%i menggunakan antarmuka %s"
+
+#: src/axel.c:425 src/axel.c:610
+msgid "pthread error!!!"
+msgstr "pthread galat!!!"
+
+#: src/axel.c:470
+#, c-format
+msgid "Error while waiting for connection: %s"
+msgstr "Galat saat menunggu koneksi: %s"
+
+#: src/axel.c:502
+#, c-format
+msgid "Connection %i timed out"
+msgstr "Sambungan %ihabis waktunya"
+
+#: src/axel.c:515
+#, c-format
+msgid "Error on connection %i! Connection closed"
+msgstr "Galat pada koneksi %i! Sambungan putus"
+
+#: src/axel.c:529
+#, c-format
+msgid "Connection %i unexpectedly closed"
+msgstr "Koneksi %i tiba-tiba putus"
+
+#: src/axel.c:533 src/axel.c:550
+#, c-format
+msgid "Connection %i finished"
+msgstr "Koneksi %i selesai"
+
+#: src/axel.c:560
+msgid "Write error!"
+msgstr "Tulis galat!"
+
+#: src/axel.c:660
+#, c-format
+msgid "Error while enforcing throttling: %s"
+msgstr "Galat saat menerapkan throttling: %s"
+
+#: src/axel.c:836 src/axel.c:847
+#, c-format
+msgid "Downloading %lld-%lld using conn. %i\n"
+msgstr "Mengunduh %lld-%lld menggunakan conn. %i\n"
+
+#: src/conf.c:65
+#, c-format
+msgid "I/O error while reading config file: %s\n"
+msgstr "Galat I/O saat membaca berkas konfigurasi: %s\n"
+
+#: src/conf.c:80
+#, c-format
+msgid "Unknown protocol %s\n"
+msgstr "Protokol tidak dikenal %s\n"
+
+#: src/conf.c:186
+#, c-format
+msgid "Requested too may connections, max is %i\n"
+msgstr "Meminta terlalu banyak koneksi, max adalah %i\n"
+
+#: src/conf.c:197
+#, c-format
+msgid "Error in %s line %i.\n"
+msgstr "Galat di %s baris %i.\n"
+
+#: src/conf.c:261
+#, c-format
+msgid "HOME env variable too long\n"
+msgstr "HOME env variabel terlalu panjang!\n"
+
+#: src/conn.c:366 src/ftp.c:131
+#, c-format
+msgid "Too many redirects.\n"
+msgstr "Terlalu banyak pengalihan.\n"
+
+#: src/conn.c:389
+#, c-format
+msgid "Unknown HTTP error.\n"
+msgstr "Galat HTTP tidak dikenal.\n"
+
+#: src/ftp.c:102
+#, c-format
+msgid "Can't change directory to %s\n"
+msgstr "Tidak dapat mengubah direktori menjadi %s\n"
+
+#: src/ftp.c:125 src/ftp.c:186
+#, c-format
+msgid "File not found.\n"
+msgstr "Berkas tidak ditemukan.\n"
+
+#: src/ftp.c:189
+#, c-format
+msgid "Multiple matches for this URL.\n"
+msgstr "Beberapa kecocokan untuk URL ini.\n"
+
+#: src/ftp.c:259
+#, c-format
+msgid "Error opening passive data connection.\n"
+msgstr "Galat saat membuka koneksi data pasif.\n"
+
+#: src/ftp.c:293
+#, c-format
+msgid "Error writing command %s\n"
+msgstr "Galat menulis perintah %s\n"
+
+#: src/ftp.c:318 src/http.c:226
+#, c-format
+msgid "Connection gone.\n"
+msgstr "Koneksi hilang.\n"
+
+#: src/http.c:105
+#, c-format
+msgid "Invalid proxy string: %s\n"
+msgstr "String proxy tidak valid: %s\n"
+
+#: src/http.c:214
+#, c-format
+msgid "Connection gone while writing.\n"
+msgstr "Koneksi hilang saat menulis.\n"
+
+#: src/text.c:196
+#, c-format
+msgid "Can't redirect stdout to /dev/null.\n"
+msgstr "Tidak bisa mengalihkan stdout ke /dev/null.\n"
+
+#: src/text.c:236
+#, c-format
+msgid "Error when trying to read URL (Too long?).\n"
+msgstr "Galat saat mencoba membaca URL (Terlalu lama?).\n"
+
+#: src/text.c:244
+#, c-format
+msgid "Can't handle URLs of length over %d\n"
+msgstr "Tidak dapat menangani URL dengan panjang di atas %d\n"
+
+#: src/text.c:250
+#, c-format
+msgid "Initializing download: %s\n"
+msgstr "Menginisialisasi unduh: %s\n"
+
+#: src/text.c:259
+#, c-format
+msgid "Doing search...\n"
+msgstr "Melakukan pencarian..\n"
+
+#: src/text.c:262
+#, c-format
+msgid "File not found\n"
+msgstr "Berkas tidak ditemukan\n"
+
+#: src/text.c:266
+#, c-format
+msgid "Testing speeds, this can take a while...\n"
+msgstr "Menguji kecepatan, ini bisa memakan waktu beberapa lama...\n"
+
+#: src/text.c:269
+#, c-format
+msgid "Speed testing failed\n"
+msgstr "Pengujian kecepatan gagal\n"
+
+#: src/text.c:275
+#, c-format
+msgid "%i usable servers found, will use these URLs:\n"
+msgstr "%i server yang dapat digunakan ditemukan, akan menggunakan URL ini:\n"
+
+#: src/text.c:278
+msgid "Speed"
+msgstr "Kecepatan"
+
+#: src/text.c:327
+#, c-format
+msgid "Filename too long!\n"
+msgstr "Nama berkas terlalu panjang!\n"
+
+#: src/text.c:339
+#, c-format
+msgid "No state file, cannot resume!\n"
+msgstr "Tidak ada bagian berkas, tidak bisa melanjutkan!\n"
+
+#: src/text.c:343
+#, c-format
+msgid "State file found, but no downloaded data. Starting from scratch.\n"
+msgstr "Bagian berkas ditemukan, tapi data tidak diunduh. Mulai dari awal.\n"
+
+#: src/text.c:456
+#, c-format
+msgid ""
+"\n"
+"Downloaded %s in %s. (%.2f KB/s)\n"
+msgstr ""
+"\n"
+"Diunduh %s in %s. (%.2f KB/s)\n"
+
+#: src/text.c:483
+#, c-format
+msgid "%lld byte"
+msgstr "%lld byte"
+
+#: src/text.c:485
+#, c-format
+msgid "%.1f Kilobyte"
+msgstr "%.1f Kilobyte"
+
+#: src/text.c:487
+#, c-format
+msgid "%.1f Megabyte"
+msgstr "%.1f Megabyte"
+
+#: src/text.c:490
+#, c-format
+msgid "%.1f Gigabyte"
+msgstr "%.1f Gigabyte"
+
+#: src/text.c:501
+#, c-format
+msgid "%i second"
+msgstr "%i secondo"
+
+#: src/text.c:503
+#, c-format
+msgid "%i seconds"
+msgstr "%i detik"
+
+#: src/text.c:505
+#, c-format
+msgid "%i:%02i minute(s)"
+msgstr "%i:%02i menit(s)"
+
+#: src/text.c:507
+#, c-format
+msgid "%i:%02i:%02i hour(s)"
+msgstr "%i:%02i:%02i jam(s)"
+
+#: src/text.c:543
+#, c-format
+msgid "Can't setup alternate output. Deactivating.\n"
+msgstr "Tidak dapat menyiapkan keluaran alternatif. Menonaktifkan.\n"
+
+#: src/text.c:626
+#, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"-s x\tSpecify maximum speed (bytes per second)\n"
+"-n x\tSpecify maximum number of connections\n"
+"-o f\tSpecify local output file\n"
+"-S [n]\tSearch for mirrors and download from n servers\n"
+"-4\tUse the IPv4 protocol\n"
+"-6\tUse the IPv6 protocol\n"
+"-H x\tAdd HTTP header string\n"
+"-U x\tSet user agent\n"
+"-N\tJust don't use any proxy server\n"
+"-k\tDon't verify the SSL certificate\n"
+"-c\tSkip download if file already exists\n"
+"-q\tLeave stdout alone\n"
+"-v\tMore status information\n"
+"-a\tAlternate progress indicator\n"
+"-h\tThis information\n"
+"-V\tVersion information\n"
+"\n"
+"Visit https://github.com/axel-download-accelerator/axel/issues\n"
+msgstr ""
+"Penggunaan: axel [opsi] url1 [url2] [url ...]\n"
+"\n"
+"-s x\tTentukan kecepatan maksimum (byte per detik)\n"
+"-n x\tTentukan jumlah koneksi maksimum\n"
+"-o f\tTentukan keluaran berkas lokal\n"
+"-S [n]\tCari mirror dan unduh dari n server\n"
+"-4\tGunakan protokol IPv4\n"
+"-6\tGunakan protokol IPv6\n"
+"-H x\tTambahkan string header HTTP\n"
+"-U x\tSetel agen pengguna\n"
+"-N\tJangan gunakan server proxy\n"
+"-k\tJangan memverifikasi sertifikat SSL\n"
+"-c\tLewati unduhan jika berkas sudah ada\n"
+"-q\tTinggalkan stdout sendirian\n"
+"-v\tInformasi status lebih banyak\n"
+"-a\tIndikator kemajuan alternatif\n"
+"-h\tInformasi ini\n"
+"-V\tVersi informasi\n"
+"\n"
+"Kunjungi https://github.com/axel-download-accelerator/axel/issues\n"
+
+#: src/text.c:647
+#, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
+"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
+"--max-redirect=x\t\tSpecify maximum number of redirections\n"
+"--output=f\t\t-o f\tSpecify local output file\n"
+"--search[=n]\t\t-S [n]\tSearch for mirrors and download from n servers\n"
+"--ipv4\t\t\t-4\tUse the IPv4 protocol\n"
+"--ipv6\t\t\t-6\tUse the IPv6 protocol\n"
+"--header=x\t\t-H x\tAdd HTTP header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
+"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+"--insecure\t\t-k\tDon't verify the SSL certificate\n"
+"--no-clobber\t\t-c\tSkip download if file already exists\n"
+"--quiet\t\t\t-q\tLeave stdout alone\n"
+"--verbose\t\t-v\tMore status information\n"
+"--alternate\t\t-a\tAlternate progress indicator\n"
+"--help\t\t\t-h\tThis information\n"
+"--version\t\t-V\tVersion information\n"
+"\n"
+"Visit https://github.com/axel-download-accelerator/axel/issues to report "
+"bugs\n"
+msgstr ""
+"Penggunaan: axel [opsi] url1 [url2] [url ...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tTentukan kecepatan maksimum (bytes per second)\n"
+"--num-connections=x\t -n x\tTentukan jumlah koneksi maksimum\n"
+"--max-redirect=x\t\tTentukan jumlah pengalihan maksimum\n"
+"--output=f\t\t-o f\tTentukan keluaran berkas lokal\n"
+"- pencarian[=n]\t\t-S [n]\tCari mirror dan unduh dari n server\n"
+"--ipv4\t\t\t-4\tGunakan protokol IPv4\n"
+"--ipv6\t\t\t-6\tGunakan protokol IPv6\n"
+"--header=x\t\t-H x\tTambahkan string header HTTP\n"
+"--user-agent=x\t\t-U x\tSetel agen pengguna\n"
+"--no-proxy\t\t-N\tJangan gunakan server proxy\n"
+"--insecure\t\t-k\tJangan memverifikasi sertifikat SSL\n"
+"--no-clobber\t\t-c\tLewati unduhan jika berkas sudah ada\n"
+"--quiet\t\t\t-q\tTinggalkan stdout sendirian\n"
+"--verbose\t\t-v\tInformasi lebih lanjut tentang status\n"
+"- alternatif\t\t-a\tIndikator kemajuan alternatif\n"
+"--help\t\t\t-h\tInformasi ini\n"
+"--version\t\t-V\tVersion information\n"
+"\n"
+"Kunjungi https://github.com/axel-download-accelerator/axel/issues untuk "
+"melaporkan kutu\n"
+
+#: src/text.c:674
+#, c-format
+msgid ""
+"\n"
+"Axel version "
+msgstr ""
+"\n"
+"Axel versi"
+
+#: src/text.c:682
+#, c-format
+msgid ""
+"\n"
+"                    and others."
+msgstr ""
+"\n"
+"                    dan lainnya."
+
+#: src/text.c:683
+#, c-format
+msgid ""
+"\n"
+"Please, see the CREDITS file.\n"
+"\n"
+msgstr ""
+"\n"
+"Silakan, lihat berkas CREDITS.\n"
+"\n"
+
+#: src/ssl.c:92
+#, c-format
+msgid "SSL error: %s\n"
+msgstr "SSL galat: %s\n"
+
+#: src/tcp.c:46
+#, c-format
+msgid "Unable to connect to server %s:%i: %s\n"
+msgstr "Tidak bisa terhubung ke server %s:%i: %s\n"
