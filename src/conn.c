@@ -376,12 +376,19 @@ conn_info(conn_t *conn)
 			conn->supported = true;
 			conn->size = max(i, conn->size + 1);
 		} else if (conn->http->status == 206 && conn->size >= 0) {
+			/* 206: range request supported */
 			conn->supported = true;
 			conn->size++;
 		} else if (conn->http->status == 200
 			   || conn->http->status == 206) {
+			/* something is not supported - fallback */
 			conn->supported = false;
-			conn->size = LLONG_MAX;
+
+			/* if we have an invalid size, set it to the max so that
+			 * the transfer will finish when the server closes the
+			 * connection. Otherwise keep the reported size. */
+			if (conn->size <= 0)
+				conn->size = LLONG_MAX;
 		} else {
 			char *t = strchr(conn->message, '\n');
 			if (t == NULL)
