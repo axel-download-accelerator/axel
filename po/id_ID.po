@@ -1,7 +1,7 @@
-# Italian translations for axel package.
-# Copyright (C) 2017 Nicol Dalla Longa
+# Indonesian translations for axel package.
+# Copyright (C) 2017 Mahyuddin
 # This file is distributed under the same license as the axel package.
-# Nicol Dalla Longa <nicol.dallalonga@gmail.com>, 2017.
+# Mahyuddin <yudi.al@gmail.com>, 2017.
 #
 msgid ""
 msgstr ""
@@ -117,7 +117,7 @@ msgstr "Galat saat menunggu koneksi: %s"
 #: src/axel.c:502
 #, c-format
 msgid "Connection %i timed out"
-msgstr "Sambungan %ihabis waktunya"
+msgstr "Sambungan %i habis waktunya"
 
 #: src/axel.c:515
 #, c-format
