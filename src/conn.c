@@ -369,7 +369,7 @@ conn_info(conn_t *conn)
 
 		conn->size = http_size(conn->http);
 		i = http_size_from_range(conn->http);
-		if (i > 0 && conn->size != i + 1) {
+		if (i > 0 && conn->size + 1 != i) {
 			/* This means that the server has a bug. This version currently
 			   uses the larger of the reported sizes, but it would be an
 			   alternative to set supported = false. */
