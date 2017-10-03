@@ -407,7 +407,9 @@ main(int argc, char *argv[])
 							printf("  [%6.1fKB/s]",
 							       (double)axel->bytes_per_second /
 							       1024);
-						if (axel->size < 10240000)
+						if (axel->size == LLONG_MAX)
+							printf("\n[ N/A]  ");
+						else if (axel->size < 10240000)
 							printf("\n[%3lld%%]  ",
 							       min(100,
 								   102400 * i /
@@ -530,6 +532,36 @@ print_commas(long long int bytes_done)
 }
 
 static void
+print_alternate_output_progress(axel_t *axel, char *progress, int width,
+				long long int done, long long int total,
+				double now)
+{
+	for (int i = 0; i < axel->conf->num_connections; i++) {
+		int offset = ((double)(axel->conn[i].currentbyte) / (total + 1)
+			      * (width + 1));
+
+		if (axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
+			if (now <= axel->conn[i].last_transfer
+				   + axel->conf->connection_timeout / 2) {
+				if (i < 10)
+					progress[offset] = i + '0';
+				else
+					progress[offset] = i - 10 + 'A';
+			} else
+				progress[offset] = '#';
+		}
+		int end = ((double)(axel->conn[i].lastbyte) / (total + 1)
+			   * (width + 1));
+		for (int j = offset + 1; j < end; j++)
+			progress[j] = ' ';
+	}
+
+	progress[width] = '\0';
+	printf("\r[%3ld%%] [%s", min(100, (long)(done * 100. / total + .5)),
+	       progress);
+}
+
+static void
 print_alternate_output(axel_t *axel)
 {
 	long long int done = axel->bytes_done;
@@ -553,32 +585,13 @@ print_alternate_output(axel_t *axel)
 
 	memset(progress, '.', width);
 
-	for (int i = 0; i < axel->conf->num_connections; i++) {
-		int offset =
-		    ((double)(axel->conn[i].currentbyte) / (total + 1) *
-		     (width + 1));
-
-		if (axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
-			if (now <=
-			    axel->conn[i].last_transfer +
-			    axel->conf->connection_timeout / 2) {
-				if (i < 10)
-					progress[offset] = i + '0';
-				else
-					progress[offset] = i - 10 + 'A';
-			} else
-				progress[offset] = '#';
-		}
-		int end =
-		    ((double)(axel->conn[i].lastbyte) / (total + 1) *
-		     (width + 1));
-		for (int j = offset + 1; j < end; j++)
-			progress[j] = ' ';
+	if (total != LLONG_MAX) {
+		print_alternate_output_progress(axel, progress, width, done,
+						total, now);
+	} else {
+		progress[width] = '\0';
+		printf("\r[ N/A] [%s", progress);
 	}
-
-	progress[width] = '\0';
-	printf("\r[%3ld%%] [%s", min(100, (long)(done * 100. / total + .5)),
-	       progress);
 
 	if (axel->bytes_per_second > 1048576)
 		printf("] [%6.1fMB/s]",
@@ -588,7 +601,7 @@ print_alternate_output(axel_t *axel)
 	else
 		printf("] [%6.1fB/s]", (double)axel->bytes_per_second);
 
-	if (done < total) {
+	if (total != LLONG_MAX && done < total) {
 		int seconds, minutes, hours, days;
 		seconds = axel->finish_time - now;
 		minutes = seconds / 60;
