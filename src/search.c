@@ -256,16 +256,12 @@ search_speedtest(void *r)
 
 	memset(conn, 0, sizeof(conn_t));
 	conn->conf = results->conf;
-	if (!conn_set(conn, results->url))
-		results->speed = SPEED_ERROR;
-	else if (!conn_init(conn))
-		results->speed = SPEED_ERROR;
-	else if (!conn_info(conn))
-		results->speed = SPEED_ERROR;
-	else if (conn->size == results->size)
+	if (conn_set(conn, results->url)
+	    && conn_init(conn)
+	    && conn_info(conn)
+	    && conn->size == results->size)
 		/* Add one because it mustn't be zero */
-		results->speed =
-		    1 + 1000 * (gettime() - results->speed_start_time);
+		results->speed = 1 + 1000 * (gettime() - results->speed_start_time);
 	else
 		results->speed = SPEED_ERROR;
 
