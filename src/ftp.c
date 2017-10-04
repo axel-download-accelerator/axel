@@ -41,7 +41,7 @@
 
 int
 ftp_connect(ftp_t *conn, int proto, char *host, int port, char *user,
-	    char *pass)
+	    char *pass, unsigned io_timeout)
 {
 	conn->data_tcp.fd = -1;
 	conn->message = malloc(MAX_STRING);
@@ -51,7 +51,7 @@ ftp_connect(ftp_t *conn, int proto, char *host, int port, char *user,
 	conn->proto = proto;
 
 	if (tcp_connect(&conn->tcp, host, port, PROTO_IS_SECURE(conn->proto),
-			conn->local_if, conn->message) == -1)
+			conn->local_if, conn->message, io_timeout) == -1)
 		return 0;
 
 	if (ftp_wait(conn) / 100 != 2)
@@ -110,7 +110,7 @@ ftp_cwd(ftp_t *conn, char *cwd)
 
 /* Get file size. Should work with all reasonable servers now */
 long long int
-ftp_size(ftp_t *conn, char *file, int maxredir)
+ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 {
 	long long int i, j, size = MAX_STRING;
 	char *reply, *s, fn[MAX_STRING];
@@ -132,7 +132,7 @@ ftp_size(ftp_t *conn, char *file, int maxredir)
 		return -1;
 	}
 
-	if (!ftp_data(conn))
+	if (!ftp_data(conn, io_timeout))
 		return -1;
 
 	ftp_command(conn, "LIST %s", file);
@@ -205,7 +205,7 @@ ftp_size(ftp_t *conn, char *file, int maxredir)
 			*reply = 0;
 		if ((reply = strchr(fn, '\n')) != NULL)
 			*reply = 0;
-		return ftp_size(conn, fn, maxredir - 1);
+		return ftp_size(conn, fn, maxredir - 1, io_timeout);
 	}
 	/* Normal file, so read the size! And read filename because of
 	   possible wildcards. */
@@ -229,7 +229,7 @@ ftp_size(ftp_t *conn, char *file, int maxredir)
 
 /* Open a data connection. Only Passive mode supported yet, easier.. */
 int
-ftp_data(ftp_t *conn)
+ftp_data(ftp_t *conn, unsigned io_timeout)
 {
 	int i, info[6];
 	char host[MAX_STRING];
@@ -261,7 +261,7 @@ ftp_data(ftp_t *conn)
 	}
 	if (tcp_connect(&conn->data_tcp, host, info[4] * 256 + info[5],
 			PROTO_IS_SECURE(conn->proto), conn->local_if,
-			conn->message) == -1)
+			conn->message, io_timeout) == -1)
 		return 0;
 
 	return 1;

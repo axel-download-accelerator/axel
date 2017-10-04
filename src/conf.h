@@ -68,6 +68,8 @@ typedef struct {
 	int search_amount;
 	int search_top;
 
+	unsigned io_timeout;
+
 	int add_header_count;
 	char add_header[MAX_ADD_HEADERS][MAX_STRING];
 

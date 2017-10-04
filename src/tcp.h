@@ -49,7 +49,7 @@ typedef struct {
 } tcp_t;
 
 int tcp_connect(tcp_t *tcp, char *hostname, int port, int secure,
-		char *local_if, char *message);
+		char *local_if, char *message, unsigned io_timeout);
 void tcp_close(tcp_t *tcp);
 
 int tcp_read(tcp_t *tcp, void *buffer, int size);

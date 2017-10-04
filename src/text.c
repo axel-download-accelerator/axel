@@ -79,6 +79,7 @@ static struct option axel_options[] = {
 	{"no-clobber",      0,      NULL, 'c'},
 	{"header",          1,      NULL, 'H'},
 	{"user-agent",      1,      NULL, 'U'},
+	{"timeout",         1,      NULL, 'T'},
 	{NULL,              0,      NULL, 0}
 };
 #endif
@@ -113,7 +114,7 @@ main(int argc, char *argv[])
 		int option;
 
 		option =
-		    getopt_long(argc, argv, "s:n:o:S::46NqvhVakcH:U:",
+		    getopt_long(argc, argv, "s:n:o:S::46NqvhVakcH:U:T:",
 				axel_options, NULL);
 		if (option == -1)
 			break;
@@ -196,6 +197,9 @@ main(int argc, char *argv[])
 					_("Can't redirect stdout to /dev/null.\n"));
 				goto free_conf;
 			}
+			break;
+		case 'T':
+			conf->io_timeout = strtoul(optarg, NULL, 0);
 			break;
 		default:
 			print_help();
@@ -653,6 +657,7 @@ print_help()
 		 "-v\tMore status information\n"
 		 "-a\tAlternate progress indicator\n"
 		 "-h\tThis information\n"
+		 "-T\tSet I/O and connection timeout\n"
 		 "-V\tVersion information\n"
 		 "\n"
 		 "Visit https://github.com/axel-download-accelerator/axel/issues\n"));
@@ -675,6 +680,7 @@ print_help()
 		 "--verbose\t\t-v\tMore status information\n"
 		 "--alternate\t\t-a\tAlternate progress indicator\n"
 		 "--help\t\t\t-h\tThis information\n"
+		 "--timeout\t\t-T\tSet I/O and connection timeout\n"
 		 "--version\t\t-V\tVersion information\n"
 		 "\n"
 		 "Visit https://github.com/axel-download-accelerator/axel/issues to report bugs\n"));
