@@ -104,11 +104,7 @@ search_makelist(search_t *results, char *url)
 
 	conn->conf = results->conf;
 	t = gettime();
-	if (!conn_set(conn, url))
-		return -1;
-	if (!conn_init(conn))
-		return -1;
-	if (!conn_info(conn))
+	if (!conn_set(conn, url) || !conn_init(conn) || !conn_info(conn))
 		return -1;
 
 	strncpy(results[0].url, url, sizeof(results[0].url) - 1);
@@ -129,15 +125,7 @@ search_makelist(search_t *results, char *url)
 	memset(conn, 0, sizeof(conn_t));
 	conn->conf = results->conf;
 
-	if (!conn_set(conn, s)) {
-		free(s);
-		return 1;
-	}
-	if (!conn_setup(conn)) {
-		free(s);
-		return 1;
-	}
-	if (!conn_exec(conn)) {
+	if (!conn_set(conn, s) || !conn_setup(conn) || !conn_exec(conn)) {
 		free(s);
 		return 1;
 	}
