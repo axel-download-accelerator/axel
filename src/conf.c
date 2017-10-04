@@ -220,6 +220,7 @@ conf_init(conf_t *conf)
 	conf->reconnect_delay = 20;
 	conf->num_connections = 4;
 	conf->max_redirect = MAX_REDIRECT;
+	conf->io_timeout = DEFAULT_IO_TIMEOUT;
 	conf->buffer_size = 5120;
 	conf->max_speed = 0;
 	conf->verbose = 1;

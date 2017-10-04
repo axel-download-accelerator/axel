@@ -215,9 +215,9 @@ conn_init(conn_t *conn)
 		conn->ftp->local_if = conn->local_if;
 		conn->ftp->ftp_mode = FTP_PASSIVE;
 		conn->ftp->tcp.ai_family = conn->conf->ai_family;
-		if (!ftp_connect
-		    (conn->ftp, conn->proto, conn->host, conn->port, conn->user,
-		     conn->pass)) {
+		if (!ftp_connect(conn->ftp, conn->proto, conn->host, conn->port,
+				 conn->user, conn->pass,
+				 conn->conf->io_timeout)) {
 			conn->message = conn->ftp->message;
 			conn_disconnect(conn);
 			return 0;
@@ -231,7 +231,8 @@ conn_init(conn_t *conn)
 		conn->http->local_if = conn->local_if;
 		conn->http->tcp.ai_family = conn->conf->ai_family;
 		if (!http_connect(conn->http, conn->proto, proxy, conn->host,
-                          conn->port, conn->user, conn->pass)) {
+				  conn->port, conn->user, conn->pass,
+				  conn->conf->io_timeout)) {
 			conn->message = conn->http->headers;
 			conn_disconnect(conn);
 			return 0;
@@ -250,7 +251,8 @@ conn_setup(conn_t *conn)
 			return 0;
 
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
-		if (!ftp_data(conn->ftp))	/* Set up data connnection */
+		/* Set up data connnection */
+		if (!ftp_data(conn->ftp, conn->conf->io_timeout))
 			return 0;
 		conn->tcp = &conn->ftp->data_tcp;
 
@@ -309,8 +311,9 @@ conn_info(conn_t *conn)
 
 		if (!ftp_cwd(conn->ftp, conn->dir))
 			return 0;
-		conn->size =
-		    ftp_size(conn->ftp, conn->file, conn->conf->max_redirect);
+		conn->size = ftp_size(conn->ftp, conn->file,
+				      conn->conf->max_redirect,
+				      conn->conf->io_timeout);
 		if (conn->size < 0)
 			conn->supported = false;
 		if (conn->size == -1)

@@ -87,7 +87,7 @@ http_auth_token(char *token, const char *user, const char *pass)
 
 int
 http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
-	     char *user, char *pass)
+	     char *user, char *pass, unsigned io_timeout)
 {
 	char *puser = NULL, *ppass = "";
 	conn_t tconn[1];
@@ -117,7 +117,7 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	}
 
 	if (tcp_connect(&conn->tcp, host, port, PROTO_IS_SECURE(proto),
-			conn->local_if, conn->headers) == -1)
+			conn->local_if, conn->headers, io_timeout) == -1)
 		return 0;
 
 	if (*user == 0) {

@@ -50,7 +50,7 @@ tcp_error(char *buffer, char *hostname, int port, const char *reason)
 /* Get a TCP connection */
 int
 tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
-	    char *message)
+	    char *message, unsigned io_timeout)
 {
 	struct sockaddr_in local_addr;
 	const int portstr_len = 10;
@@ -107,12 +107,27 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 			}
 
 			if (sock_fd != -1) {
+				struct timeval tout = { .tv_sec  = io_timeout };
+				/* Set O_NONBLOCK so we can timeout */
+				if (io_timeout)
+					fcntl(sock_fd, F_SETFL, O_NONBLOCK);
 				ret = connect(sock_fd, gai_result->ai_addr,
 					      gai_result->ai_addrlen);
+				/* Wait for the connection */
+				if (ret == -1 && errno == EINPROGRESS) {
+					fd_set fdset;
+					FD_ZERO(&fdset);
+					FD_SET(sock_fd, &fdset);
+					ret = select(sock_fd + 1,
+						     NULL, &fdset, NULL,
+						     &tout);
+				}
 				if (ret == -1) {
 					close(sock_fd);
 					sock_fd = -1;
 					gai_result = gai_result->ai_next;
+				} else {
+					fcntl(sock_fd, F_SETFL, 0);
 				}
 			}
 		}
@@ -134,6 +149,11 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 	}
 #endif				/* HAVE_SSL */
 	tcp->fd = sock_fd;
+
+	/* Set I/O timeout */
+	struct timeval tout = { .tv_sec  = io_timeout };
+	setsockopt(sock_fd, SOL_SOCKET, SO_RCVTIMEO, &tout, sizeof(tout));
+	setsockopt(sock_fd, SOL_SOCKET, SO_SNDTIMEO, &tout, sizeof(tout));
 
 	return 1;
 }
