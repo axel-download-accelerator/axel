@@ -180,63 +180,73 @@ search_makelist(search_t *results, char *url)
 	return i;
 }
 
-#define SPEED_ACTIVE	-1
-#define SPEED_ERROR	-2
-#define SPEED_DONE	-3	/* Or >0 */
+enum {
+	SPEED_ACTIVE  = -3,
+	SPEED_FAILED  = -2,
+	SPEED_DONE    = -1,
+	SPEED_PENDING =  0,
+	/* Or > 0 */
+};
 
 int
 search_getspeeds(search_t *results, int count)
 {
-	int i, running = 0, done = 0, correct = 0;
-	struct timespec delay = {.tv_sec = 0,.tv_nsec = 10000000 };
+	const struct timespec delay = {.tv_nsec = 10000000};
 
-	for (i = 0; i < count; i++)
+	int left = count, correct = 0;
+	for (int i = 0; i < count; i++) {
 		if (results[i].speed) {
 			results[i].speed_start_time = 0;
-			done++;
+			left--;
 			if (results[i].speed > 0)
 				correct++;
 		}
+	}
 
-	while (done < count) {
-		for (i = 0; i < count; i++) {
-			if (running < results->conf->search_threads &&
-			    !results[i].speed) {
+	for (int running = 0; left > 0; axel_nanosleep(delay)) {
+		for (int i = 0; i < count; i++) {
+			switch (results[i].speed) {
+			case SPEED_ACTIVE:
+				if (gettime() < results[i].speed_start_time
+				    + results->conf->search_timeout)
+					continue; // not timed out yet
+				pthread_cancel(*results[i].speed_thread);
+				break; // do the bookkeeping
+			case SPEED_FAILED:
+				break; // do the bookkeeping
+			case SPEED_DONE:
+				continue; // already processed
+			case SPEED_PENDING:
+				if (running >= results->conf->search_threads)
+					continue; // running too many, skip
 				results[i].speed = SPEED_ACTIVE;
 				results[i].speed_start_time = gettime();
 				if (pthread_create(results[i].speed_thread,
 						   NULL, search_speedtest,
-						   &results[i]) == 0) {
+						   &results[i]) == 0)
 					running++;
-					break;
-				} else {
-					return 0;
-				}
-			} else if ((results[i].speed == SPEED_ACTIVE) &&
-				   (gettime() > (results[i].speed_start_time +
-						 results->conf->search_timeout))) {
-				pthread_cancel(*results[i].speed_thread);
-				results[i].speed = SPEED_DONE;
-				running--;
-				done++;
-				break;
-			} else if (results[i].speed > 0 &&
-                       results[i].speed_start_time) {
-				results[i].speed_start_time = 0;
-				running--;
-				correct++;
-				done++;
-				break;
-			} else if (results[i].speed == SPEED_ERROR) {
-				results[i].speed = SPEED_DONE;
-				running--;
-				done++;
-				break;
+				else
+					results[i].speed = SPEED_PENDING;
+				continue; // go to the next item
+			default:
+				if (!results[i].speed_start_time)
+					continue; // already processed
+				// do the bookkeeping
 			}
-		}
-		if (i == count) {
-			if (axel_nanosleep(delay) < 0)
-				return -1;
+			// The thread must have been cancelled or finished
+			pthread_join(*results[i].speed_thread, NULL);
+			running--;
+			left--;
+			switch (results[i].speed) {
+			case SPEED_ACTIVE:
+			case SPEED_FAILED:
+				results[i].speed = SPEED_DONE;
+				break;
+			default:
+				results[i].speed_start_time = 0;
+				if (results[i].speed > 0)
+					correct++;
+			}
 		}
 	}
 
@@ -263,7 +273,7 @@ search_speedtest(void *r)
 		/* Add one because it mustn't be zero */
 		results->speed = 1 + 1000 * (gettime() - results->speed_start_time);
 	else
-		results->speed = SPEED_ERROR;
+		results->speed = SPEED_FAILED;
 
 	conn_disconnect(conn);
 
