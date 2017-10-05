@@ -165,6 +165,7 @@ http_get(http_t *conn, char *lurl)
 	if (*conn->proxy_auth)
 		http_addheader(conn, "Proxy-Authorization: Basic %s",
 			       conn->proxy_auth);
+	http_addheader(conn, "Accept: */*");
 	if (conn->firstbyte) {
 		if (conn->lastbyte)
 			http_addheader(conn, "Range: bytes=%lld-%lld",
