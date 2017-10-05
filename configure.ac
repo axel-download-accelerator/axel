@@ -20,11 +20,6 @@ if test "x$ac_cv_prog_cc_c99" = "xno"; then
     AC_MSG_ERROR([C99 compiler required])
 fi
 
-AC_CHECK_PROGS([GETTEXT], [gettext], "no")
-if test "x$GETTEXT" = "xno"; then
-    AC_MSG_ERROR([axel requires gettext])
-fi
-
 # Checks for libraries.
 
 # Checks for header files.
