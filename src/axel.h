@@ -88,7 +88,7 @@
 #define MAX_ADD_HEADERS	10
 #define MAX_REDIRECT		20
 #define DEFAULT_IO_TIMEOUT	120
-#define DEFAULT_USER_AGENT	"Axel " VERSION " (" ARCH ")"
+#define DEFAULT_USER_AGENT	"Axel/" VERSION " (" ARCH ")"
 
 typedef struct {
 	void *next;
