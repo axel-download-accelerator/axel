@@ -1,6 +1,13 @@
 SUBDIRS = src po
 
-man_MANS = man/axel.1
+dist_man_MANS = man/axel.1
+
+EXTRA_DIST = \
+	CONTRIBUTING.md \
+	CREDITS \
+	doc/axelrc.example \
+	man/axel.txt \
+	man/generate-man.sh
 
 distclean-local:
 	-rm -rf autom4te.cache/ \
