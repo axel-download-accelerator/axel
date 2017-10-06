@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = dist-bzip2 dist-xz
+
 SUBDIRS = src po
 
 dist_man_MANS = man/axel.1
