@@ -152,9 +152,11 @@ main(int argc, char *argv[])
 			break;
 		case 'S':
 			do_search = 1;
-			if (!sscanf(optarg, "%i", &conf->search_top)) {
-				print_help();
-				goto free_conf;
+			if (optarg) {
+				if (!sscanf(optarg, "%i", &conf->search_top)) {
+					print_help();
+					goto free_conf;
+				}
 			}
 			break;
 		case '6':
