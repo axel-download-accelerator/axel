@@ -1,29 +1,9 @@
-sudo: required
 dist: trusty
-
-os: linux
 
 language: c
 
-matrix:
-  include:
-    - os: linux
-      compiler: gcc
-    - os: linux
-      compiler: clang
-    - os: osx
-      osx_image: xcode8.3
-      compiler: clang
-    - os: linux
-      compiler: gcc
-      env: CONF_FLAGS="--without-ssl"
-    - os: linux
-      compiler: clang
-      env: CONF_FLAGS="--without-ssl"
-    - os: osx
-      osx_image: xcode8.3
-      compiler: clang
-      env: CONF_FLAGS="--without-ssl"
+cache:
+  ccache: true
 
 addons:
   apt:
@@ -33,22 +13,40 @@ addons:
       - libssl-dev
       - clang
 
-cache:
-  ccache: true
+env:
+  global:
+    - G_CFLAGS="-O3 -fPIC -Werror"
+    - MAKEFLAGS="-j4"
+  matrix:
+    - CONF_FLAGS="--without-ssl"
+    - CONF_FLAGS="--with-ssl"
 
-before_install:
-  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew update ; fi
-  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew install gettext openssl; fi
+os:
+  - linux
+  - osx
+
+compiler:
+  - gcc
+  - clang
+
+matrix:
+  exclude:
+    - os: osx
+      compiler: gcc
+
+install:
+  - if [ "$TRAVIS_OS_NAME" = osx ]; then
+      brew install gettext openssl;
+    fi
 
 script:
-    - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-        export GETTEXT="/usr/local/opt/gettext";
-        export OPENSSL="/usr/local/opt/openssl";
-        export PATH="$GETTEXT/bin:$PATH";
-        export OSX_AG_FLAGS="-I$GETTEXT/share/aclocal/";
-        export OSX_CFLAGS="-I$OPENSSL/include -I$GETTEXT/include";
-        export OSX_LDFLAGS="-L$GETTEXT/lib";
-      fi
-    - ./autogen.sh $OSX_AG_FLAGS &&
-        ./configure $CONF_FLAGS CFLAGS="-O3 -Werror $OSX_CFLAGS" LDFLAGS="$OSX_LDFLAGS" &&
-        make
+  - if [ "${TRAVIS_OS_NAME}" = osx ]; then
+      GETTEXT="/usr/local/opt/gettext"
+      OPENSSL="/usr/local/opt/openssl";
+      export LIBRARY_PATH="$GETTEXT/lib"
+             CPATH="$OPENSSL/include:$GETTEXT/include"
+             PATH="$GETTEXT/bin:$PATH";
+    fi
+  - autoreconf -i &&
+    ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" &&
+    make DIST_TARGETS=dist-gzip GZIP_ENV=--fast distcheck
