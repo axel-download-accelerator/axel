@@ -480,6 +480,7 @@ main(int argc, char *argv[])
 void
 stop(int signal)
 {
+	(void)signal;
 	run = 0;
 }
 
