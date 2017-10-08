@@ -38,3 +38,8 @@ distclean-local:
 	po/axel.pot \
 	po/stamp-po \
 	src/Makefile.in
+
+dist-hook:
+	rm -rf $(distdir)/.git
+	sed -i '/^am__aclocal/,/[^\\]$$/ s:[$$](top_srcdir)/[.]git/[^ ]* *::g' \
+		$(distdir)/Makefile.in
