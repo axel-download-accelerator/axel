@@ -1,13 +1,11 @@
 When updating, change these files (if needed):
 
-- AUTHORS
+- VERSION
 - ChangeLog (**)
+- AUTHORS
 - CREDITS
-- configure.ac (VERSION)
-- manpage version and date
+- run: make man/axel.1
 - src/text.c (years in Copyright lines near EOF)
 - test Debian packaging
 
--> run 'make update-po' in po/ to update the .po files.
-
-(**) $ git shortlog -w80,0 --format='* %s' 2.13.1..v2.14
+(**) $ ./mkchangelog
