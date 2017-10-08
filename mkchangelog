@@ -5,18 +5,18 @@ get_ver() {
 	git describe --abbrev=0 --tags --match 'v*' "$@"
 }
 
-if [ "$1" = -h -o $# = 0 ]; then
+if [ "$1" = -h ]; then
 	cat >/dev/stderr <<-!
-	Usage: $0 version [commit]
+	Usage: $0 [commit]
 !
-	exit 1
+	exit 0
 fi
 
 set -- "$@" HEAD
 
-prev="$(get_ver "$2")"
+prev="$(get_ver "$1")"
 
-git shortlog --format='* %s' -w80,0 "$prev".."$2" |
+git shortlog --format='* %s' -w80,0 "$prev".."$1" |
 awk '
 !/^\*/ && /:$/ {
 	$NF=""
@@ -27,9 +27,11 @@ awk '
 	print author, ">", $0
 }
 ' | sort |
-awk -vver="$1" -F'  > ' '
+awk '
 BEGIN {
-	printf "Version: %s, %s\n", ver, strftime("%Y-%m-%d")
+	getline < "VERSION"
+	printf "Version: %s, %s\n", $1, $2
+	FS="  > "
 }
 END {
 	print "\n\n"
