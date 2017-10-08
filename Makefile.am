@@ -1,5 +1,9 @@
 AUTOMAKE_OPTIONS = dist-bzip2 dist-xz
 
+# XXX Fix disagreement between aclocal and make
+# (aclocal doesn't update based on mtime)
+ACLOCAL = touch $@; @ACLOCAL@
+
 SUBDIRS = src po
 
 dist_man_MANS = man/axel.1
