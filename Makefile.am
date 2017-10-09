@@ -43,3 +43,5 @@ dist-hook:
 	rm -rf $(distdir)/.git
 	sed -i '/^am__aclocal/,/[^\\]$$/ s:[$$](top_srcdir)/[.]git/[^ ]* *::g' \
 		$(distdir)/Makefile.in
+	read _ RELDATE _ < $(top_srcdir)/VERSION; \
+	TZ= find $(distdir) -exec touch -d "$$RELDATE" '{}' +
