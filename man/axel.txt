@@ -8,8 +8,8 @@ DESCRIPTION
  Axel is a program that downloads a file from a FTP or HTTP server through multiple connection.
  Each connection downloads its own part of the file.
 
- Unlike most other programs, Axel downloads all the data directly to the destination file, using
- one single thread. It just saves some time at the end because the program does not have to
+ Unlike most other programs, Axel downloads all the data directly to the destination file.
+ It saves some time at the end because the program does not have to
  concatenate all the downloaded parts.
 
  Axel supports HTTP, HTTPS, FTP and FTPS protocols.
@@ -96,8 +96,7 @@ EXAMPLES
     $ axel ftp://ftp.{be,nl,uk,de}.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
 
  This will do a search for the linux-2.4.17.tar.bz2 file on filesearching.com and it'll use the four (if possible)
- fastest mirrors for the download (possibly including ftp.kernel.org). Of course, the commands are a single
- line, but they're too long to fit on one line in this page.
+ fastest mirrors for the download (possibly including ftp.kernel.org).
 
     $ axel -S4 ftp://ftp.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
 
@@ -108,12 +107,13 @@ FILES
 
  These files are not documented in a manpage, but the example file which comes with the program contains
  enough information. The position of the system-wide configuration file might be different. In source code this
- example file is at doc/ directory. On Debian systems, it is at /usr/share/doc/axel/examples/ directory.
+ example file is at doc/ directory. It's generally installed under /usr/share/doc/axel/examples/, or the
+ equivalent for your system.
 
 COPYRIGHT
  Axel was originally written by Wilmer van der Gaast and other authors over time. Please, see the AUTHORS and CREDITS files.
 
- The current Axel homepage (since 2015) is https://github.com/axel-download-accelerator/axel
+ The project homepage is <https://github.com/axel-download-accelerator/axel>
 
 HELP THIS PROJECT
  If you intent to help, please, read the CONTRIBUTING.md file. On Debian systems, this file will be available at
