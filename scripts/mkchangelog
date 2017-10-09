@@ -30,6 +30,7 @@ awk '
 awk '
 BEGIN {
 	getline < "VERSION"
+	sub(/T.*/, "", $2)
 	printf "Version: %s, %s\n", $1, $2
 	FS="  > "
 }
