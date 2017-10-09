@@ -1,7 +1,7 @@
 When updating, change these files (if needed):
 
-- VERSION
-- ChangeLog (**)
+- VERSION [0]
+- ChangeLog [1]
 - AUTHORS
 - CREDITS
 - src/text.c (years in Copyright lines near EOF)
@@ -17,4 +17,5 @@ When done:
 - make a pull-request
 
 
-(**) $ scripts/mkchangelog
+[0] $ scripts/mknextver
+[1] $ scripts/mkchangelog

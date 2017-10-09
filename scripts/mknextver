@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ $# = 0 ]; then
+	set -- "$(awk -F'[^0-9]' '{print $1"."$2+1}' VERSION)"
+fi
+echo "${1#v} $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
