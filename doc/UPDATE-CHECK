@@ -17,4 +17,4 @@ When done:
 - make a pull-request
 
 
-(**) $ ./mkchangelog
+(**) $ scripts/mkchangelog
