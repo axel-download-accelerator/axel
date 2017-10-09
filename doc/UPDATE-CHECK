@@ -4,8 +4,17 @@ When updating, change these files (if needed):
 - ChangeLog (**)
 - AUTHORS
 - CREDITS
-- run: make man/axel.1
 - src/text.c (years in Copyright lines near EOF)
+- run: make man/axel.1
+- run: make -C po update-po
+
+
+When done:
+
+- run: make relcheck
+- run: make distcheck
 - test Debian packaging
+- make a pull-request
+
 
 (**) $ ./mkchangelog
