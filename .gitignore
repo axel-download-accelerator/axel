@@ -23,4 +23,5 @@ TAGS
 *.gmo
 *.o
 *.tar.*
+.*.swp
 !/man/Makefile
