@@ -102,7 +102,7 @@ msgstr "pthread 出错啦！！！"
 #: src/axel.c:454
 #, fuzzy, c-format
 msgid "Error while waiting for connection: %s"
-msgstr "写命令 %s 出错\n"
+msgstr "写命令 %s 出错"
 
 #: src/axel.c:488
 #, c-format
@@ -319,7 +319,7 @@ msgstr "%i 时 %02i 分 %02i 秒"
 #: src/text.c:566
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
-msgstr "无法设置备用输出，挂起."
+msgstr "无法设置备用输出，挂起.\n"
 
 #: src/text.c:638
 #, fuzzy, c-format
