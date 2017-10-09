@@ -660,7 +660,7 @@ print_help()
 		 "-v\tMore status information\n"
 		 "-a\tAlternate progress indicator\n"
 		 "-h\tThis information\n"
-		 "-T\tSet I/O and connection timeout\n"
+		 "-T x\tSet I/O and connection timeout\n"
 		 "-V\tVersion information\n"
 		 "\n"
 		 "Visit https://github.com/axel-download-accelerator/axel/issues\n"));
@@ -683,7 +683,7 @@ print_help()
 		 "--verbose\t\t-v\tMore status information\n"
 		 "--alternate\t\t-a\tAlternate progress indicator\n"
 		 "--help\t\t\t-h\tThis information\n"
-		 "--timeout\t\t-T\tSet I/O and connection timeout\n"
+		 "--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
 		 "--version\t\t-V\tVersion information\n"
 		 "\n"
 		 "Visit https://github.com/axel-download-accelerator/axel/issues to report bugs\n"));

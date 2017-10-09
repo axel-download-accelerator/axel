@@ -71,6 +71,8 @@ OPTIONS
 
  --help, -h  A brief summary of all the options.
 
+ --timeout=x, -T x  Set I/O and connection timeout
+
  --version, -V  Get version information.
 
 NOTE
