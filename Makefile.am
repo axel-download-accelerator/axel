@@ -45,3 +45,17 @@ dist-hook:
 		$(distdir)/Makefile.in
 	read _ RELDATE _ < $(top_srcdir)/VERSION; \
 	TZ= find $(distdir) -exec touch -d "$$RELDATE" '{}' +
+
+MSG = echo '==>'
+ERR = ! echo '!!! ERROR:'
+.PHONY: relcheck
+relcheck:
+	@$(MSG) 'Checking the state of the project...'
+	@ m=`git status --porcelain=1 | wc -l`; \
+	test "$$m" = 0 \
+		&& $(MSG) 'the working tree is clean' \
+		|| $(ERR) "$$m" 'modified files in the working tree'
+	@test -f "$(top_srcdir)/.git/refs/tags/v$(VERSION)" \
+		&& $(MSG) 'v$(VERSION) tag found' \
+		|| $(ERR) 'v$(VERSION) tag missing'
+	@$(MSG) Everything OK
