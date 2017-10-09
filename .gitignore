@@ -18,10 +18,12 @@
 /stamp-h1
 .deps/
 Makefile
+!/man/Makefile
 Makefile.in
 TAGS
 *.gmo
 *.o
 *.tar.*
+.#*
 .*.swp
-!/man/Makefile
+\#*#*
