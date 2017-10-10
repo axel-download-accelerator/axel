@@ -39,12 +39,14 @@ distclean-local:
 	po/stamp-po \
 	src/Makefile.in
 
+remove_git_dep = \
+	sed -i '/^am__aclocal/,/[^\\]$$/ s:[$$](top_srcdir)/[.]git/[^ ]* *::g'
 dist-hook:
 	rm -rf $(distdir)/.git
-	sed -i '/^am__aclocal/,/[^\\]$$/ s:[$$](top_srcdir)/[.]git/[^ ]* *::g' \
-		$(distdir)/Makefile.in
 	read _ RELDATE _ < $(top_srcdir)/VERSION; \
-	TZ= find $(distdir) -exec touch -d "$$RELDATE" '{}' +
+	TZ= find $(distdir) \
+		-name Makefile.in -exec $(remove_git_dep) '{}' ';' \
+		, -exec touch -d "$$RELDATE" '{}' +
 
 MSG = echo '==>'
 ERR = ! echo '!!! ERROR:'
