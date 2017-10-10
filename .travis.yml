@@ -20,6 +20,7 @@ env:
   global:
     - G_CFLAGS="-O3 -fPIC -Werror"
     - MAKEFLAGS="-j4"
+    - target=distcheck
   matrix:
     - CONF_FLAGS="--without-ssl"
     - CONF_FLAGS="--with-ssl"
@@ -45,6 +46,7 @@ install:
 
 script:
   - if [ "${TRAVIS_OS_NAME}" = osx ]; then
+      target=all
       GETTEXT="/usr/local/opt/gettext"
       OPENSSL="/usr/local/opt/openssl";
       export LIBRARY_PATH="$GETTEXT/lib"
@@ -53,4 +55,4 @@ script:
     fi
   - autoreconf -i &&
     ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" &&
-    make DIST_TARGETS=dist-gzip GZIP_ENV=--fast distcheck
+    make DIST_TARGETS=dist-gzip GZIP_ENV=--fast $target
