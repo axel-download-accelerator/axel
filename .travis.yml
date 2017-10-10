@@ -1,5 +1,3 @@
-dist: trusty
-
 language: c
 
 cache:
@@ -21,9 +19,6 @@ env:
     - CFLAGS="-O3 -fPIC -Werror"
     - MAKEFLAGS="-j4"
     - target=distcheck
-    - LIBRARY_PATH=/usr/local/opt/gettext/lib
-    - CPATH=/usr/local/opt/openssl/include:/usr/local/opt/gettext/include
-    - PATH=/usr/local/opt/gettext/bin:$PATH
   matrix:
     - CONF_FLAGS="--without-ssl"
     - CONF_FLAGS="--with-ssl"
@@ -42,6 +37,7 @@ matrix:
       compiler: gcc
   include:
     - if: branch = master
+      os: osx
       compiler: clang
       install:
       script: brew install --HEAD axel && brew test axel
@@ -49,9 +45,12 @@ matrix:
 install:
   - if [ "$TRAVIS_OS_NAME" = osx ]; then brew update && brew bundle; fi
 
-
 script:
-  - if [ "${TRAVIS_OS_NAME}" = osx ]; then target=all; fi
+  - if [ "${TRAVIS_OS_NAME}" = osx ]; then
+    target=all
+    LIBRARY_PATH=/usr/local/opt/gettext/lib
+    CPATH=/usr/local/opt/openssl/include:/usr/local/opt/gettext/include
+    PATH=/usr/local/opt/gettext/bin:$PATH; fi
   - autoreconf -i &&
     ./configure $CONF_FLAGS &&
     make DIST_TARGETS=dist-gzip GZIP_ENV=--fast $target
