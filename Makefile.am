@@ -46,7 +46,8 @@ dist-hook:
 	read _ RELDATE _ < $(top_srcdir)/VERSION; \
 	TZ= find $(distdir) \
 		-name Makefile.in -exec $(remove_git_dep) '{}' ';' \
-		, -exec touch -d "$$RELDATE" '{}' +
+		-exec touch -d "$$RELDATE" '{}' + \
+		-o -exec touch -d "$$RELDATE" '{}' +
 
 MSG = echo '==>'
 ERR = ! echo '!!! ERROR:'
