@@ -40,6 +40,11 @@ matrix:
   exclude:
     - os: osx
       compiler: gcc
+  include:
+    - if: branch = master
+      compiler: clang
+      install:
+      script: brew install --HEAD axel && brew test axel
 
 install:
   - if [ "$TRAVIS_OS_NAME" = osx ]; then brew update && brew bundle; fi
