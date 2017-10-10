@@ -18,9 +18,12 @@ addons:
 
 env:
   global:
-    - G_CFLAGS="-O3 -fPIC -Werror"
+    - CFLAGS="-O3 -fPIC -Werror"
     - MAKEFLAGS="-j4"
     - target=distcheck
+    - LIBRARY_PATH=/usr/local/opt/gettext/lib
+    - CPATH=/usr/local/opt/openssl/include:/usr/local/opt/gettext/include
+    - PATH=/usr/local/opt/gettext/bin:$PATH
   matrix:
     - CONF_FLAGS="--without-ssl"
     - CONF_FLAGS="--with-ssl"
@@ -43,14 +46,7 @@ install:
 
 
 script:
-  - if [ "${TRAVIS_OS_NAME}" = osx ]; then
-      target=all
-      GETTEXT="/usr/local/opt/gettext"
-      OPENSSL="/usr/local/opt/openssl";
-      export LIBRARY_PATH="$GETTEXT/lib"
-             CPATH="$OPENSSL/include:$GETTEXT/include"
-             PATH="$GETTEXT/bin:$PATH";
-    fi
+  - if [ "${TRAVIS_OS_NAME}" = osx ]; then target=all; fi
   - autoreconf -i &&
-    ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" &&
+    ./configure $CONF_FLAGS &&
     make DIST_TARGETS=dist-gzip GZIP_ENV=--fast $target
