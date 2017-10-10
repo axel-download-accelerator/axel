@@ -4,6 +4,9 @@ language: c
 
 cache:
   ccache: true
+  directories:
+    - autom4te.cache
+    - m4
 
 addons:
   apt:
