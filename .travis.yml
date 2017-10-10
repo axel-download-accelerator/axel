@@ -39,10 +39,8 @@ matrix:
       compiler: gcc
 
 install:
-  - if [ "$TRAVIS_OS_NAME" = osx ]; then
-      HOMEBREW_NO_AUTO_UPDATE=1
-      brew install gettext openssl;
-    fi
+  - if [ "$TRAVIS_OS_NAME" = osx ]; then brew update && brew bundle; fi
+
 
 script:
   - if [ "${TRAVIS_OS_NAME}" = osx ]; then

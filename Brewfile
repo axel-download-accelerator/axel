@@ -1,0 +1,2 @@
+brew "gettext"
+brew "openssl"
