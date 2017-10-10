@@ -39,8 +39,8 @@ distclean-local:
 	po/stamp-po \
 	src/Makefile.in
 
-remove_git_dep = \
-	sed -i '/^am__aclocal/,/[^\\]$$/ s:[$$](top_srcdir)/[.]git/[^ ]* *::g'
+remove_git_dep = sed -i -e \
+	'/^am__aclocal/,/[^\\]$$/ s:[$$](top_srcdir)/[.]git/[^ ]* *::g'
 dist-hook:
 	rm -rf $(distdir)/.git
 	read _ RELDATE _ < $(top_srcdir)/VERSION; \
