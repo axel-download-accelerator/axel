@@ -1,3 +1,21 @@
+2.15 version:
+
+- Changes in source code by:
+
+  * Antonio Quartulli <a@unstable.cc>
+  * Ismael Luceno <ismael@iodev.co.uk>
+
+- Translations:
+
+  * Nicol Dalla Longa <nicol.dallalonga@gmail.com>
+    Italian translation
+  * Casa Taloyum <casatwy@msn.com>
+    Added some missing Simplified Chinese translation strings
+  * Mahyuddin <yudi.al@gmail.com>
+    Indonesian translation
+
+  Read the ChangeLog to see the changes.
+
 2.14.1 version:
 
 - Changes in source code by:
