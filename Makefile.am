@@ -53,6 +53,8 @@ MSG = echo '==>'
 ERR = ! echo '!!! ERROR:'
 .PHONY: relcheck
 relcheck:
+	@$(MSG) 'Checking for non-UTF8 translations...'
+	@$(AWK) -f $(top_srcdir)/scripts/pocheck.awk $(top_srcdir)/po/*.po
 	@$(MSG) 'Checking the state of the project...'
 	@ m=`git status --porcelain=1 | wc -l`; \
 	test "$$m" = 0 \
