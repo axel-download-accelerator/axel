@@ -40,6 +40,12 @@
 
 #include "axel.h"
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <sys/ioctl.h>
+
+
 static void
 tcp_error(char *buffer, char *hostname, int port, const char *reason)
 {

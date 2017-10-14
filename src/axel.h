@@ -50,7 +50,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
-#include <netdb.h>
 #ifndef	NOGETOPTLONG
 #define _GNU_SOURCE
 #include <getopt.h>
@@ -64,18 +63,12 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <sys/types.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
 #include <netinet/in_systm.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
-#ifdef HAVE_SSL
-#include <openssl/ssl.h>
-#endif
 
 /* Internationalization */
 #define PACKAGE			"axel"

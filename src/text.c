@@ -44,6 +44,9 @@
 
 #include "axel.h"
 
+#include <sys/ioctl.h>
+
+
 static void stop(int signal);
 static char *size_human(long long int value);
 static char *time_human(int value);
