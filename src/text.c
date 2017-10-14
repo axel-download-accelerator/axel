@@ -102,9 +102,11 @@ main(int argc, char *argv[])
 	char *s;
 
 /* Set up internationalization (i18n) */
+#ifdef ENABLE_NLS
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
+#endif
 
 	if (!conf_init(conf)) {
 		return 1;

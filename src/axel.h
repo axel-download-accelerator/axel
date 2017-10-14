@@ -71,10 +71,13 @@
 #include <pthread.h>
 
 /* Internationalization */
-#define PACKAGE			"axel"
+#ifdef ENABLE_NLS
 #define _(x)			gettext(x)
 #include <libintl.h>
 #include <locale.h>
+#else
+#define _(x)			(x)
+#endif
 
 /* Compiled-in settings */
 #define MAX_STRING		1024
