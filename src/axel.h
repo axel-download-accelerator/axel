@@ -43,10 +43,6 @@
 #ifndef AXEL_AXEL_H
 #define AXEL_AXEL_H
 
-#ifndef _POSIX_C_SOURCE
-#define _POSIX_C_SOURCE 200112L
-#endif
-
 #include "config.h"
 
 #include <time.h>
@@ -132,13 +128,5 @@ void axel_close(axel_t *axel);
 void print_messages(axel_t *axel);
 
 double gettime();
-
-static inline int
-axel_nanosleep(struct timespec delay)
-{
-	int res;
-	while ((res = nanosleep(&delay, &delay)) && errno == EINTR) ;
-	return res;
-}
 
 #endif				/* AXEL_AXEL_H */

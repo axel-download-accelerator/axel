@@ -46,6 +46,7 @@
 
 #include "axel.h"
 #include "assert.h"
+#include "sleep.h"
 
 /* Axel */
 static void save_state(axel_t *axel);
@@ -468,7 +469,7 @@ axel_do(axel_t *axel)
 	}
 	if (hifd == 0) {
 		/* No connections yet. Wait... */
-		if (axel_nanosleep(delay) < 0) {
+		if (axel_sleep(delay) < 0) {
 			axel_message(axel,
 				     _("Error while waiting for connection: %s"),
 				     strerror(errno));
@@ -658,7 +659,7 @@ axel_do(axel_t *axel)
 			axel->delay_time.tv_sec = 0;
 			axel->delay_time.tv_nsec = 0;
 		}
-		if (axel_nanosleep(axel->delay_time) < 0) {
+		if (axel_sleep(axel->delay_time) < 0) {
 			axel_message(axel,
 				     _("Error while enforcing throttling: %s"),
 				     strerror(errno));
