@@ -38,6 +38,8 @@
 
 /* TCP control file */
 
+#define _POSIX_C_SOURCE 200112L
+
 #include "axel.h"
 
 #include <sys/types.h>
