@@ -180,10 +180,9 @@ axel_new(conf_t *conf, int count, const void *url)
 			axel->ready = -1;
 			return axel;
 		}
-	}
-	/* re-init in case of protocol change. This can happen only once
-	 * because the FTP protocol can't redirect back to HTTP */
-	while (status == -1);
+	} while (status == -1); /* re-init in case of protocol change. This can
+				 * happen only once because the FTP protocol
+				 * can't redirect back to HTTP */
 
 	s = conn_url(axel->conn);
 	strncpy(axel->url->text, s, sizeof(axel->url->text) - 1);
