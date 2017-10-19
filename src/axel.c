@@ -187,8 +187,9 @@ axel_new(conf_t *conf, int count, const void *url)
 
 	s = conn_url(axel->conn);
 	strncpy(axel->url->text, s, sizeof(axel->url->text) - 1);
+	axel->size = axel->conn[0].size;
 	if (axel->conf->verbose > 0) {
-		if ((axel->size = axel->conn[0].size) != LLONG_MAX) {
+		if (axel->size != LLONG_MAX) {
 			axel_message(axel, _("File size: %lld bytes"),
 				     axel->size);
 		} else {
