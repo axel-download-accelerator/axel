@@ -2,6 +2,7 @@ bin_PROGRAMS = axel
 axel_SOURCES = \
 	axel.c \
 	axel.h \
+	sleep.h \
 	conf.c \
 	conf.h \
 	conn.c \
