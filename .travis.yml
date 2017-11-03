@@ -19,6 +19,9 @@ env:
     - CFLAGS="-O3 -fPIC -Werror"
     - MAKEFLAGS="-j4"
     - target=distcheck
+    - LIBRARY_PATH=/usr/local/opt/gettext/lib
+    - CPATH=/usr/local/opt/openssl/include:/usr/local/opt/gettext/include
+    - PATH=/usr/local/opt/gettext/bin:$PATH
   matrix:
     - CONF_FLAGS="--without-ssl"
     - CONF_FLAGS="--with-ssl"
@@ -47,10 +50,7 @@ install:
 
 script:
   - if [ "${TRAVIS_OS_NAME}" = osx ]; then
-    target=all
-    LIBRARY_PATH=/usr/local/opt/gettext/lib
-    CPATH=/usr/local/opt/openssl/include:/usr/local/opt/gettext/include
-    PATH=/usr/local/opt/gettext/bin:$PATH; fi
+    target=all; fi
   - autoreconf -i &&
     ./configure $CONF_FLAGS &&
     make DIST_TARGETS=dist-gzip GZIP_ENV=--fast $target
