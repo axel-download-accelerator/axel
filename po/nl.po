@@ -8,138 +8,138 @@ msgstr ""
 "Language-Team: Dutch <nl@li.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: src/axel.c:89
+#: src/axel.c:90
 msgid "Buffer resized for this speed."
 msgstr "Buffer verkleind voor deze snelheid."
 
-#: src/axel.c:107
+#: src/axel.c:108
 msgid "Invalid URL"
 msgstr ""
 
-#: src/axel.c:135
+#: src/axel.c:136
 msgid "Could not parse URL.\n"
 msgstr "Kan URL niet verwerken.\n"
 
-#: src/axel.c:157
+#: src/axel.c:158
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr ""
 
-#: src/axel.c:160
+#: src/axel.c:161
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr ""
 
-#: src/axel.c:191
+#: src/axel.c:192
 #, c-format
 msgid "File size: %lld bytes"
 msgstr "Bestandsgrootte: %lld bytes"
 
-#: src/axel.c:194
+#: src/axel.c:195
 #, fuzzy
 msgid "File size: unavailable"
 msgstr "Bestandsgrootte: %lld bytes"
 
-#: src/axel.c:223
+#: src/axel.c:224
 #, c-format
 msgid "Opening output file %s"
 msgstr "Openen uitvoerbestand %s"
 
-#: src/axel.c:231
+#: src/axel.c:232
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server niet ondersteund, opnieuw beginnen met 1 verbinding."
 
-#: src/axel.c:248
+#: src/axel.c:249
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr ""
 
-#: src/axel.c:256
+#: src/axel.c:257
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr ""
 
-#: src/axel.c:268
+#: src/axel.c:269
 #, c-format
 msgid "State file has old format.\n"
 msgstr ""
 
-#: src/axel.c:301
+#: src/axel.c:302
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr ".st bestand gevonden: %lld bytes gedownload, %lld te gaan."
 
-#: src/axel.c:307 src/axel.c:318
+#: src/axel.c:308 src/axel.c:319
 msgid "Error opening local file"
 msgstr "Fout bij openen lokaal bestand"
 
-#: src/axel.c:331
+#: src/axel.c:332
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Niet-fatale fout in OS/bestandssysteem, omheen werken.."
 
-#: src/axel.c:345
+#: src/axel.c:346
 #, fuzzy
 msgid "Error creating local file"
 msgstr "Fout bij openen lokaal bestand"
 
-#: src/axel.c:377
+#: src/axel.c:378
 #, c-format
 msgid ""
 "\n"
 "Reactivate connection %d\n"
 msgstr ""
 
-#: src/axel.c:407
+#: src/axel.c:408
 msgid "Starting download"
 msgstr "Begin download"
 
-#: src/axel.c:418 src/axel.c:601
+#: src/axel.c:419 src/axel.c:602
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbinding %i gebruikt server %s:%i via interface %s"
 
-#: src/axel.c:428 src/axel.c:613
+#: src/axel.c:429 src/axel.c:614
 msgid "pthread error!!!"
 msgstr "pthread fout!!!"
 
-#: src/axel.c:473
+#: src/axel.c:474
 #, fuzzy, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "Fout bij het schrijven van commando %s\n"
 
-#: src/axel.c:505
+#: src/axel.c:506
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Time-out op verbinding %i"
 
-#: src/axel.c:518
+#: src/axel.c:519
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Fout op verbinding %i! Verbinding gesloten"
 
-#: src/axel.c:532
+#: src/axel.c:533
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Verbinding %i onverwachts gesloten"
 
-#: src/axel.c:536 src/axel.c:553
+#: src/axel.c:537 src/axel.c:554
 #, c-format
 msgid "Connection %i finished"
 msgstr "Verbinding %i klaar"
 
-#: src/axel.c:563
+#: src/axel.c:564
 msgid "Write error!"
 msgstr "Schrijffout!"
 
-#: src/axel.c:663
+#: src/axel.c:664
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr ""
 
-#: src/axel.c:839 src/axel.c:850
+#: src/axel.c:840 src/axel.c:851
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr ""
@@ -219,71 +219,71 @@ msgstr "Ongeldige proxy string: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "Verbinding gesloten.\n"
 
-#: src/text.c:199
+#: src/text.c:204
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Fout bij het afsluiten van stdout.\n"
 
-#: src/text.c:242
+#: src/text.c:247
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr ""
 
-#: src/text.c:250
+#: src/text.c:255
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr ""
 
-#: src/text.c:256
+#: src/text.c:261
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Begin download: %s\n"
 
-#: src/text.c:265
+#: src/text.c:270
 #, c-format
 msgid "Doing search...\n"
 msgstr "Zoeken...\n"
 
-#: src/text.c:268
+#: src/text.c:273
 #, c-format
 msgid "File not found\n"
 msgstr "Bestand niet gevonden\n"
 
-#: src/text.c:272
+#: src/text.c:277
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Snelheden testen, dit kan even duren...\n"
 
-#: src/text.c:275
+#: src/text.c:280
 #, c-format
 msgid "Speed testing failed\n"
 msgstr ""
 
-#: src/text.c:281
+#: src/text.c:286
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i bruikbare servers gevonden, de volgende worden gebruikt:\n"
 
-#: src/text.c:284
+#: src/text.c:289
 msgid "Speed"
 msgstr ""
 
-#: src/text.c:333
+#: src/text.c:338
 #, c-format
 msgid "Filename too long!\n"
 msgstr ""
 
-#: src/text.c:345
+#: src/text.c:350
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Geen .st bestand, kan niet resumen!\n"
 
-#: src/text.c:349
+#: src/text.c:354
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ".st bestand gevonden maar geen uitvoerbestand. Opnieuw beginnen.\n"
 
-#: src/text.c:464
+#: src/text.c:469
 #, c-format
 msgid ""
 "\n"
@@ -292,52 +292,52 @@ msgstr ""
 "\n"
 "%s gedownload in %s. (%.2f KB/s)\n"
 
-#: src/text.c:492
+#: src/text.c:497
 #, c-format
 msgid "%lld byte"
 msgstr "%lld byte"
 
-#: src/text.c:494
+#: src/text.c:499
 #, c-format
 msgid "%.1f Kilobyte"
 msgstr "%.1f Kilobytes"
 
-#: src/text.c:496
+#: src/text.c:501
 #, c-format
 msgid "%.1f Megabyte"
 msgstr "%.1f Megabytes"
 
-#: src/text.c:499
+#: src/text.c:504
 #, c-format
 msgid "%.1f Gigabyte"
 msgstr "%.1f Gigabytes"
 
-#: src/text.c:510
+#: src/text.c:515
 #, c-format
 msgid "%i second"
 msgstr "%i seconde"
 
-#: src/text.c:512
+#: src/text.c:517
 #, c-format
 msgid "%i seconds"
 msgstr "%i seconden"
 
-#: src/text.c:514
+#: src/text.c:519
 #, fuzzy, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i seconden"
 
-#: src/text.c:516
+#: src/text.c:521
 #, fuzzy, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i seconden"
 
-#: src/text.c:582
+#: src/text.c:587
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr ""
 
-#: src/text.c:646
+#: src/text.c:651
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -376,7 +376,7 @@ msgstr ""
 "-V\tVersie informatie\n"
 "\n"
 
-#: src/text.c:668
+#: src/text.c:673
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -417,24 +417,17 @@ msgstr ""
 "--version\t\t-V\tVersie informatie\n"
 "\n"
 
-#: src/text.c:696
+#: src/text.c:701
 #, fuzzy, c-format
-msgid ""
-"\n"
-"Axel version "
+msgid "Axel version %s (%s)\n"
 msgstr "Axel versie %s (%s)\n"
 
-#: src/text.c:704
-#, c-format
-msgid ""
-"\n"
-"                    and others."
+#: src/text.c:709
+msgid "and others."
 msgstr ""
 
-#: src/text.c:705
-#, c-format
+#: src/text.c:710
 msgid ""
-"\n"
 "Please, see the CREDITS file.\n"
 "\n"
 msgstr ""
@@ -444,7 +437,7 @@ msgstr ""
 msgid "SSL error: %s\n"
 msgstr ""
 
-#: src/tcp.c:46
+#: src/tcp.c:54
 #, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
 msgstr "Kan niet verbinden met server %s:%i %s\n"
