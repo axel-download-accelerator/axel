@@ -38,7 +38,7 @@ msgstr "Descarga incompleta encontrada, ignorando opción no-clobber\n"
 #: src/axel.c:161
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
-msgstr "Archivo '%s' ya existe; no recuperando."
+msgstr "Archivo '%s' ya existe; no recuperando.\n"
 
 #: src/axel.c:192
 #, c-format
@@ -95,7 +95,8 @@ msgstr "Error creando archivo local"
 msgid ""
 "\n"
 "Reactivate connection %d\n"
-msgstr "\n"
+msgstr ""
+"\n"
 "Reactivar conexión %d\n"
 
 #: src/axel.c:408
@@ -287,7 +288,9 @@ msgstr "¡No hay archivo de estado, no se puede reanudar!\n"
 #: src/text.c:354
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
-msgstr "Archivo de estado encontrado, pero no hay datos descargados. Comenzando desde cero.\n"
+msgstr ""
+"Archivo de estado encontrado, pero no hay datos descargados. Comenzando "
+"desde cero.\n"
 
 #: src/text.c:469
 #, c-format
@@ -388,7 +391,6 @@ msgstr ""
 "-T x\tEstablecer tiempo de expiración de E/S y conexión\n"
 "-V\tInformación de versión\n"
 "\n"
-
 
 #: src/text.c:673
 #, c-format
