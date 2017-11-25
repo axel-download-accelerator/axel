@@ -434,30 +434,20 @@ msgstr ""
 "https://github.com/axel-download-accelerator/axel/issues にバグ報告を行なって"
 "ください\n"
 
-#: src/text.c:696
-#, fuzzy, c-format
-msgid ""
-"\n"
-"Axel version "
-msgstr ""
-"\n"
-"Axel バージョン %s (%s)\n"
-
-#: src/text.c:704
+#: src/text.c:701
 #, c-format
-msgid ""
-"\n"
-"                    and others."
+msgid "Axel version %s (%s)\n"
+msgstr "Axel バージョン %s (%s)\n"
+
+#: src/text.c:709
+msgid "and others."
 msgstr ""
 
-#: src/text.c:705
-#, c-format
+#: src/text.c:710
 msgid ""
-"\n"
 "Please, see the CREDITS file.\n"
 "\n"
 msgstr ""
-"\n"
 "CREDITS というファイルを見てみましょう\n"
 "\n"
 

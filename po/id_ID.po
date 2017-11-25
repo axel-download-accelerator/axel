@@ -441,32 +441,21 @@ msgstr ""
 "Kunjungi https://github.com/axel-download-accelerator/axel/issues untuk "
 "melaporkan kutu\n"
 
-#: src/text.c:696
+#: src/text.c:701
 #, c-format
-msgid ""
-"\n"
-"Axel version "
-msgstr ""
-"\n"
-"Axel versi"
+msgid "Axel version %s (%s)\n"
+msgstr "Axel versi %s (%s)\n"
 
-#: src/text.c:704
-#, c-format
-msgid ""
-"\n"
-"                    and others."
-msgstr ""
-"\n"
-"                    dan lainnya."
+#: src/text.c:709
+msgid "and others."
+msgstr "dan lainnya."
 
 #: src/text.c:705
 #, c-format
 msgid ""
-"\n"
 "Please, see the CREDITS file.\n"
 "\n"
 msgstr ""
-"\n"
 "Silakan, lihat berkas CREDITS.\n"
 "\n"
 

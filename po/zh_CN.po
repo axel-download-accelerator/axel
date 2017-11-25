@@ -428,34 +428,21 @@ msgstr ""
 "\n"
 "请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
 
-#: src/text.c:696
-#, fuzzy, c-format
-msgid ""
-"\n"
-"Axel version "
-msgstr ""
-"\n"
-"Axel 版本 %s (%s)\n"
-
-#: src/text.c:704
+#: src/text.c:701
 #, c-format
-msgid ""
-"\n"
-"                    and others."
-msgstr ""
-"\n"
-"                    及其他人。"
+msgid "Axel version %s (%s)\n"
+msgstr "Axel 版本 %s (%s)\n"
 
-#: src/text.c:705
-#, c-format
+#: src/text.c:709
+msgid "and others."
+msgstr "及其他人。"
+
+#: src/text.c:710
+#, fuzzy
 msgid ""
-"\n"
 "Please, see the CREDITS file.\n"
 "\n"
-msgstr ""
-"\n"
-"请阅读 CREDITS 文件。\n"
-"\n"
+msgstr "请阅读 CREDITS 文件。\n\n"
 
 #: src/ssl.c:92
 #, c-format

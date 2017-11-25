@@ -420,24 +420,17 @@ msgstr ""
 "--version\t\t-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:696
-#, fuzzy, c-format
-msgid ""
-"\n"
-"Axel version "
+#: src/text.c:701
+#, c-format
+msgid "Axel version %s (%s)\n"
 msgstr "Axel, версия %s (%s)\n"
 
-#: src/text.c:704
-#, c-format
-msgid ""
-"\n"
-"                    and others."
+#: src/text.c:709
+msgid "and others."
 msgstr ""
 
-#: src/text.c:705
-#, c-format
+#: src/text.c:710
 msgid ""
-"\n"
 "Please, see the CREDITS file.\n"
 "\n"
 msgstr ""
