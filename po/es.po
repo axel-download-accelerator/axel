@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
 "POT-Creation-Date: 2017-10-22 00:28-0300\n"
-"PO-Revision-Date: 2017-11-23 23:41-0300\n"
+"PO-Revision-Date: 2017-11-24 22:35-0300\n"
 "Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -28,7 +28,7 @@ msgstr "URL inválida"
 
 #: src/axel.c:136
 msgid "Could not parse URL.\n"
-msgstr ""
+msgstr "No se puede analizar la URL.\n"
 
 #: src/axel.c:158
 #, c-format
