@@ -44,6 +44,9 @@
 
 #include "axel.h"
 
+#include <sys/ioctl.h>
+
+
 static void stop(int signal);
 static char *size_human(long long int value);
 static char *time_human(int value);
@@ -99,9 +102,11 @@ main(int argc, char *argv[])
 	char *s;
 
 /* Set up internationalization (i18n) */
+#ifdef ENABLE_NLS
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
+#endif
 
 	if (!conf_init(conf)) {
 		return 1;
@@ -693,16 +698,16 @@ print_help()
 void
 print_version()
 {
-	printf(_("\nAxel version " VERSION " (" ARCH ")\n"));
-	printf("\nCopyright 2001-2007 Wilmer van der Gaast,");
-	printf("\n          2007-2009 Giridhar Appaji Nag,");
-	printf("\n          2008-2010 Philipp Hagemeister,");
-	printf("\n          2015-2017 Joao Eriberto Mota Filho,");
-	printf("\n          2016-2017 Stephen Thirlwall,");
-	printf("\n          2017      Ismael Luceno,");
-	printf("\n          2017      Antonio Quartulli,");
-	printf(_("\n                    and others."));
-	printf(_("\nPlease, see the CREDITS file.\n\n"));
+	printf(_("Axel version %s (%s)\n"), VERSION, ARCH);
+	printf("\nCopyright 2001-2007 Wilmer van der Gaast,\n"
+	       "\t  2007-2009 Giridhar Appaji Nag,\n"
+	       "\t  2008-2010 Philipp Hagemeister,\n"
+	       "\t  2015-2017 Joao Eriberto Mota Filho,\n"
+	       "\t  2016-2017 Stephen Thirlwall,\n"
+	       "\t  2017      Ismael Luceno,\n"
+	       "\t  2017      Antonio Quartulli,\n"
+	       "\t\t    %s\n%s\n\n", _("and others."),
+	       _("Please, see the CREDITS file.\n\n"));
 }
 
 /* Print any message in the axel structure */

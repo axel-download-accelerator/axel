@@ -8,7 +8,6 @@ msgstr ""
 "Project-Id-Version: axel 2.14.1\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"POT-Creation-Date: 2017-09-23 00:31+0800\n"
 "PO-Revision-Date: 2017-09-21 11:41+0800\n"
 "Last-Translator: Nicol Dalla Longa <nicol.dallalonga@gmail.com>\n"
 "Language-Team: Italiano (Italia)\n"
@@ -19,75 +18,80 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.3\n"
 
-#: src/axel.c:89
+#: src/axel.c:90
 msgid "Buffer resized for this speed."
 msgstr "Buffer ridimensionato per questa velocità."
 
-#: src/axel.c:107
+#: src/axel.c:108
 msgid "Invalid URL"
 msgstr "URL non valido"
 
-#: src/axel.c:135
+#: src/axel.c:136
 msgid "Could not parse URL.\n"
 msgstr "Impossibile interpretare l'URL.\n"
 
-#: src/axel.c:157
+#: src/axel.c:158
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "Trovato download incompleto, ignoro l'opzione \"no-clobber\"\n"
 
-#: src/axel.c:160
+#: src/axel.c:161
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "Il file '%s' è già presente; download non effettuato.\n"
 
-#: src/axel.c:191
+#: src/axel.c:192
 #, c-format
 msgid "File size: %lld bytes"
 msgstr "Dimensione file: %lld byte"
 
-#: src/axel.c:220
+#: src/axel.c:195
+#, fuzzy
+msgid "File size: unavailable"
+msgstr "Dimensione file: %lld byte"
+
+#: src/axel.c:224
 #, c-format
 msgid "Opening output file %s"
 msgstr "Sto aprendo il file di output %s"
 
-#: src/axel.c:228
+#: src/axel.c:232
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server non supportato, sto ricominciando da zero con una connessione."
 
-#: src/axel.c:245
+#: src/axel.c:249
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: Errore, file di stato troncato\n"
 
-#: src/axel.c:253
+#: src/axel.c:257
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr ""
 
-#: src/axel.c:265
+#: src/axel.c:269
 #, c-format
 msgid "State file has old format.\n"
 msgstr "Il file di stato utilizza il vecchio formato.\n"
 
-#: src/axel.c:298
+#: src/axel.c:302
 #, c-format
 msgid "State file found: %lld bytes downloaded, %lld to go."
 msgstr "Trovato file di stato: %lld byte scaricati, %lld al termine."
 
-#: src/axel.c:304 src/axel.c:315
+#: src/axel.c:308 src/axel.c:319
 msgid "Error opening local file"
 msgstr "Errore nell'apertura del file locale"
 
-#: src/axel.c:328
+#: src/axel.c:332
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Filesystem/OS scadente.. Raggiro il problema. :-("
 
-#: src/axel.c:342
+#: src/axel.c:346
 msgid "Error creating local file"
 msgstr "Errore nella creazione del file locale"
 
-#: src/axel.c:374
+#: src/axel.c:378
 #, c-format
 msgid ""
 "\n"
@@ -96,54 +100,54 @@ msgstr ""
 "\n"
 "Riattivando la connessione %d\n"
 
-#: src/axel.c:404
+#: src/axel.c:408
 msgid "Starting download"
 msgstr "Inizio download"
 
-#: src/axel.c:415 src/axel.c:598
+#: src/axel.c:419 src/axel.c:602
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "La connessione %i sta scaricando da %s:%i usando l'interfaccia %s"
 
-#: src/axel.c:425 src/axel.c:610
+#: src/axel.c:429 src/axel.c:614
 msgid "pthread error!!!"
 msgstr "Errore pthread!!!"
 
-#: src/axel.c:470
+#: src/axel.c:474
 #, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "Errore durante l'attesa della connessione: %s"
 
-#: src/axel.c:502
+#: src/axel.c:506
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Connessione %i scaduta"
 
-#: src/axel.c:515
+#: src/axel.c:519
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Errore nella connessione %i! Connessione terminata"
 
-#: src/axel.c:529
+#: src/axel.c:533
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Connessione %i terminata inaspettatamente"
 
-#: src/axel.c:533 src/axel.c:550
+#: src/axel.c:537 src/axel.c:554
 #, c-format
 msgid "Connection %i finished"
 msgstr "Connessione %i terminata"
 
-#: src/axel.c:560
+#: src/axel.c:564
 msgid "Write error!"
 msgstr "Errore di scrittura!"
 
-#: src/axel.c:660
+#: src/axel.c:664
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "Errore nell'applicazione del limite di velocità: %s"
 
-#: src/axel.c:836 src/axel.c:847
+#: src/axel.c:840 src/axel.c:851
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr "Scaricando %lld-%lld usando la conn. %i\n"
@@ -168,17 +172,17 @@ msgstr ""
 msgid "Error in %s line %i.\n"
 msgstr "Errore in %s linea %i.\n"
 
-#: src/conf.c:261
+#: src/conf.c:262
 #, fuzzy, c-format
 msgid "HOME env variable too long\n"
 msgstr "Nome del file troppo lungo!\n"
 
-#: src/conn.c:366 src/ftp.c:131
+#: src/conn.c:369 src/ftp.c:131
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Troppi reindirizzamenti.\n"
 
-#: src/conn.c:389
+#: src/conn.c:399
 #, c-format
 msgid "Unknown HTTP error.\n"
 msgstr "Errore HTTP sconosciuto.\n"
@@ -208,7 +212,7 @@ msgstr "Errore nella connessione passiva dati.\n"
 msgid "Error writing command %s\n"
 msgstr "Errore nella scrittura del comando %s\n"
 
-#: src/ftp.c:318 src/http.c:226
+#: src/ftp.c:318 src/http.c:227
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Connessione terminata.\n"
@@ -218,76 +222,76 @@ msgstr "Connessione terminata.\n"
 msgid "Invalid proxy string: %s\n"
 msgstr "Stringa proxy non valida: %s\n"
 
-#: src/http.c:214
+#: src/http.c:215
 #, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Connessione terminata durante la scrittura.\n"
 
-#: src/text.c:196
+#: src/text.c:204
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Impossibile reindirizzare stdout a /dev/null.\n"
 
-#: src/text.c:236
+#: src/text.c:247
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "Errore nella lettura dell'URL (Troppo lungo?).\n"
 
-#: src/text.c:244
+#: src/text.c:255
 #, c-format
 msgid "Can't handle URLs of length over %d\n"
 msgstr "Impossibile gestire URL con lunghezza superiore a %d\n"
 
-#: src/text.c:250
+#: src/text.c:261
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Inizializzazione download: %s\n"
 
-#: src/text.c:259
+#: src/text.c:270
 #, c-format
 msgid "Doing search...\n"
 msgstr "Ricerca...\n"
 
-#: src/text.c:262
+#: src/text.c:273
 #, c-format
 msgid "File not found\n"
 msgstr "File non trovato\n"
 
-#: src/text.c:266
+#: src/text.c:277
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Testando le velocità, potrebbe volerci un po'...\n"
 
-#: src/text.c:269
+#: src/text.c:280
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "Test delle velocità fallito\n"
 
-#: src/text.c:275
+#: src/text.c:286
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i server utilizzabili trovati, userò questi URL:\n"
 
-#: src/text.c:278
+#: src/text.c:289
 msgid "Speed"
 msgstr "Velocità"
 
-#: src/text.c:327
+#: src/text.c:338
 #, c-format
 msgid "Filename too long!\n"
 msgstr "Nome del file troppo lungo!\n"
 
-#: src/text.c:339
+#: src/text.c:350
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Nessun file di stato, non posso riprendere!\n"
 
-#: src/text.c:343
+#: src/text.c:354
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "Trovato file di stato, ma dati non scaricati. Riparto da zero.\n"
 
-#: src/text.c:456
+#: src/text.c:469
 #, c-format
 msgid ""
 "\n"
@@ -296,53 +300,53 @@ msgstr ""
 "\n"
 "Scaricato %s in %s. (%.2f KB/s)\n"
 
-#: src/text.c:483
+#: src/text.c:497
 #, c-format
 msgid "%lld byte"
 msgstr "%lld byte"
 
-#: src/text.c:485
+#: src/text.c:499
 #, c-format
 msgid "%.1f Kilobyte"
 msgstr "%.1f Kilobyte"
 
-#: src/text.c:487
+#: src/text.c:501
 #, c-format
 msgid "%.1f Megabyte"
 msgstr "%.1f Megabyte"
 
-#: src/text.c:490
+#: src/text.c:504
 #, c-format
 msgid "%.1f Gigabyte"
 msgstr "%.1f Gigabyte"
 
-#: src/text.c:501
+#: src/text.c:515
 #, c-format
 msgid "%i second"
 msgstr "%i secondo"
 
-#: src/text.c:503
+#: src/text.c:517
 #, c-format
 msgid "%i seconds"
 msgstr "%i secondi"
 
-#: src/text.c:505
+#: src/text.c:519
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i minuto/i"
 
-#: src/text.c:507
+#: src/text.c:521
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i ora/e"
 
-#: src/text.c:543
+#: src/text.c:587
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr ""
 "Impossibile impostare barra di progresso alternativo. Disattivazione.\n"
 
-#: src/text.c:626
+#: src/text.c:651
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -350,7 +354,7 @@ msgid ""
 "-s x\tSpecify maximum speed (bytes per second)\n"
 "-n x\tSpecify maximum number of connections\n"
 "-o f\tSpecify local output file\n"
-"-S [n]\tSearch for mirrors and download from n servers\n"
+"-S[n]\tSearch for mirrors and download from n servers\n"
 "-4\tUse the IPv4 protocol\n"
 "-6\tUse the IPv6 protocol\n"
 "-H x\tAdd HTTP header string\n"
@@ -362,6 +366,7 @@ msgid ""
 "-v\tMore status information\n"
 "-a\tAlternate progress indicator\n"
 "-h\tThis information\n"
+"-T x\tSet I/O and connection timeout\n"
 "-V\tVersion information\n"
 "\n"
 "Visit https://github.com/axel-download-accelerator/axel/issues\n"
@@ -387,7 +392,7 @@ msgstr ""
 "\n"
 "Visita il sito https://github.com/axel-download-accelerator/axel/issues\n"
 
-#: src/text.c:647
+#: src/text.c:673
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -396,7 +401,7 @@ msgid ""
 "--num-connections=x\t-n x\tSpecify maximum number of connections\n"
 "--max-redirect=x\t\tSpecify maximum number of redirections\n"
 "--output=f\t\t-o f\tSpecify local output file\n"
-"--search[=n]\t\t-S [n]\tSearch for mirrors and download from n servers\n"
+"--search[=n]\t\t-S[n]\tSearch for mirrors and download from n servers\n"
 "--ipv4\t\t\t-4\tUse the IPv4 protocol\n"
 "--ipv6\t\t\t-6\tUse the IPv6 protocol\n"
 "--header=x\t\t-H x\tAdd HTTP header string\n"
@@ -408,6 +413,7 @@ msgid ""
 "--verbose\t\t-v\tMore status information\n"
 "--alternate\t\t-a\tAlternate progress indicator\n"
 "--help\t\t\t-h\tThis information\n"
+"--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
 "--version\t\t-V\tVersion information\n"
 "\n"
 "Visit https://github.com/axel-download-accelerator/axel/issues to report "
@@ -436,32 +442,20 @@ msgstr ""
 "Visita il sito https://github.com/axel-download-accelerator/axel/issues per "
 "riportare bug\n"
 
-#: src/text.c:674
+#: src/text.c:701
 #, c-format
-msgid ""
-"\n"
-"Axel version "
-msgstr ""
-"\n"
-"Axel versione"
+msgid "Axel version %s (%s)\n"
+msgstr "Axel versione %s (%s)\n"
 
-#: src/text.c:682
-#, c-format
-msgid ""
-"\n"
-"                    and others."
-msgstr ""
-"\n"
-"                    e altri."
+#: src/text.c:709
+msgid "and others."
+msgstr "e altri."
 
-#: src/text.c:683
-#, c-format
+#: src/text.c:710
 msgid ""
-"\n"
 "Please, see the CREDITS file.\n"
 "\n"
 msgstr ""
-"\n"
 "Per favore, vedere il file CREDITS.\n"
 "\n"
 
@@ -470,7 +464,7 @@ msgstr ""
 msgid "SSL error: %s\n"
 msgstr "Errore SSL: %s\n"
 
-#: src/tcp.c:46
+#: src/tcp.c:54
 #, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
 msgstr "Impossibile connettersi al server %s:%i: %s\n"

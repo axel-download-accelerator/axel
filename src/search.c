@@ -41,6 +41,7 @@
 /* filesearching.com searcher */
 
 #include "axel.h"
+#include "sleep.h"
 
 static char *axel_strrstr(char *haystack, char *needle);
 static void *search_speedtest(void *r);
@@ -203,7 +204,7 @@ search_getspeeds(search_t *results, int count)
 		}
 	}
 
-	for (int running = 0; left > 0; axel_nanosleep(delay)) {
+	for (int running = 0; left > 0; axel_sleep(delay)) {
 		for (int i = 0; i < count; i++) {
 			switch (results[i].speed) {
 			case SPEED_ACTIVE:

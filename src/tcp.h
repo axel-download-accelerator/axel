@@ -40,6 +40,10 @@
 #ifndef AXEL_TCP_H
 #define AXEL_TCP_H
 
+#ifdef HAVE_SSL
+#include <openssl/ssl.h>
+#endif
+
 typedef struct {
 	int fd;
 	sa_family_t ai_family;

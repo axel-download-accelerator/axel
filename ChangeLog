@@ -1,3 +1,55 @@
+Version: 2.16, 2017-11-25
+
+  [ Ismael Luceno ]
+
+* Buildsystem fixes and improvements
+* Fixed bug that produces empty files with -q/--quiet
+* Fixed build with --disable-nls
+* Fixed formatting of the version/copyright message
+* Header files reorganization
+* Spanish translation
+* Style fixes
+* Updated Portuguese translation
+
+
+
+Version: 2.15, 2017-10-11
+
+  [ Antonio Quartulli ]
+
+* Added a 65K limit on the number of connections
+* Fixed progress report when total size isn't available
+* Fixed size sanity check in HTTP Resp Header
+* Fixes to the usage/help text
+* Lots of security bugfixes
+* Made dependency on axel->conn in axel_close() explicit
+* Respect file size even when range request is not supported
+* Return error if socket can't be created
+
+  [ Casa Taloyum ]
+
+* Added some missing Simplified Chinese translation strings
+
+  [ Ismael Luceno ]
+
+* Added "Accept" HTTP header to the requests, required by some sites
+* Code cleanups and small bugfixes
+* Fixed User-Agent, now it's "Axel/{VERSION} ({ARCH})"
+* Fixed a race condition in the speed testing code
+* Implemented connection and I/O timeouts
+* Improvements to the buildsystem and scripts
+* Updates to the documentation
+
+  [ Mahyuddin ]
+
+* Indonesian translation
+
+  [Nicol Dalla Longa]
+
+* Italian translation
+
+
+
 Version 2.14.1, 2017-09-16
 
   [ Antonio Quartulli ]

@@ -50,7 +50,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
-#include <netdb.h>
 #ifndef	NOGETOPTLONG
 #define _GNU_SOURCE
 #include <getopt.h>
@@ -64,24 +63,21 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <sys/types.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
 #include <netinet/in_systm.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
-#ifdef HAVE_SSL
-#include <openssl/ssl.h>
-#endif
 
 /* Internationalization */
-#define PACKAGE			"axel"
+#ifdef ENABLE_NLS
 #define _(x)			gettext(x)
 #include <libintl.h>
 #include <locale.h>
+#else
+#define _(x)			(x)
+#endif
 
 /* Compiled-in settings */
 #define MAX_STRING		1024
@@ -132,13 +128,5 @@ void axel_close(axel_t *axel);
 void print_messages(axel_t *axel);
 
 double gettime();
-
-static inline int
-axel_nanosleep(struct timespec delay)
-{
-	int res;
-	while ((res = nanosleep(&delay, &delay)) && errno == EINTR) ;
-	return res;
-}
 
 #endif				/* AXEL_AXEL_H */

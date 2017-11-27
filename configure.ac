@@ -26,16 +26,56 @@ if test "x$ac_cv_prog_cc_c99" = "xno"; then
     AC_MSG_ERROR([C99 compiler required])
 fi
 
+AC_PROG_INSTALL
+
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([arpa/inet.h fcntl.h libintl.h limits.h locale.h netdb.h netinet/in.h stdlib.h string.h sys/ioctl.h sys/socket.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([ \
+	arpa/inet.h \
+	fcntl.h \
+	libintl.h \
+	limits.h \
+	locale.h \
+	netdb.h \
+	netinet/in.h \
+	stdlib.h \
+	string.h \
+	sys/ioctl.h \
+	sys/socket.h \
+	sys/time.h \
+	unistd.h \
+])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_HEADER_STDBOOL
+AC_C_INLINE
+AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+AC_TYPE_UINT16_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([malloc realloc gettimeofday inet_ntoa memset select setlocale socket strncasecmp strchr strrchr strstr])
+AC_CHECK_FUNCS([ \
+	getaddrinfo \
+	gettimeofday \
+	inet_ntoa \
+	malloc \
+	memset \
+	nanosleep \
+	realloc \
+	select \
+	setlocale \
+	socket \
+	strcasecmp \
+	strchr \
+	strerror \
+	strncasecmp \
+	strpbrk \
+	strrchr \
+	strstr \
+	strtoul \
+])
 
 # Optional (but included-by-default) ssl support
 AC_ARG_WITH([ssl],
@@ -98,5 +138,9 @@ AC_DEFINE_UNQUOTED([_THREAD_SAFE])
 
 #####################
 
-AC_CONFIG_FILES([Makefile src/Makefile po/Makefile.in])
+AC_CONFIG_FILES([
+	Makefile
+	src/Makefile
+	po/Makefile.in
+])
 AC_OUTPUT

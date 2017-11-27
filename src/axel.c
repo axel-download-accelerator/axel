@@ -46,6 +46,7 @@
 
 #include "axel.h"
 #include "assert.h"
+#include "sleep.h"
 
 /* Axel */
 static void save_state(axel_t *axel);
@@ -179,15 +180,15 @@ axel_new(conf_t *conf, int count, const void *url)
 			axel->ready = -1;
 			return axel;
 		}
-	}
-	/* re-init in case of protocol change. This can happen only once
-	 * because the FTP protocol can't redirect back to HTTP */
-	while (status == -1);
+	} while (status == -1); /* re-init in case of protocol change. This can
+				 * happen only once because the FTP protocol
+				 * can't redirect back to HTTP */
 
 	s = conn_url(axel->conn);
 	strncpy(axel->url->text, s, sizeof(axel->url->text) - 1);
+	axel->size = axel->conn[0].size;
 	if (axel->conf->verbose > 0) {
-		if ((axel->size = axel->conn[0].size) != LLONG_MAX) {
+		if (axel->size != LLONG_MAX) {
 			axel_message(axel, _("File size: %lld bytes"),
 				     axel->size);
 		} else {
@@ -468,7 +469,7 @@ axel_do(axel_t *axel)
 	}
 	if (hifd == 0) {
 		/* No connections yet. Wait... */
-		if (axel_nanosleep(delay) < 0) {
+		if (axel_sleep(delay) < 0) {
 			axel_message(axel,
 				     _("Error while waiting for connection: %s"),
 				     strerror(errno));
@@ -658,7 +659,7 @@ axel_do(axel_t *axel)
 			axel->delay_time.tv_sec = 0;
 			axel->delay_time.tv_nsec = 0;
 		}
-		if (axel_nanosleep(axel->delay_time) < 0) {
+		if (axel_sleep(axel->delay_time) < 0) {
 			axel_message(axel,
 				     _("Error while enforcing throttling: %s"),
 				     strerror(errno));
