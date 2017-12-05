@@ -7,6 +7,7 @@
 # This file is under same license of Axel
 
 AC_PREREQ([2.69])
+PKG_PREREQ([0.29])
 
 AXEL_PKG([axel], [https://github.com/axel-download-accelerator/axel/issues])
 AXEL_VER_READ([VERSION])
@@ -16,6 +17,7 @@ AC_CONFIG_SRCDIR([src/conf.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
+PKG_PROG_PKG_CONFIG
 
 AM_SILENT_RULES([yes])
 
@@ -82,13 +84,8 @@ AC_ARG_WITH([ssl],
     AC_HELP_STRING([--without-ssl],[disable TLS support]), [], [with_ssl=yes])
 
 AS_IF([test "x$with_ssl" != xno], [
+    PKG_CHECK_MODULES([SSL], [openssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
-    AC_SEARCH_LIBS([SSL_new], [ssl], [], [
-        AC_MSG_ERROR([libssl not found])
-    ])
-    AC_SEARCH_LIBS([ERR_get_error], [crypto], [], [
-        AC_MSG_ERROR([libcrypto not found])
-    ])
 ], AC_MSG_NOTICE([SSL support disabled]))
 
 # Add Gettext
