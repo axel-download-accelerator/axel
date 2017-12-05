@@ -24,9 +24,9 @@ AM_SILENT_RULES([yes])
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_CC_C99
-if test "x$ac_cv_prog_cc_c99" = "xno"; then
+AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
     AC_MSG_ERROR([C99 compiler required])
-fi
+])
 
 AC_PROG_INSTALL
 
