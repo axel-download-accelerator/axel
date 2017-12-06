@@ -50,11 +50,14 @@ see AUTHORS and CREDITS files in source code.
 
 ## 3. Building from source ##
 
-Run `./autogen.sh` to create the configure script, then proceed with the
-instructions in [INSTALL](INSTALL). The basic actions for most users,
-after ./autogen.sh, is running ./configure, make and make install.
+Release tarballs contain a pre-generated buildsystem, but if you need to
+edit/patch it, or you're building from a copy of the repository, then you may
+need to run `autoreconf -i` to generate it. Further instructions are provided in
+the [INSTALL](INSTALL) file. The basic actions for most users are:
 
-To build without SSL/TLS support, use ./configure --without-ssl
+    ./configure && make && make install.
+
+To build without SSL/TLS support, use `./configure --without-ssl`
 
 ## 4. Install on macOS with Homebrew ##
 
