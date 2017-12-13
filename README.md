@@ -50,6 +50,15 @@ see AUTHORS and CREDITS files in source code.
 
 ## 3. Building from source ##
 
+Build-time dependencies:
+
+* pkg-config
+
+Optional dependencies:
+
+* libssl (OpenSSL, LibreSSL or compatible) -- for SSL/TLS support.
+
+
 Release tarballs contain a pre-generated buildsystem, but if you need to
 edit/patch it, or you're building from a copy of the repository, then you may
 need to run `autoreconf -i` to generate it. Further instructions are provided in
