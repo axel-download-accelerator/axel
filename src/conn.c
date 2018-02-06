@@ -341,14 +341,14 @@ conn_info(conn_t *conn)
 			if ((t = http_header(conn->http, "location:")) == NULL)
 				return 0;
 			sscanf(t, "%1000s", s);
-			if (strstr(s, "://") == NULL) {
-				sprintf(conn->http->headers, "%s%s",
-					conn_url(conn), s);
+			if (strstr(s, "://") != NULL) {
+				sprintf(conn->http->headers, "%s", s);
 				strncpy(s, conn->http->headers, sizeof(s) - 1);
 				s[sizeof(s) - 1] = '\0';
 			} else if (s[0] == '/') {
-				sprintf(conn->http->headers, "http://%s:%i%s",
-					conn->host, conn->port, s);
+				sprintf(conn->http->headers, "%s%s:%i%s",
+					scheme_from_proto(conn->proto), 
+						conn->host, conn->port, s);
 				strncpy(s, conn->http->headers, sizeof(s) - 1);
 				s[sizeof(s) - 1] = '\0';
 			}
