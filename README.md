@@ -53,6 +53,8 @@ see AUTHORS and CREDITS files in source code.
 Build-time dependencies:
 
 * pkg-config
+* gettext
+* autopoint
 
 Optional dependencies:
 
@@ -64,9 +66,16 @@ edit/patch it, or you're building from a copy of the repository, then you may
 need to run `autoreconf -i` to generate it. Further instructions are provided in
 the [INSTALL](INSTALL) file. The basic actions for most users are:
 
-    ./configure && make && make install.
+    ./configure && make && make install
 
 To build without SSL/TLS support, use `./configure --without-ssl`
+
+### Building on Ubuntu 16.04 ###
+
+    $ sudo apt-get install autoconf pkg-config gettext autopoint libssl-dev
+    $ autoreconf -fiv
+    $ sudo su
+    # ./configure && make && make install
 
 ## 4. Install on macOS with Homebrew ##
 
