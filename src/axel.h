@@ -68,6 +68,7 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
+#include "android-compat.h"
 
 /* Internationalization */
 #ifdef ENABLE_NLS
