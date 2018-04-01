@@ -143,12 +143,14 @@ axel_new(conf_t *conf, int count, const void *url)
 
 	strncpy(axel->filename, axel->conn[0].file, sizeof(axel->filename) - 1);
 	http_decode(axel->filename);
-	if (*axel->filename == 0)	/* Index page == no fn */
-		strncpy(axel->filename, axel->conf->default_filename,
-			sizeof(axel->filename) - 1);
+
 	if ((s = strchr(axel->filename, '?')) != NULL &&
 	    axel->conf->strip_cgi_parameters)
 		*s = 0;		/* Get rid of CGI parameters */
+
+	if (*axel->filename == 0)	/* Index page == no fn */
+		strncpy(axel->filename, axel->conf->default_filename,
+			sizeof(axel->filename) - 1);
 
 	if (axel->conf->no_clobber && access(axel->filename, F_OK) == 0) {
 		char stfile[MAX_STRING + 3];
