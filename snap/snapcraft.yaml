@@ -1,0 +1,27 @@
+name: axel
+version: '2.16.1'
+version-script: cat VERSION | cut -d ' ' -f1
+summary: Light command line download accelerator
+description: |
+  Light command line download accelerator
+
+grade: devel
+confinement: strict
+
+parts:
+  axel:
+    plugin: autotools
+    source: .
+    build-packages:
+      - autoconf
+      - pkg-config
+      - gettext
+      - autopoint
+      - libssl-dev
+
+apps:
+  axel:
+    command: axel
+    plugs:
+      - network
+      - home
