@@ -314,8 +314,6 @@ http_filename(const http_t *conn, char *filename)
 		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\']%254[^\n\"\' ]",
 		       filename);
 
-		http_decode(filename);
-
 		/* Replace common invalid characters in filename
 		   https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
 		char *i = filename;
