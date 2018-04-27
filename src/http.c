@@ -311,7 +311,7 @@ http_filename(const http_t *conn, char *filename)
 {
 	const char *h;
 	if ((h = http_header(conn, "Content-Disposition:")) != NULL) {
-		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\']%254[^\n\"\' ]",
+		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\' ]",
 		       filename);
 
 		/* Replace common invalid characters in filename
