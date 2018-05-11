@@ -1,27 +1,43 @@
 name: axel
-version: '2.16.1'
-version-script: cat VERSION | cut -d ' ' -f1
+version: 'latest'
+version-script: cat $SNAPCRAFT_STAGE/VERSION | cut -d ' ' -f1
 summary: Light command line download accelerator
 description: |
   Light command line download accelerator
-
-grade: stable
+grade: devel
 confinement: strict
 
 parts:
   axel:
-    plugin: autotools
-    source: .
+    plugin: nil
+    override-build: |
+      snapcraftctl build
+      URL=$(curl https://api.github.com/repos/axel-download-accelerator/axel/releases/latest -s | jq .zipball_url -r)
+      wget $URL -O release.zip
+      unzip release.zip -d release
+      cd release/*
+      autoreconf -fiv
+      ./configure --prefix=$PWD/build_dir; make; make install build_dir
+      mv build_dir/* ${SNAPCRAFT_PART_INSTALL}
+      mv VERSION $SNAPCRAFT_STAGE/
+      cd ../../
+      rm -r release.zip release
     build-packages:
+      - curl
+      - jq
+      - wget
+      - unzip
       - autoconf
       - pkg-config
       - gettext
       - autopoint
       - libssl-dev
+    stage-packages:
+      - libssl1.1
 
 apps:
   axel:
-    command: axel
+    command: bin/axel
     plugs:
       - network
       - home
