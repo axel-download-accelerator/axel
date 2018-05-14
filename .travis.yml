@@ -15,6 +15,7 @@ addons:
       - autopoint
       - libssl-dev
       - clang
+      - txt2man
 
 env:
   global:
