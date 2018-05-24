@@ -130,8 +130,14 @@ main(int argc, char *argv[])
 				sizeof(conf->user_agent) - 1);
 			break;
 		case 'H':
-			strncpy(conf->add_header[cur_head++], optarg,
-				sizeof(conf->add_header[cur_head - 1]) - 1);
+            /*  support -H 'User-Agent: XX' while --user-agent/-U is not presented */
+            if (!strncmp(optarg, "User-Agent: ", sizeof("User-Agent: ") - 1)) {
+			    strncpy(conf->user_agent, optarg + sizeof("User-Agent: ") - 1,
+				    sizeof(conf->user_agent) - 1);
+            } else {
+			    strncpy(conf->add_header[cur_head++], optarg,
+			    	sizeof(conf->add_header[cur_head - 1]) - 1);
+			}
 			break;
 		case 's':
 			if (!sscanf(optarg, "%i", &conf->max_speed)) {
