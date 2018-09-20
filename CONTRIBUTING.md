@@ -6,9 +6,9 @@ If you are interested in contribute to axel development, please, follow
 these steps:
 
 1. Send a patch that fix an issue or that implement a new feature.
-   Alternatively, you can do a 'pull request'[1] in GitHub.
+   Alternatively, you can do a 'pull request'[^1] in GitHub.
 
-   [1] https://help.github.com/articles/using-pull-requests
+[^1]: https://help.github.com/articles/using-pull-requests
 
 2. Ask for join to the Axel project in GitHub, if you want to work
    officially. Note that this second step is not compulsory. However,
