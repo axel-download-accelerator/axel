@@ -69,19 +69,23 @@ conn_set(conn_t *conn, const char *set_url)
 		} else if (strncmp(set_url, "http", proto_len) == 0) {
 			conn->proto = PROTO_HTTP;
 			conn->port = PROTO_HTTP_PORT;
-		}
-#ifdef HAVE_SSL
-		else if (strncmp(set_url, "ftps", proto_len) == 0) {
+		} else if (strncmp(set_url, "ftps", proto_len) == 0) {
 			conn->proto = PROTO_FTPS;
 			conn->port = PROTO_FTPS_PORT;
 		} else if (strncmp(set_url, "https", proto_len) == 0) {
 			conn->proto = PROTO_HTTPS;
 			conn->port = PROTO_HTTPS_PORT;
-		}
-#endif				/* HAVE_SSL */
-		else {
+		} else {
+			sprintf(conn->message, _("Unsupported protocol\n"));
 			return 0;
 		}
+#ifndef HAVE_SSL
+               if (PROTO_IS_SECURE(conn->proto)) {
+                       sprintf(conn->message,
+                               _("Secure protocol is not supported\n"));
+                       return 0;
+               }
+#endif
 		strncpy(url, i + 3, sizeof(url) - 1);
 		url[sizeof(url) - 1] = '\0';
 	}
@@ -350,7 +354,9 @@ conn_info(conn_t *conn)
 				strncpy(s, conn->http->headers, sizeof(s) - 1);
 			}
 			s[sizeof(s) - 1] = '\0';
-			conn_set(conn, s);
+			if (!conn_set(conn, s)) {
+				return 0;
+			}
 
 			/* check if the download has been redirected to FTP and
 			 * report it back to the caller */
