@@ -47,6 +47,15 @@
 #include <netdb.h>
 #include <sys/ioctl.h>
 
+/*
+ * Check if the given hostname is ipv6 literal
+ * Returns 1 if true and 0 if false
+ */
+int is_ipv6_addr(const char *hostname) {
+	char buf[16]; /* Max buff size needed for inet_pton() */
+
+	return hostname && 1 == inet_pton(AF_INET6, hostname, buf);
+}
 
 static void
 tcp_error(char *buffer, char *hostname, int port, const char *reason)
