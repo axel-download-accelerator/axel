@@ -95,7 +95,6 @@ conn_set(conn_t *conn, const char *set_url)
 		if (conn->proto == PROTO_HTTP || conn->proto == PROTO_HTTPS)
 			http_encode(conn->dir);
 	}
-	strncpy(conn->host, url, sizeof(conn->host) - 1);
 	j = strchr(conn->dir, '?');
 	if (j != NULL)
 		*j = 0;
@@ -114,11 +113,11 @@ conn_set(conn_t *conn, const char *set_url)
 	}
 
 	/* Check for username in host field */
-	if (strrchr(conn->host, '@') != NULL) {
-		strncpy(conn->user, conn->host, sizeof(conn->user) - 1);
+	if (strrchr(url, '@') != NULL) {
+		strncpy(conn->user, url, sizeof(conn->user) - 1);
 		i = strrchr(conn->user, '@');
 		*i = 0;
-		strncpy(conn->host, i + 1, sizeof(conn->host) - 1);
+		strncpy(url, i + 1, sizeof(url) - 1);
 		*conn->pass = 0;
 	} else {
 		/* If not: Fill in defaults */
@@ -137,10 +136,28 @@ conn_set(conn_t *conn, const char *set_url)
 		*i = 0;
 		strncpy(conn->pass, i + 1, sizeof(conn->pass) - 1);
 	}
+
+	// Look for IPv6 literal hostname
+	if (*url == '[') {
+		strncpy(conn->host, url + 1, sizeof(conn->host) - 1);
+		if ((i = strrchr(conn->host, ']')) != NULL) {
+			*i++ = 0;
+		} else {
+			return 0;
+		}
+	} else {
+		strncpy(conn->host, url, sizeof(conn->host) - 1);
+		i = conn->host;
+		while (*i && *i != ':') {
+			i++;
+		}
+	}
+
 	/* Port number? */
-	if ((i = strchr(conn->host, ':')) != NULL) {
+	if (*i == ':') {
 		*i = 0;
 		sscanf(i + 1, "%i", &conn->port);
+		i = conn->host;
 	}
 
 	return conn->port > 0;
@@ -166,14 +183,23 @@ scheme_from_proto(int proto)
 char *
 conn_url(conn_t *conn)
 {
+	char * prefix = "";
+	char * postfix = "";
+
 	strcpy(string, scheme_from_proto(conn->proto));
 
 	if (*conn->user != 0 && strcmp(conn->user, "anonymous") != 0)
 		sprintf(string + strlen(string), "%s:%s@",
 			conn->user, conn->pass);
 
-	sprintf(string + strlen(string), "%s:%i%s%s",
-		conn->host, conn->port, conn->dir, conn->file);
+	if (is_ipv6_addr(conn->host)) {
+		prefix = "[";
+		postfix = "]";
+	}
+
+	sprintf(string + strlen(string), "%s%s%s:%i%s%s",
+		prefix, conn->host, postfix, conn->port,
+			conn->dir, conn->file);
 
 	return string;
 }

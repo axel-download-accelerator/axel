@@ -144,21 +144,30 @@ http_disconnect(http_t *conn)
 void
 http_get(http_t *conn, char *lurl)
 {
+	char * prefix = "";
+	char * postfix = "";
+	// If host is ipv6 literal add square brackets
+	if (is_ipv6_addr(conn->host)) {
+		prefix = "[";
+		postfix = "]";
+	}
+
 	*conn->request = 0;
 	if (conn->proxy) {
 		const char *proto = scheme_from_proto(conn->proto);
-		http_addheader(conn, "GET %s%s%s HTTP/1.0", proto, conn->host,
-			       lurl);
+		http_addheader(conn, "GET %s%s%s%s%s HTTP/1.0", proto,
+					prefix, conn->host, postfix, lurl);
 	} else {
 		http_addheader(conn, "GET %s HTTP/1.0", lurl);
 		if ((conn->proto == PROTO_HTTP &&
 		     conn->port != PROTO_HTTP_PORT) ||
 		    (conn->proto == PROTO_HTTPS &&
 		     conn->port != PROTO_HTTPS_PORT))
-			http_addheader(conn, "Host: %s:%i", conn->host,
-				       conn->port);
+			http_addheader(conn, "Host: %s%s%s:%i", prefix,
+				       conn->host, postfix, conn->port);
 		else
-			http_addheader(conn, "Host: %s", conn->host);
+			http_addheader(conn, "Host: %s%s%s", prefix,
+					conn->host, postfix);
 	}
 	if (*conn->auth)
 		http_addheader(conn, "Authorization: Basic %s", conn->auth);
