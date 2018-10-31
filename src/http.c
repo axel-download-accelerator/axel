@@ -46,6 +46,15 @@
 
 #include "axel.h"
 
+inline static int
+is_default_port(int proto, int port)
+{
+	return ((proto == PROTO_HTTP &&
+		port == PROTO_HTTP_PORT) ||
+		(proto == PROTO_HTTPS &&
+		port == PROTO_HTTPS_PORT));
+}
+
 inline static char
 chain_next(const char ***p)
 {
@@ -155,19 +164,23 @@ http_get(http_t *conn, char *lurl)
 	*conn->request = 0;
 	if (conn->proxy) {
 		const char *proto = scheme_from_proto(conn->proto);
-		http_addheader(conn, "GET %s%s%s%s%s HTTP/1.0", proto,
+		if (is_default_port(conn->proto, conn->port)) {
+			http_addheader(conn, "GET %s%s%s%s%s HTTP/1.0", proto,
 					prefix, conn->host, postfix, lurl);
+		} else {
+			http_addheader(conn, "GET %s%s%s%s:%i%s HTTP/1.0",
+					proto, prefix, conn->host, postfix,
+					conn->port, lurl);
+		}
 	} else {
 		http_addheader(conn, "GET %s HTTP/1.0", lurl);
-		if ((conn->proto == PROTO_HTTP &&
-		     conn->port != PROTO_HTTP_PORT) ||
-		    (conn->proto == PROTO_HTTPS &&
-		     conn->port != PROTO_HTTPS_PORT))
-			http_addheader(conn, "Host: %s%s%s:%i", prefix,
-				       conn->host, postfix, conn->port);
-		else
+		if (is_default_port(conn->proto, conn->port)) {
 			http_addheader(conn, "Host: %s%s%s", prefix,
 					conn->host, postfix);
+		} else {
+			http_addheader(conn, "Host: %s%s%s:%i", prefix,
+					conn->host, postfix, conn->port);
+		}
 	}
 	if (*conn->auth)
 		http_addheader(conn, "Authorization: Basic %s", conn->auth);
