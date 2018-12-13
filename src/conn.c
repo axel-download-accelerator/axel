@@ -265,13 +265,20 @@ conn_setup(conn_t *conn)
 	} else {
 		char s[MAX_STRING * 2];
 		int i;
+        bool ignore_ua_arg = false;   /* ignore when -H/--header start with 
+                                        "User-Agent:" (case insensitive) */ 
 
 		snprintf(s, sizeof(s), "%s%s", conn->dir, conn->file);
 		conn->http->firstbyte = conn->currentbyte;
 		conn->http->lastbyte = conn->lastbyte;
 		http_get(conn->http, s);
-		http_addheader(conn->http, "User-Agent: %s",
-			       conn->conf->user_agent);
+		for (i = 0; i < conn->conf->add_header_count; i++)
+            if (strncasecmp(conn->conf->add_header[i], 
+                        "User-Agent:", sizeof("User-Agent:")-1)==0)
+                ignore_ua_arg = true;
+        if (!ignore_ua_arg)
+		    http_addheader(conn->http, "User-Agent: %s", 
+                    conn->conf->user_agent);
 		for (i = 0; i < conn->conf->add_header_count; i++)
 			http_addheader(conn->http, "%s",
 				       conn->conf->add_header[i]);
