@@ -830,25 +830,30 @@ axel_message(axel_t *axel, char *format, ...)
 }
 
 /* Divide the file and set the locations for each connection */
-static void
-axel_divide(axel_t *axel)
+static void 
+axel_divide( axel_t *axel )
 {
-	int i;
+    int i, packet_size, residue;
 
-	axel->conn[0].currentbyte = 0;
-	axel->conn[0].lastbyte = axel->size / axel->conf->num_connections - 1;
-	for (i = 1; i < axel->conf->num_connections; i++) {
+    if (axel->conf->num_connections > axel->size)
+        axel->conf->num_connections = axel->size;
+
+    packet_size = axel->size / axel->conf->num_connections;
+    residue = axel->size % axel->conf->num_connections;
+
+    axel->conn[0].currentbyte = 0;
+    axel->conn[0].lastbyte = axel->conn[0].currentbyte + packet_size + residue - 1;
+    for( i = 1; i < axel->conf->num_connections; i ++ ) {
 #ifdef DEBUG
 		printf(_("Downloading %lld-%lld using conn. %i\n"),
 		       axel->conn[i - 1].currentbyte,
 		       axel->conn[i - 1].lastbyte, i - 1);
 #endif
-		axel->conn[i].currentbyte = axel->conn[i - 1].lastbyte + 1;
-		axel->conn[i].lastbyte =
-		    axel->conn[i].currentbyte +
-		    axel->size / axel->conf->num_connections;
+        axel->conn[i].currentbyte = axel->conn[i-1].lastbyte + 1;
+        axel->conn[i].lastbyte = 
+			axel->conn[i].currentbyte + 
+			packet_size -1;
 	}
-	axel->conn[axel->conf->num_connections - 1].lastbyte = axel->size - 1;
 #ifdef DEBUG
 	printf(_("Downloading %lld-%lld using conn. %i\n"),
 	       axel->conn[i - 1].currentbyte, axel->conn[i - 1].lastbyte,
