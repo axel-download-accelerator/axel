@@ -835,8 +835,11 @@ axel_divide(axel_t *axel)
 {
 	int i;
 
+    if (axel->conf->num_connections > axel->size)
+        axel->conf->num_connections = axel->size;
+
 	axel->conn[0].currentbyte = 0;
-	axel->conn[0].lastbyte = axel->size / axel->conf->num_connections - 1;
+	axel->conn[0].lastbyte = (axel->size / axel->conf->num_connections) - 1 + (axel->size % axel->conf->num_connections);
 	for (i = 1; i < axel->conf->num_connections; i++) {
 #ifdef DEBUG
 		printf(_("Downloading %lld-%lld using conn. %i\n"),
@@ -846,9 +849,8 @@ axel_divide(axel_t *axel)
 		axel->conn[i].currentbyte = axel->conn[i - 1].lastbyte + 1;
 		axel->conn[i].lastbyte =
 		    axel->conn[i].currentbyte +
-		    axel->size / axel->conf->num_connections;
+		    (axel->size / axel->conf->num_connections) - 1;
 	}
-	axel->conn[axel->conf->num_connections - 1].lastbyte = axel->size - 1;
 #ifdef DEBUG
 	printf(_("Downloading %lld-%lld using conn. %i\n"),
 	       axel->conn[i - 1].currentbyte, axel->conn[i - 1].lastbyte,
