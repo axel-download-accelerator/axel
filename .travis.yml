@@ -42,7 +42,7 @@ matrix:
 install:
   - if [ "$TRAVIS_OS_NAME" = osx ]; then
       HOMEBREW_NO_AUTO_UPDATE=1
-      brew install gettext openssl;
+      brew install gettext openssl pkg-config;
     fi
 
 script:
@@ -52,6 +52,7 @@ script:
       OPENSSL="/usr/local/opt/openssl";
       export LIBRARY_PATH="$GETTEXT/lib"
              CPATH="$OPENSSL/include:$GETTEXT/include"
+             PKG_CONFIG_PATH="$OPENSSL/lib/pkgconfig"
              PATH="$GETTEXT/bin:$PATH";
     fi
   - autoreconf -i &&
