@@ -39,6 +39,9 @@
 /* TCP control file */
 
 #define _POSIX_C_SOURCE 200112L
+#ifdef __APPLE__
+#define _DARWIN_C_SOURCE
+#endif
 
 #include "axel.h"
 
