@@ -56,6 +56,8 @@ static void axel_divide(axel_t *axel);
 
 static char *buffer = NULL;
 
+#define MIN_CHUNK_WORTH (100 * 1024) /* 100 KB */
+
 /* Create a new axel_t structure */
 axel_t *
 axel_new(conf_t *conf, int count, const void *url)
@@ -374,8 +376,8 @@ reactivate_connection(axel_t *axel, int thread)
 			idx = j;
 		}
 	}
-	/* do not reactivate for less than 100KB */
-	if (max_remaining >= 100 * 1024 && idx != -1) {
+	/* do not reactivate unless large enough */
+	if (max_remaining > MIN_CHUNK_WORTH && idx != -1) {
 #ifdef DEBUG
 		printf(_("\nReactivate connection %d\n"), thread);
 #endif
@@ -833,25 +835,37 @@ axel_message(axel_t *axel, char *format, ...)
 static void
 axel_divide(axel_t *axel)
 {
-	int i;
+	/* Optimize the number of connections in case the file is small */
+	size_t maxconns = axel->size / MIN_CHUNK_WORTH;
+	if (maxconns > axel->conf->num_connections)
+		axel->conf->num_connections = maxconns;
 
-	axel->conn[0].currentbyte = 0;
-	axel->conn[0].lastbyte = axel->size / axel->conf->num_connections - 1;
-	for (i = 1; i < axel->conf->num_connections; i++) {
-#ifdef DEBUG
-		printf(_("Downloading %lld-%lld using conn. %i\n"),
-		       axel->conn[i - 1].currentbyte,
-		       axel->conn[i - 1].lastbyte, i - 1);
-#endif
-		axel->conn[i].currentbyte = axel->conn[i - 1].lastbyte + 1;
-		axel->conn[i].lastbyte =
-		    axel->conn[i].currentbyte +
-		    axel->size / axel->conf->num_connections;
+	/* Calculate each segment's size */
+	size_t seg_len = axel->size / axel->conf->num_connections;
+
+	if (!seg_len) {
+		printf(_("Too few bytes remaining, forcing a single connection\n"));
+		axel->conf->num_connections = 1;
+		seg_len = axel->size;
+
+		conn_t *new_conn = realloc(axel->conn, sizeof(*axel->conn));
+		if (new_conn)
+			axel->conn = new_conn;
 	}
-	axel->conn[axel->conf->num_connections - 1].lastbyte = axel->size - 1;
+
+	for (int i = 0; i < axel->conf->num_connections; i++) {
+		axel->conn[i].currentbyte = seg_len * i;
+		axel->conn[i].lastbyte    = seg_len * i + seg_len - 1;
+	}
+
+	/* Last connection downloads remaining bytes */
+	size_t tail = axel->size % seg_len;
+	axel->conn[axel->conf->num_connections - 1].lastbyte += tail;
 #ifdef DEBUG
-	printf(_("Downloading %lld-%lld using conn. %i\n"),
-	       axel->conn[i - 1].currentbyte, axel->conn[i - 1].lastbyte,
-	       i - 1);
+	for (int i = 0; i < axel->conf->num_connections; i++) {
+		printf(_("Downloading %lld-%lld using conn. %i\n"),
+		       axel->conn[i].currentbyte,
+		       axel->conn[i].lastbyte, i);
+	}
 #endif
 }
