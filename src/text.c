@@ -548,24 +548,23 @@ print_alternate_output_progress(axel_t *axel, char *progress, int width,
 				long long int done, long long int total,
 				double now)
 {
+	if (!width)
+		width = 1;
+	if (!total)
+		total = 1;
 	for (int i = 0; i < axel->conf->num_connections; i++) {
-		int offset = ((double)(axel->conn[i].currentbyte) / (total + 1)
-			      * (width + 1));
+		int offset = axel->conn[i].currentbyte * width / total;
 
 		if (axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
 			if (now <= axel->conn[i].last_transfer
 				   + axel->conf->connection_timeout / 2) {
-				if (i < 10)
-					progress[offset] = i + '0';
-				else
-					progress[offset] = i - 10 + 'A';
+				progress[offset] = i
+					+ (i < 10 ? '0' : ('A' - 10));
 			} else
 				progress[offset] = '#';
 		}
-		int end = ((double)(axel->conn[i].lastbyte) / (total + 1)
-			   * (width + 1));
-		for (int j = offset + 1; j < end; j++)
-			progress[j] = ' ';
+		memset(progress + offset + 1, ' ',
+		       axel->conn[i].lastbyte * width / total - offset - 1);
 	}
 
 	progress[width] = '\0';
