@@ -72,12 +72,21 @@ typedef struct {
 
 	int add_header_count;
 	char add_header[MAX_ADD_HEADERS][MAX_STRING];
-
-	char user_agent[MAX_STRING];
 } conf_t;
 
 int conf_loadfile(conf_t *conf, char *file);
 int conf_init(conf_t *conf);
 void conf_free(conf_t *conf);
+
+enum {
+	HDR_USER_AGENT,
+	HDR_count_init,
+};
+
+inline static void
+conf_hdr_make(char *dst, const char *k, const char *v)
+{
+	snprintf(dst, sizeof(((conf_t *)0)->add_header[0]), "%s: %s", k, v);
+}
 
 #endif				/* AXEL_CONF_H */

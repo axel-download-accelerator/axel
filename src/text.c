@@ -126,12 +126,12 @@ main(int argc, char *argv[])
 
 		switch (option) {
 		case 'U':
-			strncpy(conf->user_agent, optarg,
-				sizeof(conf->user_agent) - 1);
+			conf_hdr_make(conf->add_header[HDR_USER_AGENT],
+				      "User-Agent", optarg);
 			break;
 		case 'H':
 			strncpy(conf->add_header[cur_head++], optarg,
-				sizeof(conf->add_header[cur_head - 1]) - 1);
+				sizeof(conf->add_header[0]) - 1);
 			break;
 		case 's':
 			if (!sscanf(optarg, "%i", &conf->max_speed)) {

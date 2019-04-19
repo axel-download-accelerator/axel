@@ -130,7 +130,6 @@ conf_loadfile(conf_t *conf, char *file)
 			KEY(default_filename)
 			KEY(http_proxy)
 			KEY(no_proxy)
-			KEY(user_agent)
 		else
 			goto num_keys;
 
@@ -185,6 +184,10 @@ conf_loadfile(conf_t *conf, char *file)
 			fprintf(stderr,
 				_("Requested too may connections, max is %i\n"),
 				USHRT_MAX);
+		} else if (!strcmp(key, "user_agent")) {
+			conf_hdr_make(conf->add_header[HDR_USER_AGENT],
+				      "User-Agent", DEFAULT_USER_AGENT);
+			continue;
 		}
 #if 0
 		/* FIXME broken code */
@@ -232,11 +235,12 @@ conf_init(conf_t *conf)
 	conf->search_threads = 3;
 	conf->search_amount = 15;
 	conf->search_top = 3;
-	conf->add_header_count = 0;
 
 	conf->ai_family = AF_UNSPEC;
 
-	strncpy(conf->user_agent, DEFAULT_USER_AGENT, MAX_STRING);
+	conf_hdr_make(conf->add_header[HDR_USER_AGENT],
+		      "User-Agent", DEFAULT_USER_AGENT);
+	conf->add_header_count = HDR_count_init;
 
 	conf->interfaces = malloc(sizeof(if_t));
 	if (!conf->interfaces)
