@@ -50,7 +50,7 @@
 
 static void stop(int signal);
 static char *size_human(char *dst, size_t len, size_t value);
-static char *time_human(int value);
+static char *time_human(char *dst, size_t len, unsigned int value);
 static void print_commas(long long int bytes_done);
 static void print_alternate_output(axel_t *axel);
 static void print_help();
@@ -469,7 +469,7 @@ main(int argc, char *argv[])
 
 	printf(_("\nDownloaded %s in %s. (%.2f KB/s)\n"),
 	       string + MAX_STRING / 2,
-	       time_human(gettime() - axel->start_time),
+	       time_human(string, MAX_STRING / 2, gettime() - axel->start_time),
 	       (double)axel->bytes_per_second / 1024);
 
 	ret = axel->ready ? 0 : 2;
@@ -508,19 +508,23 @@ size_human(char *dst, size_t len, size_t value)
 
 /* Convert a number of seconds to a human-readable form */
 char *
-time_human(int value)
+time_human(char *dst, size_t len, unsigned int value)
 {
-	if (value == 1)
-		sprintf(string, _("%i second"), value);
-	else if (value < 60)
-		sprintf(string, _("%i seconds"), value);
-	else if (value < 3600)
-		sprintf(string, _("%i:%02i minute(s)"), value / 60, value % 60);
-	else
-		sprintf(string, _("%i:%02i:%02i hour(s)"), value / 3600,
-			(value / 60) % 60, value % 60);
+	unsigned int hh, mm, ss;
 
-	return string;
+	ss = value % 60;
+	mm = value / 60 % 60;
+	hh = value / 3600;
+
+	int ret;
+	if (hh)
+		ret = snprintf(dst, len, _("%i:%02i:%02i hour(s)"), hh, mm, ss);
+	else if (mm)
+		ret = snprintf(dst, len, _("%i:%02i minute(s)"), mm, ss);
+	else
+		ret = snprintf(dst, len, _("%i second(s)"), ss);
+
+	return ret < 0 ? NULL : dst;
 }
 
 /* Part of the infamous wget-like interface. Just put it in a function
