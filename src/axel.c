@@ -65,7 +65,7 @@ axel_new(conf_t *conf, int count, const void *url)
 	const search_t *res;
 	axel_t *axel;
 	int status;
-	long delay;
+	uint64_t delay;
 	url_t *u;
 	char *s;
 	int i;
@@ -85,18 +85,17 @@ axel_new(conf_t *conf, int count, const void *url)
 		pthread_mutex_init(&axel->conn[i].lock, NULL);
 
 	if (axel->conf->max_speed > 0) {
-		if ((float)axel->conf->max_speed / axel->conf->buffer_size <
-		    0.5) {
+		/* max_speed / buffer_size < .5 */
+		if (16 * axel->conf->max_speed / axel->conf->buffer_size < 8) {
 			if (axel->conf->verbose >= 2)
 				axel_message(axel,
 					     _("Buffer resized for this speed."));
 			axel->conf->buffer_size = axel->conf->max_speed;
 		}
-		delay = (int)((float)1000000000 / axel->conf->max_speed *
-			      axel->conf->buffer_size *
-			      axel->conf->num_connections);
+		delay = 1000000000 * axel->conf->buffer_size *
+			axel->conf->num_connections / axel->conf->max_speed;
 
-		axel->delay_time.tv_sec = delay / 1000000000;
+		axel->delay_time.tv_sec  = delay / 1000000000;
 		axel->delay_time.tv_nsec = delay % 1000000000;
 	}
 	if (buffer == NULL) {
@@ -450,7 +449,7 @@ axel_do(axel_t *axel)
 	struct timeval timeval[1];
 	url_t *url_ptr;
 	struct timespec delay = {.tv_sec = 0, .tv_nsec = 100000000};
-	float max_speed_ratio;
+	unsigned int max_speed_ratio;
 
 	/* Create statefile if necessary */
 	if (gettime() > axel->next_state) {
@@ -646,20 +645,18 @@ axel_do(axel_t *axel)
 	/* Check speed. If too high, delay for some time to slow things
 	   down a bit. I think a 5% deviation should be acceptable. */
 	if (axel->conf->max_speed > 0) {
-		max_speed_ratio = (float)axel->bytes_per_second /
+		max_speed_ratio = 1000 * axel->bytes_per_second /
 		    axel->conf->max_speed;
-		if (max_speed_ratio > 1.05)
+		if (max_speed_ratio > 1050) {
 			axel->delay_time.tv_nsec += 10000000;
-		else if ((max_speed_ratio < 0.95) &&
-			 (axel->delay_time.tv_nsec >= 10000000))
-			axel->delay_time.tv_nsec -= 10000000;
-		else if ((max_speed_ratio < 0.95) &&
-			 (axel->delay_time.tv_sec > 0)) {
-			axel->delay_time.tv_sec--;
-			axel->delay_time.tv_nsec += 999000000;
-		} else
-		    if (((float)axel->bytes_per_second / axel->conf->max_speed <
-			 0.95)) {
+		} else if (max_speed_ratio < 950) {
+			if (axel->delay_time.tv_nsec >= 10000000) {
+				axel->delay_time.tv_nsec -= 10000000;
+			} else if (axel->delay_time.tv_sec > 0) {
+				axel->delay_time.tv_sec--;
+				axel->delay_time.tv_nsec += 999000000;
+			}
+		} else {
 			axel->delay_time.tv_sec = 0;
 			axel->delay_time.tv_nsec = 0;
 		}
