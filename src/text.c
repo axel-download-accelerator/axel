@@ -45,10 +45,11 @@
 #include "axel.h"
 
 #include <sys/ioctl.h>
+#include <math.h>
 
 
 static void stop(int signal);
-static char *size_human(long long int value);
+static char *size_human(char *dst, size_t len, size_t value);
 static char *time_human(int value);
 static void print_commas(long long int bytes_done);
 static void print_alternate_output(axel_t *axel);
@@ -463,8 +464,8 @@ main(int argc, char *argv[])
 		}
 	}
 
-	strcpy(string + MAX_STRING / 2,
-	       size_human(axel->bytes_done - axel->start_byte));
+	size_human(string + MAX_STRING / 2, MAX_STRING / 2,
+		   axel->bytes_done - axel->start_byte);
 
 	printf(_("\nDownloaded %s in %s. (%.2f KB/s)\n"),
 	       string + MAX_STRING / 2,
@@ -491,20 +492,18 @@ stop(int signal)
 
 /* Convert a number of bytes to a human-readable form */
 char *
-size_human(long long int value)
+size_human(char *dst, size_t len, size_t value)
 {
-	if (value < 1024)
-		sprintf(string, _("%lld byte"), value);
-	else if (value < 1024 * 1024)
-		sprintf(string, _("%.1f Kilobyte"), (float)value / 1024);
-	else if (value < 1024 * 1024 * 1024)
-		sprintf(string, _("%.1f Megabyte"),
-			(float)value / (1024 * 1024));
-	else
-		sprintf(string, _("%.1f Gigabyte"),
-			(float)value / (1024 * 1024 * 1024));
+	float fval = (float)value;
+	const char * const oname[] = {
+		"", "Kilo", "Mega", "Giga", "Tera",
+	};
+	const unsigned int order = min(sizeof(oname) / sizeof(oname[0]) - 1,
+				       (unsigned)log2f(fval) / 10);
 
-	return string;
+	fval /= (float)(1 << order * 10);
+	int ret = snprintf(dst, len, _("%g %sbyte(s)"), fval, oname[order]);
+	return ret < 0 ? NULL : dst;
 }
 
 /* Convert a number of seconds to a human-readable form */
