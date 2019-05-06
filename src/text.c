@@ -88,9 +88,6 @@ static struct option axel_options[] = {
 };
 #endif
 
-/* For returning string values from functions */
-static char string[MAX_STRING + 3];
-
 int
 main(int argc, char *argv[])
 {
@@ -346,14 +343,15 @@ main(int argc, char *argv[])
 				fn[fnlen + 1 + axelfnlen] = '\0';
 			}
 		}
-		sprintf(string, "%s.st", fn);
-		if (access(fn, F_OK) == 0 && access(string, F_OK) != 0) {
+		char statefn[MAX_STRING];
+		snprintf(statefn, MAX_STRING - 1, "%s.st", fn);
+		if (access(fn, F_OK) == 0 && access(statefn, F_OK) != 0) {
 			fprintf(stderr, _("No state file, cannot resume!\n"));
 			goto close_axel;
 		}
-		if (access(string, F_OK) == 0 && access(fn, F_OK) != 0) {
+		if (access(statefn, F_OK) == 0 && access(fn, F_OK) != 0) {
 			printf(_("State file found, but no downloaded data. Starting from scratch.\n"));
-			unlink(string);
+			unlink(statefn);
 		}
 		strcpy(axel->filename, fn);
 	} else {
@@ -361,14 +359,16 @@ main(int argc, char *argv[])
 		i = 0;
 		s = axel->filename + strlen(axel->filename);
 		while (1) {
-			sprintf(string, "%s.st", axel->filename);
+			char statefn[MAX_STRING];
+			snprintf(statefn, sizeof(statefn), "%s.st",
+				 axel->filename);
 			if (access(axel->filename, F_OK) == 0) {
 				if (axel->conn[0].supported) {
-					if (access(string, F_OK) == 0)
+					if (access(statefn, F_OK) == 0)
 						break;
 				}
 			} else {
-				if (access(string, F_OK))
+				if (access(statefn, F_OK))
 					break;
 			}
 			sprintf(s, ".%i", i);
@@ -464,12 +464,11 @@ main(int argc, char *argv[])
 		}
 	}
 
-	size_human(string + MAX_STRING / 2, MAX_STRING / 2,
-		   axel->bytes_done - axel->start_byte);
+	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
+	time_human(htime, sizeof(htime), gettime() - axel->start_time);
+	size_human(hsize, sizeof(hsize), axel->bytes_done - axel->start_byte);
 
-	printf(_("\nDownloaded %s in %s. (%.2f KB/s)\n"),
-	       string + MAX_STRING / 2,
-	       time_human(string, MAX_STRING / 2, gettime() - axel->start_time),
+	printf(_("\nDownloaded %s in %s. (%.2f KB/s)\n"), hsize, htime,
 	       (double)axel->bytes_per_second / 1024);
 
 	ret = axel->ready ? 0 : 2;
