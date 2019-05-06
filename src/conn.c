@@ -44,8 +44,6 @@
 
 #include "axel.h"
 
-char string[MAX_STRING];
-
 /**
  * Convert an URL to a conn_t structure.
  */
@@ -387,8 +385,8 @@ conn_info(conn_t *conn)
 					conn->host, conn->port, s);
 				strncpy(s, conn->http->headers, sizeof(s) - 1);
 			} else if (strstr(s, "://") == NULL) {
-				sprintf(conn->http->headers, "%s%s",
-					conn_url(string, MAX_STRING, conn), s);
+				conn_url(conn->http->headers, MAX_QUERY, conn);
+				strncat(conn->http->headers, s, MAX_QUERY - 1);
 				strncpy(s, conn->http->headers, sizeof(s) - 1);
 			}
 			s[sizeof(s) - 1] = '\0';
