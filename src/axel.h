@@ -102,8 +102,18 @@ typedef message_t if_t;
 #include "ssl.h"
 #include "search.h"
 
-#define min(a, b)		((a) < (b) ? (a) : (b))
-#define max(a, b)		((a) > (b) ? (a) : (b))
+#define min(a, b) \
+	({ \
+		__typeof__(a) __a = (a);	\
+		__typeof__(b) __b = (b);	\
+		__a < __b ? __a : __b;		\
+	})
+#define max(a, b) \
+	({ \
+		__typeof__(a) __a = (a);	\
+		__typeof__(b) __b = (b);	\
+		__a > __b ? __a : __b;		\
+	})
 
 typedef struct {
 	conn_t *conn;
