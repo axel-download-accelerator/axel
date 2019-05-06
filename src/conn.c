@@ -185,26 +185,39 @@ scheme_from_proto(int proto)
 
 /* Generate a nice URL string. */
 char *
-conn_url(conn_t *conn)
+conn_url(char *dst, size_t len, conn_t *conn)
 {
 	const char *prefix = "", *postfix = "";
 
-	strcpy(string, scheme_from_proto(conn->proto));
+	const char *scheme = scheme_from_proto(conn->proto);
+	unsigned int scheme_len = strlen(scheme);
 
-	if (*conn->user != 0 && strcmp(conn->user, "anonymous") != 0)
-		sprintf(string + strlen(string), "%s:%s@",
-			conn->user, conn->pass);
+	if (scheme_len > len)
+		return NULL;
+
+	strcpy(dst, scheme);
+	len -= scheme_len;
+
+	char *p = dst + scheme_len;
+
+	if (*conn->user != 0 && strcmp(conn->user, "anonymous") != 0) {
+		int plen = snprintf(p, len, "%s:%s@", conn->user, conn->pass);
+		if (plen < 0)
+			return NULL;
+		len -= plen;
+		p += plen;
+	}
 
 	if (is_ipv6_addr(conn->host)) {
 		prefix = "[";
 		postfix = "]";
 	}
 
-	sprintf(string + strlen(string), "%s%s%s:%i%s%s",
-		prefix, conn->host, postfix, conn->port,
-			conn->dir, conn->file);
+	int plen;
+	plen = snprintf(p, len, "%s%s%s:%i%s%s", prefix, conn->host, postfix,
+			conn->port, conn->dir, conn->file);
 
-	return string;
+	return plen < 0 ? NULL : dst;
 }
 
 /* Simple... */
@@ -375,7 +388,7 @@ conn_info(conn_t *conn)
 				strncpy(s, conn->http->headers, sizeof(s) - 1);
 			} else if (strstr(s, "://") == NULL) {
 				sprintf(conn->http->headers, "%s%s",
-					conn_url(conn), s);
+					conn_url(string, MAX_STRING, conn), s);
 				strncpy(s, conn->http->headers, sizeof(s) - 1);
 			}
 			s[sizeof(s) - 1] = '\0';

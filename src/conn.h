@@ -101,7 +101,7 @@ typedef struct {
 } conn_t;
 
 int conn_set(conn_t *conn, const char *set_url);
-char *conn_url(conn_t *conn);
+char *conn_url(char *dst, size_t len, conn_t *conn);
 void conn_disconnect(conn_t *conn);
 int conn_init(conn_t *conn);
 int conn_setup(conn_t *conn);

@@ -187,8 +187,7 @@ axel_new(conf_t *conf, int count, const void *url)
 				 * happen only once because the FTP protocol
 				 * can't redirect back to HTTP */
 
-	s = conn_url(axel->conn);
-	strncpy(axel->url->text, s, sizeof(axel->url->text) - 1);
+	conn_url(axel->url->text, sizeof(axel->url->text) - 1, axel->conn);
 	axel->size = axel->conn[0].size;
 	if (axel->conf->verbose > 0) {
 		if (axel->size != LLONG_MAX) {
