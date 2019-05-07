@@ -495,7 +495,7 @@ size_human(char *dst, size_t len, size_t value)
 {
 	float fval = (float)value;
 	const char * const oname[] = {
-		"", "Kilo", "Mega", "Giga", "Tera",
+		"", _("Kilo"), _("Mega"), _("Giga"), _("Tera"),
 	};
 	const unsigned int order = min(sizeof(oname) / sizeof(oname[0]) - 1,
 				       (unsigned)log2f(fval) / 10);
