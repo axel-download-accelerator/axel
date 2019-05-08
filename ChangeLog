@@ -1,3 +1,29 @@
+Version: 2.17, 2019-05-08
+
+  [ Ismael Luceno ]
+
+* Fixed composition of URLs in redirections
+* Fixed request range calculation
+* Updated all translations
+* Updated build documentation
+* Major code cleanup
+    - Cleanup of alternate progress output
+    - Removed global string buffers
+    - Fixed min and max macros
+    - Moved User-Agent header to conf->add_header
+    - Use integers for speed ratio and delay calculation
+
+  [ Shankar ]
+
+* Added support for parsing IPv6 literal hostname
+* Fixed filename extraction from URL
+* Fixed request-target message to proxy
+* Handle secure protocol's schema even with SSL disabled
+* Fixed Content-Disposition filename value decoding
+* Strip leading hyphens in extracted filenames
+
+
+
 Version: 2.16.1, 2017-12-05
 
   [ Ismael Luceno ]
