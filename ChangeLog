@@ -1,3 +1,15 @@
+Version: 2.17.1, 2019-05-10
+
+  [ Evangelos Foutras ]
+
+* Fixed comparison error in axel_divide
+
+  [ Ismael Luceno ]
+
+* Make sure maxconns is at least 1
+
+
+
 Version: 2.17, 2019-05-08
 
   [ Ismael Luceno ]
