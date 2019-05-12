@@ -566,7 +566,7 @@ print_alternate_output_progress(axel_t *axel, char *progress, int width,
 				progress[offset] = '#';
 		}
 		memset(progress + offset + 1, ' ',
-		       axel->conn[i].lastbyte * width / total - offset - 1);
+		       max(0, axel->conn[i].lastbyte * width / total - offset - 1));
 	}
 
 	progress[width] = '\0';
