@@ -168,7 +168,7 @@ msgstr "Protocolo %s desconocido\n"
 
 #: src/conf.c:185
 #, c-format
-msgid "Requested too may connections, max is %i\n"
+msgid "Requested too many connections, max is %i\n"
 msgstr "Demasiadas conexiones solicitadas, el máximo es %i\n"
 
 #: src/conf.c:200

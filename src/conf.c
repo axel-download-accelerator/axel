@@ -182,7 +182,7 @@ conf_loadfile(conf_t *conf, char *file)
 			}
 
 			fprintf(stderr,
-				_("Requested too may connections, max is %i\n"),
+				_("Requested too many connections, max is %i\n"),
 				USHRT_MAX);
 		} else if (!strcmp(key, "user_agent")) {
 			conf_hdr_make(conf->add_header[HDR_USER_AGENT],
