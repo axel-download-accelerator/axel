@@ -526,7 +526,7 @@ axel_do(axel_t *axel)
 		if (size == 0) {
 			if (axel->conf->verbose) {
 				/* Only abnormal behaviour if: */
-				if (axel->conn[i].currentbyte <
+				if (axel->conn[i].currentbyte <=
 				    axel->conn[i].lastbyte &&
 				    axel->size != LLONG_MAX) {
 					axel_message(axel,
@@ -547,8 +547,7 @@ axel_do(axel_t *axel)
 		}
 
 		/* remaining == Bytes to go */
-		remaining =
-		    axel->conn[i].lastbyte - axel->conn[i].currentbyte + 1;
+		remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte;
 		if (remaining < size) {
 			if (axel->conf->verbose) {
 				axel_message(axel, _("Connection %i finished"),
@@ -587,7 +586,7 @@ axel_do(axel_t *axel)
 			continue;
 
 		if (!axel->conn[i].enabled &&
-		    axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
+		    axel->conn[i].currentbyte <= axel->conn[i].lastbyte) {
 			if (!axel->conn[i].state) {
 				// Wait for termination of this thread
 				pthread_join(*(axel->conn[i].setup_thread),

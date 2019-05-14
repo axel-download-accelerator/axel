@@ -307,7 +307,8 @@ conn_setup(conn_t *conn)
 		int i;
 
 		snprintf(s, sizeof(s), "%s%s", conn->dir, conn->file);
-		conn->http->firstbyte = conn->currentbyte;
+		conn->http->firstbyte =
+			conn->supported ? conn->currentbyte : -1;
 		conn->http->lastbyte = conn->lastbyte;
 		http_get(conn->http, s);
 		for (i = 0; i < conn->conf->add_header_count; i++)
@@ -365,7 +366,8 @@ conn_info(conn_t *conn)
 		do {
 			const char *t;
 
-			conn->currentbyte = 1;
+			conn->supported = true;
+			conn->currentbyte = 0;
 			if (!conn_setup(conn))
 				return 0;
 			conn_exec(conn);
@@ -410,36 +412,31 @@ conn_info(conn_t *conn)
 			return 0;
 		}
 
-		conn->size = http_size(conn->http);
-		i = http_size_from_range(conn->http);
-		if (i > 0 && conn->size + 1 != i) {
-			/* This means that the server has a bug. This version currently
-			   uses the larger of the reported sizes, but it would be an
-			   alternative to set supported = false. */
-			conn->supported = true;
-			conn->size = max(i, conn->size + 1);
-		} else if (conn->http->status == 206 && conn->size >= 0) {
-			/* 206: range request supported */
-			conn->supported = true;
-			conn->size++;
-		} else if (conn->http->status == 200
-			   || conn->http->status == 206) {
-			/* something is not supported - fallback */
-			conn->supported = false;
+		conn->size = http_size_from_range(conn->http);
+		/* We assume partial requests are supported if a Content-Range
+		 * header is present.
+		 */
+		conn->supported = conn->http->status == 206 || conn->size > 0;
 
-			/* if we have an invalid size, set it to the max so that
-			 * the transfer will finish when the server closes the
-			 * connection. Otherwise keep the reported size. */
-			if (conn->size <= 0)
-				conn->size = LLONG_MAX;
-		} else {
-			char *t = strchr(conn->message, '\n');
-			if (t == NULL)
-				sprintf(conn->message,
-					_("Unknown HTTP error.\n"));
-			else
-				*t = 0;
-			return 0;
+		/* If Content-Length and Content-Range disagree, it's a server
+		 * bug; we take the larger and hope for the best.
+		 */
+		conn->size = max(conn->size, http_size(conn->http));
+
+		if (conn->size <= 0) {
+			/* Sanity check */
+			switch (conn->http->status) {
+			case 200:
+			case 206:
+			case 416:
+				break;
+			default: /* unexpected */
+				return 0;
+			}
+
+			/* So we got an invalid or no size, fall back */
+			conn->supported = false;
+			conn->size = LLONG_MAX;
 		}
 	}
 
