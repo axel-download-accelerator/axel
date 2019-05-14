@@ -1,3 +1,17 @@
+Version: 2.17.2, 2019-05-14
+
+  [ Ismael Luceno ]
+
+* Fixed HTTP request-ranges to be zero-based
+* Fixed typo "too may" -> "too many"
+* Replaced malloc + memset calls with calloc
+
+  [ Kun Ma ]
+
+* Sanitize progress bar buffer len passed to memset
+
+
+
 Version: 2.17.1, 2019-05-10
 
   [ Evangelos Foutras ]
