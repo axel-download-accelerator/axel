@@ -63,11 +63,10 @@ main(int argc, char *argv[])
 	conf_init(conf);
 	ssl_init(conf);
 
-	res = malloc(sizeof(search_t) * (conf->search_amount + 1));
+	res = calloc(conf->search_amount + 1, sizeof(search_t));
 	if (!res)
 		goto out;
 
-	memset(res, 0, sizeof(search_t) * (conf->search_amount + 1));
 	res->conf = conf;
 
 	i = search_makelist(res, argv[1]);

@@ -140,11 +140,10 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 		return -1;
 
 	/* Read reply from the server. */
-	reply = malloc(size);
+	reply = calloc(1, size);
 	if (!reply)
 		return -1;
 
-	memset(reply, 0, size);
 	*reply = '\n';
 	i = 1;
 	while ((j = tcp_read(&conn->data_tcp, reply + i, size - i - 3)) > 0) {

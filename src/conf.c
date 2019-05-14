@@ -242,11 +242,10 @@ conf_init(conf_t *conf)
 		      "User-Agent", DEFAULT_USER_AGENT);
 	conf->add_header_count = HDR_count_init;
 
-	conf->interfaces = malloc(sizeof(if_t));
+	conf->interfaces = calloc(1, sizeof(if_t));
 	if (!conf->interfaces)
 		return 0;
 
-	memset(conf->interfaces, 0, sizeof(if_t));
 	conf->interfaces->next = conf->interfaces;
 
 	if ((s2 = getenv("http_proxy")) != NULL)
@@ -304,11 +303,10 @@ parse_interfaces(conf_t *conf, char *s)
 	free(conf->interfaces);
 
 	if (!*s) {
-		conf->interfaces = malloc(sizeof(if_t));
+		conf->interfaces = calloc(1, sizeof(if_t));
 		if (!conf->interfaces)
 			return 0;
 
-		memset(conf->interfaces, 0, sizeof(if_t));
 		conf->interfaces->next = conf->interfaces;
 		return 1;
 	}

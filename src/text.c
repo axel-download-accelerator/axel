@@ -258,11 +258,10 @@ main(int argc, char *argv[])
 
 	printf(_("Initializing download: %s\n"), s);
 	if (do_search) {
-		search = malloc(sizeof(search_t) * (conf->search_amount + 1));
+		search = calloc(conf->search_amount + 1, sizeof(search_t));
 		if (!search)
 			goto free_conf;
 
-		memset(search, 0, sizeof(search_t) * (conf->search_amount + 1));
 		search[0].conf = conf;
 		if (conf->verbose)
 			printf(_("Doing search...\n"));
@@ -303,11 +302,10 @@ main(int argc, char *argv[])
 			goto close_axel;
 		}
 	} else {
-		search = malloc(sizeof(search_t) * (argc - optind));
+		search = calloc(argc - optind, sizeof(search_t));
 		if (!search)
 			goto free_conf;
 
-		memset(search, 0, sizeof(search_t) * (argc - optind));
 		for (i = 0; i < (argc - optind); i++)
 			strncpy(search[i].url, argv[optind + i],
 				sizeof(search[i].url) - 1);

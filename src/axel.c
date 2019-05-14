@@ -70,16 +70,14 @@ axel_new(conf_t *conf, int count, const void *url)
 	char *s;
 	int i;
 
-	axel = malloc(sizeof(axel_t));
+	axel = calloc(1, sizeof(axel_t));
 	if (!axel)
 		goto nomem;
 
-	memset(axel, 0, sizeof(axel_t));
 	axel->conf = conf;
-	axel->conn = malloc(sizeof(conn_t) * axel->conf->num_connections);
+	axel->conn = calloc(axel->conf->num_connections, sizeof(conn_t));
 	if (!axel->conn)
 		goto nomem;
-	memset(axel->conn, 0, sizeof(conn_t) * axel->conf->num_connections);
 
 	for (i = 0; i < axel->conf->num_connections; i++)
 		pthread_mutex_init(&axel->conn[i].lock, NULL);
@@ -801,11 +799,10 @@ axel_message(axel_t *axel, char *format, ...)
 	if (!axel)
 		goto nomem;
 
-	m = malloc(sizeof(message_t));
+	m = calloc(1, sizeof(message_t));
 	if (!m)
 		goto nomem;
 
-	memset(m, 0, sizeof(message_t));
 	va_start(params, format);
 	vsnprintf(m->text, MAX_STRING, format, params);
 	va_end(params);
