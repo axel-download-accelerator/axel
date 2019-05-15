@@ -253,6 +253,7 @@ search_getspeeds(search_t *results, int count)
 	return correct;
 }
 
+static
 void *
 search_speedtest(void *r)
 {
@@ -280,6 +281,7 @@ search_speedtest(void *r)
 	return NULL;
 }
 
+static
 char *
 axel_strrstr(char *haystack, char *needle)
 {
@@ -300,6 +302,7 @@ search_sortlist(search_t *results, int count)
 	qsort(results, count, sizeof(search_t), search_sortlist_qsort);
 }
 
+static
 int
 search_sortlist_qsort(const void *a, const void *b)
 {

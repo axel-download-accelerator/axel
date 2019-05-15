@@ -54,6 +54,7 @@ ssl_init(conf_t *global_conf)
 	conf = global_conf;
 }
 
+static
 void
 ssl_startup(void)
 {

@@ -354,6 +354,7 @@ axel_open(axel_t *axel)
 	return 1;
 }
 
+static
 void
 reactivate_connection(axel_t *axel, int thread)
 {
@@ -721,6 +722,7 @@ axel_gettime(void)
 }
 
 /* Save the state of the current download */
+static
 void
 save_state(axel_t *axel)
 {
@@ -760,6 +762,7 @@ save_state(axel_t *axel)
 }
 
 /* Thread used to set up a connection */
+static
 void *
 setup_thread(void *c)
 {
