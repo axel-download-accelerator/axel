@@ -96,6 +96,12 @@ LIBS="$LIBS $LIBINTL"
 # Large file support
 AC_SYS_LARGEFILE
 
+# POSIX threads
+AX_PTHREAD()
+LIBS="$PTHREAD_LIBS $LIBS"
+CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
+CC="$PTHREAD_CC"
+
 #### Definitions ####
 
 # OS
@@ -109,15 +115,12 @@ case "$arch" in
 Darwin )
 ;;
 SunOS )
-    LDFLAGS="$LDFLAGS -pthread -lsocket -lnsl"
+    LIBS="$LIBS -lsocket -lnsl"
 ;;
 HP-UX )
     if [ -d /usr/local/lib/hpux32 ]; then
        LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
     fi
-;;
-* )
-    LDFLAGS="$LDFLAGS -pthread"
 ;;
 esac
 
