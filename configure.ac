@@ -113,9 +113,8 @@ SunOS )
 ;;
 HP-UX )
     if [ -d /usr/local/lib/hpux32 ]; then
-       AXEL_EXTRA_FLAGS="-L/usr/local/lib/hpux32"
+       LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
     fi
-    LDFLAGS="$LDFLAGS $AXEL_EXTRA_FLAGS -lpthread"
 ;;
 * )
     LDFLAGS="$LDFLAGS -pthread"
