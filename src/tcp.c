@@ -70,8 +70,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 	    char *message, unsigned io_timeout)
 {
 	struct sockaddr_in local_addr;
-	const int portstr_len = 10;
-	char portstr[portstr_len];
+	char portstr[10];
 	struct addrinfo ai_hints;
 	struct addrinfo *gai_results, *gai_result;
 	int ret;
@@ -84,7 +83,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 		local_addr.sin_addr.s_addr = inet_addr(local_if);
 	}
 
-	snprintf(portstr, portstr_len, "%d", port);
+	snprintf(portstr, sizeof(portstr), "%d", port);
 
 	memset(&ai_hints, 0, sizeof(ai_hints));
 	ai_hints.ai_family = tcp->ai_family;
