@@ -463,7 +463,7 @@ main(int argc, char *argv[])
 	}
 
 	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
-	time_human(htime, sizeof(htime), gettime() - axel->start_time);
+	time_human(htime, sizeof(htime), axel_gettime() - axel->start_time);
 	size_human(hsize, sizeof(hsize), axel->bytes_done - axel->start_byte);
 
 	printf(_("\nDownloaded %s in %s. (%.2f KB/s)\n"), hsize, htime,
@@ -577,7 +577,7 @@ print_alternate_output(axel_t *axel)
 {
 	long long int done = axel->bytes_done;
 	long long int total = axel->size;
-	double now = gettime();
+	double now = axel_gettime();
 	int width = get_term_width();
 	char *progress;
 

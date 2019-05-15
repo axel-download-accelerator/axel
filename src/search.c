@@ -103,13 +103,13 @@ search_makelist(search_t *results, char *url)
 	memset(conn, 0, sizeof(conn_t));
 
 	conn->conf = results->conf;
-	t = gettime();
+	t = axel_gettime();
 	if (!conn_set(conn, url) || !conn_init(conn) || !conn_info(conn))
 		return -1;
 
 	strncpy(results[0].url, url, sizeof(results[0].url) - 1);
 	results[0].url[sizeof(results[0].url) - 1] = '\0';
-	results[0].speed = 1 + 1000 * (gettime() - t);
+	results[0].speed = 1 + 1000 * (axel_gettime() - t);
 	results[0].size = conn->size;
 
 	s = malloc(size);
@@ -207,7 +207,7 @@ search_getspeeds(search_t *results, int count)
 		for (int i = 0; i < count; i++) {
 			switch (results[i].speed) {
 			case SPEED_ACTIVE:
-				if (gettime() < results[i].speed_start_time
+				if (axel_gettime() < results[i].speed_start_time
 				    + results->conf->search_timeout)
 					continue; // not timed out yet
 				pthread_cancel(*results[i].speed_thread);
@@ -220,7 +220,7 @@ search_getspeeds(search_t *results, int count)
 				if (running >= results->conf->search_threads)
 					continue; // running too many, skip
 				results[i].speed = SPEED_ACTIVE;
-				results[i].speed_start_time = gettime();
+				results[i].speed_start_time = axel_gettime();
 				if (pthread_create(results[i].speed_thread,
 						   NULL, search_speedtest,
 						   &results[i]) == 0)
@@ -271,7 +271,7 @@ search_speedtest(void *r)
 	    && conn_info(conn)
 	    && conn->size == results->size)
 		/* Add one because it mustn't be zero */
-		results->speed = 1 + 1000 * (gettime() - results->speed_start_time);
+		results->speed = 1 + 1000 * (axel_gettime() - results->speed_start_time);
 	else
 		results->speed = SPEED_FAILED;
 

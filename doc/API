@@ -158,7 +158,7 @@ open will be closed and deallocated, all messages in the structure are
 deleted. You should always call this one when you're ready, if you don't
 want to waste memory.
 
-double gettime();
+double axel_gettime(void);
 
 This one is just a 'bonus'... I use it myself in text.c and axel.c, so I
 decided to make it global. It just returns the actual time, but with more

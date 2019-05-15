@@ -432,7 +432,7 @@ axel_start(axel_t *axel)
 		}
 
 	/* The real downloading will start now, so let's start counting */
-	axel->start_time = gettime();
+	axel->start_time = axel_gettime();
 	axel->ready = 0;
 }
 
@@ -449,9 +449,9 @@ axel_do(axel_t *axel)
 	unsigned int max_speed_ratio;
 
 	/* Create statefile if necessary */
-	if (gettime() > axel->next_state) {
+	if (axel_gettime() > axel->next_state) {
 		save_state(axel);
-		axel->next_state = gettime() + axel->conf->save_state_interval;
+		axel->next_state = axel_gettime() + axel->conf->save_state_interval;
 	}
 
 	/* Wait for data on (one of) the connections */
@@ -500,7 +500,7 @@ axel_do(axel_t *axel)
 		if (!FD_ISSET(axel->conn[i].tcp->fd, fds)) {
 			time_t timeout = axel->conn[i].last_transfer +
 			    axel->conf->connection_timeout;
-			if (gettime() > timeout) {
+			if (axel_gettime() > timeout) {
 				if (axel->conf->verbose)
 					axel_message(axel,
 						     _("Connection %i timed out"),
@@ -510,7 +510,7 @@ axel_do(axel_t *axel)
 			goto next_conn;
 		}
 
-		axel->conn[i].last_transfer = gettime();
+		axel->conn[i].last_transfer = axel_gettime();
 		size =
 		    tcp_read(axel->conn[i].tcp, buffer,
 			     axel->conf->buffer_size);
@@ -607,14 +607,14 @@ axel_do(axel_t *axel)
 				if (pthread_create
 				    (axel->conn[i].setup_thread, NULL,
 				     setup_thread, &axel->conn[i]) == 0) {
-					axel->conn[i].last_transfer = gettime();
+					axel->conn[i].last_transfer = axel_gettime();
 				} else {
 					axel_message(axel,
 						     _("pthread error!!!"));
 					axel->ready = -1;
 				}
 			} else {
-				if (gettime() > (axel->conn[i].last_transfer +
+				if (axel_gettime() > (axel->conn[i].last_transfer +
 						 axel->conf->reconnect_delay)) {
 					pthread_cancel(*axel->conn[i].setup_thread);
 					axel->conn[i].state = false;
@@ -629,7 +629,7 @@ axel_do(axel_t *axel)
 	/* Calculate current average speed and finish_time */
 	axel->bytes_per_second =
 	    (int)((double)(axel->bytes_done - axel->start_byte) /
-		  (gettime() - axel->start_time));
+		  (axel_gettime() - axel->start_time));
 	if (axel->bytes_per_second != 0)
 		axel->finish_time =
 		    (int)(axel->start_time +
@@ -712,11 +712,11 @@ axel_close(axel_t *axel)
 
 /* time() with more precision */
 double
-gettime()
+axel_gettime(void)
 {
 	struct timeval time[1];
 
-	gettimeofday(time, 0);
+	gettimeofday(time, NULL);
 	return (double)time->tv_sec + (double)time->tv_usec / 1000000;
 }
 
@@ -772,9 +772,9 @@ setup_thread(void *c)
 
 	pthread_mutex_lock(&conn->lock);
 	if (conn_setup(conn)) {
-		conn->last_transfer = gettime();
+		conn->last_transfer = axel_gettime();
 		if (conn_exec(conn)) {
-			conn->last_transfer = gettime();
+			conn->last_transfer = axel_gettime();
 			conn->enabled = true;
 			goto out;
 		}
