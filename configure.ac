@@ -113,6 +113,7 @@ CFLAGS="$CFLAGS -Wall"
 
 case "$host_os" in
 darwin*)
+    AC_DEFINE(_DARWIN_C_SOURCE, 1, [Define on Darwin to expose all libc features])
 ;;
 solaris*)
     LIBS="$LIBS -lsocket -lnsl"
