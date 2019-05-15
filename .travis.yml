@@ -16,6 +16,7 @@ addons:
       - libssl-dev
       - clang
       - txt2man
+      - autoconf-archive
 
 env:
   global:
