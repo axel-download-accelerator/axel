@@ -11,12 +11,19 @@ cache:
 addons:
   apt:
     packages:
-      - linux-libc-dev
-      - autopoint
-      - libssl-dev
-      - clang
-      - txt2man
       - autoconf-archive
+      - autopoint
+      - clang
+      - libssl-dev
+      - linux-libc-dev
+      - txt2man
+  homebrew:
+    update: false
+    packages:
+      - autoconf-archive
+      - gettext
+      - openssl
+      - pkg-config
 
 env:
   global:
@@ -39,12 +46,6 @@ matrix:
   exclude:
     - os: osx
       compiler: gcc
-
-install:
-  - if [ "$TRAVIS_OS_NAME" = osx ]; then
-      HOMEBREW_NO_AUTO_UPDATE=1
-      brew install gettext openssl pkg-config;
-    fi
 
 script:
   - if [ "${TRAVIS_OS_NAME}" = osx ]; then
