@@ -91,6 +91,7 @@ AS_IF([test "x$with_ssl" != xno], [
 # Add Gettext
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.18])
+LIBS="$LIBS $LIBINTL"
 
 # Large file support
 AC_SYS_LARGEFILE
@@ -103,7 +104,6 @@ AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
 
 # Flags
 CFLAGS="$CFLAGS -Wall"
-LDFLAGS="$LDFLAGS $LIBINTL"
 
 case "$arch" in
 Darwin )
