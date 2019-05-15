@@ -105,19 +105,19 @@ CC="$PTHREAD_CC"
 #### Definitions ####
 
 # OS
-arch=$(uname -s)
+AC_CANONICAL_HOST
 AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
 
 # Flags
 CFLAGS="$CFLAGS -Wall"
 
-case "$arch" in
-Darwin )
+case "$host_os" in
+darwin*)
 ;;
-SunOS )
+solaris*)
     LIBS="$LIBS -lsocket -lnsl"
 ;;
-HP-UX )
+hpux*)
     if [ -d /usr/local/lib/hpux32 ]; then
        LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
     fi
