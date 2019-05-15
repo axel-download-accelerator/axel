@@ -167,7 +167,7 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 		return -1;
 	}
 #ifdef DEBUG
-	fprintf(stderr, reply);
+	fprintf(stderr, "%s", reply);
 #endif
 
 	/* Count the number of probably legal matches: Files&Links only */
@@ -285,7 +285,7 @@ ftp_command(ftp_t *conn, char *format, ...)
 	va_end(params);
 
 #ifdef DEBUG
-	fprintf(stderr, "fd(%i)<--%s", conn->fd, cmd);
+	fprintf(stderr, "fd(%i)<--%s", conn->tcp.fd, cmd);
 #endif
 
 	if (tcp_write(&conn->tcp, cmd, strlen(cmd)) != strlen(cmd)) {
@@ -351,7 +351,7 @@ ftp_wait(ftp_t *conn)
 	while (complete != 2);
 
 #ifdef DEBUG
-	fprintf(stderr, "fd(%i)-->%s", conn->fd, conn->message);
+	fprintf(stderr, "fd(%i)-->%s", conn->tcp.fd, conn->message);
 #endif
 
 	if ((s = strchr(conn->message, '\n')) != NULL)
