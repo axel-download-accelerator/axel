@@ -106,7 +106,7 @@ CC="$PTHREAD_CC"
 
 # OS
 AC_CANONICAL_HOST
-AC_DEFINE_UNQUOTED([ARCH], ["$arch"], ["Define architecture"])
+AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
 
 # Flags
 CFLAGS="$CFLAGS -Wall"
