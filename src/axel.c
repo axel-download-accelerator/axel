@@ -362,12 +362,12 @@ reactivate_connection(axel_t *axel, int thread)
 	int idx = -1;
 
 	if (axel->conn[thread].enabled ||
-	    axel->conn[thread].currentbyte <= axel->conn[thread].lastbyte)
+	    axel->conn[thread].currentbyte < axel->conn[thread].lastbyte)
 		return;
 	/* find some more work to do */
 	for (int j = 0; j < axel->conf->num_connections; j++) {
 		long long int remaining =
-		    axel->conn[j].lastbyte - axel->conn[j].currentbyte + 1;
+		    axel->conn[j].lastbyte - axel->conn[j].currentbyte;
 		if (remaining > max_remaining) {
 			max_remaining = remaining;
 			idx = j;
@@ -381,7 +381,7 @@ reactivate_connection(axel_t *axel, int thread)
 		axel->conn[thread].lastbyte = axel->conn[idx].lastbyte;
 		axel->conn[idx].lastbyte =
 		    axel->conn[idx].currentbyte + max_remaining / 2;
-		axel->conn[thread].currentbyte = axel->conn[idx].lastbyte + 1;
+		axel->conn[thread].currentbyte = axel->conn[idx].lastbyte;
 	}
 }
 
@@ -408,13 +408,10 @@ axel_start(axel_t *axel)
 	if (axel->conf->verbose > 0)
 		axel_message(axel, _("Starting download"));
 
-	for (i = 0; i < axel->conf->num_connections; i++)
+	for (i = 0; i < axel->conf->num_connections; i++) {
 		if (axel->conn[i].currentbyte > axel->conn[i].lastbyte) {
 			reactivate_connection(axel, i);
-		}
-
-	for (i = 0; i < axel->conf->num_connections; i++)
-		if (axel->conn[i].currentbyte <= axel->conn[i].lastbyte) {
+		} else if (axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
 			if (axel->conf->verbose >= 2) {
 				axel_message(axel,
 					     _("Connection %i downloading from %s:%i using interface %s"),
@@ -431,6 +428,7 @@ axel_start(axel_t *axel)
 				axel->ready = -1;
 			}
 		}
+	}
 
 	/* The real downloading will start now, so let's start counting */
 	axel->start_time = axel_gettime();
@@ -587,7 +585,7 @@ axel_do(axel_t *axel)
 			continue;
 
 		if (!axel->conn[i].enabled &&
-		    axel->conn[i].currentbyte <= axel->conn[i].lastbyte) {
+		    axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
 			if (!axel->conn[i].state) {
 				// Wait for termination of this thread
 				pthread_join(*(axel->conn[i].setup_thread),
@@ -850,7 +848,7 @@ axel_divide(axel_t *axel)
 
 	for (int i = 0; i < axel->conf->num_connections; i++) {
 		axel->conn[i].currentbyte = seg_len * i;
-		axel->conn[i].lastbyte    = seg_len * i + seg_len - 1;
+		axel->conn[i].lastbyte    = seg_len * i + seg_len;
 	}
 
 	/* Last connection downloads remaining bytes */
