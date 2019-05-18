@@ -72,7 +72,7 @@ To build without SSL/TLS support, use `./configure --without-ssl`
 
 ### Building on Ubuntu 16.04 ###
 
-    $ sudo apt-get install autoconf pkg-config gettext autopoint libssl-dev
+    $ sudo apt-get install autoconf autoconf-archive pkg-config gettext autopoint libssl-dev
     $ autoreconf -fiv
     $ sudo su
     # ./configure && make && make install
