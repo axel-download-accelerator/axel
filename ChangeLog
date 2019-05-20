@@ -1,3 +1,20 @@
+Version: 2.17.3, 2019-05-20
+
+  [ Ismael Luceno ]
+
+* Builds now use canonical host triplet instead of `uname -s`
+* Fixed build on Darwin / Mac OS X
+* Fixed download loops caused by last byte pointer being off by one
+* Fixed linking issues (i18n and posix threads)
+* Updated build instructions
+* Code cleanup
+
+  [ Kun Ma ]
+
+* Added autoconf-archive to building instructions
+
+
+
 Version: 2.17.2, 2019-05-14
 
   [ Ismael Luceno ]
