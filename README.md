@@ -42,17 +42,6 @@ see AUTHORS and CREDITS files in source code.
 
 ## 3. Building from source ##
 
-Build-time dependencies:
-
-* pkg-config
-* gettext
-* autopoint
-
-Optional dependencies:
-
-* libssl (OpenSSL, LibreSSL or compatible) -- for SSL/TLS support.
-
-
 Release tarballs contain a pre-generated buildsystem, but if you need to
 edit/patch it, or you're building from a copy of the repository, then you may
 need to run `autoreconf -i` to generate it. Further instructions are provided in
@@ -60,14 +49,41 @@ the [INSTALL](INSTALL) file. The basic actions for most users are:
 
     ./configure && make && make install
 
-To build without SSL/TLS support, use `./configure --without-ssl`
+To build without SSL/TLS support, use `./configure --without-ssl`.
 
-### Building on Ubuntu 16.04 ###
+### Dependencies for release tarballs ###
 
-    $ sudo apt-get install autoconf autoconf-archive pkg-config gettext autopoint libssl-dev
-    $ autoreconf -fiv
-    $ sudo su
-    # ./configure && make && make install
+* `gettext` (or `gettext-tiny`)
+* `pkg-config`
+
+Optional:
+
+* `libssl` (OpenSSL, LibreSSL or compatible) -- for SSL/TLS support.
+
+### Extra dependencies for building from snapshots ###
+
+* `autoconf-archive`
+* `autoconf`
+* `automake`
+* `autopoint`
+
+### Building on Ubuntu from Git ###
+
+#### Packages ####
+
+* `build-essetial`
+* `autoconf`
+* `autoconf-archive`
+* `automake`
+* `autopoint`
+* `gettext`
+* `libssl-dev`
+* `pkg-config`
+
+### Build instrucitons ###
+
+	$ autoreconf -fiv
+	$ ./configure && make && sudo make install
 
 ## 4. Install on macOS with Homebrew ##
 
