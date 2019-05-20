@@ -40,7 +40,7 @@ Axel was originally developed by Wilmer van der Gaast. Thanks for your
 efforts. Over time, Axel got several contributions from people. Please,
 see AUTHORS and CREDITS files in source code.
 
-## 3. Building from source ##
+## Building from source ##
 
 Release tarballs contain a pre-generated buildsystem, but if you need to
 edit/patch it, or you're building from a copy of the repository, then you may
@@ -85,11 +85,12 @@ Optional:
 	$ autoreconf -fiv
 	$ ./configure && make && sudo make install
 
-## 4. Install on macOS with Homebrew ##
+## Mac OS X ##
+### Install with Homebrew ###
 
     brew install axel
 
-## 5. Building on macOS with Homebrew ##
+### Building ##
 
 Install the following homebrew packages: `brew install automake gettext openssl`
 
@@ -106,7 +107,7 @@ CFLAGS="-I$GETTEXT/include -I$OPENSSL/include" LDFLAGS=-L$GETTEXT/lib ./configur
 
 You can just run `make` as usual after these steps.
 
-## 6. Related projects ##
+## Related projects ##
 
 * [aria2](https://github.com/aria2/aria2)
 * [hget](https://github.com/huydx/hget)
@@ -114,6 +115,6 @@ You can just run `make` as usual after these steps.
 * [nugget](https://github.com/maxogden/nugget)
 * [pget](https://github.com/Code-Hex/pget)
 
-## 7. License ##
+## License ##
 
 Axel is under GPL-2+ with OpenSSL exception.
