@@ -92,18 +92,21 @@ Optional:
 
 ### Building ##
 
-Install the following homebrew packages: `brew install automake gettext openssl`
+Install the following homebrew packages:
 
-You'll need to provide some extra options to `autogen.sh` and `configure`
-so they can find gettext and openssl.
+	brew install autoconf-archive automake gettext openssl
 
-```shell
-GETTEXT=/usr/local/opt/gettext
-OPENSSL=/usr/local/opt/openssl
-PATH="$GETTEXT/bin:$PATH"
-./autogen.sh -I$GETTEXT/share/aclocal/
-CFLAGS="-I$GETTEXT/include -I$OPENSSL/include" LDFLAGS=-L$GETTEXT/lib ./configure
-```
+You'll need to provide some extra options to autotools so it can find gettext
+and openssl.
+
+	GETTEXT=/usr/local/opt/gettext
+	OPENSSL=/usr/local/opt/openssl
+	PATH="$GETTEXT/bin:$PATH"
+
+	autoreconf -fiv -I$GETTEXT/share/aclocal/
+
+	CFLAGS="-I$GETTEXT/include -I$OPENSSL/include" \
+	LDFLAGS=-L$GETTEXT/lib ./configure
 
 You can just run `make` as usual after these steps.
 
