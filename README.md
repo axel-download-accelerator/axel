@@ -2,14 +2,6 @@
 
 #### Axel — Light command line download accelerator for Linux and Unix
 
-* Help this project
-* What is Axel?
-* Building from source
-* Install on macOS with Homebrew
-* Building on macOS with Homebrew
-* Related projects
-* License
-
 ## 1. Help this project ##
 
 Axel needs your help. **If you are a programmer** and if you wants to
