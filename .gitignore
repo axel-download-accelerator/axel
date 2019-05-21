@@ -1,4 +1,5 @@
 /autom4te.cache/
+/build-aux/
 /m4/
 /po/Makefile.in.in
 /po/Makevars.template
@@ -9,12 +10,9 @@
 /po/stamp-po
 /src/axel
 /aclocal.m4
-/compile
-/config.*
+/config.h
+/config.h.in
 /configure
-/depcomp
-/install-sh
-/missing
 /stamp-h1
 .deps/
 Makefile

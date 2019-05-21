@@ -13,6 +13,7 @@ AXEL_PKG([axel], [https://github.com/axel-download-accelerator/axel/issues])
 AXEL_VER_READ([VERSION])
 AC_INIT
 
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([src/conf.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
