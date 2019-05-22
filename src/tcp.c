@@ -77,10 +77,14 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 	int sock_fd = -1;
 
 	memset(&local_addr, 0, sizeof(local_addr));
-	if (tcp->ai_family == AF_INET && local_if && *local_if) {
-		local_addr.sin_family = AF_INET;
-		local_addr.sin_port = 0;
-		local_addr.sin_addr.s_addr = inet_addr(local_if);
+	if (local_if) {
+		if (!*local_if || tcp->ai_family != AF_INET) {
+			local_if = NULL;
+		} else {
+			local_addr.sin_family = AF_INET;
+			local_addr.sin_port = 0;
+			local_addr.sin_addr.s_addr = inet_addr(local_if);
+		}
 	}
 
 	snprintf(portstr, sizeof(portstr), "%d", port);
@@ -98,56 +102,47 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 	}
 
 	gai_result = gai_results;
-	sock_fd = -1;
-	while ((sock_fd == -1) && (gai_result != NULL)) {
-
+	do {
+		if (sock_fd != -1) {
+			close(sock_fd);
+			sock_fd = -1;
+		}
 		sock_fd = socket(gai_result->ai_family,
 				 gai_result->ai_socktype,
 				 gai_result->ai_protocol);
+		if (sock_fd == -1)
+			continue;
 
-		if (sock_fd != -1) {
-
-			if (gai_result->ai_family == AF_INET) {
-				if (local_if && *local_if) {
-					ret = bind(sock_fd,
-						   (struct sockaddr *)
-						   &local_addr,
-						   sizeof(local_addr));
-					if (ret == -1) {
-						close(sock_fd);
-						sock_fd = -1;
-						gai_result =
-						    gai_result->ai_next;
-					}
-				}
-			}
-
-			if (sock_fd != -1) {
-				struct timeval tout = { .tv_sec  = io_timeout };
-				/* Set O_NONBLOCK so we can timeout */
-				if (io_timeout)
-					fcntl(sock_fd, F_SETFL, O_NONBLOCK);
-				ret = connect(sock_fd, gai_result->ai_addr,
-					      gai_result->ai_addrlen);
-				/* Wait for the connection */
-				if (ret == -1 && errno == EINPROGRESS) {
-					fd_set fdset;
-					FD_ZERO(&fdset);
-					FD_SET(sock_fd, &fdset);
-					ret = select(sock_fd + 1,
-						     NULL, &fdset, NULL,
-						     &tout);
-				}
-				if (ret == -1) {
-					close(sock_fd);
-					sock_fd = -1;
-					gai_result = gai_result->ai_next;
-				} else {
-					fcntl(sock_fd, F_SETFL, 0);
-				}
-			}
+		if (local_if && gai_result->ai_family == AF_INET) {
+			bind(sock_fd, (struct sockaddr *)&local_addr,
+			     sizeof(local_addr));
+			/* FIXME report errors */
 		}
-	}
+
+		if (io_timeout) {
+			/* Set O_NONBLOCK so we can timeout */
+			fcntl(sock_fd, F_SETFL, O_NONBLOCK);
+		}
+		ret = connect(sock_fd, gai_result->ai_addr,
+			      gai_result->ai_addrlen);
+
+		/* Already connected maybe? */
+		if (ret != -1)
+			break;
+
+		if (errno != EINPROGRESS)
+			continue;
+
+		/* Wait for the connection */
+		fd_set fdset;
+		FD_ZERO(&fdset);
+		FD_SET(sock_fd, &fdset);
+		struct timeval tout = { .tv_sec  = io_timeout };
+		ret = select(sock_fd + 1, NULL, &fdset, NULL, &tout);
+		/* Success? */
+		if (ret != -1)
+			break;
+	} while (gai_result = gai_result->ai_next);
 
 	freeaddrinfo(gai_results);
 
@@ -155,6 +150,9 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 		tcp_error(message, hostname, port, strerror(errno));
 		return -1;
 	}
+
+	fcntl(sock_fd, F_SETFL, 0);
+
 #ifdef HAVE_SSL
 	if (secure) {
 		tcp->ssl = ssl_connect(sock_fd, hostname, message);
