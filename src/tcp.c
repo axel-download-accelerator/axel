@@ -46,6 +46,15 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <sys/ioctl.h>
+#include <netinet/tcp.h>
+
+#ifndef TCP_FASTOPEN_CONNECT
+#ifdef __linux__
+#define TCP_FASTOPEN_CONNECT 30
+#else /* __linux__ */
+#define TCP_FASTOPEN_CONNECT 0
+#endif /* __linux__ */
+#endif /* !TCP_FASTOPEN_CONNECT */
 
 /*
  * Check if the given hostname is ipv6 literal
@@ -103,6 +112,8 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 
 	gai_result = gai_results;
 	do {
+		int tcp_fastopen = -1;
+
 		if (sock_fd != -1) {
 			close(sock_fd);
 			sock_fd = -1;
@@ -119,7 +130,11 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 			/* FIXME report errors */
 		}
 
-		if (io_timeout) {
+		if (TCP_FASTOPEN_CONNECT) {
+			tcp_fastopen = setsockopt(sock_fd, IPPROTO_TCP,
+						  TCP_FASTOPEN_CONNECT,
+						  NULL, 0);
+		} else if (io_timeout) {
 			/* Set O_NONBLOCK so we can timeout */
 			fcntl(sock_fd, F_SETFL, O_NONBLOCK);
 		}
@@ -132,6 +147,10 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 
 		if (errno != EINPROGRESS)
 			continue;
+
+		/* With TFO we must assume success */
+		if (tcp_fastopen != -1)
+			break;
 
 		/* Wait for the connection */
 		fd_set fdset;
