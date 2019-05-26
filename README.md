@@ -1,6 +1,6 @@
 # AXEL
 
-#### Axel — Light command line download accelerator for Linux and Unix
+#### Axel - Lightweight CLI download accelerator
 
 ## 1. Help this project ##
 
@@ -8,15 +8,13 @@ Axel needs your help. **If you are a programmer** and if you wants to
 help a nice project, this is your opportunity.
 
 Axel was imported from its old repository[1] to GitHub (the original
-homepage and developers are inactive). After this, all patches found
-in Debian project and other places for this program were applied. All
-initial work was registered in ChangeLog file (version 2.5 and later
-releases). Axel is being packaged in Debian[2].
+homepage and developers are inactive).
 
 If you are interested to help Axel, read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
 Additionally, there is a group to discuss and to coordinate the
 development process[3]. You can also find other developers in the
-#axel channel on freenode.
+`#axel` channel on freenode.
 
 [1] https://alioth.debian.org/projects/axel
 [2] https://packages.qa.debian.org/a/axel.html
@@ -24,15 +22,12 @@ development process[3]. You can also find other developers in the
 
 ## 2. What is Axel? ##
 
-Axel tries to accelerate the downloading process by using multiple
-connections for one file, similar to DownThemAll and other famous
-programs. It can also use multiple mirrors for one download.
+Axel tries to accelerate the download process by using multiple
+connections per file, and can also balance the load between
+different servers.
 
-Using Axel, you will get files faster from Internet. So, Axel can
-speed up a download up to 60% (approximately, according to some tests).
-
-Axel tries to be as light as possible, so it might be useful as a
-wget clone (and other console based programs) on byte-critical systems.
+Axel tries to be as light as possible, so it might be useful on
+byte-critical systems.
 
 Axel supports HTTP, HTTPS, FTP and FTPS protocols.
 
