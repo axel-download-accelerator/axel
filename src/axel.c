@@ -51,7 +51,7 @@
 /* Axel */
 static void save_state(axel_t *axel);
 static void *setup_thread(void *);
-static void axel_message(axel_t *axel, char *format, ...);
+static void axel_message(axel_t *axel, const char *format, ...);
 static void axel_divide(axel_t *axel);
 
 static char *buffer = NULL;
@@ -791,7 +791,7 @@ setup_thread(void *c)
 
 /* Add a message to the axel->message structure */
 static void
-axel_message(axel_t *axel, char *format, ...)
+axel_message(axel_t *axel, const char *format, ...)
 {
 	message_t *m;
 	va_list params;
