@@ -259,10 +259,10 @@ axel_open(axel_t *axel)
 			return 0;
 		}
 
-		if (stsize < (sizeof(axel->conf->num_connections) +
-			      sizeof(axel->bytes_done) +
-			      2 * axel->conf->num_connections *
-			      sizeof(axel->conn[0].currentbyte))) {
+		if (stsize < (off_t)(sizeof(axel->conf->num_connections) +
+				     sizeof(axel->bytes_done) +
+				     2 * axel->conf->num_connections *
+				     sizeof(axel->conn[0].currentbyte))) {
 			/* FIXME this might be wrong, the file may have been
 			 * truncated, we need another way to check. */
 #ifdef DEBUG
