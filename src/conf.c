@@ -261,7 +261,7 @@ conf_init(conf_t *conf)
 		int ret;
 
 		ret = snprintf(s, sizeof(s), "%s/.axelrc", s2);
-		if (ret >= sizeof(s)) {
+		if (ret >= (int)sizeof(s)) {
 			fprintf(stderr, _("HOME env variable too long\n") );
 			return 0;
 		}
