@@ -45,7 +45,6 @@
 #include "axel.h"
 
 #include <sys/ioctl.h>
-#include <math.h>
 
 
 static void stop(int signal);
@@ -487,6 +486,16 @@ stop(int signal)
 	run = 0;
 }
 
+/**
+ * Integer base-2 logarithm.
+ */
+static inline
+int
+log2i(unsigned long long x)
+{
+	return x ? sizeof(x) * 8 - 1 - __builtin_clzll(x) : 0;
+}
+
 /* Convert a number of bytes to a human-readable form */
 char *
 size_human(char *dst, size_t len, size_t value)
@@ -496,7 +505,7 @@ size_human(char *dst, size_t len, size_t value)
 		"", _("Kilo"), _("Mega"), _("Giga"), _("Tera"),
 	};
 	const unsigned int order = min(sizeof(oname) / sizeof(oname[0]) - 1,
-				       (unsigned)log2f(fval) / 10);
+				       log2i(fval) / 10);
 
 	fval /= (float)(1 << order * 10);
 	int ret = snprintf(dst, len, _("%g %sbyte(s)"), fval, oname[order]);
