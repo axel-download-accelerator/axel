@@ -193,7 +193,7 @@ axel_new(conf_t *conf, int count, const void *url)
 	axel->size = axel->conn[0].size;
 	if (axel->conf->verbose > 0) {
 		if (axel->size != LLONG_MAX) {
-			axel_message(axel, _("File size: %lld bytes"),
+			axel_message(axel, _("File size: %zu bytes"),
 				     axel->size);
 		} else {
 			axel_message(axel, _("File size: unavailable"));
@@ -303,7 +303,7 @@ axel_open(axel_t *axel)
 		}
 
 		axel_message(axel,
-			     _("State file found: %lld bytes downloaded, %lld to go."),
+			     _("State file found: %zu bytes downloaded, %zu to go."),
 			     axel->bytes_done, axel->size - axel->bytes_done);
 
 		close(fd);
