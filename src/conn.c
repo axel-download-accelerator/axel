@@ -382,9 +382,11 @@ conn_info(conn_t *conn)
 				return 0;
 			sscanf(t, "%1000s", s);
 			if (s[0] == '/') {
-				sprintf(conn->http->headers, "%s%s:%i%s",
-					scheme_from_proto(conn->proto),
-					conn->host, conn->port, s);
+				snprintf(conn->http->headers,
+					 sizeof(conn->http->headers),
+					 "%s%s:%i%s",
+					 scheme_from_proto(conn->proto),
+					 conn->host, conn->port, s);
 				strncpy(s, conn->http->headers, sizeof(s) - 1);
 			} else if (strstr(s, "://") == NULL) {
 				conn_url(conn->http->headers, MAX_QUERY, conn);
