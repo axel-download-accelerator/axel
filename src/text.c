@@ -53,9 +53,9 @@ static char *size_human(char *dst, size_t len, size_t value);
 static char *time_human(char *dst, size_t len, unsigned int value);
 static void print_commas(long long int bytes_done);
 static void print_alternate_output(axel_t *axel);
-static void print_help();
-static void print_version();
-static int get_term_width();
+static void print_help(void);
+static void print_version(void);
+static int get_term_width(void);
 
 int run = 1;
 
@@ -635,7 +635,7 @@ print_alternate_output(axel_t *axel)
 }
 
 static int
-get_term_width()
+get_term_width(void)
 {
 	struct winsize w;
 
@@ -644,7 +644,7 @@ get_term_width()
 }
 
 void
-print_help()
+print_help(void)
 {
 #ifdef NOGETOPTLONG
 	printf(_("Usage: axel [options] url1 [url2] [url...]\n"
@@ -695,7 +695,7 @@ print_help()
 }
 
 void
-print_version()
+print_version(void)
 {
 	printf(_("Axel version %s (%s)\n"), VERSION, ARCH);
 	printf("\nCopyright 2001-2007 Wilmer van der Gaast,\n"
