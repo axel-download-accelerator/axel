@@ -833,7 +833,7 @@ static void
 axel_divide(axel_t *axel)
 {
 	/* Optimize the number of connections in case the file is small */
-	size_t maxconns = max(1, axel->size / MIN_CHUNK_WORTH);
+	size_t maxconns = max(1u, axel->size / MIN_CHUNK_WORTH);
 	if (maxconns < axel->conf->num_connections)
 		axel->conf->num_connections = maxconns;
 
