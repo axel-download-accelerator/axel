@@ -199,7 +199,7 @@ http_get(http_t *conn, char *lurl)
 }
 
 void
-http_addheader(http_t *conn, char *format, ...)
+http_addheader(http_t *conn, const char *format, ...)
 {
 	char s[MAX_STRING];
 	va_list params;
