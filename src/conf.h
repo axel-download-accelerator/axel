@@ -74,7 +74,7 @@ typedef struct {
 	char add_header[MAX_ADD_HEADERS][MAX_STRING];
 } conf_t;
 
-int conf_loadfile(conf_t *conf, char *file);
+int conf_loadfile(conf_t *conf, const char *file);
 int conf_init(conf_t *conf);
 void conf_free(conf_t *conf);
 

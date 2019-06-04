@@ -85,7 +85,7 @@ parse_protocol(conf_t *conf, const char *value)
 }
 
 int
-conf_loadfile(conf_t *conf, char *file)
+conf_loadfile(conf_t *conf, const char *file)
 {
 	int line = 0, ret = 1;
 	FILE *fp;
