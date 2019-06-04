@@ -172,7 +172,7 @@ axel_new(conf_t *conf, int count, const void *url)
 
 	do {
 		if (!conn_init(&axel->conn[0])) {
-			axel_message(axel, axel->conn[0].message);
+			axel_message(axel, "%s", axel->conn[0].message);
 			axel->ready = -1;
 			return axel;
 		}
@@ -181,7 +181,7 @@ axel_new(conf_t *conf, int count, const void *url)
 		 * depends on the protocol used. */
 		status = conn_info(&axel->conn[0]);
 		if (!status) {
-			axel_message(axel, axel->conn[0].message);
+			axel_message(axel, "%s", axel->conn[0].message);
 			axel->ready = -1;
 			return axel;
 		}
