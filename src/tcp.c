@@ -161,7 +161,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 		/* Success? */
 		if (ret != -1)
 			break;
-	} while (gai_result = gai_result->ai_next);
+	} while ((gai_result = gai_result->ai_next));
 
 	freeaddrinfo(gai_results);
 
