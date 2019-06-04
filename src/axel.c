@@ -51,6 +51,10 @@
 /* Axel */
 static void save_state(axel_t *axel);
 static void *setup_thread(void *);
+
+#ifdef __GNUC__
+__attribute__((format(printf, 2, 3)))
+#endif /* __GNUC__ */
 static void axel_message(axel_t *axel, const char *format, ...);
 static void axel_divide(axel_t *axel);
 
