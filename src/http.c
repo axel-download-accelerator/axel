@@ -101,7 +101,7 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	char *puser = NULL, *ppass = "";
 	conn_t tconn[1];
 
-	strncpy(conn->host, host, sizeof(conn->host) - 1);
+	strlcpy(conn->host, host, sizeof(conn->host));
 	conn->port = port;
 	conn->proto = proto;
 
@@ -206,10 +206,10 @@ http_addheader(http_t *conn, const char *format, ...)
 
 	va_start(params, format);
 	vsnprintf(s, sizeof(s) - 3, format, params);
-	strcat(s, "\r\n");
+	strlcat(s, "\r\n", sizeof(s));
 	va_end(params);
 
-	strncat(conn->request, s, MAX_QUERY - strlen(conn->request) - 1);
+	strlcat(conn->request, s, sizeof(conn->request));
 }
 
 int
@@ -224,7 +224,7 @@ http_exec(http_t *conn)
 		conn->request);
 #endif
 
-	http_addheader(conn, "");
+	strlcat(conn->request, "\r\n", sizeof(conn->request));
 
 	while (nwrite < strlen(conn->request)) {
 		if ((i =
@@ -259,8 +259,8 @@ http_exec(http_t *conn)
 		} else {
 			i++;
 		}
-		strncat(conn->headers, s,
-			MAX_QUERY - strlen(conn->headers) - 1);
+		strlcat(conn->headers, s,
+			MAX_QUERY - strlen(conn->headers));
 	}
 
 #ifdef DEBUG
@@ -271,7 +271,7 @@ http_exec(http_t *conn)
 	sscanf(conn->headers, "%*s %3i", &conn->status);
 	s2 = strchr(conn->headers, '\n');
 	*s2 = 0;
-	strcpy(conn->request, conn->headers);
+	strlcpy(conn->request, conn->headers, sizeof(conn->request));
 	*s2 = '\n';
 
 	return 1;
@@ -393,21 +393,16 @@ http_decode(char *s)
 }
 
 void
-http_encode(char *s)
+http_encode(char *s, size_t len)
 {
 	char t[MAX_STRING];
 	int i, j;
 
-	for (i = j = 0; s[i]; i++, j++) {
-		/* Fix buffer overflow */
-		if (j >= MAX_STRING - 1) {
-			break;
-		}
-
+	for (i = j = 0; s[i] && j < sizeof(t) - 1; i++, j++) {
 		t[j] = s[i];
 		if (s[i] <= 0x20 || s[i] >= 0x7f) {
 			/* Fix buffer overflow */
-			if (j >= MAX_STRING - 3) {
+			if (j >= sizeof(t) - 3) {
 				break;
 			}
 
@@ -417,5 +412,5 @@ http_encode(char *s)
 	}
 	t[j] = 0;
 
-	strcpy(s, t);
+	strlcpy(s, t, len);
 }

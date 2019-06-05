@@ -103,7 +103,7 @@ ftp_cwd(ftp_t *conn, char *cwd)
 		return 0;
 	}
 
-	strncpy(conn->cwd, cwd, sizeof(conn->cwd) - 1);
+	strlcpy(conn->cwd, cwd, sizeof(conn->cwd));
 
 	return 1;
 }
@@ -194,10 +194,11 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 	if ((s = strstr(reply, "\nl")) != NULL) {
 		/* Get the real filename */
 		sscanf(s, "%*s %*i %*s %*s %*i %*s %*i %*s %100s", fn);
+		// FIXME: replace by strlcpy
 		strcpy(file, fn);
 
 		/* Get size of the file linked to */
-		strncpy(fn, strstr(s, "->") + 3, sizeof(fn) - 1);
+		strlcpy(fn, strstr(s, "->") + 3, sizeof(fn));
 		fn[sizeof(fn) - 1] = '\0';
 		free(reply);
 		if ((reply = strchr(fn, '\r')) != NULL)
@@ -219,6 +220,7 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 				return -2;
 			}
 		}
+		// FIXME: replace by strlcpy
 		strcpy(file, fn);
 
 		free(reply);
@@ -274,14 +276,14 @@ ftp_data(ftp_t *conn, unsigned io_timeout)
 
 /* Send a command to the server */
 int
-ftp_command(ftp_t *conn, char *format, ...)
+ftp_command(ftp_t *conn, const char *format, ...)
 {
 	va_list params;
 	char cmd[MAX_STRING];
 
 	va_start(params, format);
 	vsnprintf(cmd, sizeof(cmd) - 3, format, params);
-	strcat(cmd, "\r\n");
+	strlcat(cmd, "\r\n", sizeof(cmd));
 	va_end(params);
 
 #ifdef DEBUG

@@ -74,7 +74,7 @@ const char *http_header(const http_t *conn, const char *header);
 void http_filename(const http_t *conn, char *filename);
 long long int http_size(http_t *conn);
 long long int http_size_from_range(http_t *conn);
-void http_encode(char *s);
+void http_encode(char *s, size_t len);
 void http_decode(char *s);
 
 #endif				/* AXEL_HTTP_H */

@@ -57,8 +57,7 @@ conn_set(conn_t *conn, const char *set_url)
 	if ((i = strstr(set_url, "://")) == NULL) {
 		conn->proto = PROTO_DEFAULT;
 		conn->port = PROTO_DEFAULT_PORT;
-		strncpy(url, set_url, sizeof(url) - 1);
-		url[sizeof(url) - 1] = '\0';
+		strlcpy(url, set_url, sizeof(url));
 	} else {
 		int proto_len = i - set_url;
 		if (strncmp(set_url, "ftp", proto_len) == 0) {
@@ -84,8 +83,7 @@ conn_set(conn_t *conn, const char *set_url)
                        return 0;
                }
 #endif
-		strncpy(url, i + 3, sizeof(url) - 1);
-		url[sizeof(url) - 1] = '\0';
+		strlcpy(url, i + 3, sizeof(url));
 	}
 
 	/* Split */
@@ -95,7 +93,7 @@ conn_set(conn_t *conn, const char *set_url)
 		*i = 0;
 		snprintf(conn->dir, MAX_STRING, "/%s", i + 1);
 		if (conn->proto == PROTO_HTTP || conn->proto == PROTO_HTTPS)
-			http_encode(conn->dir);
+			http_encode(conn->dir, sizeof(conn->dir));
 	}
 	j = strchr(conn->dir, '?');
 	if (j != NULL)
@@ -107,19 +105,20 @@ conn_set(conn_t *conn, const char *set_url)
 	if (j != NULL)
 		*j = '?';
 	if (i == NULL) {
-		strncpy(conn->file, conn->dir, sizeof(conn->file) - 1);
+		strlcpy(conn->file, conn->dir, sizeof(conn->file));
 		strcpy(conn->dir, "/");
 	} else {
-		strncpy(conn->file, i + 1, sizeof(conn->file) - 1);
-		strcat(conn->dir, "/");
+		strlcpy(conn->file, i + 1, sizeof(conn->file));
+		strlcat(conn->dir, "/", sizeof(conn->dir));
 	}
 
 	/* Check for username in host field */
+	// FIXME: optimize
 	if (strrchr(url, '@') != NULL) {
-		strncpy(conn->user, url, sizeof(conn->user) - 1);
+		strlcpy(conn->user, url, sizeof(conn->user));
 		i = strrchr(conn->user, '@');
 		*i = 0;
-		strncpy(url, i + 1, sizeof(url) - 1);
+		strlcpy(url, i + 1, sizeof(url));
 		*conn->pass = 0;
 	} else {
 		/* If not: Fill in defaults */
@@ -136,19 +135,19 @@ conn_set(conn_t *conn, const char *set_url)
 	/* Password? */
 	if ((i = strchr(conn->user, ':')) != NULL) {
 		*i = 0;
-		strncpy(conn->pass, i + 1, sizeof(conn->pass) - 1);
+		strlcpy(conn->pass, i + 1, sizeof(conn->pass));
 	}
 
 	// Look for IPv6 literal hostname
 	if (*url == '[') {
-		strncpy(conn->host, url + 1, sizeof(conn->host) - 1);
+		strlcpy(conn->host, url + 1, sizeof(conn->host));
 		if ((i = strrchr(conn->host, ']')) != NULL) {
 			*i++ = 0;
 		} else {
 			return 0;
 		}
 	} else {
-		strncpy(conn->host, url, sizeof(conn->host) - 1);
+		strlcpy(conn->host, url, sizeof(conn->host));
 		i = conn->host;
 		while (*i && *i != ':') {
 			i++;
@@ -188,12 +187,11 @@ conn_url(char *dst, size_t len, conn_t *conn)
 	const char *prefix = "", *postfix = "";
 
 	const char *scheme = scheme_from_proto(conn->proto);
-	unsigned int scheme_len = strlen(scheme);
 
+	size_t scheme_len = strlcpy(dst, scheme, len);
 	if (scheme_len > len)
 		return NULL;
 
-	strcpy(dst, scheme);
 	len -= scheme_len;
 
 	char *p = dst + scheme_len;
@@ -387,13 +385,15 @@ conn_info(conn_t *conn)
 					 "%s%s:%i%s",
 					 scheme_from_proto(conn->proto),
 					 conn->host, conn->port, s);
-				strncpy(s, conn->http->headers, sizeof(s) - 1);
+				strlcpy(s, conn->http->headers, sizeof(s));
 			} else if (strstr(s, "://") == NULL) {
-				conn_url(conn->http->headers, MAX_QUERY, conn);
-				strncat(conn->http->headers, s, MAX_QUERY - 1);
-				strncpy(s, conn->http->headers, sizeof(s) - 1);
+				conn_url(conn->http->headers,
+					 sizeof(conn->http->headers), conn);
+				strlcat(conn->http->headers, s,
+					sizeof(conn->http->headers));
+				strlcpy(s, conn->http->headers, sizeof(s));
 			}
-			s[sizeof(s) - 1] = '\0';
+
 			if (!conn_set(conn, s)) {
 				return 0;
 			}

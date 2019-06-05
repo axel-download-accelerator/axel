@@ -229,7 +229,7 @@ tcp_close(tcp_t *tcp)
 }
 
 int
-get_if_ip(char *iface, char *ip)
+get_if_ip(char *dst, size_t len, const char *iface)
 {
 	struct ifreq ifr;
 	int ret, fd = socket(PF_INET, SOCK_DGRAM, IPPROTO_IP);
@@ -239,14 +239,13 @@ get_if_ip(char *iface, char *ip)
 
 	memset(&ifr, 0, sizeof(struct ifreq));
 
-	strncpy(ifr.ifr_name, iface, sizeof(ifr.ifr_name) - 1);
-	ifr.ifr_name[sizeof(ifr.ifr_name) - 1] = '\0';
+	strlcpy(ifr.ifr_name, iface, sizeof(ifr.ifr_name));
 	ifr.ifr_addr.sa_family = AF_INET;
 
 	ret = !ioctl(fd, SIOCGIFADDR, &ifr);
 	if (ret) {
 		struct sockaddr_in *x = (struct sockaddr_in *)&ifr.ifr_addr;
-		strcpy(ip, inet_ntoa(x->sin_addr));
+		strlcpy(dst, inet_ntoa(x->sin_addr), len);
 	}
 	close(fd);
 

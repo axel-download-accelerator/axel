@@ -127,8 +127,8 @@ main(int argc, char *argv[])
 				      "User-Agent", optarg);
 			break;
 		case 'H':
-			strncpy(conf->add_header[cur_head++], optarg,
-				sizeof(conf->add_header[0]) - 1);
+			strlcpy(conf->add_header[cur_head++], optarg,
+				sizeof(conf->add_header[0]));
 			break;
 		case 's':
 			if (!sscanf(optarg, "%i", &conf->max_speed)) {
@@ -149,8 +149,7 @@ main(int argc, char *argv[])
 			}
 			break;
 		case 'o':
-			strncpy(fn, optarg, sizeof(fn) - 1);
-			fn[sizeof(fn) - 1] = '\0';
+			strlcpy(fn, optarg, sizeof(fn));
 			break;
 		case 'S':
 			do_search = 1;
@@ -305,9 +304,9 @@ main(int argc, char *argv[])
 		if (!search)
 			goto free_conf;
 
-		for (i = 0; i < (argc - optind); i++)
-			strncpy(search[i].url, argv[optind + i],
-				sizeof(search[i].url) - 1);
+		for (i = 0; i < argc - optind; i++)
+			strlcpy(search[i].url, argv[optind + i],
+				sizeof(search[i].url));
 		axel = axel_new(conf, argc - optind, search);
 		free(search);
 		if (!axel || axel->ready == -1) {
@@ -350,7 +349,7 @@ main(int argc, char *argv[])
 			printf(_("State file found, but no downloaded data. Starting from scratch.\n"));
 			unlink(statefn);
 		}
-		strcpy(axel->filename, fn);
+		strlcpy(axel->filename, fn, sizeof(axel->filename));
 	} else {
 		/* Local file existence check */
 		i = 0;

@@ -119,7 +119,7 @@ axel_new(conf_t *conf, int count, const void *url)
 			goto nomem;
 
 		axel->url->next = axel->url;
-		strncpy(axel->url->text, url, sizeof(axel->url->text) - 1);
+		strlcpy(axel->url->text, url, sizeof(axel->url->text));
 	} else {
 		res = url;
 		u = malloc(sizeof(url_t) * count);
@@ -128,7 +128,7 @@ axel_new(conf_t *conf, int count, const void *url)
 		axel->url = u;
 
 		for (i = 0; i < count; i++) {
-			strncpy(u[i].text, res[i].url, sizeof(u[i].text) - 1);
+			strlcpy(u[i].text, res[i].url, sizeof(u[i].text));
 			u[i].next = &u[i + 1];
 		}
 		u[count - 1].next = u;
@@ -144,7 +144,7 @@ axel_new(conf_t *conf, int count, const void *url)
 	axel->conn[0].local_if = axel->conf->interfaces->text;
 	axel->conf->interfaces = axel->conf->interfaces->next;
 
-	strncpy(axel->filename, axel->conn[0].file, sizeof(axel->filename) - 1);
+	strlcpy(axel->filename, axel->conn[0].file, sizeof(axel->filename));
 	http_decode(axel->filename);
 
 	if ((s = strchr(axel->filename, '?')) != NULL &&
@@ -152,8 +152,8 @@ axel_new(conf_t *conf, int count, const void *url)
 		*s = 0;		/* Get rid of CGI parameters */
 
 	if (*axel->filename == 0)	/* Index page == no fn */
-		strncpy(axel->filename, axel->conf->default_filename,
-			sizeof(axel->filename) - 1);
+		strlcpy(axel->filename, axel->conf->default_filename,
+			sizeof(axel->filename));
 
 	if (axel->conf->no_clobber && access(axel->filename, F_OK) == 0) {
 		char stfile[MAX_STRING + 3];
@@ -202,12 +202,12 @@ axel_new(conf_t *conf, int count, const void *url)
 
 	/* Wildcards in URL --> Get complete filename */
 	if (strchr(axel->filename, '*') || strchr(axel->filename, '?'))
-		strncpy(axel->filename, axel->conn[0].file,
-			sizeof(axel->filename) - 1);
+		strlcpy(axel->filename, axel->conn[0].file,
+			sizeof(axel->filename));
 
 	if (*axel->conn[0].output_filename != 0) {
-		strncpy(axel->filename, axel->conn[0].output_filename,
-			sizeof(axel->filename) - 1);
+		strlcpy(axel->filename, axel->conn[0].output_filename,
+			sizeof(axel->filename));
 	}
 
 	return axel;

@@ -107,7 +107,7 @@ search_makelist(search_t *results, char *url)
 	if (!conn_set(conn, url) || !conn_init(conn) || !conn_info(conn))
 		return -1;
 
-	strncpy(results[0].url, url, sizeof(results[0].url) - 1);
+	strlcpy(results[0].url, url, sizeof(results[0].url));
 	results[0].url[sizeof(results[0].url) - 1] = '\0';
 	results[0].speed = 1 + 1000 * (axel_gettime() - t);
 	results[0].size = conn->size;
@@ -164,7 +164,7 @@ search_makelist(search_t *results, char *url)
 		s3 = strchr(s2, ' ');
 		*s3 = 0;
 		if (strcmp(results[0].url, s2)) {
-			strncpy(results[i].url, s2, sizeof(results[i].url) - 1);
+			strlcpy(results[i].url, s2, sizeof(results[i].url));
 			results[i].size = results[0].size;
 			results[i].conf = results->conf;
 		} else {

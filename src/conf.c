@@ -134,8 +134,7 @@ conf_loadfile(conf_t *conf, const char *file)
 			goto num_keys;
 
 		/* Save string option */
-		strncpy(dst, value, MAX_STRING - 1);
-		((char *)dst)[MAX_STRING - 1] = '\0';
+		strlcpy(dst, value, MAX_STRING);
 		continue;
 
 		/* Numeric options */
@@ -214,7 +213,8 @@ conf_init(conf_t *conf)
 
 	/* Set defaults */
 	memset(conf, 0, sizeof(conf_t));
-	strcpy(conf->default_filename, "default");
+	strlcpy(conf->default_filename, "default",
+		sizeof(conf->default_filename));
 	*conf->http_proxy = 0;
 	*conf->no_proxy = 0;
 	conf->strip_cgi_parameters = 1;
@@ -248,10 +248,8 @@ conf_init(conf_t *conf)
 
 	conf->interfaces->next = conf->interfaces;
 
-	if ((s2 = getenv("http_proxy")) != NULL)
-		strncpy(conf->http_proxy, s2, sizeof(conf->http_proxy) - 1);
-	else if ((s2 = getenv("HTTP_PROXY")) != NULL)
-		strncpy(conf->http_proxy, s2, sizeof(conf->http_proxy) - 1);
+	if ((s2 = getenv("http_proxy")) || (s2 = getenv("HTTP_PROXY")))
+		strlcpy(conf->http_proxy, s2, sizeof(conf->http_proxy));
 
 	if (!conf_loadfile(conf, ETCDIR "/axelrc"))
 		return 0;
@@ -322,9 +320,9 @@ parse_interfaces(conf_t *conf, char *s)
 		for (s2 = s; *s2 != ' ' && *s2 != '\t' && *s2; s2++) ;
 		*s2 = 0;
 		if (*s < '0' || *s > '9')
-			get_if_ip(s, iface->text);
+			get_if_ip(iface->text, sizeof(iface->text), s);
 		else
-			strcpy(iface->text, s);
+			strlcpy(iface->text, s, sizeof(iface->text));
 		s = s2 + 1;
 		if (*s) {
 			iface->next = malloc(sizeof(if_t));

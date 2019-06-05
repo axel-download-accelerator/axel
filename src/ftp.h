@@ -58,7 +58,7 @@ int ftp_connect(ftp_t *conn, int proto, char *host, int port, char *user,
 		char *pass, unsigned io_timeout);
 void ftp_disconnect(ftp_t *conn);
 int ftp_wait(ftp_t *conn);
-int ftp_command(ftp_t *conn, char *format, ...);
+int ftp_command(ftp_t *conn, const char *format, ...);
 int ftp_cwd(ftp_t *conn, char *cwd);
 int ftp_data(ftp_t *conn, unsigned io_timeout);
 long long int ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout);
