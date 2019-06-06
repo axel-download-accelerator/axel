@@ -75,7 +75,7 @@ Optional:
 * `libssl-dev`
 * `pkg-config`
 
-### Build instrucitons ###
+### Build instructions ###
 
 	$ autoreconf -fiv
 	$ ./configure && make && sudo make install
