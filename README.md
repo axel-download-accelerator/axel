@@ -66,7 +66,7 @@ Optional:
 
 #### Packages ####
 
-* `build-essetial`
+* `build-essential`
 * `autoconf`
 * `autoconf-archive`
 * `automake`
