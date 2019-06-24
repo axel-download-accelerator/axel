@@ -18,26 +18,8 @@ EXTRA_DIST = \
 	man/Makefile
 
 distclean-local:
-	-rm -rf autom4te.cache/ \
-	m4/
-
-	-rm -f *~ \
-	aclocal.m4 \
-	compile \
-	config.* \
-	configure \
-	depcomp \
-	install-sh \
-	Makefile.in \
-	missing \
-	po/*.gmo \
-	po/*.po~ \
-	po/Makefile.in.in \
-	po/Makevars.template \
-	po/Rules-quot \
-	po/axel.pot \
-	po/stamp-po \
-	src/Makefile.in
+	-rm -rf autom4te.cache
+	-rm -f  *~ po/*~ src/*~
 
 remove_git_dep = sed -i -e \
 	'/^am__aclocal/,/[^\\]$$/ s:[$$](top_srcdir)/[.]git/[^ ]* *::g'
