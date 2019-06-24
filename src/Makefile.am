@@ -19,7 +19,9 @@ axel_SOURCES = \
 	tcp.h \
 	text.c
 
-axel_LDADD = $(SSL_LIBS)
+axel_CFLAGS = $(PTHREAD_CFLAGS) $(AM_CFLAGS)
+axel_LDADD = $(SSL_LIBS) $(PTHREAD_LIBS)
+axel_CC = $(PTHREAD_CC)
 
 AM_CPPFLAGS = -DLOCALEDIR=\""$(localedir)"\"
 AM_CPPFLAGS += -D_BSD_SOURCE -D_DEFAULT_SOURCE
