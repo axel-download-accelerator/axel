@@ -1,10 +1,14 @@
 # Autoconf for axel
-# Copyright 2016 Joao Eriberto Mota Filho
-# Copyright 2016 Stephen Thirlwall
-# Copyright 2017 Antonio Quartulli
-# Copyright 2017 Ismael Luceno
-# Copyright 2017 Vlad Glagolev
-# This file is under same license of Axel
+AC_COPYRIGHT([
+Copyright 2016 Joao Eriberto Mota Filho
+Copyright 2016 Stephen Thirlwall
+Copyright 2017 Antonio Quartulli
+Copyright 2017 Ismael Luceno
+Copyright 2017 Vlad Glagolev
+Copyright 2017 Ismael Luceno
+
+This file is under the same license as Axel.
+])
 
 AC_PREREQ([2.69])
 PKG_PREREQ([0.29])
