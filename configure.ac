@@ -22,13 +22,21 @@ PKG_PROG_PKG_CONFIG
 
 AM_SILENT_RULES([yes])
 
-# Checks for programs.
+# Compiler checks
 AC_PROG_CC
 AC_PROG_CC_C99
 AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
     AC_MSG_ERROR([C99 compiler required])
 ])
 
+AX_GCC_BUILTIN([__builtin_clzll])
+
+AS_IF([test "x$ax_cv_have___builtin_clzll" = xno], [
+    AC_MSG_ERROR([Support for __builtin_clzll is required])
+])
+
+
+# Checks for other programs.
 AC_PROG_INSTALL
 
 # Checks for libraries.
