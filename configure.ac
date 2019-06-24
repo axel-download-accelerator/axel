@@ -29,6 +29,11 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
     AC_MSG_ERROR([C99 compiler required])
 ])
 
+# Compiler Warnings
+AX_IS_RELEASE([git-directory])
+AX_COMPILER_FLAGS()
+
+# Built-in functions
 AX_GCC_BUILTIN([__builtin_clzll])
 
 AS_IF([test "x$ax_cv_have___builtin_clzll" = xno], [
@@ -113,9 +118,6 @@ AX_PTHREAD()
 # OS
 AC_CANONICAL_HOST
 AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
-
-# Flags
-CFLAGS="$CFLAGS -Wall"
 
 case "$host_os" in
 darwin*)

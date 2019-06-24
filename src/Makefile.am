@@ -1,3 +1,5 @@
+AM_CFLAGS = $(WARN_CFLAGS) -Wno-declaration-after-statement
+
 bin_PROGRAMS = axel
 axel_SOURCES = \
 	axel.c \
