@@ -21,15 +21,10 @@ distclean-local:
 	-rm -rf autom4te.cache
 	-rm -f  *~ po/*~ src/*~
 
-remove_git_dep = sed -i -e \
-	'/^am__aclocal/,/[^\\]$$/ s:[$$](top_srcdir)/[.]git/[^ ]* *::g'
 dist-hook:
 	rm -rf $(distdir)/.git
 	read _ RELDATE _ < $(top_srcdir)/VERSION; \
-	TZ= find $(distdir) \
-		-name Makefile.in -exec $(remove_git_dep) '{}' ';' \
-		-exec touch -d "$$RELDATE" '{}' + \
-		-o -exec touch -d "$$RELDATE" '{}' +
+	TZ= find $(distdir) -exec touch -d "$$RELDATE" '{}' +
 
 MSG = echo '==>'
 ERR = ! echo '!!! ERROR:'

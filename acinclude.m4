@@ -1,10 +1,14 @@
 # TODO: we need a true replacement for AC_INIT...
 
+# _AXEL_ntsinc(FILE) - sinclude not to be tracked by automake
+# ---------------------------------------------------------------------
+m4_define([_AXEL_ntsinc], defn([m4_sinclude]))
+
 # _AXEL_READL(FILE, HARD-DEP?)
 # ---------------------------------------------------------------------
 m4_define([_AXEL_READL],
 [m4_bpatsubst(m4_quote(m4_if([$2],,
-  [m4_sinclude([$1])],
+  [_AXEL_ntsinc([$1])],
   [m4_apply([m4_include], [[$1]])])), [ *
 ])])
 
