@@ -21,7 +21,7 @@ EXTRA_DIST = \
 
 distclean-local:
 	-rm -rf autom4te.cache
-	-rm -f  *~ po/*~ src/*~
+	-rm -f  *~ po/*~ po/*.gmo src/*~
 
 dist-hook:
 	rm -rf $(distdir)/.git
