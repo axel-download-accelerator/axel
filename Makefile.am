@@ -11,6 +11,7 @@ dist_man_MANS = man/axel.1
 	$(MAKE) -C $(@D) $(@F)
 
 EXTRA_DIST = \
+	scripts/pocheck.awk \
 	README.md \
 	CONTRIBUTING.md \
 	CREDITS \
