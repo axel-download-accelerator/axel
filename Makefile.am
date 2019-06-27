@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = dist-bzip2 dist-xz
+AUTOMAKE_OPTIONS = foreign dist-bzip2 dist-xz
 
 # XXX Fix disagreement between aclocal and make
 # (aclocal doesn't update based on mtime)
@@ -11,6 +11,7 @@ dist_man_MANS = man/axel.1
 	$(MAKE) -C $(@D) $(@F)
 
 EXTRA_DIST = \
+	README.md \
 	CONTRIBUTING.md \
 	CREDITS \
 	doc/axelrc.example \
