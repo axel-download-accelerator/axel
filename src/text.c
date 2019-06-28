@@ -95,7 +95,7 @@ main(int argc, char *argv[])
 	search_t *search;
 	conf_t conf[1];
 	axel_t *axel;
-	int i, j, cur_head = 0, ret = 1;
+	int j, cur_head = 0, ret = 1;
 	char *s;
 
 /* Set up internationalization (i18n) */
@@ -248,7 +248,7 @@ main(int argc, char *argv[])
 		s = argv[optind];
 		if (strlen(s) > MAX_STRING) {
 			fprintf(stderr,
-				_("Can't handle URLs of length over %d\n"),
+				_("Can't handle URLs of length over %zu\n"),
 				MAX_STRING);
 			goto free_conf;
 		}
@@ -263,7 +263,7 @@ main(int argc, char *argv[])
 		search[0].conf = conf;
 		if (conf->verbose)
 			printf(_("Doing search...\n"));
-		i = search_makelist(search, s);
+		int i = search_makelist(search, s);
 		if (i < 0) {
 			fprintf(stderr, _("File not found\n"));
 			goto free_conf;
@@ -304,7 +304,7 @@ main(int argc, char *argv[])
 		if (!search)
 			goto free_conf;
 
-		for (i = 0; i < argc - optind; i++)
+		for (int i = 0; i < argc - optind; i++)
 			strlcpy(search[i].url, argv[optind + i],
 				sizeof(search[i].url));
 		axel = axel_new(conf, argc - optind, search);
@@ -352,9 +352,8 @@ main(int argc, char *argv[])
 		strlcpy(axel->filename, fn, sizeof(axel->filename));
 	} else {
 		/* Local file existence check */
-		i = 0;
 		s = axel->filename + strlen(axel->filename);
-		while (1) {
+		for (int i = 0; 1; i++) {
 			char statefn[MAX_STRING + 3];
 			snprintf(statefn, sizeof(statefn), "%s.st",
 				 axel->filename);
@@ -368,7 +367,6 @@ main(int argc, char *argv[])
 					break;
 			}
 			sprintf(s, ".%i", i);
-			i++;
 		}
 	}
 
@@ -395,7 +393,7 @@ main(int argc, char *argv[])
 	signal(SIGTERM, stop);
 
 	while (!axel->ready && run) {
-		long long int prev;
+		size_t prev;
 
 		prev = axel->bytes_done;
 		axel_do(axel);
@@ -405,10 +403,9 @@ main(int argc, char *argv[])
 				print_alternate_output(axel);
 		} else {
 			/* The infamous wget-like 'interface'.. ;) */
-			long long int done =
-			    (axel->bytes_done / 1024) - (prev / 1024);
+			size_t done = (axel->bytes_done - prev) / 1024;
 			if (done && conf->verbose > -1) {
-				for (i = 0; i < done; i++) {
+				for (size_t i = 0; i < done; i++) {
 					i += (prev / 1024);
 					if ((i % 50) == 0) {
 						if (prev >= 1024)
@@ -418,13 +415,13 @@ main(int argc, char *argv[])
 						if (axel->size == LLONG_MAX)
 							printf("\n[ N/A]  ");
 						else if (axel->size < 10240000)
-							printf("\n[%3lld%%]  ",
-							       min(100,
+							printf("\n[%3zu%%]  ",
+							       min(100U,
 								   102400 * i /
 								   axel->size));
 						else
-							printf("\n[%3lld%%]  ",
-							       min(100,
+							printf("\n[%3zu%%]  ",
+							       min(100U,
 								   i /
 								   (axel->size /
 								    102400)));
@@ -442,7 +439,7 @@ main(int argc, char *argv[])
 			if (conf->alternate_output == 1) {
 				/* clreol-simulation */
 				putchar('\r');
-				for (i = get_term_width(); i > 0; i--)
+				for (int i = get_term_width(); i > 0; i--)
 					putchar(' ');
 				putchar('\r');
 			} else {
@@ -489,7 +486,7 @@ stop(int signal)
  * Integer base-2 logarithm.
  */
 static inline
-int
+unsigned
 log2i(unsigned long long x)
 {
 	return x ? sizeof(x) * 8 - 1 - __builtin_clzll(x) : 0;
@@ -499,14 +496,14 @@ log2i(unsigned long long x)
 char *
 size_human(char *dst, size_t len, size_t value)
 {
-	float fval = (float)value;
+	double fval = (double)value;
 	const char * const oname[] = {
 		"", _("Kilo"), _("Mega"), _("Giga"), _("Tera"),
 	};
 	const unsigned int order = min(sizeof(oname) / sizeof(oname[0]) - 1,
 				       log2i(fval) / 10);
 
-	fval /= (float)(1 << order * 10);
+	fval /= (double)(1 << order * 10);
 	int ret = snprintf(dst, len, _("%g %sbyte(s)"), fval, oname[order]);
 	return ret < 0 ? NULL : dst;
 }
