@@ -102,7 +102,8 @@ axel_new(conf_t *conf, int count, const void *url)
 	}
 	if (buffer == NULL) {
 		/* reserve 4 additional bytes for file extension ".st" */
-		buffer = malloc(max(MAX_STRING + 4, axel->conf->buffer_size));
+		buffer = malloc(max(MAX_STRING + 4,
+				(size_t)axel->conf->buffer_size));
 		if (!buffer)
 			goto nomem;
 	}
@@ -342,8 +343,7 @@ axel_open(axel_t *axel)
 
 				if ((nwrite =
 				     write(axel->outfd, buffer,
-					   min(j,
-					       axel->conf->buffer_size))) < 0) {
+					   min(j, axel->conf->buffer_size))) < 0) {
 					if (errno == EINTR || errno == EAGAIN)
 						continue;
 					axel_message(axel,

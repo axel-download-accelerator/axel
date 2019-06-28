@@ -226,7 +226,7 @@ http_exec(http_t *conn)
 
 	strlcat(conn->request, "\r\n", sizeof(conn->request));
 
-	while (nwrite < strlen(conn->request)) {
+	while (nwrite < (ssize_t)strlen(conn->request)) {
 		if ((i =
 		     tcp_write(&conn->tcp, conn->request + nwrite,
 			       strlen(conn->request) - nwrite)) < 0) {
@@ -396,7 +396,7 @@ void
 http_encode(char *s, size_t len)
 {
 	char t[MAX_STRING];
-	int i, j;
+	unsigned i, j;
 
 	for (i = j = 0; s[i] && j < sizeof(t) - 1; i++, j++) {
 		t[j] = s[i];

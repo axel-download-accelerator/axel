@@ -290,7 +290,7 @@ ftp_command(ftp_t *conn, const char *format, ...)
 	fprintf(stderr, "fd(%i)<--%s", conn->tcp.fd, cmd);
 #endif
 
-	if (tcp_write(&conn->tcp, cmd, strlen(cmd)) != strlen(cmd)) {
+	if (tcp_write(&conn->tcp, cmd, strlen(cmd)) != (ssize_t)strlen(cmd)) {
 		sprintf(conn->message, _("Error writing command %s\n"), format);
 		return 0;
 	} else {

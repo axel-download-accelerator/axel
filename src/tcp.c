@@ -191,7 +191,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 	return 1;
 }
 
-int
+ssize_t
 tcp_read(tcp_t *tcp, void *buffer, int size)
 {
 #ifdef HAVE_SSL
@@ -202,7 +202,7 @@ tcp_read(tcp_t *tcp, void *buffer, int size)
 		return read(tcp->fd, buffer, size);
 }
 
-int
+ssize_t
 tcp_write(tcp_t *tcp, void *buffer, int size)
 {
 #ifdef HAVE_SSL
