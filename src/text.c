@@ -339,8 +339,8 @@ main(int argc, char *argv[])
 				fn[fnlen + 1 + axelfnlen] = '\0';
 			}
 		}
-		char statefn[MAX_STRING];
-		snprintf(statefn, MAX_STRING - 1, "%s.st", fn);
+		char statefn[MAX_STRING + 3];
+		snprintf(statefn, sizeof(statefn), "%s.st", fn);
 		if (access(fn, F_OK) == 0 && access(statefn, F_OK) != 0) {
 			fprintf(stderr, _("No state file, cannot resume!\n"));
 			goto close_axel;
@@ -355,7 +355,7 @@ main(int argc, char *argv[])
 		i = 0;
 		s = axel->filename + strlen(axel->filename);
 		while (1) {
-			char statefn[MAX_STRING];
+			char statefn[MAX_STRING + 3];
 			snprintf(statefn, sizeof(statefn), "%s.st",
 				 axel->filename);
 			if (access(axel->filename, F_OK) == 0) {

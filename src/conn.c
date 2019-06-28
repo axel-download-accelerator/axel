@@ -358,7 +358,7 @@ conn_info(conn_t *conn)
 		else if (conn->size == -2)
 			conn->size = LLONG_MAX;
 	} else {
-		char s[MAX_STRING];
+		char s[1005];
 		long long int i = 0;
 
 		do {
