@@ -98,7 +98,7 @@ int
 http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	     char *user, char *pass, unsigned io_timeout)
 {
-	char *puser = NULL, *ppass = "";
+	const char *puser = NULL, *ppass = "";
 	conn_t tconn[1];
 
 	strlcpy(conn->host, host, sizeof(conn->host));

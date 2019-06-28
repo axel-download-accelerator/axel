@@ -43,7 +43,7 @@
 #include "axel.h"
 #include "sleep.h"
 
-static char *axel_strrstr(char *haystack, char *needle);
+static char *axel_strrstr(char *haystack, const char *needle);
 static void *search_speedtest(void *r);
 static int search_sortlist_qsort(const void *a, const void *b);
 
@@ -283,7 +283,7 @@ search_speedtest(void *r)
 
 static
 char *
-axel_strrstr(char *haystack, char *needle)
+axel_strrstr(char *haystack, const char *needle)
 {
 	int i, j;
 
