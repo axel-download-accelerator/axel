@@ -27,7 +27,7 @@ addons:
 
 env:
   global:
-    - G_CFLAGS="-O3 -fPIC -Werror"
+    - G_CFLAGS="-O3 -fPIC"
     - MAKEFLAGS="-j4"
     - target=distcheck
   matrix:
@@ -57,6 +57,6 @@ script:
              PKG_CONFIG_PATH="$OPENSSL/lib/pkgconfig"
              PATH="$GETTEXT/bin:$PATH";
     fi
-  - autoreconf -i &&
-    ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" &&
+  - autoreconf -fiv &&
+    ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" --disable-Werror &&
     make DIST_TARGETS=dist-gzip GZIP_ENV=--fast $target
