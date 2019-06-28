@@ -305,13 +305,13 @@ ftp_wait(ftp_t *conn)
 {
 	int size = MAX_STRING, r = 0, complete, i, j;
 	char *s;
-	void *new_msg;
 
-	new_msg = realloc(conn->message, size);
-	if (!new_msg)
-		return -1;
-	conn->message = new_msg;
-
+	{
+		void *new_msg = realloc(conn->message, size);
+		if (!new_msg)
+			return -1;
+		conn->message = new_msg;
+	}
 	do {
 		do {
 			r += i = tcp_read(&conn->tcp, conn->message + r, 1);
