@@ -58,5 +58,5 @@ script:
              PATH="$GETTEXT/bin:$PATH";
     fi
   - autoreconf -fiv &&
-    ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" --disable-Werror &&
+    ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" &&
     make DIST_TARGETS=dist-gzip GZIP_ENV=--fast $target
