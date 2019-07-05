@@ -43,7 +43,6 @@
 #include "axel.h"
 #include "sleep.h"
 
-static char *axel_strrstr(char *haystack, const char *needle);
 static void *search_speedtest(void *r);
 static int search_sortlist_qsort(const void *a, const void *b);
 
@@ -93,10 +92,9 @@ out:
 #endif
 
 int
-search_makelist(search_t *results, char *url)
+search_makelist(search_t *results, char *orig_url)
 {
-	int i, size = 8192, j = 0;
-	char *s, *s1, *s3;
+	int size = 8192;
 	conn_t conn[1];
 	double t;
 
@@ -104,17 +102,18 @@ search_makelist(search_t *results, char *url)
 
 	conn->conf = results->conf;
 	t = axel_gettime();
-	if (!conn_set(conn, url) || !conn_init(conn) || !conn_info(conn))
+	if (!conn_set(conn, orig_url) || !conn_init(conn) || !conn_info(conn))
 		return -1;
 
-	strlcpy(results[0].url, url, sizeof(results[0].url));
-	results[0].url[sizeof(results[0].url) - 1] = '\0';
+	size_t orig_len = strlcpy(results[0].url, orig_url,
+				  sizeof(results[0].url));
 	results[0].speed = 1 + 1000 * (axel_gettime() - t);
 	results[0].size = conn->size;
+	int nresults = 1;
 
-	s = malloc(size);
+	char *s = malloc(size);
 	if (!s)
-		return -1;
+		return 1;
 
 	sprintf(s, "http://www.filesearching.com/cgi-bin/s?q=%s&w=a&l=en&"
 		"t=f&e=on&m=%i&o=n&s1=%lld&s2=%lld&x=15&y=15",
@@ -125,20 +124,17 @@ search_makelist(search_t *results, char *url)
 	memset(conn, 0, sizeof(conn_t));
 	conn->conf = results->conf;
 
-	if (!conn_set(conn, s) || !conn_setup(conn) || !conn_exec(conn)) {
-		free(s);
-		return 1;
-	}
+	if (!conn_set(conn, s) || !conn_setup(conn) || !conn_exec(conn))
+		goto done;
 
-	while ((i = tcp_read(conn->tcp, s + j, size - j)) > 0) {
+	int j = 0;
+	for (int i; (i = tcp_read(conn->tcp, s + j, size - j)) > 0;) {
 		j += i;
 		if (j + 10 >= size) {
 			size *= 2;
 			char *tmp = realloc(s, size);
-			if (!tmp) {
-				free(s);
-				return 1;
-			}
+			if (!tmp)
+				goto done;
 			s = tmp;
 			memset(s + size / 2, 0, size / 2);
 		}
@@ -147,37 +143,38 @@ search_makelist(search_t *results, char *url)
 
 	conn_disconnect(conn);
 
-	s1 = strstr(s, "<pre class=list");
-	s1 = strchr(s1, '\n') + 1;
-	if (strstr(s1, "</pre>") == NULL) {
-		/* Incomplete list */
-		free(s);
-		return 1;
-	}
-	for (i = 1;
-	     strncmp(s1, "</pre>", 6) && i < results->conf->search_amount && *s1;
-         i++) {
-		s3 = strchr(s1, '\n');
-		*s3 = 0;
-		char *s2 = axel_strrstr(s1, "<a href=") + 8;
-		*s3 = '\n';
-		s3 = strchr(s2, ' ');
-		*s3 = 0;
-		if (strcmp(results[0].url, s2)) {
-			strlcpy(results[i].url, s2, sizeof(results[i].url));
-			results[i].size = results[0].size;
-			results[i].conf = results->conf;
-		} else {
-			/* The original URL might show up */
-			i--;
-		}
-		for (s1 = s3; *s1 != '\n'; s1++) ;
-		s1++;
+	const char *start = strstr(s, "<pre class=list");
+	if (!start)
+		goto done;
+	const char *end = strstr(start, "</pre>");
+	/* Incomplete list */
+	if (!end)
+		goto done;
+
+	for (const char *url, *eol;
+	     start < end && nresults < results->conf->search_amount;
+	     start = eol + 1) {
+		eol = strchr(start, '\n');
+		if (eol > end || !eol)
+			eol = end;
+		do {
+			url = start;
+			start = strstr(start, "<a href=") + 8;
+		} while (start < eol);
+
+		/* Check it isn't the original URL */
+		if (!strncmp(url, orig_url, orig_len))
+			continue;
+
+		strlcpy(results[nresults].url, url, sizeof(results[0].url));
+		results[nresults].size = results[0].size;
+		results[nresults].conf = results->conf;
+		++nresults;
 	}
 
+done:
 	free(s);
-
-	return i;
+	return nresults;
 }
 
 enum {
@@ -281,20 +278,6 @@ search_speedtest(void *r)
 	return NULL;
 }
 
-static
-char *
-axel_strrstr(char *haystack, const char *needle)
-{
-	int i, j;
-
-	for (i = strlen(haystack) - strlen(needle); i > 0; i--) {
-		for (j = 0; needle[j] && haystack[i + j] == needle[j]; j++) ;
-		if (!needle[j])
-			return haystack + i;
-	}
-
-	return NULL;
-}
 
 void
 search_sortlist(search_t *results, int count)
