@@ -19,7 +19,10 @@ axel_SOURCES = \
 	src/tcp.h \
 	src/text.c
 
-AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) -Wno-declaration-after-statement
+AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
+	-Wno-declaration-after-statement \
+	-Wno-error=inline
+
 axel_LDADD = $(LIBOBJS) $(SSL_LIBS) $(PTHREAD_LIBS)
 axel_CC = $(PTHREAD_CC)
 
