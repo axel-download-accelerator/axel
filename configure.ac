@@ -101,6 +101,12 @@ AC_CHECK_FUNCS([ \
     AC_MSG_ERROR([$ac_func is required; it should be part of libc.])
 ])
 
+AC_CONFIG_LIBOBJ_DIR([lib])
+AC_REPLACE_FUNCS([ \
+	strlcpy \
+	strlcat \
+])
+
 # Optional (but included-by-default) ssl support
 AC_ARG_WITH([ssl],
     AC_HELP_STRING([--without-ssl],[disable TLS support]), [], [with_ssl=yes])

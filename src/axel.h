@@ -138,4 +138,13 @@ void print_messages(axel_t *axel);
 
 double axel_gettime(void);
 
+
+#ifndef HAVE_STRLCAT
+size_t strlcat(char *, const char *, size_t);
+#endif /* HAVE_strlcat */
+
+#ifndef HAVE_STRLCPY
+size_t strlcpy(char *, const char *, size_t);
+#endif /* HAVE_STRLCPY */
+
 #endif				/* AXEL_AXEL_H */

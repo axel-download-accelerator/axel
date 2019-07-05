@@ -22,7 +22,7 @@ axel_SOURCES = \
 	text.c
 
 axel_CFLAGS = $(PTHREAD_CFLAGS) $(AM_CFLAGS)
-axel_LDADD = $(SSL_LIBS) $(PTHREAD_LIBS)
+axel_LDADD = $(LIBOBJS) $(SSL_LIBS) $(PTHREAD_LIBS)
 axel_CC = $(PTHREAD_CC)
 
 AM_CPPFLAGS = -DLOCALEDIR=\""$(localedir)"\"
