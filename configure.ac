@@ -162,7 +162,6 @@ AC_DEFINE_UNQUOTED([_THREAD_SAFE])
 
 AC_CONFIG_FILES([
 	Makefile
-	src/Makefile
 	po/Makefile.in
 ])
 AC_OUTPUT

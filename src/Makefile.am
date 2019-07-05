@@ -2,24 +2,24 @@ AM_CFLAGS = $(WARN_CFLAGS) -Wno-declaration-after-statement
 
 bin_PROGRAMS = axel
 axel_SOURCES = \
-	axel.c \
-	axel.h \
-	sleep.h \
-	conf.c \
-	conf.h \
-	conn.c \
-	conn.h \
-	ftp.c \
-	ftp.h \
-	http.c \
-	http.h \
-	search.c \
-	search.h \
-	ssl.c \
-	ssl.h \
-	tcp.c \
-	tcp.h \
-	text.c
+	src/axel.c \
+	src/axel.h \
+	src/sleep.h \
+	src/conf.c \
+	src/conf.h \
+	src/conn.c \
+	src/conn.h \
+	src/ftp.c \
+	src/ftp.h \
+	src/http.c \
+	src/http.h \
+	src/search.c \
+	src/search.h \
+	src/ssl.c \
+	src/ssl.h \
+	src/tcp.c \
+	src/tcp.h \
+	src/text.c
 
 axel_CFLAGS = $(PTHREAD_CFLAGS) $(AM_CFLAGS)
 axel_LDADD = $(LIBOBJS) $(SSL_LIBS) $(PTHREAD_LIBS)

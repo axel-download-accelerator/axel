@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS = foreign dist-bzip2 dist-xz
 # (aclocal doesn't update based on mtime)
 ACLOCAL = touch $@; @ACLOCAL@
 
-SUBDIRS = src po
+SUBDIRS = po
 
 dist_man_MANS = man/axel.1
 .txt.1:
@@ -43,3 +43,6 @@ relcheck:
 		&& $(MSG) 'v$(VERSION) tag found' \
 		|| $(ERR) 'v$(VERSION) tag missing'
 	@$(MSG) Everything OK
+
+
+include src/Makefile.am

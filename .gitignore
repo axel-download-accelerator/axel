@@ -8,7 +8,7 @@
 /po/axel.pot
 /po/remove-potcdate.sed
 /po/stamp-po
-/src/axel
+/axel
 /aclocal.m4
 /config.h
 /config.h.in
