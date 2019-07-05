@@ -17,6 +17,7 @@
 /configure
 /stamp-h1
 .deps/
+.dirstamp
 Makefile
 !/man/Makefile
 Makefile.in
