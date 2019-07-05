@@ -97,6 +97,8 @@ AC_CHECK_FUNCS([ \
 	strrchr \
 	strstr \
 	strtoul \
+],, [
+    AC_MSG_ERROR([$ac_func is required; it should be part of libc.])
 ])
 
 # Optional (but included-by-default) ssl support
