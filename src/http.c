@@ -259,8 +259,7 @@ http_exec(http_t *conn)
 		} else {
 			i++;
 		}
-		strlcat(conn->headers, s,
-			MAX_QUERY - strlen(conn->headers));
+		strlcat(conn->headers, s, sizeof(conn->headers));
 	}
 
 #ifdef DEBUG
