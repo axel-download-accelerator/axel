@@ -1,5 +1,3 @@
-AM_CFLAGS = $(WARN_CFLAGS) -Wno-declaration-after-statement
-
 bin_PROGRAMS = axel
 axel_SOURCES = \
 	src/axel.c \
@@ -21,7 +19,7 @@ axel_SOURCES = \
 	src/tcp.h \
 	src/text.c
 
-axel_CFLAGS = $(PTHREAD_CFLAGS) $(AM_CFLAGS)
+AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) -Wno-declaration-after-statement
 axel_LDADD = $(LIBOBJS) $(SSL_LIBS) $(PTHREAD_LIBS)
 axel_CC = $(PTHREAD_CC)
 
