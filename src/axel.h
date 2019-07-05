@@ -51,7 +51,6 @@
 #include <errno.h>
 #include <stdio.h>
 #ifndef	NOGETOPTLONG
-#define _GNU_SOURCE
 #include <getopt.h>
 #endif
 #include <limits.h>
