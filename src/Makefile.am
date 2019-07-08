@@ -21,6 +21,7 @@ axel_SOURCES = \
 
 AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
 	-Wno-declaration-after-statement \
+	-Wno-error=cast-align \
 	-Wno-error=inline
 
 axel_LDADD = $(LIBOBJS) $(SSL_LIBS) $(PTHREAD_LIBS)
