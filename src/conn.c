@@ -336,11 +336,11 @@ conn_info(conn_t *conn)
 {
 	/* It's all a bit messed up.. But it works. */
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
-		ftp_command(conn->ftp, "REST %lld", 1);
+		ftp_command(conn->ftp, "REST %d", 1);
 		if (ftp_wait(conn->ftp) / 100 == 3 ||
 		    conn->ftp->status / 100 == 2) {
 			conn->supported = true;
-			ftp_command(conn->ftp, "REST %lld", 0);
+			ftp_command(conn->ftp, "REST %d", 0);
 			ftp_wait(conn->ftp);
 		} else {
 			conn->supported = false;
