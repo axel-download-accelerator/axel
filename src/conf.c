@@ -50,6 +50,9 @@
 
 int parse_interfaces(conf_t *conf, char *s);
 
+#ifdef __GNUC__
+__attribute__((format(scanf, 2, 3)))
+#endif /* __GNUC__ */
 static int
 axel_fscanf(FILE *fp, const char *format, ...)
 {
