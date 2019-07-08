@@ -18,7 +18,7 @@ addons:
       - linux-libc-dev
       - txt2man
   homebrew:
-    update: false
+    update: true
     packages:
       - autoconf-archive
       - gettext
