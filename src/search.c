@@ -97,6 +97,7 @@ search_makelist(search_t *results, char *orig_url)
 	int size = 8192;
 	conn_t conn[1];
 	double t;
+	const char *start, *end;
 
 	memset(conn, 0, sizeof(conn_t));
 
@@ -127,26 +128,29 @@ search_makelist(search_t *results, char *orig_url)
 	if (!conn_set(conn, s) || !conn_setup(conn) || !conn_exec(conn))
 		goto done;
 
-	int j = 0;
-	for (int i; (i = tcp_read(conn->tcp, s + j, size - j)) > 0;) {
-		j += i;
-		if (j + 10 >= size) {
-			size *= 2;
-			char *tmp = realloc(s, size);
-			if (!tmp)
-				goto done;
-			s = tmp;
-			memset(s + size / 2, 0, size / 2);
+	{
+		int j = 0;
+
+		for (int i; (i = tcp_read(conn->tcp, s + j, size - j)) > 0;) {
+			j += i;
+			if (j + 10 >= size) {
+				size *= 2;
+				char *tmp = realloc(s, size);
+				if (!tmp)
+					goto done;
+				s = tmp;
+				memset(s + size / 2, 0, size / 2);
+			}
 		}
+		s[j] = '\0';
 	}
-	s[j] = '\0';
 
 	conn_disconnect(conn);
 
-	const char *start = strstr(s, "<pre class=list");
+	start = strstr(s, "<pre class=list");
 	if (!start)
 		goto done;
-	const char *end = strstr(start, "</pre>");
+	end = strstr(start, "</pre>");
 	/* Incomplete list */
 	if (!end)
 		goto done;
