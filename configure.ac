@@ -146,8 +146,6 @@ hpux*)
 ;;
 esac
 
-#   ---> WARNING: NetBSD not tested! Using OpenBSD settings.
-
 # etc path
 AC_DEFINE_UNQUOTED([ETCDIR], ["/etc"], ["Define /etc directory path"])
 
