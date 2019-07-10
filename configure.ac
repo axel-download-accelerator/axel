@@ -149,12 +149,6 @@ esac
 # etc path
 AC_DEFINE_UNQUOTED([ETCDIR], ["/etc"], ["Define /etc directory path"])
 
-# Other
-AH_TEMPLATE([_REENTRANT], [Local definition])
-AC_DEFINE_UNQUOTED([_REENTRANT])
-AH_TEMPLATE([_THREAD_SAFE], [Local definition])
-AC_DEFINE_UNQUOTED([_THREAD_SAFE])
-
 #####################
 
 AC_CONFIG_FILES([
