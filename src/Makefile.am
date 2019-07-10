@@ -24,7 +24,7 @@ AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
 	-Wno-error=cast-align \
 	-Wno-error=inline
 
-axel_LDADD = $(LIBOBJS) $(SSL_LIBS) $(PTHREAD_LIBS)
+axel_LDADD = $(LIBOBJS) $(SSL_LIBS) $(LIBINTL) $(PTHREAD_LIBS)
 axel_CC = $(PTHREAD_CC)
 
 AM_CPPFLAGS = -DLOCALEDIR=\""$(localedir)"\"
