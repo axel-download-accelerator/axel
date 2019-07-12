@@ -5,11 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: axel 2.16\n"
+"Project-Id-Version: axel 2.17.4\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"POT-Creation-Date: 2017-10-22 00:28-0300\n"
-"PO-Revision-Date: 2017-11-24 22:35-0300\n"
+"PO-Revision-Date: 2019-07-12 20:20+0200\n"
 "Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -182,7 +181,7 @@ msgid "HOME env variable too long\n"
 msgstr "Variable de entorno HOME demasiado larga\n"
 
 #: src/conn.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported protocol\n"
 msgstr "Protocolo no soportado\n"
 
@@ -343,7 +342,7 @@ msgid "%i:%02i minute(s)"
 msgstr "%i:%02i minuto(s)"
 
 #: src/text.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "%i second(s)"
 msgstr "%i segundo(s)"
 
@@ -397,6 +396,7 @@ msgstr ""
 "-T x\tEstablecer tiempo de expiración de E/S y conexión\n"
 "-V\tInformación de versión\n"
 "\n"
+"Visita https://github.com/axel-download-accelerator/axel/issues\n"
 
 #: src/text.c:677
 #, c-format
@@ -427,9 +427,9 @@ msgid ""
 msgstr ""
 "Uso: axel [opciones] url1 [url2] [url...]\n"
 "\n"
-"--max-speed=x\t\t-s x\tEspecifcar velocidad máxima (bytes por segundo)\n"
+"--max-speed=x\t\t-s x\tEspecificar velocidad máxima (bytes por segundo)\n"
 "--num-connections=x\t-n x\tEspecificar número máximo de conexiones\n"
-"--max-redirect=x\t\tSpecify maximum number of redirections\n"
+"--max-redirect=x\t\tEspecificar número máximo de redirecciones\n"
 "--output=f\t\t-o f\tEspecificar archivo de salida local\n"
 "--search[=n]\t\t-S[n]\tBuscar por espejos y descargar desde n servidores\n"
 "--ipv4\t\t\t-4\tUsar el protocolo IPv4\n"
@@ -446,6 +446,8 @@ msgstr ""
 "--timeout=x\t\t-T x\tEstablecer tiempo de expiración de E/S y conexión\n"
 "--version\t\t-V\tInformación de versión\n"
 "\n"
+"Visita https://github.com/axel-download-accelerator/axel/issues para "
+"reportar bugs\n"
 
 #: src/text.c:705
 #, c-format
