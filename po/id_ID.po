@@ -18,80 +18,80 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: src/axel.c:90
+#: src/axel.c:94
 msgid "Buffer resized for this speed."
 msgstr "Buffer diubah ukurannya untuk kecepatan ini."
 
-#: src/axel.c:107
+#: src/axel.c:112
 msgid "Invalid URL"
 msgstr "URL tidak valid"
 
-#: src/axel.c:135
+#: src/axel.c:140
 msgid "Could not parse URL.\n"
 msgstr "Tidak bisa mengurai URL.\n"
 
-#: src/axel.c:159
+#: src/axel.c:164
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "Unduhan tidak lengkap ditemukan, mengabaikan opsi no-clobber\n"
 
-#: src/axel.c:162
+#: src/axel.c:167
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "Berkas '%s' sudah ada; tidak mengambil.\n"
 
-#: src/axel.c:192
-#, c-format
-msgid "File size: %lld bytes"
+#: src/axel.c:197
+#, fuzzy, c-format
+msgid "File size: %zu bytes"
 msgstr "Ukuran berkas: %lld bytes"
 
-#: src/axel.c:195
+#: src/axel.c:200
 #, fuzzy
 msgid "File size: unavailable"
 msgstr "Ukuran berkas: %lld bytes"
 
-#: src/axel.c:224
+#: src/axel.c:229
 #, c-format
 msgid "Opening output file %s"
 msgstr "Membuka berkas keluaran %s"
 
-#: src/axel.c:232
+#: src/axel.c:237
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server tidak didukung, mulai dari dasar dengan satu koneksi."
 
-#: src/axel.c:249
+#: src/axel.c:254
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: Galat, bagian berkas terpotong\n"
 
-#: src/axel.c:257
+#: src/axel.c:262
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "Jumlah koneksi palsu tersimpan dalam bagian berkas\n"
 
-#: src/axel.c:269
+#: src/axel.c:274
 #, c-format
 msgid "State file has old format.\n"
 msgstr "Bagian berkas memiliki format lama..\n"
 
-#: src/axel.c:302
-#, c-format
-msgid "State file found: %lld bytes downloaded, %lld to go."
+#: src/axel.c:307
+#, fuzzy, c-format
+msgid "State file found: %zu bytes downloaded, %zu to go."
 msgstr "Bagian berkas ditemukan: %lld bytes diunduh, %lld untuk berjalan."
 
-#: src/axel.c:308 src/axel.c:319
+#: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"
 msgstr "Galat saat membuka berkas lokal"
 
-#: src/axel.c:332
+#: src/axel.c:337
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Filesystem/OS jelek.. Bekerja di sekitar. :-("
 
-#: src/axel.c:346
+#: src/axel.c:350
 msgid "Error creating local file"
 msgstr "Galat membuat berkas lokal"
 
-#: src/axel.c:378
+#: src/axel.c:383
 #, c-format
 msgid ""
 "\n"
@@ -100,99 +100,99 @@ msgstr ""
 "\n"
 "Aktifkan kembali koneksi %d\n"
 
-#: src/axel.c:408
+#: src/axel.c:413
 msgid "Starting download"
 msgstr "Mulai mengunduh"
 
-#: src/axel.c:419 src/axel.c:601
+#: src/axel.c:421 src/axel.c:604
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Sambungan %i diunduh dari %s:%i menggunakan antarmuka %s"
 
-#: src/axel.c:429 src/axel.c:613
+#: src/axel.c:431 src/axel.c:616
 msgid "pthread error!!!"
 msgstr "pthread galat!!!"
 
-#: src/axel.c:474
+#: src/axel.c:477
 #, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "Galat saat menunggu koneksi: %s"
 
-#: src/axel.c:506
+#: src/axel.c:509
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Sambungan %i habis waktunya"
 
-#: src/axel.c:519
+#: src/axel.c:522
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Galat pada koneksi %i! Sambungan putus"
 
-#: src/axel.c:533
+#: src/axel.c:536
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Koneksi %i tiba-tiba putus"
 
-#: src/axel.c:537 src/axel.c:553
+#: src/axel.c:540 src/axel.c:556
 #, c-format
 msgid "Connection %i finished"
 msgstr "Koneksi %i selesai"
 
-#: src/axel.c:563
+#: src/axel.c:566
 msgid "Write error!"
 msgstr "Tulis galat!"
 
-#: src/axel.c:661
+#: src/axel.c:664
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "Galat saat menerapkan throttling: %s"
 
-#: src/axel.c:839
+#: src/axel.c:844
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr ""
 
-#: src/axel.c:858
+#: src/axel.c:863
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr "Mengunduh %lld-%lld menggunakan conn. %i\n"
 
-#: src/conf.c:65
+#: src/conf.c:68
 #, c-format
 msgid "I/O error while reading config file: %s\n"
 msgstr "Galat I/O saat membaca berkas konfigurasi: %s\n"
 
-#: src/conf.c:80
+#: src/conf.c:83
 #, c-format
 msgid "Unknown protocol %s\n"
 msgstr "Protokol tidak dikenal %s\n"
 
-#: src/conf.c:185
+#: src/conf.c:187
 #, c-format
 msgid "Requested too many connections, max is %i\n"
 msgstr "Meminta terlalu banyak koneksi, max adalah %i\n"
 
-#: src/conf.c:200
+#: src/conf.c:202
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "Galat di %s baris %i.\n"
 
-#: src/conf.c:265
+#: src/conf.c:266
 #, c-format
 msgid "HOME env variable too long\n"
 msgstr "HOME env variabel terlalu panjang!\n"
 
-#: src/conn.c:77
+#: src/conn.c:76
 #, fuzzy, c-format
 msgid "Unsupported protocol\n"
 msgstr "Protokol yang tidak didukung\n"
 
-#: src/conn.c:83
+#: src/conn.c:82
 #, c-format
 msgid "Secure protocol is not supported\n"
 msgstr "Protokol aman tidak didukung\n"
 
-#: src/conn.c:411 src/ftp.c:131
+#: src/conn.c:413 src/ftp.c:131
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Terlalu banyak pengalihan.\n"
@@ -212,17 +212,17 @@ msgstr "Berkas tidak ditemukan.\n"
 msgid "Multiple matches for this URL.\n"
 msgstr "Beberapa kecocokan untuk URL ini.\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:260
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Galat saat membuka koneksi data pasif.\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:294
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Galat menulis perintah %s\n"
 
-#: src/ftp.c:317 src/http.c:249
+#: src/ftp.c:319 src/http.c:249
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Koneksi hilang.\n"
@@ -237,71 +237,71 @@ msgstr "String proxy tidak valid: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "Koneksi hilang saat menulis.\n"
 
-#: src/text.c:202
+#: src/text.c:200
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Tidak bisa mengalihkan stdout ke /dev/null.\n"
 
-#: src/text.c:245
+#: src/text.c:243
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "Galat saat mencoba membaca URL (Terlalu lama?).\n"
 
-#: src/text.c:253
-#, c-format
-msgid "Can't handle URLs of length over %d\n"
+#: src/text.c:251
+#, fuzzy, c-format
+msgid "Can't handle URLs of length over %zu\n"
 msgstr "Tidak dapat menangani URL dengan panjang di atas %d\n"
 
-#: src/text.c:259
+#: src/text.c:257
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Menginisialisasi unduh: %s\n"
 
-#: src/text.c:267
+#: src/text.c:265
 #, c-format
 msgid "Doing search...\n"
 msgstr "Melakukan pencarian..\n"
 
-#: src/text.c:270
+#: src/text.c:268
 #, c-format
 msgid "File not found\n"
 msgstr "Berkas tidak ditemukan\n"
 
-#: src/text.c:274
+#: src/text.c:272
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Menguji kecepatan, ini bisa memakan waktu beberapa lama...\n"
 
-#: src/text.c:277
+#: src/text.c:275
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "Pengujian kecepatan gagal\n"
 
-#: src/text.c:283
+#: src/text.c:281
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i server yang dapat digunakan ditemukan, akan menggunakan URL ini:\n"
 
-#: src/text.c:286
+#: src/text.c:284
 msgid "Speed"
 msgstr "Kecepatan"
 
-#: src/text.c:334
+#: src/text.c:332
 #, c-format
 msgid "Filename too long!\n"
 msgstr "Nama berkas terlalu panjang!\n"
 
-#: src/text.c:347
+#: src/text.c:345
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Tidak ada bagian berkas, tidak bisa melanjutkan!\n"
 
-#: src/text.c:351
+#: src/text.c:349
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "Bagian berkas ditemukan, tapi data tidak diunduh. Mulai dari awal.\n"
 
-#: src/text.c:469
+#: src/text.c:464
 #, c-format
 msgid ""
 "\n"
@@ -310,48 +310,48 @@ msgstr ""
 "\n"
 "Diunduh %s in %s. (%.2f KB/s)\n"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Kilo"
 msgstr "Kilo"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Mega"
 msgstr "Mega"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Giga"
 msgstr "Giga"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Tera"
 msgstr "Tera"
 
-#: src/text.c:502
+#: src/text.c:507
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %sbyte(s)"
 
-#: src/text.c:518
+#: src/text.c:523
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i jam(s)"
 
-#: src/text.c:520
+#: src/text.c:525
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i menit(s)"
 
-#: src/text.c:522
+#: src/text.c:527
 #, fuzzy, c-format
 msgid "%i second(s)"
 msgstr "%i detik"
 
-#: src/text.c:586
+#: src/text.c:591
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "Tidak dapat menyiapkan keluaran alternatif. Menonaktifkan.\n"
 
-#: src/text.c:650
+#: src/text.c:655
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -397,7 +397,7 @@ msgstr ""
 "\n"
 "Kunjungi https://github.com/axel-download-accelerator/axel/issues\n"
 
-#: src/text.c:672
+#: src/text.c:677
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -447,16 +447,16 @@ msgstr ""
 "Kunjungi https://github.com/axel-download-accelerator/axel/issues untuk "
 "melaporkan kutu\n"
 
-#: src/text.c:700
+#: src/text.c:705
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel versi %s (%s)\n"
 
-#: src/text.c:708
+#: src/text.c:713
 msgid "and others."
 msgstr "dan lainnya."
 
-#: src/text.c:709
+#: src/text.c:714
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
@@ -464,12 +464,12 @@ msgstr ""
 "Silakan, lihat berkas CREDITS.\n"
 "\n"
 
-#: src/ssl.c:92
+#: src/ssl.c:93
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL galat: %s\n"
 
-#: src/tcp.c:63
+#: src/tcp.c:72
 #, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
 msgstr "Tidak bisa terhubung ke server %s:%i: %s\n"

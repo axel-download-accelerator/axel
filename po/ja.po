@@ -14,83 +14,83 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/axel.c:90
+#: src/axel.c:94
 msgid "Buffer resized for this speed."
 msgstr "このスピードに合わせバッファーをリサイズします。"
 
-#: src/axel.c:107
+#: src/axel.c:112
 msgid "Invalid URL"
 msgstr "無効なURL"
 
-#: src/axel.c:135
+#: src/axel.c:140
 msgid "Could not parse URL.\n"
 msgstr "URL を解析できません。\n"
 
-#: src/axel.c:159
+#: src/axel.c:164
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr ""
 "不完全なダウンロードが見つかりましたが、no-clobberオプションは無視されます\n"
 
-#: src/axel.c:162
+#: src/axel.c:167
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "ファイル '%s' はすでに存在します。 だからそれは取得されません。\n"
 
-#: src/axel.c:192
-#, c-format
-msgid "File size: %lld bytes"
+#: src/axel.c:197
+#, fuzzy, c-format
+msgid "File size: %zu bytes"
 msgstr "ファイルサイズ: %lld バイト"
 
-#: src/axel.c:195
+#: src/axel.c:200
 #, fuzzy
 msgid "File size: unavailable"
 msgstr "ファイルサイズ: %lld バイト"
 
-#: src/axel.c:224
+#: src/axel.c:229
 #, c-format
 msgid "Opening output file %s"
 msgstr "出力ファイル %s をオープンします"
 
-#: src/axel.c:232
+#: src/axel.c:237
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr ""
 "サポートされていないサーバーなので、単一コネクションを使い最初から始めます。"
 
-#: src/axel.c:249
+#: src/axel.c:254
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: エラー、状態ファイルが切り捨てられました\n"
 
-#: src/axel.c:257
+#: src/axel.c:262
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "状態ファイルに保存されている接続の偽の数\n"
 
-#: src/axel.c:269
+#: src/axel.c:274
 #, c-format
 msgid "State file has old format.\n"
 msgstr "状態ファイルは古い形式です。\n"
 
-#: src/axel.c:302
-#, c-format
-msgid "State file found: %lld bytes downloaded, %lld to go."
+#: src/axel.c:307
+#, fuzzy, c-format
+msgid "State file found: %zu bytes downloaded, %zu to go."
 msgstr "状態ファイル発見: %lld バイトがダウンロード済み、あと %lld バイト。"
 
-#: src/axel.c:308 src/axel.c:319
+#: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"
 msgstr "ローカルファイルをオープンする際にエラー発生しました"
 
-#: src/axel.c:332
+#: src/axel.c:337
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "ファイルシステム/OSがイマイチ。回避します。 :-("
 
-#: src/axel.c:346
+#: src/axel.c:350
 #, fuzzy
 msgid "Error creating local file"
 msgstr "ローカルファイルをオープンする際にエラー発生しました"
 
-#: src/axel.c:378
+#: src/axel.c:383
 #, c-format
 msgid ""
 "\n"
@@ -99,99 +99,99 @@ msgstr ""
 "\n"
 "接続 %d を再アクティブ化しています\n"
 
-#: src/axel.c:408
+#: src/axel.c:413
 msgid "Starting download"
 msgstr "ダウンロード開始します"
 
-#: src/axel.c:419 src/axel.c:601
+#: src/axel.c:421 src/axel.c:604
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "接続 %i は %s:%i から、インターフェース %s でダウンロードします"
 
-#: src/axel.c:429 src/axel.c:613
+#: src/axel.c:431 src/axel.c:616
 msgid "pthread error!!!"
 msgstr "pthread のエラー!!!"
 
-#: src/axel.c:474
+#: src/axel.c:477
 #, fuzzy, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "コマンド %s を書く際にエラー\n"
 
-#: src/axel.c:506
+#: src/axel.c:509
 #, c-format
 msgid "Connection %i timed out"
 msgstr "接続 %i がタイムアウトしました"
 
-#: src/axel.c:519
+#: src/axel.c:522
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "接続 %i でエラー! コネクションをクローズしました"
 
-#: src/axel.c:533
+#: src/axel.c:536
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "接続 %i が不意にクローズされました"
 
-#: src/axel.c:537 src/axel.c:553
+#: src/axel.c:540 src/axel.c:556
 #, c-format
 msgid "Connection %i finished"
 msgstr "接続 %i が終了しました"
 
-#: src/axel.c:563
+#: src/axel.c:566
 msgid "Write error!"
 msgstr "書き込みエラー!"
 
-#: src/axel.c:661
+#: src/axel.c:664
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "調整を強制している間のエラー: %s"
 
-#: src/axel.c:839
+#: src/axel.c:844
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr "残りのバイト数が少なすぎて、単一接続が強制される\n"
 
-#: src/axel.c:858
+#: src/axel.c:863
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr "%lld-%lld をダウンロード中、接続 %i を使用して\n"
 
-#: src/conf.c:65
+#: src/conf.c:68
 #, c-format
 msgid "I/O error while reading config file: %s\n"
 msgstr "構成ファイルの読み取り中に入出力エラーが発生しました: %s\n"
 
-#: src/conf.c:80
+#: src/conf.c:83
 #, c-format
 msgid "Unknown protocol %s\n"
 msgstr "不明なプロトコル %s\n"
 
-#: src/conf.c:185
+#: src/conf.c:187
 #, c-format
 msgid "Requested too many connections, max is %i\n"
 msgstr "要求された接続が多すぎます。最大値は %i です\n"
 
-#: src/conf.c:200
+#: src/conf.c:202
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "%s の %i 行目でエラー。\n"
 
-#: src/conf.c:265
+#: src/conf.c:266
 #, fuzzy, c-format
 msgid "HOME env variable too long\n"
 msgstr "ファイル名が長すぎます!\n"
 
-#: src/conn.c:77
+#: src/conn.c:76
 #, c-format
 msgid "Unsupported protocol\n"
 msgstr "サポートされていないプロトコル\n"
 
-#: src/conn.c:83
+#: src/conn.c:82
 #, c-format
 msgid "Secure protocol is not supported\n"
 msgstr "セキュアプロトコルはサポートされていません\n"
 
-#: src/conn.c:411 src/ftp.c:131
+#: src/conn.c:413 src/ftp.c:131
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "リディレクト回数が多すぎます。\n"
@@ -211,17 +211,17 @@ msgstr "ファイルが見つかりません。\n"
 msgid "Multiple matches for this URL.\n"
 msgstr "この URL には複数のマッチがあります。\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:260
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "受動的データー接続の開始でエラー。\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:294
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "コマンド %s を書く際にエラー\n"
 
-#: src/ftp.c:317 src/http.c:249
+#: src/ftp.c:319 src/http.c:249
 #, c-format
 msgid "Connection gone.\n"
 msgstr "接続が失われています。\n"
@@ -236,74 +236,74 @@ msgstr "無効なプロキシストリング: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "接続が失われています。\n"
 
-#: src/text.c:202
+#: src/text.c:200
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "標準出力を /dev/null にリディレクトできません。\n"
 
-#: src/text.c:245
+#: src/text.c:243
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "URL を読もうとした際に(長すぎ?)エラー。\n"
 
-#: src/text.c:253
-#, c-format
-msgid "Can't handle URLs of length over %d\n"
+#: src/text.c:251
+#, fuzzy, c-format
+msgid "Can't handle URLs of length over %zu\n"
 msgstr "%d を超える長さの URL は取り扱えません\n"
 
-#: src/text.c:259
+#: src/text.c:257
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "ダウンロードを初期化: %s\n"
 
-#: src/text.c:267
+#: src/text.c:265
 #, c-format
 msgid "Doing search...\n"
 msgstr "サーチ中...\n"
 
-#: src/text.c:270
+#: src/text.c:268
 #, c-format
 msgid "File not found\n"
 msgstr "ファイルが見つかりません\n"
 
-#: src/text.c:274
+#: src/text.c:272
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "スピードをテスト中、時間がかかるかもしれません...\n"
 
-#: src/text.c:277
+#: src/text.c:275
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "スピードテストに失敗しました\n"
 
-#: src/text.c:283
+#: src/text.c:281
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr ""
 "使用可能なサーバーが %i つ見つかりましたので、以下の URL を使用します:\n"
 
-#: src/text.c:286
+#: src/text.c:284
 msgid "Speed"
 msgstr "スピード"
 
-#: src/text.c:334
+#: src/text.c:332
 #, c-format
 msgid "Filename too long!\n"
 msgstr "ファイル名が長すぎます!\n"
 
-#: src/text.c:347
+#: src/text.c:345
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "状態ファイルがありませんので、再開できません!\n"
 
-#: src/text.c:351
+#: src/text.c:349
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ""
 "状態ファイルが見つかったけれど、ダウンロードされたデーターが見つかりません。"
 "最初から始めます。\n"
 
-#: src/text.c:469
+#: src/text.c:464
 #, c-format
 msgid ""
 "\n"
@@ -312,48 +312,48 @@ msgstr ""
 "\n"
 "%s を %s にダウンロード。(%.2f KB/s)\n"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Kilo"
 msgstr "キロ"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Mega"
 msgstr "メガ"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Giga"
 msgstr "ギガ"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Tera"
 msgstr "テラ"
 
-#: src/text.c:502
+#: src/text.c:507
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %sバイト"
 
-#: src/text.c:518
+#: src/text.c:523
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i 時 %02i 分 %02i 秒"
 
-#: src/text.c:520
+#: src/text.c:525
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i 分 %02i 秒"
 
-#: src/text.c:522
+#: src/text.c:527
 #, fuzzy, c-format
 msgid "%i second(s)"
 msgstr "%i 秒"
 
-#: src/text.c:586
+#: src/text.c:591
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "代替出力を設定できません。 それを無効に。\n"
 
-#: src/text.c:650
+#: src/text.c:655
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -397,7 +397,7 @@ msgstr ""
 "https://github.com/axel-download-accelerator/axel/issues にバグ報告を行なって"
 "ください\n"
 
-#: src/text.c:672
+#: src/text.c:677
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -443,16 +443,16 @@ msgstr ""
 "https://github.com/axel-download-accelerator/axel/issues にバグ報告を行なって"
 "ください\n"
 
-#: src/text.c:700
+#: src/text.c:705
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel バージョン %s (%s)\n"
 
-#: src/text.c:708
+#: src/text.c:713
 msgid "and others."
 msgstr "そして他の者。"
 
-#: src/text.c:709
+#: src/text.c:714
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
@@ -460,12 +460,12 @@ msgstr ""
 "CREDITS というファイルを見てみましょう\n"
 "\n"
 
-#: src/ssl.c:92
+#: src/ssl.c:93
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL エラー: %s\n"
 
-#: src/tcp.c:63
+#: src/tcp.c:72
 #, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
 msgstr "サーバー %s:%i に接続できません: %s\n"

@@ -12,83 +12,83 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/axel.c:90
+#: src/axel.c:94
 msgid "Buffer resized for this speed."
 msgstr "Buffer für diese Geschwindigkeit angepasst."
 
-#: src/axel.c:107
+#: src/axel.c:112
 msgid "Invalid URL"
 msgstr "Ungültige URL"
 
-#: src/axel.c:135
+#: src/axel.c:140
 msgid "Could not parse URL.\n"
 msgstr "Kann URL nicht parsen.\n"
 
-#: src/axel.c:159
+#: src/axel.c:164
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr ""
 "Es wurde ein unvollständiger Download gefunden, die No-Clobber-Option wurde "
 "ignoriert\n"
 
-#: src/axel.c:162
+#: src/axel.c:167
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "Datei '%s' bereits vorhanden; nicht abrufen.\n"
 
-#: src/axel.c:192
-#, c-format
-msgid "File size: %lld bytes"
+#: src/axel.c:197
+#, fuzzy, c-format
+msgid "File size: %zu bytes"
 msgstr "Dateigröße: %lld bytes"
 
-#: src/axel.c:195
+#: src/axel.c:200
 #, fuzzy
 msgid "File size: unavailable"
 msgstr "Dateigröße: %lld bytes"
 
-#: src/axel.c:224
+#: src/axel.c:229
 #, c-format
 msgid "Opening output file %s"
 msgstr "Öffne Ausgabedatei: %s"
 
-#: src/axel.c:232
+#: src/axel.c:237
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server versteht REST nicht, Neustart mit einer Verbindung."
 
-#: src/axel.c:249
+#: src/axel.c:254
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: Fehler, abgeschnittene Statusdatei\n"
 
-#: src/axel.c:257
+#: src/axel.c:262
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "Falsche Anzahl in der Statusdatei gespeicherten Verbindungen\n"
 
-#: src/axel.c:269
+#: src/axel.c:274
 #, c-format
 msgid "State file has old format.\n"
 msgstr "Statusdatei hat altes Format.\n"
 
-#: src/axel.c:302
-#, c-format
-msgid "State file found: %lld bytes downloaded, %lld to go."
+#: src/axel.c:307
+#, fuzzy, c-format
+msgid "State file found: %zu bytes downloaded, %zu to go."
 msgstr "Status-Datei gefunden: %lld bytes übertragen, %lld verbleiben."
 
-#: src/axel.c:308 src/axel.c:319
+#: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"
 msgstr "Fehler beim Öffnen der lokalen Datei"
 
-#: src/axel.c:332
+#: src/axel.c:337
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Schlechtes Datei-/Betriebssystem, Umgehung.."
 
-#: src/axel.c:346
+#: src/axel.c:350
 #, fuzzy
 msgid "Error creating local file"
 msgstr "Fehler beim Öffnen der lokalen Datei"
 
-#: src/axel.c:378
+#: src/axel.c:383
 #, c-format
 msgid ""
 "\n"
@@ -97,100 +97,100 @@ msgstr ""
 "\n"
 "Verbindung %d wieder aktivieren\n"
 
-#: src/axel.c:408
+#: src/axel.c:413
 msgid "Starting download"
 msgstr "Starte Abruf"
 
-#: src/axel.c:419 src/axel.c:601
+#: src/axel.c:421 src/axel.c:604
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Verbindung %i: Abruf von %s:%i über Schnittstelle %s"
 
-#: src/axel.c:429 src/axel.c:613
+#: src/axel.c:431 src/axel.c:616
 msgid "pthread error!!!"
 msgstr "pthread Fehler!!!"
 
-#: src/axel.c:474
+#: src/axel.c:477
 #, fuzzy, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "Fehler beim Schreiben des Befehls %s\n"
 
-#: src/axel.c:506
+#: src/axel.c:509
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Time-out bei Verbindung %i"
 
-#: src/axel.c:519
+#: src/axel.c:522
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Fehler bei Verbindung %i! Verbindung getrennt"
 
-#: src/axel.c:533
+#: src/axel.c:536
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Verbindung %i unerwartet getrennt"
 
-#: src/axel.c:537 src/axel.c:553
+#: src/axel.c:540 src/axel.c:556
 #, c-format
 msgid "Connection %i finished"
 msgstr "Verbindung %i beendet"
 
-#: src/axel.c:563
+#: src/axel.c:566
 msgid "Write error!"
 msgstr "Schreibfehler!"
 
-#: src/axel.c:661
+#: src/axel.c:664
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "Fehler beim Erzwingen der Drosselung: %s"
 
-#: src/axel.c:839
+#: src/axel.c:844
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr ""
 "Es sind zu wenige Bytes übrig, also eine einzelne Verbindung erzwingen\n"
 
-#: src/axel.c:858
+#: src/axel.c:863
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr "Herunterladen von %lld-%lld mithilfe der Verbindung %i\n"
 
-#: src/conf.c:65
+#: src/conf.c:68
 #, c-format
 msgid "I/O error while reading config file: %s\n"
 msgstr "I/O-Fehler beim Lesen Konfigurationsdatei: %s\n"
 
-#: src/conf.c:80
+#: src/conf.c:83
 #, c-format
 msgid "Unknown protocol %s\n"
 msgstr "Unbekannter Protokoll %s\n"
 
-#: src/conf.c:185
+#: src/conf.c:187
 #, c-format
 msgid "Requested too many connections, max is %i\n"
 msgstr "Zu viele Verbindungen angefordert, das Maximum ist %i\n"
 
-#: src/conf.c:200
+#: src/conf.c:202
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "Fehler in %s Zeile %i.\n"
 
-#: src/conf.c:265
+#: src/conf.c:266
 #, fuzzy, c-format
 msgid "HOME env variable too long\n"
 msgstr "Dateiname zu lang!\n"
 
-#: src/conn.c:77
+#: src/conn.c:76
 #, c-format
 msgid "Unsupported protocol\n"
 msgstr "Nicht unterstütztes Protokoll\n"
 
-#: src/conn.c:83
+#: src/conn.c:82
 #, c-format
 msgid "Secure protocol is not supported\n"
 msgstr "Das sichere Protokoll wird nicht unterstützt\n"
 
-#: src/conn.c:411 src/ftp.c:131
+#: src/conn.c:413 src/ftp.c:131
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Zu viele Weiterleitungen (redirects).\n"
@@ -210,17 +210,17 @@ msgstr "Datei nicht gefunden.\n"
 msgid "Multiple matches for this URL.\n"
 msgstr "Mehrere Treffer für diese URL.\n"
 
-#: src/ftp.c:258
+#: src/ftp.c:260
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "Fehler beim Öffnen der Passiv-Verbindung.\n"
 
-#: src/ftp.c:292
+#: src/ftp.c:294
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "Fehler beim Schreiben des Befehls %s\n"
 
-#: src/ftp.c:317 src/http.c:249
+#: src/ftp.c:319 src/http.c:249
 #, c-format
 msgid "Connection gone.\n"
 msgstr "Verbindung geschlossen.\n"
@@ -235,71 +235,71 @@ msgstr "Ungültige Proxy-Angabe: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "Verbindung geschlossen.\n"
 
-#: src/text.c:202
+#: src/text.c:200
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Kann Standardausgabe nicht nach /dev/null umleiten.\n"
 
-#: src/text.c:245
+#: src/text.c:243
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "Fehler beim Lesen der URL (Zu lang?).\n"
 
-#: src/text.c:253
-#, c-format
-msgid "Can't handle URLs of length over %d\n"
+#: src/text.c:251
+#, fuzzy, c-format
+msgid "Can't handle URLs of length over %zu\n"
 msgstr "Kann URLs mit mehr als %d Zeichen nicht nutzen\n"
 
-#: src/text.c:259
+#: src/text.c:257
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Starte Abruf: %s\n"
 
-#: src/text.c:267
+#: src/text.c:265
 #, c-format
 msgid "Doing search...\n"
 msgstr "Suche gestartet...\n"
 
-#: src/text.c:270
+#: src/text.c:268
 #, c-format
 msgid "File not found\n"
 msgstr "Datei nicht gefunden\n"
 
-#: src/text.c:274
+#: src/text.c:272
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Teste Geschwindigkeiten, das kann etwas dauern...\n"
 
-#: src/text.c:277
+#: src/text.c:275
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "Geschwindigkeitstest fehlgeschlagen\n"
 
-#: src/text.c:283
+#: src/text.c:281
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i benutzbare Server gefunden, werde diese URLs benutzen:\n"
 
-#: src/text.c:286
+#: src/text.c:284
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
-#: src/text.c:334
+#: src/text.c:332
 #, c-format
 msgid "Filename too long!\n"
 msgstr "Dateiname zu lang!\n"
 
-#: src/text.c:347
+#: src/text.c:345
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Keine Status-Datei, Fortsetzung nicht möglich!\n"
 
-#: src/text.c:351
+#: src/text.c:349
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "Status-Datei gefunden, aber noch nichts übertragen. Neustart.\n"
 
-#: src/text.c:469
+#: src/text.c:464
 #, c-format
 msgid ""
 "\n"
@@ -308,48 +308,48 @@ msgstr ""
 "\n"
 "%s abgerufen in %s. (%.2f KB/s)\n"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Kilo"
 msgstr "Kilo"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Mega"
 msgstr "Mega"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Giga"
 msgstr "Giga"
 
-#: src/text.c:496
+#: src/text.c:501
 msgid "Tera"
 msgstr "Tera"
 
-#: src/text.c:502
+#: src/text.c:507
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %sbyte(s)"
 
-#: src/text.c:518
+#: src/text.c:523
 #, fuzzy, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i Stunde(n)"
 
-#: src/text.c:520
+#: src/text.c:525
 #, fuzzy, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i Sekunden"
 
-#: src/text.c:522
+#: src/text.c:527
 #, fuzzy, c-format
 msgid "%i second(s)"
 msgstr "%i Sekunde(n)"
 
-#: src/text.c:586
+#: src/text.c:591
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "Alternative Ausgabe kann nicht eingerichtet werden. Ausschalten.\n"
 
-#: src/text.c:650
+#: src/text.c:655
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -390,7 +390,7 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: src/text.c:672
+#: src/text.c:677
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -433,16 +433,16 @@ msgstr ""
 "\n"
 "Fehler an lintux@lintux.cx melden.\n"
 
-#: src/text.c:700
+#: src/text.c:705
 #, fuzzy, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"
 
-#: src/text.c:708
+#: src/text.c:713
 msgid "and others."
 msgstr "und andere."
 
-#: src/text.c:709
+#: src/text.c:714
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
@@ -450,12 +450,12 @@ msgstr ""
 "Bitte sehen Sie die CREDITS-Datei\n"
 "\n"
 
-#: src/ssl.c:92
+#: src/ssl.c:93
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL-Fehler: %s\n"
 
-#: src/tcp.c:63
+#: src/tcp.c:72
 #, fuzzy, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
 msgstr "Keine Verbindung mit %s:%i möglich\n"
