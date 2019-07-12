@@ -46,9 +46,8 @@ msgid "File size: %zu bytes"
 msgstr "Dimensione file: %zu byte"
 
 #: src/axel.c:200
-#, fuzzy
 msgid "File size: unavailable"
-msgstr "Dimensione file: %lld byte"
+msgstr "Dimensione file: non disponibile"
 
 #: src/axel.c:229
 #, c-format

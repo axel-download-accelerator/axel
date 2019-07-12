@@ -43,7 +43,7 @@ msgstr "文件大小：%zu 字节"
 #: src/axel.c:200
 #, fuzzy
 msgid "File size: unavailable"
-msgstr "文件大小：%lld 字节"
+msgstr "文件大小：不可用"
 
 #: src/axel.c:229
 #, c-format
@@ -180,7 +180,7 @@ msgstr "文件名太长！\n"
 #: src/conn.c:76
 #, fuzzy, c-format
 msgid "Unsupported protocol\n"
-msgstr "未知的协议 %s\n"
+msgstr "未知的协议\n"
 
 #: src/conn.c:82
 #, c-format

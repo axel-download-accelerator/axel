@@ -45,7 +45,7 @@ msgstr "ファイルサイズ: %zu バイト"
 #: src/axel.c:200
 #, fuzzy
 msgid "File size: unavailable"
-msgstr "ファイルサイズ: %lld バイト"
+msgstr "ファイルサイズ: 利用不可"
 
 #: src/axel.c:229
 #, c-format

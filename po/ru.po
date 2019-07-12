@@ -41,7 +41,7 @@ msgstr "Размер файла: %zu байта(ов)"
 #: src/axel.c:200
 #, fuzzy
 msgid "File size: unavailable"
-msgstr "Размер файла: %lld байта(ов)"
+msgstr "Размер файла: недоступен"
 
 #: src/axel.c:229
 #, c-format
