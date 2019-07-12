@@ -5,14 +5,13 @@ msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2008-09-15 22:08+0200\n"
-"Last-Translator: Hermann J. Beckers <hj.beckers@onlinehome.de>\n"
-"Language-Team: deutsch <de@li.org>\n"
+"PO-Revision-Date: 2019-07-12 20:01+0200\n"
+"Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
+"Language-Team: Deutsch\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
 
 #: src/axel.c:94
 msgid "Buffer resized for this speed."
@@ -44,9 +43,8 @@ msgid "File size: %zu bytes"
 msgstr "Dateigröße: %zu bytes"
 
 #: src/axel.c:200
-#, fuzzy
 msgid "File size: unavailable"
-msgstr "Dateigröße: %lld bytes"
+msgstr "Dateigröße: nicht verfügbar"
 
 #: src/axel.c:229
 #, c-format
@@ -86,9 +84,8 @@ msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Schlechtes Datei-/Betriebssystem, Umgehung.."
 
 #: src/axel.c:350
-#, fuzzy
 msgid "Error creating local file"
-msgstr "Fehler beim Öffnen der lokalen Datei"
+msgstr "Fehler beim Erstellen der lokalen Datei"
 
 #: src/axel.c:383
 #, c-format
@@ -113,9 +110,9 @@ msgid "pthread error!!!"
 msgstr "pthread Fehler!!!"
 
 #: src/axel.c:477
-#, fuzzy, c-format
+#, c-format
 msgid "Error while waiting for connection: %s"
-msgstr "Fehler beim Schreiben des Befehls %s\n"
+msgstr "Fehler beim Warten auf Verbindung: %s"
 
 #: src/axel.c:509
 #, c-format
@@ -178,9 +175,9 @@ msgid "Error in %s line %i.\n"
 msgstr "Fehler in %s Zeile %i.\n"
 
 #: src/conf.c:266
-#, fuzzy, c-format
+#, c-format
 msgid "HOME env variable too long\n"
-msgstr "Dateiname zu lang!\n"
+msgstr "Umgebungsvariable HOME zu lang!\n"
 
 #: src/conn.c:76
 #, c-format
@@ -233,9 +230,9 @@ msgid "Invalid proxy string: %s\n"
 msgstr "Ungültige Proxy-Angabe: %s\n"
 
 #: src/http.c:237
-#, fuzzy, c-format
+#, c-format
 msgid "Connection gone while writing.\n"
-msgstr "Verbindung geschlossen.\n"
+msgstr "Verbindung verloren beim Schreiben.\n"
 
 #: src/text.c:200
 #, c-format
@@ -332,17 +329,17 @@ msgid "%g %sbyte(s)"
 msgstr "%g %sbyte(s)"
 
 #: src/text.c:523
-#, fuzzy, c-format
+#, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i Stunde(n)"
 
 #: src/text.c:525
-#, fuzzy, c-format
+#, c-format
 msgid "%i:%02i minute(s)"
-msgstr "%i:%02i Sekunden"
+msgstr "%i:%02i Minute(n)"
 
 #: src/text.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "%i second(s)"
 msgstr "%i Sekunde(n)"
 
@@ -352,7 +349,7 @@ msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "Alternative Ausgabe kann nicht eingerichtet werden. Ausschalten.\n"
 
 #: src/text.c:655
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -379,21 +376,27 @@ msgstr ""
 "Aufruf: axel [Optionen] url1 [url2] [url...]\n"
 "\n"
 "-s x\tMaximale Geschwindigkeit (Bytes pro Sekunde)\n"
-"-n x\tmaximale gleichzeitige Verbindungen\n"
-"-o f\tlokale Ausgabe-Datei\n"
+"-n x\tMaximale gleichzeitige Verbindungen\n"
+"-o f\tLokale Ausgabe-Datei\n"
 "-S [x]\tSuche nach Spiegelservern und Abruf von x Servern\n"
+"-4\tIPv4-Protokoll verwenden\n"
+"-6\tIPv6-Protokoll verwenden\n"
 "-H x\tSende HTTP-Header\n"
 "-U x\tSetze Browser-Kennung\n"
-"-N\tkeinen Proxy-Server benutzen\n"
-"-q\tkeine Meldungen auf Standard-Ausgabe\n"
-"-v\tzusätzliche Status-Information\n"
-"-h\tdiese Information\n"
+"-N\tKeinen Proxy-Server benutzen\n"
+"-k\tÜberprüfen es das SSL-Zertifikat nicht\n"
+"-c\tDownload überspringen, wenn Datei bereits vorhanden ist\n"
+"-q\tKeine Meldungen auf Standard-Ausgabe\n"
+"-v\tZusätzliche Status-Information\n"
+"-a\tAlternative Fortschrittsanzeige\n"
+"-h\tDiese Information\n"
+"-T x\tE/A und Verbindungs-Timeout einstellen\n"
 "-V\tVersions-Information\n"
 "\n"
-"Fehler an lintux@lintux.cx melden.\n"
+"Besuchen Sie https://github.com/axel-download-accelerator/axel/issues\n"
 
 #: src/text.c:677
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -421,22 +424,29 @@ msgid ""
 msgstr ""
 "Aufruf: axel [Optionen] url1 [url2] [url...]\n"
 "\n"
-"--max-speed=x\t\t-s x\tmaximale Geschwindigkeit (Bytes pro Sekunde)\n"
-"--num-connections=x\t-n x\tmaximale gleichzeitige Verbindungen\n"
-"--output=f\t\t-o f\tlokale Ausgabe-Datei\n"
+"--max-speed=x\t\t-s x\tMaximale Geschwindigkeit (Bytes pro Sekunde)\n"
+"--num-connections=x\t-n x\tMaximale gleichzeitige Verbindungen\n"
+"--max-redirect=x\t\tMaximale Anzahl von Weiterleitungen\n"
+"--output=f\t\t-o f\tLokale Ausgabe-Datei\n"
 "--search=[x]\t\t-S [x]  Suche nach Spiegelservern und Abruf von x Servern\n"
+"--ipv4\t\t\t-4\tIPv4-Protokoll verwenden\n"
+"--ipv6\t\t\t-6\tIPv6-Protokoll verwenden\n"
 "--header=x\t\t-H x\tSende HTTP-Header\n"
 "--user-agent=x\t\t-U x\tSetze Browser-Kennung\n"
-"--no-proxy\t\t-N\tkeinen Proxy-Server benutzen\n"
-"--quiet\t\t\t-q\tkeine Meldungen auf Standard-Ausgabe\n"
-"--verbose\t\t-v\tzusätzliche Status-Information\n"
-"--help\t\t\t-h\tdiese Information\n"
+"--no-proxy\t\t-N\tKeinen Proxy-Server benutzen\n"
+"--insecure\t\t-k\tÜberprüfen es das SSL-Zertifikat nicht\n"
+"--no-clobber\t\t-c\tDownload überspringen, wenn Datei bereits vorhanden ist\n"
+"--quiet\t\t\t-q\tKeine Meldungen auf Standard-Ausgabe\n"
+"--verbose\t\t-v\tZusätzliche Status-Information\n"
+"--alternate\t\t-a\tAlternative Fortschrittsanzeige\n"
+"--help\t\t\t-h\tDiese Information\n"
+"--timeout=x\t\t-T x\tE/A und Verbindungs-Timeout einstellen\n"
 "--version\t\t-V\tVersions-Information\n"
 "\n"
-"Fehler an lintux@lintux.cx melden.\n"
+"Besuchen Sie https://github.com/axel-download-accelerator/axel/issues\n"
 
 #: src/text.c:705
-#, fuzzy, c-format
+#, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel Version %s (%s)\n"
 
@@ -458,6 +468,6 @@ msgid "SSL error: %s\n"
 msgstr "SSL-Fehler: %s\n"
 
 #: src/tcp.c:72
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
-msgstr "Keine Verbindung mit %s:%i möglich\n"
+msgstr "Keine Verbindung mit %s:%i möglich: %s\n"
