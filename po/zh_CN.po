@@ -1,3 +1,5 @@
+# Shuge Lee <shuge.lee@gmail.com>, 2008.
+# Jeff Bai <jeffbai@aosc.xyz>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"

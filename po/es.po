@@ -1,5 +1,5 @@
 # Spanish translations for axel package.
-# Copyright 2017 Ismael Luceno
+# Copyright 2017, 2019 Ismael Luceno
 # This file is distributed under the same license as the axel package.
 # Ismael Luceno <ismael@iodev.co.uk>, 2017.
 #

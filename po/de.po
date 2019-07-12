@@ -1,3 +1,5 @@
+# Hermann J. Beckers <hj.beckers@onlinehome.de>, 2001
+# Ismael Luceno <ismael@iodev.co.uk>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Axel\n"
