@@ -38,7 +38,7 @@ msgstr "文件'%s' 已存在\n"
 #: src/axel.c:197
 #, fuzzy, c-format
 msgid "File size: %zu bytes"
-msgstr "文件大小：%lld 字节"
+msgstr "文件大小：%zu 字节"
 
 #: src/axel.c:200
 #, fuzzy
@@ -72,7 +72,7 @@ msgstr "状态文件版本陈旧\n"
 #: src/axel.c:307
 #, fuzzy, c-format
 msgid "State file found: %zu bytes downloaded, %zu to go."
-msgstr "找到状态文件：已下载 %lld 字节，剩余 %lld 字节。"
+msgstr "找到状态文件：已下载 %zu 字节，剩余 %zu 字节。"
 
 #: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"
@@ -245,7 +245,7 @@ msgstr "尝试读取 URL 时出错（URL 太长？）。\n"
 #: src/text.c:251
 #, fuzzy, c-format
 msgid "Can't handle URLs of length over %zu\n"
-msgstr "不能处理长度超过 %d 的 URL\n"
+msgstr "不能处理长度超过 %zu 的 URL\n"
 
 #: src/text.c:257
 #, c-format

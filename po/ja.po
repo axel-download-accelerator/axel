@@ -40,7 +40,7 @@ msgstr "ファイル '%s' はすでに存在します。 だからそれは取�
 #: src/axel.c:197
 #, fuzzy, c-format
 msgid "File size: %zu bytes"
-msgstr "ファイルサイズ: %lld バイト"
+msgstr "ファイルサイズ: %zu バイト"
 
 #: src/axel.c:200
 #, fuzzy
@@ -75,7 +75,7 @@ msgstr "状態ファイルは古い形式です。\n"
 #: src/axel.c:307
 #, fuzzy, c-format
 msgid "State file found: %zu bytes downloaded, %zu to go."
-msgstr "状態ファイル発見: %lld バイトがダウンロード済み、あと %lld バイト。"
+msgstr "状態ファイル発見: %zu バイトがダウンロード済み、あと %zu バイト。"
 
 #: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"
@@ -249,7 +249,7 @@ msgstr "URL を読もうとした際に(長すぎ?)エラー。\n"
 #: src/text.c:251
 #, fuzzy, c-format
 msgid "Can't handle URLs of length over %zu\n"
-msgstr "%d を超える長さの URL は取り扱えません\n"
+msgstr "%zu を超える長さの URL は取り扱えません\n"
 
 #: src/text.c:257
 #, c-format

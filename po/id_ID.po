@@ -43,7 +43,7 @@ msgstr "Berkas '%s' sudah ada; tidak mengambil.\n"
 #: src/axel.c:197
 #, fuzzy, c-format
 msgid "File size: %zu bytes"
-msgstr "Ukuran berkas: %lld bytes"
+msgstr "Ukuran berkas: %zu bytes"
 
 #: src/axel.c:200
 #, fuzzy
@@ -77,7 +77,7 @@ msgstr "Bagian berkas memiliki format lama..\n"
 #: src/axel.c:307
 #, fuzzy, c-format
 msgid "State file found: %zu bytes downloaded, %zu to go."
-msgstr "Bagian berkas ditemukan: %lld bytes diunduh, %lld untuk berjalan."
+msgstr "Bagian berkas ditemukan: %zu bytes diunduh, %zu untuk berjalan."
 
 #: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"
@@ -250,7 +250,7 @@ msgstr "Galat saat mencoba membaca URL (Terlalu lama?).\n"
 #: src/text.c:251
 #, fuzzy, c-format
 msgid "Can't handle URLs of length over %zu\n"
-msgstr "Tidak dapat menangani URL dengan panjang di atas %d\n"
+msgstr "Tidak dapat menangani URL dengan panjang di atas %zu\n"
 
 #: src/text.c:257
 #, c-format

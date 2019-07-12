@@ -34,9 +34,9 @@ msgid "File '%s' already there; not retrieving.\n"
 msgstr ""
 
 #: src/axel.c:197
-#, fuzzy, c-format
+#, c-format
 msgid "File size: %zu bytes"
-msgstr "Bestandsgrootte: %lld bytes"
+msgstr "Bestandsgrootte: %zu bytes"
 
 #: src/axel.c:200
 #, fuzzy
@@ -68,9 +68,9 @@ msgid "State file has old format.\n"
 msgstr ""
 
 #: src/axel.c:307
-#, fuzzy, c-format
+#, c-format
 msgid "State file found: %zu bytes downloaded, %zu to go."
-msgstr ".st bestand gevonden: %lld bytes gedownload, %lld te gaan."
+msgstr ".st bestand gevonden: %zu bytes gedownload, %zu te gaan."
 
 #: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"

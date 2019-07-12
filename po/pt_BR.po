@@ -43,9 +43,9 @@ msgid "File '%s' already there; not retrieving.\n"
 msgstr "Arquivo '%s' já existe; ignorando novo download do mesmo.\n"
 
 #: src/axel.c:197
-#, fuzzy, c-format
+#, c-format
 msgid "File size: %zu bytes"
-msgstr "Tamanho do arquivo: %lld bytes"
+msgstr "Tamanho do arquivo: %zu bytes"
 
 #: src/axel.c:200
 #, fuzzy
@@ -77,9 +77,9 @@ msgid "State file has old format.\n"
 msgstr "Estado do arquivo foi alterado.\n"
 
 #: src/axel.c:307
-#, fuzzy, c-format
+#, c-format
 msgid "State file found: %zu bytes downloaded, %zu to go."
-msgstr "Situação do arquivo: %lld bytes baixados, %lld restantes."
+msgstr "Arquivo de estado encontrado: %zu bytes baixados, %zu restantes."
 
 #: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"
@@ -250,9 +250,9 @@ msgid "Error when trying to read URL (Too long?).\n"
 msgstr "Erro ao tentar ler a URL (muito longa?).\n"
 
 #: src/text.c:251
-#, fuzzy, c-format
+#, c-format
 msgid "Can't handle URLs of length over %zu\n"
-msgstr "Não posso manipular URLs com tamanho superior a %d\n"
+msgstr "Não posso manipular URLs com tamanho superior a %zu\n"
 
 #: src/text.c:257
 #, c-format

@@ -36,7 +36,7 @@ msgstr "Файл '% s' уже существует; не получить.\n"
 #: src/axel.c:197
 #, fuzzy, c-format
 msgid "File size: %zu bytes"
-msgstr "Размер файла: %lld байта(ов)"
+msgstr "Размер файла: %zu байта(ов)"
 
 #: src/axel.c:200
 #, fuzzy
@@ -70,7 +70,7 @@ msgstr "Государственный файл имеет старый форм
 #: src/axel.c:307
 #, fuzzy, c-format
 msgid "State file found: %zu bytes downloaded, %zu to go."
-msgstr "Найден файл состояния: %lld байта(ов) скачано, %lld осталось."
+msgstr "Найден файл состояния: %zu байта(ов) скачано, %zu осталось."
 
 #: src/axel.c:313 src/axel.c:324
 msgid "Error opening local file"
@@ -245,7 +245,7 @@ msgstr "Ошибка при попытке прочитать URL (слишко�
 #: src/text.c:251
 #, fuzzy, c-format
 msgid "Can't handle URLs of length over %zu\n"
-msgstr "URLs длинной больше %d не поддерживаются\n"
+msgstr "URLs длинной больше %zu не поддерживаются\n"
 
 #: src/text.c:257
 #, c-format
