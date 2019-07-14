@@ -7,18 +7,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: axel 2.16\n"
+"Project-Id-Version: axel 2.17.4\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2017-11-24 22:43-0300\n"
-"Last-Translator: Joao Eriberto Mota Filho <eriberto@eriberto.pro.br>\n"
+"PO-Revision-Date: 2019-07-14 17:07+0200\n"
+"Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.11\n"
 
 #: src/axel.c:94
 msgid "Buffer resized for this speed."
@@ -48,9 +47,8 @@ msgid "File size: %zu bytes"
 msgstr "Tamanho do arquivo: %zu bytes"
 
 #: src/axel.c:200
-#, fuzzy
 msgid "File size: unavailable"
-msgstr "Tamanho do arquivo: %lld bytes"
+msgstr "Tamanho do arquivo: indisponível"
 
 #: src/axel.c:229
 #, c-format
@@ -170,7 +168,7 @@ msgid "Unknown protocol %s\n"
 msgstr "Protocolo desconhecido %s\n"
 
 #: src/conf.c:187
-#, fuzzy, c-format
+#, c-format
 msgid "Requested too many connections, max is %i\n"
 msgstr "Demasiadas conexões solicitadas, o máximo é %i\n"
 
@@ -180,12 +178,12 @@ msgid "Error in %s line %i.\n"
 msgstr "Erro em %s linha %i.\n"
 
 #: src/conf.c:266
-#, fuzzy, c-format
+#, c-format
 msgid "HOME env variable too long\n"
-msgstr "Nome de arquivo muito longo!\n"
+msgstr "Variável HOME muito longa\n"
 
 #: src/conn.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported protocol\n"
 msgstr "Protocolo não suportado\n"
 
@@ -346,7 +344,7 @@ msgid "%i:%02i minute(s)"
 msgstr "%i:%02i minuto(s)"
 
 #: src/text.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "%i second(s)"
 msgstr "%i segundo(s)"
 
@@ -356,7 +354,7 @@ msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "Não posso configurar uma saída alternativa. Desativando.\n"
 
 #: src/text.c:655
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -382,27 +380,27 @@ msgid ""
 msgstr ""
 "Uso: axel [opções] url1 [url2] [url...]\n"
 "\n"
-"-s x\tEspecifica a velocidade máxima (bytes por segundo)\n"
-"-n x\tEspecifica o número máximo de conexões\n"
-"-o f\tEspecifica o arquivo de saída\n"
-"-S [x]\tProcura por mirrors e baixa a partir de x servidores\n"
+"-s x\tEspecificar a velocidade máxima (bytes por segundo)\n"
+"-n x\tEspecificar o número máximo de conexões\n"
+"-o f\tEspecificar o arquivo de saída\n"
+"-S[x]\tProcurar por mirrors e baixa a partir de x servidores\n"
 "-4\tConectar usando IPv4\n"
 "-6\tConectar usando IPv6\n"
-"-H x\tAdiciona uma entrada adicional de cabeçalho\n"
-"-U x\tConfigura um user agent\n"
-"-N\tNão utiliza qualquer servidor proxy\n"
-"-k\tNão verifica o certificado SSL\n"
-"-c\tIgnora download se o arquivo já existir\n"
-"-q\tEvita mensagens na tela\n"
-"-v\tAumenta o número de informações\n"
-"-a\tSubstitui o indicador de progresso\n"
-"-h\tMostra esta tela de ajuda\n"
+"-H x\tAdicionar uma entrada adicional de cabeçalho\n"
+"-U x\tConfigurar um user agent\n"
+"-N\tNão utilizar qualquer servidor proxy\n"
+"-k\tNão verificar o certificado SSL\n"
+"-c\tIgnorar download se o arquivo já existir\n"
+"-q\tEvitar mensagens na tela\n"
+"-v\tAumentar o número de informações\n"
+"-a\tIndicador de progresso alternativo\n"
+"-h\tMostrar esta tela de ajuda\n"
 "-V\tInformação sobre a versão\n"
 "\n"
 "Visite https://github.com/axel-download-accelerator/axel/issues\n"
 
 #: src/text.c:677
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -430,30 +428,30 @@ msgid ""
 msgstr ""
 "Uso: axel [opções] url1 [url2] [url...]\n"
 "\n"
-"--max-speed=x\t\t-s x\tEspecifica a velocidade máxima (bytes por segundo)\n"
-"--num-connections=x\t-n x\tEspecifica o número máximo de conexões\n"
-"--max-redirect=x\t\tEspecifica a quantidade máxima de redirecionamentos\n"
-"--output=f\t\t-o f\tEspecifica o arquivo de saída\n"
-"--search[=x]\t\t-S [x]\tProcura por mirrors e baixa a partir de x "
+"--max-speed=x\t\t-s x\tEspecificar a velocidade máxima (bytes por segundo)\n"
+"--num-connections=x\t-n x\tEspecificar o número máximo de conexões\n"
+"--max-redirect=x\t\tEspecificar a quantidade máxima de redirecionamentos\n"
+"--output=f\t\t-o f\tEspecificar o arquivo de saída\n"
+"--search[=x]\t\t-S[x]\tProcurar por mirrors e baixa a partir de x "
 "servidores\n"
 "--ipv4\t\t\t-4\tUsar o protocolo IPv4\n"
 "--ipv6\t\t\t-6\tUsar o protocolo IPv6\n"
-"--header=x\t\t-H x\tAdiciona uma entrada adicional de cabeçalho\n"
-"--user-agent=x\t\t-U x\tConfigura um user agent\n"
-"--no-proxy\t\t-N\tNão utiliza qualquer servidor proxy\n"
-"--insecure\t\t-k\tNão verifica o certificado SSL\n"
-"--no-clobber\t\t-c\tIgnora o download se o arquivo já existir\n"
-"--quiet\t\t\t-q\tEvita mensagens na tela\n"
-"--verbose\t\t-v\tAumenta o número de informações\n"
-"--alternate\t\t-a\tSubstitui o indicador de progresso\n"
-"--help\t\t\t-h\tMostra esta tela de ajuda\n"
+"--header=x\t\t-H x\tAdicionar uma entrada adicional de cabeçalho\n"
+"--user-agent=x\t\t-U x\tConfigurar um user agent\n"
+"--no-proxy\t\t-N\tNão utilizar qualquer servidor proxy\n"
+"--insecure\t\t-k\tNão verificar o certificado SSL\n"
+"--no-clobber\t\t-c\tIgnorar o download se o arquivo já existir\n"
+"--quiet\t\t\t-q\tEvitar mensagens na tela\n"
+"--verbose\t\t-v\tAumentar o número de informações\n"
+"--alternate\t\t-a\tIndicador de progresso alternativo\n"
+"--help\t\t\t-h\tMostrar esta tela de ajuda\n"
 "--version\t\t-V\tInformação sobre a versão\n"
 "\n"
 "Visite https://github.com/axel-download-accelerator/axel/issues to report "
 "bugs\n"
 
 #: src/text.c:705
-#, fuzzy, c-format
+#, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel versão %s (%s)\n"
 
@@ -462,7 +460,6 @@ msgid "and others."
 msgstr "e outros."
 
 #: src/text.c:714
-#, fuzzy
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
