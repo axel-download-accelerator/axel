@@ -5,9 +5,9 @@ msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2001-11-14 15:22+0200\n"
-"Last-Translator: Wilmer van der Gaast <wilmer@gaast.net>\n"
-"Language-Team: Dutch <nl@li.org>\n"
+"PO-Revision-Date: 2019-07-15 11:53+0200\n"
+"Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
+"Language-Team: Dutch\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,9 +41,8 @@ msgid "File size: %zu bytes"
 msgstr "Bestandsgrootte: %zu bytes"
 
 #: src/axel.c:200
-#, fuzzy
 msgid "File size: unavailable"
-msgstr "Bestandsgrootte: %lld bytes"
+msgstr "Bestandsgrootte: niet beschikbaar"
 
 #: src/axel.c:229
 #, c-format
@@ -83,9 +82,8 @@ msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Niet-fatale fout in OS/bestandssysteem, omheen werken.."
 
 #: src/axel.c:350
-#, fuzzy
 msgid "Error creating local file"
-msgstr "Fout bij openen lokaal bestand"
+msgstr "Fout bij maken lokaal bestand"
 
 #: src/axel.c:383
 #, c-format
@@ -108,9 +106,9 @@ msgid "pthread error!!!"
 msgstr "pthread fout!!!"
 
 #: src/axel.c:477
-#, fuzzy, c-format
+#, c-format
 msgid "Error while waiting for connection: %s"
-msgstr "Fout bij het schrijven van commando %s\n"
+msgstr "Fout bij wachten op verbinding: %s"
 
 #: src/axel.c:509
 #, c-format
@@ -227,9 +225,9 @@ msgid "Invalid proxy string: %s\n"
 msgstr "Ongeldige proxy string: %s\n"
 
 #: src/http.c:237
-#, fuzzy, c-format
+#, c-format
 msgid "Connection gone while writing.\n"
-msgstr "Verbinding gesloten.\n"
+msgstr "Verbinding is verdwenen tijdens het schrijven.\n"
 
 #: src/text.c:200
 #, c-format
@@ -326,17 +324,17 @@ msgid "%g %sbyte(s)"
 msgstr "%g %sbyte(s)"
 
 #: src/text.c:523
-#, fuzzy, c-format
+#, c-format
 msgid "%i:%02i:%02i hour(s)"
-msgstr "%i:%02i:%02i uur"
+msgstr "%i:%02i:%02i uren"
 
 #: src/text.c:525
-#, fuzzy, c-format
+#, c-format
 msgid "%i:%02i minute(s)"
-msgstr "%i:%02i minuten"
+msgstr "%i:%02i minute(n)"
 
 #: src/text.c:527
-#, fuzzy, c-format
+#, c-format
 msgid "%i second(s)"
 msgstr "%i seconde(n)"
 
@@ -346,7 +344,7 @@ msgid "Can't setup alternate output. Deactivating.\n"
 msgstr ""
 
 #: src/text.c:655
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -375,17 +373,25 @@ msgstr ""
 "-s x\tMaximale snelheid (bytes per seconde)\n"
 "-n x\tMaximale aantal verbindingen\n"
 "-o f\tLokaal uitvoerbestand\n"
-"-S [x]\tMirrors opzoeken en x mirrors gebruiken\n"
+"-S[x]\tMirrors opzoeken en x mirrors gebruiken\n"
+"-4\tGebruik het IPv4-protocol\n"
+"-6\tGebruik het IPv6-protocol\n"
+"-H x\tHTTP-header reeks toevoegen\n"
+"-U x\tStel user agent\n"
 "-N\tGeen proxy server gebruiken\n"
+"-k\tVerifieer het SSL-certificaat niet\n"
+"-c\tSla de download over als het bestand al bestaat\n"
 "-q\tGeen uitvoer naar stdout\n"
 "-v\tMeer status informatie\n"
 "-a\tAlternatieve voortgangs indicator\n"
 "-h\tDeze informatie\n"
+"-T x\tStel I/O en verbinding time-out\n"
 "-V\tVersie informatie\n"
 "\n"
+"Bezoek https://github.com/axel-download-accelerator/axel/issues\n"
 
 #: src/text.c:677
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -415,18 +421,28 @@ msgstr ""
 "\n"
 "--max-speed=x\t\t-s x\tMaximale snelheid (bytes per seconde)\n"
 "--num-connections=x\t-n x\tMaximale aantal verbindingen\n"
+"--max-redirect=x\t\tFIXME\n"
 "--output=f\t\t-o f\tLokaal uitvoerbestand\n"
 "--search[=x]\t\t-S [x]\tMirrors opzoeken en x mirrors gebruiken\n"
+"--ipv4\t\t\t-4\tGebruik het IPv4-protocol\n"
+"--ipv6\t\t\t-6\tGebruik het IPv6-protocol\n"
+"--header=x\t\t-H x\tHTTP-header reeks toevoegen\n"
+"--user-agent=x\t\t-U x\tStel user agent\n"
 "--no-proxy\t\t-N\tGeen proxy server gebruiken\n"
+"--insecure\t\t-k\tVerifieer het SSL-certificaat niet\n"
+"--no-clobber\t\t-c\tSla de download over als het bestand al bestaat\n"
 "--quiet\t\t\t-q\tGeen uitvoer naar stdout\n"
 "--verbose\t\t-v\tMeer status informatie\n"
 "--alternate\t\t-a\tAlternatieve voortgangs indicator\n"
 "--help\t\t\t-h\tDeze informatie\n"
+"--timeout=x\t\t-T x\tStel I/O en verbinding time-out\n"
 "--version\t\t-V\tVersie informatie\n"
 "\n"
+"Bezoek https://github.com/axel-download-accelerator/axel/issues om bugs te "
+"melden\n"
 
 #: src/text.c:705
-#, fuzzy, c-format
+#, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel versie %s (%s)\n"
 
