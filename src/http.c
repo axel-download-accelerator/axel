@@ -107,10 +107,10 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 
 	if (proxy != NULL) {
 		if (*proxy != 0) {
-			sprintf(conn->host, "%s:%i", host, port);
+			snprintf(conn->host, sizeof(conn->host),
+				 "%s:%i", host, port);
 			if (!conn_set(tconn, proxy)) {
-				/* We'll put the message in conn->headers, not in request */
-				sprintf(conn->headers,
+				fprintf(stderr,
 					_("Invalid proxy string: %s\n"), proxy);
 				return 0;
 			}
@@ -126,7 +126,7 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	}
 
 	if (tcp_connect(&conn->tcp, host, port, PROTO_IS_SECURE(proto),
-			conn->local_if, conn->headers, io_timeout) == -1)
+			conn->local_if, io_timeout) == -1)
 		return 0;
 
 	if (*user == 0) {
@@ -232,8 +232,8 @@ http_exec(http_t *conn)
 			       strlen(conn->request) - nwrite)) < 0) {
 			if (errno == EINTR || errno == EAGAIN)
 				continue;
-			/* We'll put the message in conn->headers, not in request */
-			sprintf(conn->headers,
+
+			fprintf(stderr,
 				_("Connection gone while writing.\n"));
 			return 0;
 		}
@@ -241,12 +241,12 @@ http_exec(http_t *conn)
 	}
 
 	*conn->headers = 0;
+
 	/* Read the headers byte by byte to make sure we don't touch the
 	   actual data */
 	while (1) {
 		if (tcp_read(&conn->tcp, s, 1) <= 0) {
-			/* We'll put the message in conn->headers, not in request */
-			sprintf(conn->headers, _("Connection gone.\n"));
+			fprintf(stderr, _("Connection gone.\n"));
 			return 0;
 		}
 
@@ -259,6 +259,7 @@ http_exec(http_t *conn)
 		} else {
 			i++;
 		}
+		/* FIXME wasteful */
 		strlcat(conn->headers, s, sizeof(conn->headers));
 	}
 

@@ -73,12 +73,12 @@ conn_set(conn_t *conn, const char *set_url)
 			conn->proto = PROTO_HTTPS;
 			conn->port = PROTO_HTTPS_PORT;
 		} else {
-			sprintf(conn->message, _("Unsupported protocol\n"));
+			fprintf(stderr, _("Unsupported protocol\n"));
 			return 0;
 		}
 #ifndef HAVE_SSL
                if (PROTO_IS_SECURE(conn->proto)) {
-                       sprintf(conn->message,
+                       fprintf(stderr,
                                _("Secure protocol is not supported\n"));
                        return 0;
                }
@@ -410,7 +410,7 @@ conn_info(conn_t *conn)
 		       i < conn->conf->max_redirect);
 
 		if (i == conn->conf->max_redirect) {
-			sprintf(conn->message, _("Too many redirects.\n"));
+			fprintf(stderr, _("Too many redirects.\n"));
 			return 0;
 		}
 

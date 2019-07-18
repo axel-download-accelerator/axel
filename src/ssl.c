@@ -69,7 +69,7 @@ ssl_startup(void)
 }
 
 SSL *
-ssl_connect(int fd, char *hostname, char *message)
+ssl_connect(int fd, char *hostname)
 {
 
 	SSL_CTX *ssl_ctx;
@@ -90,7 +90,7 @@ ssl_connect(int fd, char *hostname, char *message)
 
 	int err = SSL_connect(ssl);
 	if (err <= 0) {
-		sprintf(message, _("SSL error: %s\n"),
+		fprintf(stderr, _("SSL error: %s\n"),
 			ERR_reason_error_string(ERR_get_error()));
 		return NULL;
 	}

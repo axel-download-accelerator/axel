@@ -328,8 +328,7 @@ main(int argc, char *argv[])
 				size_t axelfnlen = strlen(axel->filename);
 
 				if (fnlen + 1 + axelfnlen + 1 > MAX_STRING) {
-					fprintf(stderr,
-						_("Filename too long!\n"));
+					fprintf(stderr, _("Filename too long!\n"));
 					goto close_axel;
 				}
 

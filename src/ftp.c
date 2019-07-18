@@ -51,7 +51,7 @@ ftp_connect(ftp_t *conn, int proto, char *host, int port, char *user,
 	conn->proto = proto;
 
 	if (tcp_connect(&conn->tcp, host, port, PROTO_IS_SECURE(conn->proto),
-			conn->local_if, conn->message, io_timeout) == -1)
+			conn->local_if, io_timeout) == -1)
 		return 0;
 
 	if (ftp_wait(conn) / 100 != 2)
@@ -122,13 +122,13 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 			sscanf(conn->message, "%*i %lld", &i);
 			return i;
 		} else if (conn->status / 10 != 50) {
-			sprintf(conn->message, _("File not found.\n"));
+			fprintf(stderr, _("File not found.\n"));
 			return -1;
 		}
 	}
 
 	if (maxredir == 0) {
-		sprintf(conn->message, _("Too many redirects.\n"));
+		fprintf(stderr, _("Too many redirects.\n"));
 		return -1;
 	}
 
@@ -182,9 +182,9 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 	/* No match or more than one match */
 	if (j != 1) {
 		if (j == 0)
-			sprintf(conn->message, _("File not found.\n"));
+			fprintf(stderr, _("File not found.\n"));
 		else
-			sprintf(conn->message,
+			fprintf(stderr,
 				_("Multiple matches for this URL.\n"));
 		free(reply);
 		return -1;
@@ -256,20 +256,20 @@ ftp_data(ftp_t *conn, unsigned io_timeout)
 		}
 	}
 	if (!*host) {
-		sprintf(conn->message,
+		fprintf(stderr,
 			_("Error opening passive data connection.\n"));
 		return 0;
 	}
 	if (tcp_connect(&conn->data_tcp, host, info[4] * 256 + info[5],
 			PROTO_IS_SECURE(conn->proto), conn->local_if,
-			conn->message, io_timeout) == -1)
+			io_timeout) == -1)
 		return 0;
 
 	return 1;
 /*	}
 	else
 	{
-		sprintf(conn->message, _("Active FTP not implemented yet.\n"));
+		fprintf(stderr, _("Active FTP not implemented yet.\n"));
 		return 0;
 	} */
 }
@@ -291,7 +291,7 @@ ftp_command(ftp_t *conn, const char *format, ...)
 #endif
 
 	if (tcp_write(&conn->tcp, cmd, strlen(cmd)) != (ssize_t)strlen(cmd)) {
-		sprintf(conn->message, _("Error writing command %s\n"), format);
+		fprintf(stderr, _("Error writing command %s\n"), cmd);
 		return 0;
 	} else {
 		return 1;
@@ -316,7 +316,7 @@ ftp_wait(ftp_t *conn)
 		do {
 			r += i = tcp_read(&conn->tcp, conn->message + r, 1);
 			if (i <= 0) {
-				sprintf(conn->message, _("Connection gone.\n"));
+				fprintf(stderr, _("Connection gone.\n"));
 				return -1;
 			}
 			if ((r + 10) >= size) {

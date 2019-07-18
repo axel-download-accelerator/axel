@@ -66,17 +66,17 @@ int is_ipv6_addr(const char *hostname) {
 	return hostname && 1 == inet_pton(AF_INET6, hostname, buf);
 }
 
-static void
-tcp_error(char *buffer, char *hostname, int port, const char *reason)
+inline static void
+tcp_error(char *hostname, int port, const char *reason)
 {
-	sprintf(buffer, _("Unable to connect to server %s:%i: %s\n"),
+	fprintf(stderr, _("Unable to connect to server %s:%i: %s\n"),
 		hostname, port, reason);
 }
 
 /* Get a TCP connection */
 int
 tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
-	    char *message, unsigned io_timeout)
+	    unsigned io_timeout)
 {
 	struct sockaddr_in local_addr;
 	char portstr[10];
@@ -106,7 +106,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 
 	ret = getaddrinfo(hostname, portstr, &ai_hints, &gai_results);
 	if (ret != 0) {
-		tcp_error(message, hostname, port, gai_strerror(ret));
+		tcp_error(hostname, port, gai_strerror(ret));
 		return -1;
 	}
 
@@ -166,7 +166,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 	freeaddrinfo(gai_results);
 
 	if (sock_fd == -1) {
-		tcp_error(message, hostname, port, strerror(errno));
+		tcp_error(hostname, port, strerror(errno));
 		return -1;
 	}
 
@@ -174,7 +174,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 
 #ifdef HAVE_SSL
 	if (secure) {
-		tcp->ssl = ssl_connect(sock_fd, hostname, message);
+		tcp->ssl = ssl_connect(sock_fd, hostname);
 		if (tcp->ssl == NULL) {
 			close(sock_fd);
 			return -1;
