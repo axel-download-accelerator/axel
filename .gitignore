@@ -23,6 +23,7 @@ Makefile
 !/man/Makefile
 Makefile.in
 TAGS
+*.[1-8]
 *.gmo
 *.o
 *.tar.*

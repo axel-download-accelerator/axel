@@ -5,7 +5,6 @@ When updating, change these files (if needed):
 - AUTHORS
 - CREDITS
 - src/text.c (years in Copyright lines near EOF)
-- run: make man/axel.1
 - run: make -C po update-po
 
 
