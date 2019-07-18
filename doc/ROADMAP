@@ -13,15 +13,6 @@ z: Bug fixed
 Features
 ========
 
-* HTTP authentication (#310785)
- This is actually already implemented and should be documented. Using -H is possible, too.
-
-* Metalink (#310625)
- Basic Metalink support should not be that difficult. However, it will only be compiled if METALINK is defined. Metalink support will require libxml2. As libmetalink is currently unusable for us (private symbols), we'll implement the format ourselves.
-
-* .netrc (#310635)
- There are lots of GPLed implementations flying around. To minimize code size, it shouldn't be compiled in by default if the code exceeds a couple of bytes. Anyway, it's just one call from Axel's point of view.
-
 * Prevent connection to same server (#310638)
  See tcp.c below for the implementation (aside from a flag in the configuration and a cli flag).
 
