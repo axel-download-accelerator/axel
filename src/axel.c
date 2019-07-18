@@ -159,7 +159,7 @@ axel_new(conf_t *conf, int count, const void *url)
 	if (axel->conf->no_clobber && access(axel->filename, F_OK) == 0) {
 		char stfile[MAX_STRING + 3];
 
-		sprintf(stfile, "%s.st", axel->filename);
+		snprintf(stfile, sizeof(stfile), "%s.st", axel->filename);
 		if (access(stfile, F_OK) == 0) {
 			printf(_("Incomplete download found, ignoring "
 				 "no-clobber option\n"));

@@ -366,7 +366,8 @@ main(int argc, char *argv[])
 				if (access(statefn, F_OK))
 					break;
 			}
-			sprintf(s, ".%i", i);
+			snprintf(s, axel->filename + sizeof(axel->filename) - s,
+				 ".%i", i);
 		}
 	}
 

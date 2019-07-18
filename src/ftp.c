@@ -250,8 +250,8 @@ ftp_data(ftp_t *conn, unsigned io_timeout)
 		if (sscanf(&conn->message[i], "%i,%i,%i,%i,%i,%i",
 			   &info[0], &info[1], &info[2], &info[3],
 			   &info[4], &info[5]) == 6) {
-			sprintf(host, "%i.%i.%i.%i",
-				info[0], info[1], info[2], info[3]);
+			snprintf(host, sizeof(host), "%i.%i.%i.%i",
+				 info[0], info[1], info[2], info[3]);
 			break;
 		}
 	}

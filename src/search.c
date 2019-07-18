@@ -116,10 +116,20 @@ search_makelist(search_t *results, char *orig_url)
 	if (!s)
 		return 1;
 
-	sprintf(s, "http://www.filesearching.com/cgi-bin/s?q=%s&w=a&l=en&"
-		"t=f&e=on&m=%i&o=n&s1=%lld&s2=%lld&x=15&y=15",
-		conn->file, results->conf->search_amount,
-		conn->size, conn->size);
+	/* TODO improve matches */
+	snprintf(s, size, "http://www.filesearching.com/cgi-bin/s?"
+		 "w=a&" /* TODO describe */
+		 "x=15&y=15&" /* TODO describe */
+		 /* Size in bytes:   */ "s=on&"
+		 /* Exact search:    */ "e=on&"
+		 /* Language:        */ "l=en&"
+		 /* Search Type:     */ "t=f&"
+		 /* Sorting:         */ "o=n&"
+		 /* Filename:        */ "q=%s&"
+		 /* Num. of results: */ "m=%i&"
+		 /* Size (min/max):  */ "s1=%lld&s2=%lld",
+		 conn->file, results->conf->search_amount,
+		 conn->size, conn->size);
 
 	conn_disconnect(conn);
 	memset(conn, 0, sizeof(conn_t));
