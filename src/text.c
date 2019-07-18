@@ -90,13 +90,15 @@ static struct option axel_options[] = {
 int
 main(int argc, char *argv[])
 {
-	char fn[MAX_STRING] = "";
+	char fn[MAX_STRING];
 	int do_search = 0;
 	search_t *search;
 	conf_t conf[1];
 	axel_t *axel;
 	int j, cur_head = 0, ret = 1;
 	char *s;
+
+	fn[0] = 0;
 
 /* Set up internationalization (i18n) */
 #ifdef ENABLE_NLS
@@ -113,11 +115,9 @@ main(int argc, char *argv[])
 
 	j = -1;
 	while (1) {
-		int option;
-
-		option =
-		    getopt_long(argc, argv, "s:n:o:S::46NqvhVakcH:U:T:",
-				axel_options, NULL);
+		int option = getopt_long(argc, argv,
+					 "s:n:o:S::46NqvhVakcH:U:T:",
+					 axel_options, NULL);
 		if (option == -1)
 			break;
 
@@ -319,6 +319,7 @@ main(int argc, char *argv[])
 		free(s);
 	}
 
+	/* Check if a file name has been specified */
 	if (*fn) {
 		struct stat buf;
 
@@ -356,15 +357,14 @@ main(int argc, char *argv[])
 			char statefn[MAX_STRING + 3];
 			snprintf(statefn, sizeof(statefn), "%s.st",
 				 axel->filename);
-			if (access(axel->filename, F_OK) == 0) {
-				if (axel->conn[0].supported) {
-					if (access(statefn, F_OK) == 0)
+
+			int f_exists = !access(axel->filename, F_OK);
+			int st_exists = !access(statefn, F_OK);
+			if (f_exists) {
+				if (axel->conn[0].supported && st_exists)
 						break;
-				}
-			} else {
-				if (access(statefn, F_OK))
-					break;
-			}
+			} else if (!st_exists)
+				break;
 			snprintf(s, axel->filename + sizeof(axel->filename) - s,
 				 ".%i", i);
 		}
