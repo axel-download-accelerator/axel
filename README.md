@@ -61,6 +61,7 @@ Optional:
 * `autoconf`
 * `automake`
 * `autopoint`
+* `txt2man`
 
 ### Building on Ubuntu from Git ###
 
