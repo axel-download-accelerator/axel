@@ -1,3 +1,32 @@
+Version: 2.17.4, FIXME
+
+  [ Ismael Luceno ]
+
+* Fixed build with bionic libc (Android)
+* TCP Fast Open support on Linux
+* TCP code cleanup
+* Removed dependency on libm
+* Data types and format strings cleanup
+* String handling cleanup
+* Format string checking GCC attributes added
+* Buildsystem fixes and improvements
+* Updates to the documentation
+* Updated all translations
+
+  [ Jeong Ukjae ]
+
+* Fixed Footnotes in documentation
+
+  [ Joao Eriberto Mota Filho ]
+
+* Fixed a typo in README.md
+
+  [ Andrew Mussey ]
+
+* Fixed a typo in README.md
+
+
+
 Version: 2.17.3, 2019-05-20
 
   [ Ismael Luceno ]
