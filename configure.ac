@@ -68,7 +68,6 @@ AC_CHECK_HEADERS([ \
 ])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_HEADER_STDBOOL
 AC_C_INLINE
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
