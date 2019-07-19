@@ -54,3 +54,7 @@ m4_define([AC_PACKAGE_TARNAME],
 				 [-])]))
 m4_define([AC_PACKAGE_BUGREPORT], [$2])
 ])
+
+
+# MKINSTALLDIRS isn't needed; remove
+AC_DEFUN([AM_MKINSTALLDIRS], [])

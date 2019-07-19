@@ -3,6 +3,9 @@
 # Usually the message domain is the same as the package name.
 DOMAIN = $(PACKAGE)
 
+# workaround for gettext 0.11-0.12
+mkinstalldirs = $(INSTALL) -d
+
 # These two variables depend on the location of this directory.
 subdir = po
 top_builddir = ..
