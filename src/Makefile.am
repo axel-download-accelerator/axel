@@ -1,5 +1,6 @@
 bin_PROGRAMS = axel
 axel_SOURCES = \
+	src/android-compat.h \
 	src/axel.c \
 	src/axel.h \
 	src/sleep.h \
