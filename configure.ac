@@ -62,7 +62,6 @@ AC_CHECK_HEADERS([ \
 	netdb.h \
 	netinet/in.h \
 	stdlib.h \
-	string.h \
 	sys/ioctl.h \
 	sys/socket.h \
 	sys/time.h \
