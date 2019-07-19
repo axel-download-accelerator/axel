@@ -6,18 +6,13 @@ ACLOCAL = touch $@; @ACLOCAL@
 
 SUBDIRS = po
 
-dist_man_MANS = doc/axel.1
-.txt.1:
-	$(MAKE) -C $(@D) $(@F)
-
 EXTRA_DIST = \
 	scripts/pocheck.awk \
 	README.md \
 	CONTRIBUTING.md \
-	CREDITS \
-	doc/axelrc.example \
-	doc/axel.txt \
-	doc/Makefile
+	CREDITS
+
+include doc/Makefile.am
 
 distclean-local:
 	-rm -rf autom4te.cache
