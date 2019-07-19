@@ -56,7 +56,6 @@ AC_PROG_INSTALL
 AC_CHECK_HEADERS([ \
 	arpa/inet.h \
 	fcntl.h \
-	libintl.h \
 	limits.h \
 	locale.h \
 	netdb.h \
