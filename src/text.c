@@ -403,7 +403,7 @@ main(int argc, char *argv[])
 				print_alternate_output(axel);
 		} else {
 			/* The infamous wget-like 'interface'.. ;) */
-			size_t done = (axel->bytes_done - prev) / 1024;
+			size_t done = (axel->bytes_done / 1024) - (prev / 1024);
 			if (done && conf->verbose > -1) {
 				for (size_t i = 0; i < done; i++) {
 					i += (prev / 1024);
