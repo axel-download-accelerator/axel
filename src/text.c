@@ -52,6 +52,7 @@ static char *size_human(char *dst, size_t len, size_t value);
 static char *time_human(char *dst, size_t len, unsigned int value);
 static void print_commas(long long int bytes_done);
 static void print_alternate_output(axel_t *axel);
+static void print_progress(size_t cur, size_t prev, size_t total, double kbps);
 static void print_help(void);
 static void print_version(void);
 static int get_term_width(void);
@@ -402,37 +403,9 @@ main(int argc, char *argv[])
 		if (conf->alternate_output) {
 			if (!axel->message && prev != axel->bytes_done)
 				print_alternate_output(axel);
-		} else {
-			/* The infamous wget-like 'interface'.. ;) */
-			size_t done = (axel->bytes_done / 1024) - (prev / 1024);
-			if (done && conf->verbose > -1) {
-				for (size_t i = 0; i < done; i++) {
-					i += (prev / 1024);
-					if ((i % 50) == 0) {
-						if (prev >= 1024)
-							printf("  [%6.1fKB/s]",
-							       (double)axel->bytes_per_second /
-							       1024);
-						if (axel->size == LLONG_MAX)
-							printf("\n[ N/A]  ");
-						else if (axel->size < 10240000)
-							printf("\n[%3zu%%]  ",
-							       min(100U,
-								   102400 * i /
-								   axel->size));
-						else
-							printf("\n[%3zu%%]  ",
-							       min(100U,
-								   i /
-								   (axel->size /
-								    102400)));
-					} else if ((i % 10) == 0) {
-						putchar(' ');
-					}
-					putchar('.');
-					i -= (prev / 1024);
-				}
-			}
+		} else if (conf->verbose > -1) {
+			print_progress(axel->bytes_done, prev, axel->size,
+				       (double)axel->bytes_per_second / 1024);
 		}
 
 		if (axel->message) {
@@ -547,6 +520,36 @@ print_commas(long long int bytes_done)
 		putchar(',');
 	}
 }
+
+
+/**
+ * The infamous wget-like 'interface'.. ;)
+ */
+static
+void
+print_progress(size_t cur, size_t prev, size_t total, double kbps)
+{
+	prev /= 1024;
+	cur /= 1024;
+
+	bool print_speed = prev > 0;
+	for (size_t i = prev; i < cur; i++) {
+		if (i % 50 == 0) {
+			if (print_speed)
+				printf("  [%6.1fKB/s]", kbps);
+
+			if (total == LLONG_MAX)
+				printf("\n[ N/A]  ");
+			else
+				printf("\n[%3zu%%]  ",
+				       min(100U, 102400 * i / total));
+		} else if (i % 10 == 0) {
+			putchar(' ');
+		}
+		putchar('.');
+	}
+}
+
 
 static void
 print_alternate_output_progress(axel_t *axel, char *progress, int width,
