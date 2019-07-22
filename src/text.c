@@ -384,6 +384,7 @@ main(int argc, char *argv[])
 		if (axel->bytes_done > 0) {	/* Print first dots if resuming */
 			putchar('\n');
 			print_commas(axel->bytes_done);
+			fflush(stdout);
 		}
 	}
 	axel->start_byte = axel->bytes_done;
@@ -431,7 +432,6 @@ main(int argc, char *argv[])
 					putchar('.');
 					i -= (prev / 1024);
 				}
-				fflush(stdout);
 			}
 		}
 
@@ -455,6 +455,7 @@ main(int argc, char *argv[])
 		} else if (axel->ready) {
 			putchar('\n');
 		}
+		fflush(stdout);
 	}
 
 	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
@@ -545,7 +546,6 @@ print_commas(long long int bytes_done)
 			putchar(' ');
 		putchar(',');
 	}
-	fflush(stdout);
 }
 
 static void
@@ -633,8 +633,6 @@ print_alternate_output(axel_t *axel)
 		else
 			printf(" [%02d:%02d]", minutes, seconds);
 	}
-
-	fflush(stdout);
 
 	free(progress);
 }
