@@ -229,71 +229,71 @@ msgstr "Ongeldige proxy string: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "Verbinding is verdwenen tijdens het schrijven.\n"
 
-#: src/text.c:200
+#: src/text.c:201
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Fout bij het afsluiten van stdout.\n"
 
-#: src/text.c:243
+#: src/text.c:244
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr ""
 
-#: src/text.c:251
+#: src/text.c:252
 #, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr ""
 
-#: src/text.c:257
+#: src/text.c:258
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Begin download: %s\n"
 
-#: src/text.c:265
+#: src/text.c:266
 #, c-format
 msgid "Doing search...\n"
 msgstr "Zoeken...\n"
 
-#: src/text.c:268
+#: src/text.c:269
 #, c-format
 msgid "File not found\n"
 msgstr "Bestand niet gevonden\n"
 
-#: src/text.c:272
+#: src/text.c:273
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Snelheden testen, dit kan even duren...\n"
 
-#: src/text.c:275
+#: src/text.c:276
 #, c-format
 msgid "Speed testing failed\n"
 msgstr ""
 
-#: src/text.c:281
+#: src/text.c:282
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i bruikbare servers gevonden, de volgende worden gebruikt:\n"
 
-#: src/text.c:284
+#: src/text.c:285
 msgid "Speed"
 msgstr ""
 
-#: src/text.c:332
+#: src/text.c:333
 #, c-format
 msgid "Filename too long!\n"
 msgstr ""
 
-#: src/text.c:345
+#: src/text.c:346
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Geen .st bestand, kan niet resumen!\n"
 
-#: src/text.c:349
+#: src/text.c:350
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ".st bestand gevonden maar geen uitvoerbestand. Opnieuw beginnen.\n"
 
-#: src/text.c:464
+#: src/text.c:438
 #, c-format
 msgid ""
 "\n"
@@ -302,48 +302,48 @@ msgstr ""
 "\n"
 "%s gedownload in %s. (%.2f KB/s)\n"
 
-#: src/text.c:501
+#: src/text.c:475
 msgid "Kilo"
 msgstr "Kilo"
 
-#: src/text.c:501
+#: src/text.c:475
 msgid "Mega"
 msgstr "Mega"
 
-#: src/text.c:501
+#: src/text.c:475
 msgid "Giga"
 msgstr "Giga"
 
-#: src/text.c:501
+#: src/text.c:475
 msgid "Tera"
 msgstr "Tera"
 
-#: src/text.c:507
+#: src/text.c:481
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %sbyte(s)"
 
-#: src/text.c:523
+#: src/text.c:497
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i uren"
 
-#: src/text.c:525
+#: src/text.c:499
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i minute(n)"
 
-#: src/text.c:527
+#: src/text.c:501
 #, c-format
 msgid "%i second(s)"
 msgstr "%i seconde(n)"
 
-#: src/text.c:591
+#: src/text.c:594
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr ""
 
-#: src/text.c:655
+#: src/text.c:656
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -390,7 +390,7 @@ msgstr ""
 "\n"
 "Bezoek https://github.com/axel-download-accelerator/axel/issues\n"
 
-#: src/text.c:677
+#: src/text.c:678
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -441,16 +441,16 @@ msgstr ""
 "Bezoek https://github.com/axel-download-accelerator/axel/issues om bugs te "
 "melden\n"
 
-#: src/text.c:705
+#: src/text.c:706
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel versie %s (%s)\n"
 
-#: src/text.c:713
+#: src/text.c:714
 msgid "and others."
 msgstr ""
 
-#: src/text.c:714
+#: src/text.c:715
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"

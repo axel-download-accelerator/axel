@@ -232,73 +232,73 @@ msgstr "Некорректная стока прокси: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "Соединение пропало.\n"
 
-#: src/text.c:200
+#: src/text.c:201
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Невозможно перенаправить stdout в /dev/null.\n"
 
-#: src/text.c:243
+#: src/text.c:244
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "Ошибка при попытке прочитать URL (слишком долго?).\n"
 
-#: src/text.c:251
+#: src/text.c:252
 #, fuzzy, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr "URLs длинной больше %zu не поддерживаются\n"
 
-#: src/text.c:257
+#: src/text.c:258
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Начинаю скачивание: %s\n"
 
-#: src/text.c:265
+#: src/text.c:266
 #, c-format
 msgid "Doing search...\n"
 msgstr "Ищем...\n"
 
-#: src/text.c:268
+#: src/text.c:269
 #, c-format
 msgid "File not found\n"
 msgstr "Файл не найден\n"
 
-#: src/text.c:272
+#: src/text.c:273
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Пробуем скорости, это может занять некоторое время...\n"
 
-#: src/text.c:275
+#: src/text.c:276
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "Тестирование скорости не удалось\n"
 
-#: src/text.c:281
+#: src/text.c:282
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "Найдено %i полезных серверов, будут использованы следующие URLs:\n"
 
-#: src/text.c:284
+#: src/text.c:285
 msgid "Speed"
 msgstr "скорость"
 
-#: src/text.c:332
+#: src/text.c:333
 #, c-format
 msgid "Filename too long!\n"
 msgstr "Имя файла слишком длинное!\n"
 
-#: src/text.c:345
+#: src/text.c:346
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Файл состояния не найден, возобновление невозможно!\n"
 
-#: src/text.c:349
+#: src/text.c:350
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ""
 "Файл состояния найден, но предварительно скачанные данные отсутствуют. "
 "Начинаем заново.\n"
 
-#: src/text.c:464
+#: src/text.c:438
 #, c-format
 msgid ""
 "\n"
@@ -307,48 +307,48 @@ msgstr ""
 "\n"
 "%s скачано за %s. (%.2f КБ/с)\n"
 
-#: src/text.c:501
+#: src/text.c:475
 msgid "Kilo"
 msgstr "кило"
 
-#: src/text.c:501
+#: src/text.c:475
 msgid "Mega"
 msgstr "мега"
 
-#: src/text.c:501
+#: src/text.c:475
 msgid "Giga"
 msgstr "гига"
 
-#: src/text.c:501
+#: src/text.c:475
 msgid "Tera"
 msgstr "тера"
 
-#: src/text.c:507
+#: src/text.c:481
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %sбайта(ов)"
 
-#: src/text.c:523
+#: src/text.c:497
 #, fuzzy, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i секунд(ы)"
 
-#: src/text.c:525
+#: src/text.c:499
 #, fuzzy, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i секунд(ы)"
 
-#: src/text.c:527
+#: src/text.c:501
 #, fuzzy, c-format
 msgid "%i second(s)"
 msgstr "%i секунд(ы)"
 
-#: src/text.c:591
+#: src/text.c:594
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "Не могу настроить альтернативный выход. Деактивация.\n"
 
-#: src/text.c:655
+#: src/text.c:656
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -387,7 +387,7 @@ msgstr ""
 "-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:677
+#: src/text.c:678
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -428,16 +428,16 @@ msgstr ""
 "--version\t\t-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:705
+#: src/text.c:706
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel, версия %s (%s)\n"
 
-#: src/text.c:713
+#: src/text.c:714
 msgid "and others."
 msgstr "и другие."
 
-#: src/text.c:714
+#: src/text.c:715
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
