@@ -17,7 +17,7 @@ development process[3]. You can also find other developers in the
 `#axel` channel on freenode.
 
 [1]: https://alioth.debian.org/projects/axel
-[2]: https://packages.qa.debian.org/a/axel.html
+[2]: https://tracker.debian.org/pkg/axel
 [3]: https://groups.google.com/forum/#!forum/axel-accelerator-dev
 
 ## 2. What is Axel? ##
