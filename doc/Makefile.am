@@ -7,7 +7,7 @@ dist_man_MANS = doc/axel.1
 PACKAGE_DESC = lightweight command line download accelerator
 
 .txt.1:
-	read _ P_DATE _ < VERSION && \
+	read _ P_DATE _ < $(top_srcdir)/VERSION && \
 	tmp=$$(mktemp tmpXXXXXX) && \
 	> "$$tmp" \
 	txt2man -t "$(<:.txt=)" -s 1 \
