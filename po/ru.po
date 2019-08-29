@@ -187,7 +187,7 @@ msgstr "Неподдерживаемый протокол\n"
 msgid "Secure protocol is not supported\n"
 msgstr "Безопасный протокол не поддерживается\n"
 
-#: src/conn.c:413 src/ftp.c:131
+#: src/conn.c:417 src/ftp.c:131
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Слишком много перенаправлений.\n"

@@ -192,7 +192,7 @@ msgstr "Protokol yang tidak didukung\n"
 msgid "Secure protocol is not supported\n"
 msgstr "Protokol aman tidak didukung\n"
 
-#: src/conn.c:413 src/ftp.c:131
+#: src/conn.c:417 src/ftp.c:131
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Terlalu banyak pengalihan.\n"

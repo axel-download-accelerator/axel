@@ -184,7 +184,7 @@ msgstr ""
 msgid "Secure protocol is not supported\n"
 msgstr ""
 
-#: src/conn.c:413 src/ftp.c:131
+#: src/conn.c:417 src/ftp.c:131
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Te veel redirects.\n"
