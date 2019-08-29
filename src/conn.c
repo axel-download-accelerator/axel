@@ -330,33 +330,42 @@ conn_exec(conn_t *conn)
 	}
 }
 
+static
+int
+conn_info_ftp(conn_t *conn)
+{
+	ftp_command(conn->ftp, "REST %d", 1);
+	if (ftp_wait(conn->ftp) / 100 == 3 ||
+	    conn->ftp->status / 100 == 2) {
+		conn->supported = true;
+		ftp_command(conn->ftp, "REST %d", 0);
+		ftp_wait(conn->ftp);
+	} else {
+		conn->supported = false;
+	}
+
+	if (!ftp_cwd(conn->ftp, conn->dir))
+		return 0;
+	conn->size = ftp_size(conn->ftp, conn->file,
+			      conn->conf->max_redirect,
+			      conn->conf->io_timeout);
+	if (conn->size < 0)
+		conn->supported = false;
+	if (conn->size == -1)
+		return 0;
+	else if (conn->size == -2)
+		conn->size = LLONG_MAX;
+
+	return 1;
+}
+
 /* Get file size and other information */
 int
 conn_info(conn_t *conn)
 {
 	/* It's all a bit messed up.. But it works. */
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
-		ftp_command(conn->ftp, "REST %d", 1);
-		if (ftp_wait(conn->ftp) / 100 == 3 ||
-		    conn->ftp->status / 100 == 2) {
-			conn->supported = true;
-			ftp_command(conn->ftp, "REST %d", 0);
-			ftp_wait(conn->ftp);
-		} else {
-			conn->supported = false;
-		}
-
-		if (!ftp_cwd(conn->ftp, conn->dir))
-			return 0;
-		conn->size = ftp_size(conn->ftp, conn->file,
-				      conn->conf->max_redirect,
-				      conn->conf->io_timeout);
-		if (conn->size < 0)
-			conn->supported = false;
-		if (conn->size == -1)
-			return 0;
-		else if (conn->size == -2)
-			conn->size = LLONG_MAX;
+		return conn_info_ftp(conn);
 	} else {
 		char s[1005];
 		long long int i = 0;
