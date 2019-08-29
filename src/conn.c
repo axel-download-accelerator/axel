@@ -413,15 +413,11 @@ conn_info(conn_t *conn)
 				return -1;
 			}
 
-			i++;
-		}
-		while (conn->http->status / 100 == 3 &&
-		       i < conn->conf->max_redirect);
-
-		if (i == conn->conf->max_redirect) {
-			fprintf(stderr, _("Too many redirects.\n"));
-			return 0;
-		}
+			if (++i >= conn->conf->max_redirect) {
+				fprintf(stderr, _("Too many redirects.\n"));
+				return 0;
+			}
+		} while (conn->http->status / 100 == 3);
 
 		conn->size = http_size_from_range(conn->http);
 		/* We assume partial requests are supported if a Content-Range
