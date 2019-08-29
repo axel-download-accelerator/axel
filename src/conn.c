@@ -419,6 +419,10 @@ conn_info(conn_t *conn)
 			}
 		} while (conn->http->status / 100 == 3);
 
+		/* Check for non-recoverable errors */
+		if (conn->http->status != 416 && conn->http->status / 100 != 2)
+			return 0;
+
 		conn->size = http_size_from_range(conn->http);
 		/* We assume partial requests are supported if a Content-Range
 		 * header is present.
