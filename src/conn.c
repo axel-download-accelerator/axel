@@ -425,11 +425,6 @@ conn_info(conn_t *conn)
 		 */
 		conn->supported = conn->http->status == 206 || conn->size > 0;
 
-		/* If Content-Length and Content-Range disagree, it's a server
-		 * bug; we take the larger and hope for the best.
-		 */
-		conn->size = max(conn->size, http_size(conn->http));
-
 		if (conn->size <= 0) {
 			/* Sanity check */
 			switch (conn->http->status) {
@@ -444,6 +439,11 @@ conn_info(conn_t *conn)
 			/* So we got an invalid or no size, fall back */
 			conn->supported = false;
 			conn->size = LLONG_MAX;
+		} else {
+			/* If Content-Length and Content-Range disagree, it's a
+			 * server bug; we take the larger and hope for the best.
+			 */
+			conn->size = max(conn->size, http_size(conn->http));
 		}
 	}
 
