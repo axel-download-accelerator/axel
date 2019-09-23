@@ -72,8 +72,10 @@ http_auth_token(char *token, const char *user, const char *pass)
 	const char *auth[] = { user, ":", pass, NULL };
 	const char **p = auth;
 
-	while (*p && **p) {
+	while (*p) {
 		char a = chain_next(&p);
+		if (!a)
+			break;
 		*token++ = base64_encode[a >> 2];
 		char b = chain_next(&p);
 		*token++ = base64_encode[((a & 3) << 4) | (b >> 4)];
