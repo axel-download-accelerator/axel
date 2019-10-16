@@ -4,13 +4,14 @@
 
 ## 1. Help this project ##
 
-Axel needs your help. **If you are a programmer** and if you wants to
+Axel needs your help. **If you are a programmer** and want to
 help a nice project, this is your opportunity.
 
 Axel was imported from its old repository[1] to GitHub (the original
 homepage and developers are inactive).
 
-If you are interested to help Axel, read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+If you are interested in helping Axel, please read the
+[CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 Additionally, there is a group to discuss and to coordinate the
 development process[3]. You can also find other developers in the
@@ -32,8 +33,8 @@ byte-critical systems.
 Axel supports HTTP, HTTPS, FTP and FTPS protocols.
 
 Axel was originally developed by Wilmer van der Gaast. Thanks for your
-efforts. Over time, Axel got several contributions from people. Please,
-see AUTHORS and CREDITS files in source code.
+effort. Over time, Axel has had many contributions from people. Please
+see the AUTHORS and CREDITS files.
 
 ## Building from source ##
 
@@ -114,6 +115,6 @@ You can just run `make` as usual after these steps.
 * [nugget](https://github.com/maxogden/nugget)
 * [pget](https://github.com/Code-Hex/pget)
 
-## License ##
+## Licence ##
 
-Axel is under GPL-2+ with OpenSSL exception.
+Axel is licensed under GPL-2+ with the OpenSSL exception.
