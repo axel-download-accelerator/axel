@@ -71,6 +71,7 @@ static struct option axel_options[] = {
 	{"max-redirect",    1,      NULL, MAX_REDIR_OPT},
 	{"output",          1,      NULL, 'o'},
 	{"search",          2,      NULL, 'S'},
+	{"netrc",           2,      NULL, 'R'},
 	{"ipv4",            0,      NULL, '4'},
 	{"ipv6",            0,      NULL, '6'},
 	{"no-proxy",        0,      NULL, 'N'},
@@ -117,7 +118,7 @@ main(int argc, char *argv[])
 	j = -1;
 	while (1) {
 		int option = getopt_long(argc, argv,
-					 "s:n:o:S::46NqvhVakcH:U:T:",
+					 "s:n:o:S::R::46NqvhVakcH:U:T:",
 					 axel_options, NULL);
 		if (option == -1)
 			break;
@@ -156,6 +157,15 @@ main(int argc, char *argv[])
 			do_search = 1;
 			if (optarg) {
 				if (!sscanf(optarg, "%i", &conf->search_top)) {
+					print_help();
+					goto free_conf;
+				}
+			}
+			break;
+		case 'R':
+			conf->use_netrc = 1;
+			if (optarg) {
+				if (!sscanf(optarg, "%s", conf->netrc_filename)) {
 					print_help();
 					goto free_conf;
 				}
@@ -659,6 +669,7 @@ print_help(void)
 		 "-n x\tSpecify maximum number of connections\n"
 		 "-o f\tSpecify local output file\n"
 		 "-S[n]\tSearch for mirrors and download from n servers\n"
+		 "-R[file]\tRetrieve credentials from $HOME/.netrc file or filename\n"
 		 "-4\tUse the IPv4 protocol\n"
 		 "-6\tUse the IPv6 protocol\n"
 		 "-H x\tAdd HTTP header string\n"
@@ -682,6 +693,7 @@ print_help(void)
 		 "--max-redirect=x\t\tSpecify maximum number of redirections\n"
 		 "--output=f\t\t-o f\tSpecify local output file\n"
 		 "--search[=n]\t\t-S[n]\tSearch for mirrors and download from n servers\n"
+		 "--netrc[=file]\t\t-R[file]\tRetrieve credentials from $HOME/.netrc file or filename\n"
 		 "--ipv4\t\t\t-4\tUse the IPv4 protocol\n"
 		 "--ipv6\t\t\t-6\tUse the IPv6 protocol\n"
 		 "--header=x\t\t-H x\tAdd HTTP header string\n"

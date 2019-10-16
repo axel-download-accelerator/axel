@@ -43,6 +43,7 @@
 /* Connection stuff */
 
 #include "axel.h"
+#include "netrc.h"
 
 /**
  * Convert an URL to a conn_t structure.
@@ -253,6 +254,8 @@ conn_init(conn_t *conn)
 		conn->ftp->local_if = conn->local_if;
 		conn->ftp->ftp_mode = FTP_PASSIVE;
 		conn->ftp->tcp.ai_family = conn->conf->ai_family;
+		if (conn->conf->use_netrc)
+			netrc_parse(conn);
 		if (!ftp_connect(conn->ftp, conn->proto, conn->host, conn->port,
 				 conn->user, conn->pass,
 				 conn->conf->io_timeout)) {

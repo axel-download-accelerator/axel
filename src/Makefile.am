@@ -12,6 +12,8 @@ axel_SOURCES = \
 	src/ftp.h \
 	src/http.c \
 	src/http.h \
+	src/netrc.c \
+	src/netrc.h \
 	src/search.c \
 	src/search.h \
 	src/ssl.c \

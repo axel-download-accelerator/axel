@@ -1,12 +1,7 @@
 /*
   Axel -- A lighter download accelerator for Linux and other Unices
 
-  Copyright 2001-2007 Wilmer van der Gaast
-  Copyright 2008      Philipp Hagemeister
-  Copyright 2008      Y Giridhar Appaji Nag
-  Copyright 2016      Stephen Thirlwall
-  Copyright 2017      Antonio Quartulli
-  Copyright 2017      Ismael Luceno
+  Copyright 2019      David da Silva Polverari
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -37,58 +32,11 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-/* Configuration handling include file */
+/* .netrc parsing include file */
 
-#ifndef AXEL_CONF_H
-#define AXEL_CONF_H
+#ifndef AXEL_NETRC_H
+#define AXEL_NETRC_H
 
-typedef struct {
-	char netrc_filename[MAX_STRING];
-	char default_filename[MAX_STRING];
-	char http_proxy[MAX_STRING];
-	char no_proxy[MAX_STRING];
-	uint16_t num_connections;
-	int strip_cgi_parameters;
-	int save_state_interval;
-	int connection_timeout;
-	int reconnect_delay;
-	int max_redirect;
-	int buffer_size;
-	int max_speed;
-	int verbose;
-	int alternate_output;
-	int insecure;
-	int no_clobber;
+void netrc_parse(conn_t *conn);
 
-	if_t *interfaces;
-
-	sa_family_t ai_family;
-
-	int search_timeout;
-	int search_threads;
-	int search_amount;
-	int search_top;
-	int use_netrc;
-
-	unsigned io_timeout;
-
-	int add_header_count;
-	char add_header[MAX_ADD_HEADERS][MAX_STRING];
-} conf_t;
-
-int conf_loadfile(conf_t *conf, const char *file);
-int conf_init(conf_t *conf);
-void conf_free(conf_t *conf);
-
-enum {
-	HDR_USER_AGENT,
-	HDR_count_init,
-};
-
-inline static void
-conf_hdr_make(char *dst, const char *k, const char *v)
-{
-	snprintf(dst, sizeof(((conf_t *)0)->add_header[0]), "%s: %s", k, v);
-}
-
-#endif				/* AXEL_CONF_H */
+#endif				/* AXEL_NETRC_H */
