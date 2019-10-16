@@ -53,6 +53,7 @@ script:
       GETTEXT="/usr/local/opt/gettext"
       OPENSSL="/usr/local/opt/openssl";
       export LIBRARY_PATH="$GETTEXT/lib"
+             ACLOCAL_PATH="$GETTEXT/share/aclocal"
              CPATH="$OPENSSL/include:$GETTEXT/include"
              PKG_CONFIG_PATH="$OPENSSL/lib/pkgconfig"
              PATH="$GETTEXT/bin:$PATH";
