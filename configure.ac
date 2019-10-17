@@ -145,6 +145,15 @@ hpux*)
 ;;
 esac
 
+# BSD vs GNU date
+if date -j >/dev/null 2>&1; then
+  pdate() { date -j -f '%Y-%m-%dT%H:%M:%SZ' "$@"; }
+else
+  pdate() { date -d "$@"; }
+fi
+RELDATE_PRETTY=$(pdate '_AXEL_RELDATE' '+%B %e, %Y')
+AC_SUBST([RELDATE_PRETTY])
+
 # etc path
 AC_DEFINE_UNQUOTED([ETCDIR], ["/etc"], ["Define /etc directory path"])
 

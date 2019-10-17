@@ -31,7 +31,17 @@ m4_define([_AXEL_GIT_TAG],
 # ---------------------------------------------------------------------
 AC_DEFUN_ONCE([AXEL_VER_READ],
 [_AC_INIT_LITERAL([$1])
-m4_define([_AXEL_VERSION], m4_quote(m4_bpatsubst(m4_quote(_AXEL_READL([$1],1)), [ .*])))
+m4_define([_AXEL_RELSTR],
+  m4_quote(_AXEL_READL([$1], 1)))
+m4_define([_AXEL_RELDATE],
+  m4_quote(
+    m4_bpatsubst(
+      m4_quote(
+        m4_bpatsubst(
+          m4_quote(_AXEL_RELSTR),
+          [[^ ]* ])), [ .*])))
+m4_define([_AXEL_VERSION],
+  m4_quote(m4_bpatsubst(m4_quote(_AXEL_RELSTR), [ .*])))
 m4_define([_AXEL_COMMIT], m4_quote(_AXEL_GIT_HEAD))
 m4_define([_AXEL_VERSUF],
   [m4_if(m4_quote(_AXEL_COMMIT),,,
