@@ -24,6 +24,7 @@ addons:
       - gettext
       - openssl
       - pkg-config
+      - txt2man
 
 env:
   global:
