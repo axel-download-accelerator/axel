@@ -32,9 +32,7 @@ byte-critical systems.
 
 Axel supports HTTP, HTTPS, FTP and FTPS protocols.
 
-Axel was originally developed by Wilmer van der Gaast. Thanks for your
-effort. Over time, Axel has had many contributions from people. Please
-see the AUTHORS and CREDITS files.
+Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone else who has contributed to it.
 
 ## Building from source ##
 
@@ -115,6 +113,6 @@ You can just run `make` as usual after these steps.
 * [nugget](https://github.com/maxogden/nugget)
 * [pget](https://github.com/Code-Hex/pget)
 
-## Licence ##
+## License ##
 
 Axel is licensed under GPL-2+ with the OpenSSL exception.
