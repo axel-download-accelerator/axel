@@ -11,7 +11,7 @@ PACKAGE_DESC = lightweight command line download accelerator
 	tmp=$$(mktemp tmpXXXXXX) && \
 	> "$$tmp" \
 	txt2man -t "$(<:.txt=)" -s 1 \
-		-d "$$(date -d"$$P_DATE" '+%B %_d, %Y')" \
+		-d "$$(date -d "$$P_DATE" '+%B %_d, %Y')" \
 		-P "$(PACKAGE_NAME)" \
 		-r "$(PACKAGE_NAME)-$(PACKAGE_VERSION)" \
 		-v "$(PACKAGE_DESC)" $< &&\
