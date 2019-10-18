@@ -51,13 +51,14 @@ matrix:
 script:
   - if [ "${TRAVIS_OS_NAME}" = osx ]; then
       target=all
+      TXT2MAN="/usr/local/opt/txt2man"
       GETTEXT="/usr/local/opt/gettext"
       OPENSSL="/usr/local/opt/openssl";
       export LIBRARY_PATH="$GETTEXT/lib"
              ACLOCAL_PATH="$GETTEXT/share/aclocal"
              CPATH="$OPENSSL/include:$GETTEXT/include"
              PKG_CONFIG_PATH="$OPENSSL/lib/pkgconfig"
-             PATH="$GETTEXT/bin:$PATH";
+             PATH="$GETTEXT/bin:$TXT2MAN/bin:$PATH";
     fi
   - autoreconf -fiv &&
     ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" &&
