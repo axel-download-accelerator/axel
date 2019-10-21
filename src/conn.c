@@ -255,7 +255,8 @@ conn_init(conn_t *conn)
 		conn->ftp->ftp_mode = FTP_PASSIVE;
 		conn->ftp->tcp.ai_family = conn->conf->ai_family;
 		if (conn->conf->use_netrc)
-			netrc_parse(conn);
+			netrc_parse(conn->conf->netrc_filename, conn->host, conn->user, conn->pass);
+		printf("host: %s, user: %s, pass: %s\n", conn->host, conn->user, conn->pass);
 		if (!ftp_connect(conn->ftp, conn->proto, conn->host, conn->port,
 				 conn->user, conn->pass,
 				 conn->conf->io_timeout)) {

@@ -37,78 +37,127 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
-#include "axel.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
 #include "netrc.h"
 
-enum lookup_state {
-	NOTHING,
-	DEFAULT,
-	MACHINE,
-	HOST_ENTRY,
-	LOGIN,
-	PASSWORD
-};
+#define REL_NETRC	"/.netrc"
+#define IS_DELIM(x)	(*x == ' ' || *x == '\t' || *x == '\n')
 
-void
-netrc_parse(conn_t *conn)
+static int fd;
+static size_t sz;
+static char *p;
+static char *s_addr;
+static char *e_addr;
+
+static size_t file_size(void)
 {
-	FILE *fp;
-	bool found = false;
-	char *home;
-	char *tok, *ntok;
-	char line[MAX_STRING];
-	char const *delims = " \t\n";
-	enum lookup_state state = NOTHING;
+	struct stat st;
+	fstat(fd, &st);
+	return st.st_size;
+}
 
-	if (conn->conf->netrc_filename[0] == '\0') {
-		home = getenv("HOME");
-		snprintf(conn->conf->netrc_filename, MAX_STRING, "%s/.netrc", home);
-	}
-	if ((fp = fopen(conn->conf->netrc_filename, "r")) == NULL)
-		return;
-	while (!found && fgets(line, MAX_STRING, fp)) {
-		tok = strtok_r(line, delims, &ntok);
-		if (tok && *tok == '#')
-			continue;
-		while (tok != NULL) {
-			switch (state) {
-			case NOTHING:
-				if (!strcmp("machine", tok)) {
-					state = MACHINE;
-				} else if (!strcmp("default", tok)) {
-					state = DEFAULT;
-				}
-				break;
-			case MACHINE:
-				if (!strcmp(conn->host, tok)) {
-					state = HOST_ENTRY;
-				} else {
-					state = NOTHING;
-				}
-				break;
-			case DEFAULT:
-				state = HOST_ENTRY;
-				// fall through
-			case HOST_ENTRY:
-				if (!strcmp("login", tok)) {
-					state = LOGIN;
-				} else if (!strcmp("password", tok)) {
-					state = PASSWORD;
-				}
-				break;
-			case LOGIN:
-				strcpy(conn->user, tok);
-				state = HOST_ENTRY;
-				break;
-			case PASSWORD:
-				strcpy(conn->pass, tok);
-				found = true;
-				break;
-			default:
-				break;
-			}
-			tok = strtok_r(NULL, delims, &ntok);
+static int netrc_open(const char * const filename)
+{
+	int ret;
+	char *path;
+	char *netrc;
+	char *home;
+
+	ret = 0;
+	if (filename && filename[0] != '\0') {
+		path = strdup(filename);
+	} else {
+		if ((netrc = getenv("NETRC"))) {
+			path = strdup(netrc);
+		} else if ((home = getenv("HOME"))) {
+			size_t i = strlen(home) + strlen(REL_NETRC) + 1;
+			path = malloc(i);
+			snprintf(path, i, "%s%s", home, REL_NETRC);
+		} else {
+			return ret;
 		}
 	}
+	if ((fd = open(path, O_RDONLY, 0)) == -1) {
+		ret = 0;
+	} else {
+		sz = file_size();
+		s_addr = mmap(NULL, sz, PROT_READ, MAP_PRIVATE | MAP_POPULATE, fd, 0);
+		e_addr = s_addr + sz;
+		ret = 1;
+	}
+	free(path);
+	return ret;
+}
+
+static void netrc_close(void)
+{
+	munmap(s_addr, sz);
+	close(fd);
+}
+
+static int next_token(char **t)
+{
+	char *q;
+	int len;
+
+	if (!p)
+		p = s_addr;
+	while (IS_DELIM(p) && p < e_addr)
+		p++;
+	q = p;
+	while (!IS_DELIM(q) && q < e_addr)
+		q++;
+	if (q == e_addr)
+		return 0;
+	len = q-p;
+	*t = p;
+	p = q;
+	return len;
+}
+
+static void get_creds(char *user, char *pwd)
+{
+	int len;
+	char *tok;
+
+	while ((len = next_token(&tok))) {
+		if (!strncmp("login", tok, len)) {
+			len = next_token(&tok);
+			strncpy(user, tok, len);
+			user[len] = '\0';
+		} else if (!strncmp("password", tok, len)) {
+			len = next_token(&tok);
+			strncpy(pwd, tok, len);
+			pwd[len] = '\0';
+		} else if (!strncmp("machine", tok, len) || !strncmp("default", tok, len)) {
+			p -= len;
+			break;
+		}
+	}
+}
+
+int
+netrc_parse(const char *filename, const char *host, char *user, char *password)
+{
+	int len;
+	char *tok;
+
+	if (!netrc_open(filename))
+		return 0;
+	while ((len = next_token(&tok))) {
+		if (!strncmp("default", tok, len)) {
+			get_creds(user, password);
+			break;
+		} else if (!strncmp("machine", tok, len)) {
+			if ((len = next_token(&tok)) && !strncmp(host, tok, len)) {
+				get_creds(user, password);
+				break;
+			}
+		}
+	}
+	netrc_close();
+	return 0;
 }
