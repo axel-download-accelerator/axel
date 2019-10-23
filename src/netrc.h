@@ -37,6 +37,6 @@
 #ifndef AXEL_NETRC_H
 #define AXEL_NETRC_H
 
-int netrc_parse(const char *filename, const char *host, char *user, char *pwd);
+int netrc_parse(const char *filename, const char *host, char *user, size_t ul, char *pwd, size_t pl);
 
 #endif				/* AXEL_NETRC_H */
