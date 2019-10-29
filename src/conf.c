@@ -230,7 +230,6 @@ conf_init(conf_t *conf)
 	conf->buffer_size = 5120;
 	conf->max_speed = 0;
 	conf->verbose = 1;
-	conf->alternate_output = 0;
 	conf->insecure = 0;
 	conf->no_clobber = 0;
 
@@ -250,6 +249,10 @@ conf_init(conf_t *conf)
 		return 0;
 
 	conf->interfaces->next = conf->interfaces;
+
+    /* Detect if stdout is a tty, set the default indicator to alternate.
+       Otherwise, keep it to original.*/
+    conf->alternate_output = isatty(STDOUT_FILENO);
 
 	if ((s2 = getenv("http_proxy")) || (s2 = getenv("HTTP_PROXY")))
 		strlcpy(conf->http_proxy, s2, sizeof(conf->http_proxy));
