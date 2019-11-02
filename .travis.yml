@@ -8,6 +8,9 @@ cache:
     - autom4te.cache
     - m4
 
+before_install:
+  - export HOMEBREW_NO_AUTO_UPDATE=true
+
 addons:
   apt:
     packages:
@@ -49,6 +52,9 @@ matrix:
 
 script:
   - if [ "${TRAVIS_OS_NAME}" = osx ]; then
+      wget -P /tmp https://github.com/mvertes/txt2man/archive/txt2man-1.6.0.tar.gz;
+      tar -xvf /tmp/txt2man-1.6.0.tar.gz;
+      pushd txt2man-txt2man-1.6.0 && make install && popd;
       target=all
       GETTEXT="/usr/local/opt/gettext"
       OPENSSL="/usr/local/opt/openssl";
