@@ -221,9 +221,9 @@ tcp_close(tcp_t *tcp)
 		if (tcp->ssl != NULL) {
 			ssl_disconnect(tcp->ssl);
 			tcp->ssl = NULL;
-		} else
-#endif				/* HAVE_SSL */
-			close(tcp->fd);
+		}
+#endif
+		close(tcp->fd);
 		tcp->fd = -1;
 	}
 }
