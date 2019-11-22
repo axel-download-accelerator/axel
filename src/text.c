@@ -165,7 +165,7 @@ main(int argc, char *argv[])
 		case 'R':
 			conf->use_netrc = 1;
 			if (optarg) {
-				if (!strlcpy(conf->netrc_filename, optarg, 
+				if (!strlcpy(conf->netrc_filename, optarg,
 				     sizeof(conf->netrc_filename))) {
 					print_help();
 					goto free_conf;

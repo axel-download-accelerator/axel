@@ -143,19 +143,19 @@ netrc_mmap(const char *filename, char **addr)
 }
 
 static void
-get_creds(char *user, size_t ul, char *pwd, size_t pl, buffer_t last_tok, buffer_t *save_ptr)
+get_creds(netrc_t *netrc, buffer_t last_tok, buffer_t *save_ptr)
 {
 	buffer_t tok = last_tok;
 
 	while (tok.len) {
 		if (!strncmp("login", tok.data, tok.len)) {
 			tok = memtok(NULL, 0, tok_delim, save_ptr);
-			if (tok.len <= ul)
-				strlcpy(user, tok.data, tok.len+1);
+			if (tok.len <= netrc->user_len)
+				strlcpy(netrc->user, tok.data, tok.len+1);
 		} else if (!strncmp("password", tok.data, tok.len)) {
 			tok = memtok(NULL, 0, tok_delim, save_ptr);
-			if (tok.len <= pl)
-				strlcpy(pwd, tok.data, tok.len+1);
+			if (tok.len <= netrc->pass_len)
+				strlcpy(netrc->pass, tok.data, tok.len+1);
 		} else if (!strncmp("machine", tok.data, tok.len) || !strncmp("default", tok.data, tok.len)) {
 			save_ptr->data -= tok.len;
 			save_ptr->len += tok.len;
@@ -165,25 +165,43 @@ get_creds(char *user, size_t ul, char *pwd, size_t pl, buffer_t last_tok, buffer
 	}
 }
 
+netrc_t *
+netrc_init(const char *file, const char *host, char *user, size_t user_len, char *pass, size_t pass_len)
+{
+	netrc_t *netrc;
+
+	if (!host || !user || !pass || !user_len || !pass_len)
+		return NULL;
+	netrc = calloc(1, sizeof(netrc_t));
+	if (!netrc)
+		return NULL;
+	netrc->file = file;
+	netrc->host = host;
+	netrc->user = user;
+	netrc->user_len = user_len;
+	netrc->pass = pass;
+	netrc->pass_len = pass_len;
+	return netrc;
+}
+
 int
-netrc_parse(const char *filename, const char *host,
-	    char *user, size_t ul, char *password, size_t pl)
+netrc_parse(netrc_t *netrc)
 {
 	size_t sz;
 	char *s_addr = NULL;
 	buffer_t tok, save_ptr;
 
-	if (!(sz = netrc_mmap(filename, &s_addr)))
+	if (!(sz = netrc_mmap(netrc->file, &s_addr)))
 		return 0;
 	tok = memtok(s_addr, sz, tok_delim, &save_ptr);
 	while (tok.len) {
 		if (!strncmp("default", tok.data, tok.len)) {
-			get_creds(user, ul, password, pl, tok, &save_ptr);
+			get_creds(netrc, tok, &save_ptr);
 			break;
 		} else if (!strncmp("machine", tok.data, tok.len)) {
 			tok = memtok(NULL, 0, tok_delim, &save_ptr);
-			if ((tok.len && !strncmp(host, tok.data, tok.len))) {
-				get_creds(user, ul, password, pl, tok, &save_ptr);
+			if ((tok.len && !strncmp(netrc->host, tok.data, tok.len))) {
+				get_creds(netrc, tok, &save_ptr);
 				break;
 			}
 		}
@@ -191,4 +209,10 @@ netrc_parse(const char *filename, const char *host,
 	}
 	munmap(s_addr, sz);
 	return 1;
+}
+
+void netrc_close(netrc_t *netrc)
+{
+	if (netrc)
+		free(netrc);
 }

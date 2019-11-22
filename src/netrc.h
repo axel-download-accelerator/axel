@@ -37,6 +37,17 @@
 #ifndef AXEL_NETRC_H
 #define AXEL_NETRC_H
 
-int netrc_parse(const char *filename, const char *host, char *user, size_t ul, char *pwd, size_t pl);
+typedef struct {
+	const char *file;
+	const char *host;
+	char *user;
+	size_t user_len;
+	char *pass;
+	size_t pass_len;
+} netrc_t;
+
+netrc_t *netrc_init(const char *file, const char *host, char *user, size_t user_len, char *pass, size_t pass_len);
+int netrc_parse(netrc_t *netrc);
+void netrc_close(netrc_t *netrc);
 
 #endif				/* AXEL_NETRC_H */
