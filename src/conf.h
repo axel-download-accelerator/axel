@@ -42,8 +42,9 @@
 #ifndef AXEL_CONF_H
 #define AXEL_CONF_H
 
+#include "netrc.h"
+
 typedef struct {
-	char netrc_filename[MAX_STRING];
 	char default_filename[MAX_STRING];
 	char http_proxy[MAX_STRING];
 	char no_proxy[MAX_STRING];
@@ -68,7 +69,7 @@ typedef struct {
 	int search_threads;
 	int search_amount;
 	int search_top;
-	int use_netrc;
+	netrc_t *netrc;
 
 	unsigned io_timeout;
 

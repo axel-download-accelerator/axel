@@ -254,12 +254,10 @@ conn_init(conn_t *conn)
 		conn->ftp->local_if = conn->local_if;
 		conn->ftp->ftp_mode = FTP_PASSIVE;
 		conn->ftp->tcp.ai_family = conn->conf->ai_family;
-		if (conn->conf->use_netrc) {
-			netrc_t * netrc;
-			netrc = netrc_init(conn->conf->netrc_filename, conn->host, conn->user, sizeof(conn->user), conn->pass, sizeof(conn->pass));
-			netrc_parse(netrc);
+		if (conn->conf->netrc) {
+			netrc_parse(conn->conf->netrc, conn->host, conn->user, sizeof(conn->user), conn->pass, sizeof(conn->pass));
+			netrc_close(conn->conf->netrc);
 			printf("host: %s, user: %s, pass: %s\n", conn->host, conn->user, conn->pass);
-			netrc_close(netrc);
 		}
 		if (!ftp_connect(conn->ftp, conn->proto, conn->host, conn->port,
 				 conn->user, conn->pass,

@@ -49,6 +49,7 @@ typedef struct {
 	size_t len;
 } buffer_t;
 
+static buffer_t tok, save_buf;
 static const char *tok_delim = " \t\n";
 
 static size_t
@@ -143,69 +144,59 @@ netrc_mmap(const char *filename, char **addr)
 }
 
 static void
-get_creds(netrc_t *netrc, buffer_t last_tok, buffer_t *save_ptr)
+get_creds(netrc_t *netrc, char *user, size_t user_len, char *pass, size_t pass_len)
 {
-	buffer_t tok = last_tok;
-
 	while (tok.len) {
 		if (!strncmp("login", tok.data, tok.len)) {
-			tok = memtok(NULL, 0, tok_delim, save_ptr);
-			if (tok.len <= netrc->user_len)
-				strlcpy(netrc->user, tok.data, tok.len+1);
+			tok = memtok(NULL, 0, tok_delim, &save_buf);
+			if (tok.len <= user_len)
+				strlcpy(user, tok.data, tok.len+1);
 		} else if (!strncmp("password", tok.data, tok.len)) {
-			tok = memtok(NULL, 0, tok_delim, save_ptr);
-			if (tok.len <= netrc->pass_len)
-				strlcpy(netrc->pass, tok.data, tok.len+1);
+			tok = memtok(NULL, 0, tok_delim, &save_buf);
+			if (tok.len <= pass_len)
+				strlcpy(pass, tok.data, tok.len+1);
 		} else if (!strncmp("machine", tok.data, tok.len) || !strncmp("default", tok.data, tok.len)) {
-			save_ptr->data -= tok.len;
-			save_ptr->len += tok.len;
+			save_buf.data -= tok.len;
+			save_buf.len += tok.len;
 			break;
 		}
-		tok = memtok(NULL, 0, tok_delim, save_ptr);
+		tok = memtok(NULL, 0, tok_delim, &save_buf);
 	}
 }
 
 netrc_t *
-netrc_init(const char *file, const char *host, char *user, size_t user_len, char *pass, size_t pass_len)
+netrc_init(const char *file)
 {
 	netrc_t *netrc;
 
-	if (!host || !user || !pass || !user_len || !pass_len)
-		return NULL;
 	netrc = calloc(1, sizeof(netrc_t));
 	if (!netrc)
 		return NULL;
 	netrc->file = file;
-	netrc->host = host;
-	netrc->user = user;
-	netrc->user_len = user_len;
-	netrc->pass = pass;
-	netrc->pass_len = pass_len;
 	return netrc;
 }
 
 int
-netrc_parse(netrc_t *netrc)
+netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char *pass, size_t pass_len)
 {
 	size_t sz;
 	char *s_addr = NULL;
-	buffer_t tok, save_ptr;
 
 	if (!(sz = netrc_mmap(netrc->file, &s_addr)))
 		return 0;
-	tok = memtok(s_addr, sz, tok_delim, &save_ptr);
+	tok = memtok(s_addr, sz, tok_delim, &save_buf);
 	while (tok.len) {
 		if (!strncmp("default", tok.data, tok.len)) {
-			get_creds(netrc, tok, &save_ptr);
+			get_creds(netrc, user, user_len, pass, pass_len);
 			break;
 		} else if (!strncmp("machine", tok.data, tok.len)) {
-			tok = memtok(NULL, 0, tok_delim, &save_ptr);
-			if ((tok.len && !strncmp(netrc->host, tok.data, tok.len))) {
-				get_creds(netrc, tok, &save_ptr);
+			tok = memtok(NULL, 0, tok_delim, &save_buf);
+			if ((tok.len && !strncmp(host, tok.data, tok.len))) {
+				get_creds(netrc, user, user_len, pass, pass_len);
 				break;
 			}
 		}
-		tok = memtok(NULL, 0, tok_delim, &save_ptr);
+		tok = memtok(NULL, 0, tok_delim, &save_buf);
 	}
 	munmap(s_addr, sz);
 	return 1;

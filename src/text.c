@@ -163,13 +163,12 @@ main(int argc, char *argv[])
 			}
 			break;
 		case 'R':
-			conf->use_netrc = 1;
-			if (optarg) {
-				if (!strlcpy(conf->netrc_filename, optarg,
-				     sizeof(conf->netrc_filename))) {
-					print_help();
-					goto free_conf;
+			{
+				char *netrc_filename = NULL;
+				if (optarg) {
+					netrc_filename = optarg;
 				}
+				conf->netrc = netrc_init(netrc_filename);
 			}
 			break;
 		case '6':
