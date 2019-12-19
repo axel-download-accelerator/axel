@@ -123,7 +123,7 @@ conn_set(conn_t *conn, const char *set_url)
 		*conn->pass = 0;
 	} else {
 		/* If not: Fill in defaults */
-		if (PROTO_IS_FTP(conn->proto)) {
+		if (PROTO_IS_FTP(conn->proto) && !conn->conf->netrc) {
 			/* Dash the password: Save traffic by trying
 			   to avoid multi-line responses */
 			strcpy(conn->user, "anonymous");
@@ -161,6 +161,15 @@ conn_set(conn_t *conn, const char *set_url)
 		sscanf(i + 1, "%i", &conn->port);
 		i = conn->host;
 	}
+
+	/* Uses .netrc info if enabled and creds have not been provided */
+	if ((!conn->user || !*(conn->user)) && conn->conf->netrc) {
+		netrc_parse(conn->conf->netrc, conn->host,
+			    conn->user, sizeof(conn->user),
+			    conn->pass, sizeof(conn->pass));
+		netrc_close(conn->conf->netrc);
+	}
+	printf("host: %s, user: %s, pass: %s\n", conn->host, conn->user, conn->pass);
 
 	return conn->port > 0;
 }
@@ -254,11 +263,6 @@ conn_init(conn_t *conn)
 		conn->ftp->local_if = conn->local_if;
 		conn->ftp->ftp_mode = FTP_PASSIVE;
 		conn->ftp->tcp.ai_family = conn->conf->ai_family;
-		if (conn->conf->netrc) {
-			netrc_parse(conn->conf->netrc, conn->host, conn->user, sizeof(conn->user), conn->pass, sizeof(conn->pass));
-			netrc_close(conn->conf->netrc);
-			printf("host: %s, user: %s, pass: %s\n", conn->host, conn->user, conn->pass);
-		}
 		if (!ftp_connect(conn->ftp, conn->proto, conn->host, conn->port,
 				 conn->user, conn->pass,
 				 conn->conf->io_timeout)) {
