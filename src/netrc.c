@@ -166,26 +166,24 @@ get_creds(netrc_t *netrc, char *user, size_t user_len, char *pass, size_t pass_l
 }
 
 netrc_t *
-netrc_init(const char *file)
+netrc_init(const char *netrc_filename)
 {
 	netrc_t *netrc;
 
 	netrc = calloc(1, sizeof(netrc_t));
 	if (!netrc)
 		return NULL;
-	netrc->file = file;
+	if (!(netrc->sz = netrc_mmap(netrc_filename, &netrc->s_addr))) {
+		free(netrc);
+		return NULL;
+	}
 	return netrc;
 }
 
 int
 netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char *pass, size_t pass_len)
 {
-	size_t sz;
-	char *s_addr = NULL;
-
-	if (!(sz = netrc_mmap(netrc->file, &s_addr)))
-		return 0;
-	tok = memtok(s_addr, sz, tok_delim, &save_buf);
+	tok = memtok(netrc->s_addr, netrc->sz, tok_delim, &save_buf);
 	while (tok.len) {
 		if (!strncmp("default", tok.data, tok.len)) {
 			get_creds(netrc, user, user_len, pass, pass_len);
@@ -199,12 +197,14 @@ netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char 
 		}
 		tok = memtok(NULL, 0, tok_delim, &save_buf);
 	}
-	munmap(s_addr, sz);
 	return 1;
 }
 
-void netrc_close(netrc_t *netrc)
+void netrc_free(netrc_t *netrc)
 {
-	if (netrc)
+	if (netrc) {
+		if (netrc->s_addr && netrc->sz)
+			munmap(netrc->s_addr, netrc->sz);
 		free(netrc);
+	}
 }
