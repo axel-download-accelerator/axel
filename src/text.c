@@ -163,13 +163,7 @@ main(int argc, char *argv[])
 			}
 			break;
 		case 'R':
-			{
-				char *netrc_filename = NULL;
-				if (optarg) {
-					netrc_filename = optarg;
-				}
-				conf->netrc = netrc_init(netrc_filename);
-			}
+			conf->netrc = netrc_init(optarg ? optarg : NULL);
 			break;
 		case '6':
 			conf->ai_family = AF_INET6;
