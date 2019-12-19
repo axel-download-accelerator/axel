@@ -155,7 +155,8 @@ get_creds(netrc_t *netrc, char *user, size_t user_len, char *pass, size_t pass_l
 			tok = memtok(NULL, 0, tok_delim, &save_buf);
 			if (tok.len <= pass_len)
 				strlcpy(pass, tok.data, tok.len+1);
-		} else if (!strncmp("machine", tok.data, tok.len) || !strncmp("default", tok.data, tok.len)) {
+		} else if (!strncmp("machine", tok.data, tok.len) ||
+			   !strncmp("default", tok.data, tok.len)) {
 			save_buf.data -= tok.len;
 			save_buf.len += tok.len;
 			break;
