@@ -44,6 +44,11 @@
 #include "axel.h"
 #include "netrc.h"
 
+struct netrc{
+	size_t sz;
+	char *s_addr;
+};
+
 typedef struct {
 	char *data;
 	size_t len;
