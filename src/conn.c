@@ -43,7 +43,6 @@
 /* Connection stuff */
 
 #include "axel.h"
-#include "netrc.h"
 
 /**
  * Convert an URL to a conn_t structure.
@@ -167,7 +166,6 @@ conn_set(conn_t *conn, const char *set_url)
 		netrc_parse(conn->conf->netrc, conn->host,
 			    conn->user, sizeof(conn->user),
 			    conn->pass, sizeof(conn->pass));
-		netrc_free(conn->conf->netrc);
 	}
 	printf("host: %s, user: %s, pass: %s\n", conn->host, conn->user, conn->pass);
 

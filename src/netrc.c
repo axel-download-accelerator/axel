@@ -54,9 +54,9 @@ typedef struct {
 	size_t len;
 } buffer_t;
 
-static buffer_t tok, save_buf;
 static const char *tok_delim = " \t\n";
 
+// FIXME optimize
 static size_t
 memspn(const char *s, const char *accept, size_t len)
 {
@@ -67,6 +67,7 @@ memspn(const char *s, const char *accept, size_t len)
 	return sz;
 }
 
+// FIXME optimize
 static size_t
 memcspn(const char *s, const char *reject, size_t len)
 {
@@ -106,110 +107,110 @@ memtok(const char *addr, size_t len, const char *delim, buffer_t *save_ptr)
 }
 
 static size_t
-file_size(int fd)
+netrc_mmap(const char *path, char **addr)
 {
+	const char *home = NULL;
+
+	if (!path || !*path)
+		path = getenv("NETRC");
+
+	if (!path) {
+		const char suffix[] = "/.netrc";
+
+		home = getenv("HOME");
+		if (!home)
+			return 0;
+
+		size_t i = strlen(home);
+		char *tmp = malloc(i + sizeof(suffix));
+		if (!tmp)
+			return 0;
+
+		memcpy(tmp, home, i);
+		memcpy(tmp + i, suffix, sizeof(suffix));
+		path = tmp;
+	}
+
+	int fd = open(path, O_RDONLY, 0);
+
+	if (home)
+		free((void*)path);
+
+	if (fd == -1)
+		return 0;
+
 	struct stat st;
 	fstat(fd, &st);
+
+	*addr = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE | MAP_POPULATE,
+		     fd, 0);
+
+	close(fd);
 	return st.st_size;
 }
 
-static size_t
-netrc_mmap(const char *filename, char **addr)
-{
-	int fd;
-	size_t sz;
-	char *aux = NULL;
-	char *home = NULL;
-	char *path = NULL;
-	const char suffix[] = "/.netrc";
-
-	if (filename && *filename) {
-		aux = path = (char *)filename;
-	} else if ((path = getenv("NETRC"))) {
-		aux = path;
-	} else if ((home = getenv("HOME"))) {
-		size_t i = strlen(home);
-		if ((path = malloc(i + sizeof(suffix)))) {
-			memcpy(path, home, i);
-			memcpy(path+i, suffix, sizeof(suffix));
-		}
-	}
-	if (!path)
-		return 0;
-	fd = open(path, O_RDONLY,0);
-	if (!aux)
-		free(path);
-	if (fd == -1) {
-		return 0;
-	}
-	sz = file_size(fd);
-	*addr = mmap(NULL, sz, PROT_READ, MAP_PRIVATE | MAP_POPULATE, fd, 0);
-	close(fd);
-	return sz;
-}
-
-static void
-get_creds(netrc_t *netrc, char *user, size_t user_len, char *pass, size_t pass_len)
-{
-	while (tok.len) {
-		if (!strncmp("login", tok.data, tok.len)) {
-			tok = memtok(NULL, 0, tok_delim, &save_buf);
-			if (tok.len <= user_len)
-				strlcpy(user, tok.data, tok.len+1);
-		} else if (!strncmp("password", tok.data, tok.len)) {
-			tok = memtok(NULL, 0, tok_delim, &save_buf);
-			if (tok.len <= pass_len)
-				strlcpy(pass, tok.data, tok.len+1);
-		} else if (!strncmp("machine", tok.data, tok.len) ||
-			   !strncmp("default", tok.data, tok.len)) {
-			save_buf.data -= tok.len;
-			save_buf.len += tok.len;
-			break;
-		}
-		tok = memtok(NULL, 0, tok_delim, &save_buf);
-	}
-}
-
 netrc_t *
-netrc_init(const char *netrc_filename)
+netrc_init(const char *path)
 {
 	netrc_t *netrc;
 
 	netrc = calloc(1, sizeof(netrc_t));
-	if (!netrc)
-		return NULL;
-	if (!(netrc->sz = netrc_mmap(netrc_filename, &netrc->s_addr))) {
+	if (netrc) {
+		netrc->sz = netrc_mmap(path, &netrc->s_addr);
+		if (netrc->sz)
+			return netrc;
 		free(netrc);
-		return NULL;
 	}
-	return netrc;
+	return NULL;
 }
 
 int
 netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char *pass, size_t pass_len)
 {
+	bool matched;
+	buffer_t tok, save_buf = {};
+	struct parser {
+		const char * const key;
+		char *dst;
+		size_t len;
+	} parser[] = {
+		{ "login", user, user_len },
+		{ "password", pass, pass_len },
+		{ "machine", NULL, 0 },
+		{ "default", NULL, 0 },
+	};
+	enum { parser_len = sizeof(parser) / sizeof(*parser), };
+
 	tok = memtok(netrc->s_addr, netrc->sz, tok_delim, &save_buf);
 	while (tok.len) {
-		if (!strncmp("default", tok.data, tok.len)) {
-			get_creds(netrc, user, user_len, pass, pass_len);
-			break;
-		} else if (!strncmp("machine", tok.data, tok.len)) {
-			tok = memtok(NULL, 0, tok_delim, &save_buf);
-			if ((tok.len && !strncmp(host, tok.data, tok.len))) {
-				get_creds(netrc, user, user_len, pass, pass_len);
+		struct parser *p = parser;
+		while (p < parser + parser_len && strncmp(p->key, tok.data, tok.len))
+			p++;
+		/* unknown token? -> abort */
+		if (p >= parser + parser_len)
+			return 0;
+
+		/* next "machine"/"default" entry */
+		if (!p->dst) {
+			if (matched)
 				break;
-			}
+			if (tok.data[0] == 'm') {
+				tok = memtok(NULL, 0, tok_delim, &save_buf);
+				if (!strncmp(host, tok.data, tok.len))
+					matched = true;
+			} else
+				matched = true;
+			continue;
 		}
 		tok = memtok(NULL, 0, tok_delim, &save_buf);
+		if (!matched)
+			continue;
+		// FIXME should we be aborting?
+		if (tok.len >= p->len) {
+			tok.len = p->len - 1;
+			p->dst[tok.len] = 0;
+		}
+		memcpy(p->dst, tok.data, tok.len + 1);
 	}
 	return 1;
-}
-
-void netrc_free(netrc_t *netrc)
-{
-	if (netrc) {
-		if (netrc->s_addr && netrc->sz)
-			munmap(netrc->s_addr, netrc->sz);
-		free(netrc);
-	}
 }

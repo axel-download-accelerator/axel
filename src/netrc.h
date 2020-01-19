@@ -41,6 +41,5 @@ typedef struct netrc netrc_t;
 
 netrc_t *netrc_init(const char *netrc_filename);
 int netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char *pass, size_t pass_len);
-void netrc_free(netrc_t *netrc);
 
 #endif				/* AXEL_NETRC_H */
