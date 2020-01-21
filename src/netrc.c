@@ -197,25 +197,20 @@ netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char 
 				break;
 			if (tok.data[0] == 'm') {
 				tok = memtok(NULL, 0, tok_delim, &save_buf);
-				if (!strncmp(host, tok.data, tok.len))
-					matched = true;
-			} else if (tok.data[0] == 'd') {
+				matched = !strncmp(host, tok.data, tok.len);
+			} else {
 				matched = true;
 			}
 		} else {
 			tok = memtok(NULL, 0, tok_delim, &save_buf);
 			if (matched) {
 				// FIXME should we be aborting?
-				if (tok.len >= p->len) {
+				if (tok.len >= p->len)
 					tok.len = p->len - 1;
-					p->dst[tok.len] = 0;
-				}
-
-				/* need strlcpy here, as tok.data isn't NULL-terminated */
-				strlcpy(p->dst, tok.data, tok.len + 1);
+				memcpy(p->dst, tok.data, tok.len);
+				p->dst[tok.len] = 0;
 			}
 		}
-
 		tok = memtok(NULL, 0, tok_delim, &save_buf);
 	}
 	return 1;
