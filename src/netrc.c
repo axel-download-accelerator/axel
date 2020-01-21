@@ -167,7 +167,7 @@ netrc_init(const char *path)
 int
 netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char *pass, size_t pass_len)
 {
-	bool matched;
+	bool matched = false;
 	buffer_t tok, save_buf = {};
 	struct parser {
 		const char * const key;
@@ -186,6 +186,7 @@ netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char 
 		struct parser *p = parser;
 		while (p < parser + parser_len && strncmp(p->key, tok.data, tok.len))
 			p++;
+
 		/* unknown token? -> abort */
 		if (p >= parser + parser_len)
 			return 0;
@@ -198,19 +199,24 @@ netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char 
 				tok = memtok(NULL, 0, tok_delim, &save_buf);
 				if (!strncmp(host, tok.data, tok.len))
 					matched = true;
-			} else
+			} else if (tok.data[0] == 'd') {
 				matched = true;
-			continue;
+			}
+		} else {
+			tok = memtok(NULL, 0, tok_delim, &save_buf);
+			if (matched) {
+				// FIXME should we be aborting?
+				if (tok.len >= p->len) {
+					tok.len = p->len - 1;
+					p->dst[tok.len] = 0;
+				}
+
+				/* need strlcpy here, as tok.data isn't NULL-terminated */
+				strlcpy(p->dst, tok.data, tok.len + 1);
+			}
 		}
+
 		tok = memtok(NULL, 0, tok_delim, &save_buf);
-		if (!matched)
-			continue;
-		// FIXME should we be aborting?
-		if (tok.len >= p->len) {
-			tok.len = p->len - 1;
-			p->dst[tok.len] = 0;
-		}
-		memcpy(p->dst, tok.data, tok.len + 1);
 	}
 	return 1;
 }
