@@ -164,12 +164,12 @@ netrc_init(const char *path)
 	return NULL;
 }
 
-int
+void
 netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char *pass, size_t pass_len)
 {
 	bool matched = false;
 	buffer_t tok, save_buf = {};
-	struct parser {
+	const struct parser {
 		const char * const key;
 		char *dst;
 		size_t len;
@@ -183,16 +183,17 @@ netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char 
 
 	tok = memtok(netrc->s_addr, netrc->sz, tok_delim, &save_buf);
 	while (tok.len) {
-		struct parser *p = parser;
+		const struct parser *p = parser;
 		while (p < parser + parser_len && strncmp(p->key, tok.data, tok.len))
 			p++;
 
 		/* unknown token? -> abort */
 		if (p >= parser + parser_len)
-			return 0;
+			return;
 
 		/* next "machine"/"default" entry */
 		if (!p->dst) {
+			/* if we already got one, we're done */
 			if (matched)
 				break;
 			if (tok.data[0] == 'm') {
@@ -213,5 +214,4 @@ netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char 
 		}
 		tok = memtok(NULL, 0, tok_delim, &save_buf);
 	}
-	return 1;
 }
