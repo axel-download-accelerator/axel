@@ -181,6 +181,9 @@ netrc_parse(netrc_t *netrc, const char *host, char *user, size_t user_len, char 
 	};
 	enum { parser_len = sizeof(parser) / sizeof(*parser), };
 
+	if (!netrc)
+		return;
+
 	tok = memtok(netrc->s_addr, netrc->sz, tok_delim, &save_buf);
 	while (tok.len) {
 		const struct parser *p = parser;

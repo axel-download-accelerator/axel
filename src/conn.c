@@ -162,7 +162,7 @@ conn_set(conn_t *conn, const char *set_url)
 	}
 
 	/* Uses .netrc info if enabled and creds have not been provided */
-	if ((!conn->user || !*(conn->user)) && conn->conf->netrc) {
+	if (!conn->user || !*conn->user) {
 		netrc_parse(conn->conf->netrc, conn->host,
 			    conn->user, sizeof(conn->user),
 			    conn->pass, sizeof(conn->pass));
