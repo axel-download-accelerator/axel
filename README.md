@@ -75,6 +75,7 @@ Optional:
 * `gettext`
 * `libssl-dev`
 * `pkg-config`
+* `txt2man`
 
 ### Build instructions ###
 
