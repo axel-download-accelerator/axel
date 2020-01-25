@@ -91,7 +91,7 @@ Optional:
 
 Install the following homebrew packages:
 
-	brew install autoconf-archive automake gettext openssl
+	brew install autoconf-archive automake gettext openssl txt2man
 
 You'll need to provide some extra options to autotools so it can find gettext
 and openssl.
