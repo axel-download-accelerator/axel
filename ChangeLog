@@ -1,3 +1,28 @@
+Version: 2.17.7, 2020-01-26
+
+  [ Ismael Luceno ]
+
+* Buildsystem fixes
+* Fixed release date for man-pages on BSD
+
+  [ Park Ju Hyung ]
+
+* Explicitly close TCP sockets on SSL connections too
+
+  [ Shankar ]
+
+* Fixed HTTP basic auth header generation
+
+  [ Terry ]
+
+* Changed the default progress report to "alternate output mode"
+
+  [ retnikt ]
+
+* Improved English in README.md
+
+
+
 Version: 2.17.6, 2019-08-29
 
   [ Ismael Luceno ]
