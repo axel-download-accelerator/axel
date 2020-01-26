@@ -66,7 +66,7 @@ AC_CHECK_HEADERS([ \
 	sys/time.h \
 	unistd.h \
 ],, [
-    AC_MSG_ERROR([$ac_func is required.])
+    AC_MSG_ERROR([$ac_header is required.])
 ])
 
 # Checks for typedefs, structures, and compiler characteristics.
