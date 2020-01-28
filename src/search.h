@@ -2,6 +2,7 @@
   Axel -- A lighter download accelerator for Linux and other Unices
 
   Copyright 2001-2007 Wilmer van der Gaast
+  Copyright 2017      Antonio Quartulli
   Copyright 2017      Ismael Luceno
 
   This program is free software; you can redistribute it and/or

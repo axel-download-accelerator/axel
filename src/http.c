@@ -11,7 +11,8 @@
   Copyright 2016      Stephen Thirlwall
   Copyright 2017      Antonio Quartulli
   Copyright 2017      David Polverari
-  Copyright 2017      Ismael Luceno
+  Copyright 2017-2019 Ismael Luceno
+  Copyright 2018-2019 Shankar
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
