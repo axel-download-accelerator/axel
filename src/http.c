@@ -11,7 +11,8 @@
   Copyright 2016      Stephen Thirlwall
   Copyright 2017      Antonio Quartulli
   Copyright 2017      David Polverari
-  Copyright 2017      Ismael Luceno
+  Copyright 2017-2019 Ismael Luceno
+  Copyright 2018-2019 Shankar
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -334,13 +335,31 @@ void
 http_filename(const http_t *conn, char *filename)
 {
 	const char *h;
+	char *i;
+
 	if ((h = http_header(conn, "Content-Disposition:")) != NULL) {
-		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\' ]",
+		/**
+		 * This header has these formats:
+		 * Content-Disposition: inline
+		 * Content-Disposition: attachment
+		 * Content-Disposition: attachment; filename="filename.jpg"
+		 */
+		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\']",
 		       filename);
+		/* Trim spaces at the end of string */
+		const char *space = " ";
+		while ((i = strpbrk(i, space)) != NULL) {
+			int n = strspn(i, space);
+			if (i[n] == 0) {
+				*i = 0;
+				break;
+			}
+			i += n;
+		}
+
 
 		/* Replace common invalid characters in filename
 		   https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
-		char *i = filename;
 		const char *invalid_characters = "/\\?%*:|<>";
 		const char replacement = '_';
 		while ((i = strpbrk(i, invalid_characters)) != NULL) {
