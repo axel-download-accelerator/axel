@@ -6,7 +6,7 @@
   Copyright 2010      Philipp Hagemeister
   Copyright 2016      Stephen Thirlwall
   Copyright 2017      Antonio Quartulli
-  Copyright 2017      Ismael Luceno
+  Copyright 2017-2019 Ismael Luceno
   Copyright 2017      Joao Eriberto Mota Filho
 
   This program is free software; you can redistribute it and/or
