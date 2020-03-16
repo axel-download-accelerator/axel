@@ -42,6 +42,11 @@
 #ifdef HAVE_SSL
 
 #include <openssl/err.h>
+#include <openssl/x509.h>
+
+#ifndef X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS
+#define X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS 4
+#endif
 
 static pthread_mutex_t ssl_lock;
 static bool ssl_inited = false;
@@ -78,13 +83,15 @@ ssl_connect(int fd, char *hostname)
 	ssl_startup();
 
 	ssl_ctx = SSL_CTX_new(SSLv23_client_method());
+	ssl = SSL_new(ssl_ctx);
 	if (!conf->insecure) {
+		SSL_set_hostflags(ssl, X509_CHECK_FLAG_NO_PARTIAL_WILDCARDS);
+		SSL_set1_host(ssl, hostname);
 		SSL_CTX_set_default_verify_paths(ssl_ctx);
 		SSL_CTX_set_verify(ssl_ctx, SSL_VERIFY_PEER, NULL);
 	}
 	SSL_CTX_set_mode(ssl_ctx, SSL_MODE_AUTO_RETRY);
 
-	ssl = SSL_new(ssl_ctx);
 	SSL_set_fd(ssl, fd);
 	SSL_set_tlsext_host_name(ssl, hostname);
 
@@ -92,6 +99,12 @@ ssl_connect(int fd, char *hostname)
 	if (err <= 0) {
 		fprintf(stderr, _("SSL error: %s\n"),
 			ERR_reason_error_string(ERR_get_error()));
+		return NULL;
+	}
+
+	err = SSL_get_verify_result(ssl);
+	if (err != X509_V_OK) {
+		fprintf(stderr, _("SSL error: Certificate error"));
 		return NULL;
 	}
 
