@@ -71,7 +71,7 @@ ssl_startup(void)
 SSL *
 ssl_connect(int fd, char *hostname)
 {
-
+	X509 *server_cert;
 	SSL_CTX *ssl_ctx;
 	SSL *ssl;
 
@@ -92,8 +92,32 @@ ssl_connect(int fd, char *hostname)
 	if (err <= 0) {
 		fprintf(stderr, _("SSL error: %s\n"),
 			ERR_reason_error_string(ERR_get_error()));
+		SSL_CTX_free(ssl_ctx);
 		return NULL;
 	}
+
+	err = SSL_get_verify_result(ssl);
+	if (err != X509_V_OK) {
+		fprintf(stderr, _("SSL error: Certificate error"));
+		SSL_CTX_free(ssl_ctx);
+		return NULL;
+	}
+
+	server_cert =  SSL_get_peer_certificate(ssl);
+	if (server_cert == NULL) {
+		fprintf(stderr, _("SSL error: Certificate not found"));
+		SSL_CTX_free(ssl_ctx);
+		return NULL;
+	}
+
+	if (!ssl_validate_hostname(hostname, server_cert)) {
+		fprintf(stderr, _("SSL error: Hostname verification failed"));
+		X509_free(server_cert);
+		SSL_CTX_free(ssl_ctx);
+		return NULL;
+	}
+
+	X509_free(server_cert);
 
 	return ssl;
 }
