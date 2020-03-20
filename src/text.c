@@ -99,7 +99,7 @@ main(int argc, char *argv[])
 	search_t *search;
 	conf_t conf[1];
 	axel_t *axel;
-	int j, cur_head = 0, ret = 1;
+	int j, ret = 1;
 	char *s;
 
 	fn[0] = 0;
@@ -131,7 +131,7 @@ main(int argc, char *argv[])
 				      "User-Agent", optarg);
 			break;
 		case 'H':
-			strlcpy(conf->add_header[cur_head++], optarg,
+			strlcpy(conf->add_header[conf->add_header_count++], optarg,
 				sizeof(conf->add_header[0]));
 			break;
 		case 's':
@@ -213,7 +213,6 @@ main(int argc, char *argv[])
 			goto free_conf;
 		}
 	}
-	conf->add_header_count = cur_head;
 
 	/* disable alternate output and verbosity when quiet is specified */
 	if (conf->verbose < 0)
