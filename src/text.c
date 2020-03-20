@@ -131,6 +131,11 @@ main(int argc, char *argv[])
 				      "User-Agent", optarg);
 			break;
 		case 'H':
+			if(!(conf->add_header_count<MAX_ADD_HEADERS)) {
+				fprintf(stderr,
+					_("Too many custom headers (-H)! Currently only %u custom headers can be appended.\n"), MAX_ADD_HEADERS-HDR_count_init);
+				goto free_conf;
+			}
 			strlcpy(conf->add_header[conf->add_header_count++], optarg,
 				sizeof(conf->add_header[0]));
 			break;
