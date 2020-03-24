@@ -39,8 +39,6 @@
 
 #include "axel.h"
 
-#ifdef HAVE_SSL
-
 #include <openssl/err.h>
 
 static pthread_mutex_t ssl_lock;
@@ -128,5 +126,3 @@ ssl_disconnect(SSL *ssl)
 	SSL_shutdown(ssl);
 	SSL_free(ssl);
 }
-
-#endif				/* HAVE_SSL */

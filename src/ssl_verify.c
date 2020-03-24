@@ -25,8 +25,6 @@
 
 #include "axel.h"
 
-#ifdef HAVE_SSL
-
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
 
@@ -143,5 +141,3 @@ ssl_validate_hostname(const char *hostname, const X509 *server_cert)
 
 	return result == MatchFound;
 }
-
-#endif				/* HAVE_SSL */

@@ -14,12 +14,16 @@ axel_SOURCES = \
 	src/http.h \
 	src/search.c \
 	src/search.h \
-	src/ssl.c \
-	src/ssl_verify.c \
 	src/ssl.h \
 	src/tcp.c \
 	src/tcp.h \
 	src/text.c
+
+if WITH_SSL
+axel_SOURCES += \
+	src/ssl.c \
+	src/ssl_verify.c
+endif
 
 AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
 	-Wno-declaration-after-statement \

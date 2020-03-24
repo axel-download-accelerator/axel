@@ -109,6 +109,7 @@ AC_REPLACE_FUNCS([ \
 AC_ARG_WITH([ssl],
     AC_HELP_STRING([--without-ssl],[disable TLS support]), [], [with_ssl=yes])
 
+AM_CONDITIONAL([WITH_SSL], [test "x$with_ssl" != xno])
 AS_IF([test "x$with_ssl" != xno], [
     PKG_CHECK_MODULES([SSL], [openssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
