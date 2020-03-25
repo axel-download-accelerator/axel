@@ -347,25 +347,21 @@ http_filename(const http_t *conn, char *filename)
 		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\']",
 		       filename);
 		/* Trim spaces at the end of string */
-		const char *space = " ";
-		char *i = filename;
-		while ((i = strpbrk(i, space)) != NULL) {
-			int n = strspn(i, space);
-			if (i[n] == 0) {
-				*i = 0;
+		const char space[] = "\t ";
+		for (char *n, *p = filename; (p = strpbrk(p, space)); p = n) {
+			n = p + strspn(p, space);
+			if (!*n) {
+				*p = 0;
 				break;
 			}
-			i += n;
 		}
 
 		/* Replace common invalid characters in filename
 		   https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
-		i = filename;
-		const char *invalid_characters = "/\\?%*:|<>";
+		const char invalid[] = "/\\?%*:|<>";
 		const char replacement = '_';
-		while ((i = strpbrk(i, invalid_characters)) != NULL) {
+		for (char *i = filename; (i = strpbrk(i, invalid)); i++) {
 			*i = replacement;
-			i++;
 		}
 	}
 }
