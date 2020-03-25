@@ -336,12 +336,29 @@ http_filename(const http_t *conn, char *filename)
 {
 	const char *h;
 	if ((h = http_header(conn, "Content-Disposition:")) != NULL) {
-		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\' ]",
+		/**
+		 * This header has these formats:
+		 * Content-Disposition: inline
+		 * Content-Disposition: attachment
+		 * Content-Disposition: attachment; filename="filename.jpg"
+		 */
+		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\']",
 		       filename);
+		/* Trim spaces at the end of string */
+		const char *space = " ";
+		char *i = filename;
+		while ((i = strpbrk(i, space)) != NULL) {
+			int n = strspn(i, space);
+			if (i[n] == 0) {
+				*i = 0;
+				break;
+			}
+			i += n;
+		}
 
 		/* Replace common invalid characters in filename
 		   https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
-		char *i = filename;
+		i = filename;
 		const char *invalid_characters = "/\\?%*:|<>";
 		const char replacement = '_';
 		while ((i = strpbrk(i, invalid_characters)) != NULL) {
