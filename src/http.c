@@ -331,17 +331,19 @@ http_size_from_range(http_t *conn)
 	return j;
 }
 
+/**
+ * Extract file name from Content-Disposition HTTP header.
+ *
+ * Header format:
+ * Content-Disposition: inline
+ * Content-Disposition: attachment
+ * Content-Disposition: attachment; filename="filename.jpg"
+ */
 void
 http_filename(const http_t *conn, char *filename)
 {
 	const char *h;
 	if ((h = http_header(conn, "Content-Disposition:")) != NULL) {
-		/**
-		 * This header has these formats:
-		 * Content-Disposition: inline
-		 * Content-Disposition: attachment
-		 * Content-Disposition: attachment; filename="filename.jpg"
-		 */
 		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\']",
 		       filename);
 		/* Trim spaces at the end of string */
