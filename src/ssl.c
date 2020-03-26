@@ -95,20 +95,20 @@ ssl_connect(int fd, char *hostname)
 
 	err = SSL_get_verify_result(ssl);
 	if (err != X509_V_OK) {
-		fprintf(stderr, _("SSL error: Certificate error"));
+		fprintf(stderr, _("SSL error: Certificate error\n"));
 		SSL_CTX_free(ssl_ctx);
 		return NULL;
 	}
 
 	server_cert =  SSL_get_peer_certificate(ssl);
 	if (server_cert == NULL) {
-		fprintf(stderr, _("SSL error: Certificate not found"));
+		fprintf(stderr, _("SSL error: Certificate not found\n"));
 		SSL_CTX_free(ssl_ctx);
 		return NULL;
 	}
 
 	if (!ssl_validate_hostname(hostname, server_cert)) {
-		fprintf(stderr, _("SSL error: Hostname verification failed"));
+		fprintf(stderr, _("SSL error: Hostname verification failed\n"));
 		X509_free(server_cert);
 		SSL_CTX_free(ssl_ctx);
 		return NULL;
