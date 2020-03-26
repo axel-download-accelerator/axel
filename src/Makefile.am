@@ -24,6 +24,7 @@ axel_SOURCES = \
 
 if WITH_SSL
 axel_SOURCES += \
+	src/dn-match.c \
 	src/ssl.c \
 	src/ssl_verify.c
 endif
