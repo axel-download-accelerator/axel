@@ -42,13 +42,12 @@
 
 #define _POSIX_C_SOURCE 200112L
 
-#include "axel.h"
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <sys/ioctl.h>
 #include <netinet/tcp.h>
+#include "axel.h"
 
 #ifndef TCP_FASTOPEN_CONNECT
 #ifdef __linux__

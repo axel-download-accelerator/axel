@@ -18,8 +18,7 @@
 
 #include <sys/types.h>
 #include <string.h>
-
-size_t strlcat(char *, const char *, size_t);
+#include "compat-bsd.h"
 
 /*
  * Appends src to string dst of size dsize (unlike strncat, dsize is the

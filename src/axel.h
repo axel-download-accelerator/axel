@@ -68,7 +68,9 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
-#include "android-compat.h"
+#include "compat-android.h"
+#include "compat-bsd.h"
+#include "compat-ssl.h"
 
 /* Internationalization */
 #ifdef ENABLE_NLS
@@ -138,14 +140,5 @@ void axel_close(axel_t *axel);
 void print_messages(axel_t *axel);
 
 double axel_gettime(void);
-
-
-#ifndef HAVE_STRLCAT
-size_t strlcat(char *, const char *, size_t);
-#endif /* HAVE_strlcat */
-
-#ifndef HAVE_STRLCPY
-size_t strlcpy(char *, const char *, size_t);
-#endif /* HAVE_STRLCPY */
 
 #endif				/* AXEL_AXEL_H */

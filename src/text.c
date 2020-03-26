@@ -45,9 +45,8 @@
 
 /* Text interface */
 
-#include "axel.h"
-
 #include <sys/ioctl.h>
+#include "axel.h"
 
 
 static void stop(int signal);

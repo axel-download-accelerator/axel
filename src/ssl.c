@@ -37,9 +37,8 @@
 
 /* SSL interface */
 
-#include "axel.h"
-
 #include <openssl/err.h>
+#include "axel.h"
 
 static pthread_mutex_t ssl_lock;
 static bool ssl_inited = false;

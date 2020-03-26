@@ -1,6 +1,7 @@
 /*
   Helper functions to perform basic hostname validation using OpenSSL.
 
+  Copyright 2020 Ismael Luceno
   Author:  Alban Diquet
   Copyright (C) 2012, iSEC Partners.
 
@@ -23,16 +24,9 @@
   SOFTWARE.
  */
 
-#include "axel.h"
-
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
-
-#if OPENSSL_VERSION_NUMBER < 0x10101000L
-#define ASN1_STRING_data_compat ASN1_STRING_data
-#else
-#define ASN1_STRING_data_compat ASN1_STRING_get0_data
-#endif
+#include "axel.h"
 
 typedef enum {
 	MatchFound,
@@ -67,7 +61,7 @@ ssl_matches_common_name(const char *hostname, const X509 *server_cert)
 	if (common_name_asn1 == NULL) {
 		return Error;
 	}
-	common_name_str = (char *) ASN1_STRING_data_compat(common_name_asn1);
+	common_name_str = (char *) ASN1_STRING_get0_data(common_name_asn1);
 
 	// Make sure there isn't an embedded NUL character in the CN
 	if ((size_t) ASN1_STRING_length(common_name_asn1) != strlen(common_name_str)) {
@@ -103,7 +97,7 @@ ssl_matches_subject_alternative_name(const char *hostname, const X509 *server_ce
 
 		if (current_name->type == GEN_DNS) {
 			// Current name is a DNS name, let's check it
-			char *dns_name = (char *) ASN1_STRING_data_compat(current_name->d.dNSName);
+			char *dns_name = (char *) ASN1_STRING_get0_data(current_name->d.dNSName);
 
 			// Make sure there isn't an embedded NUL character in the DNS name
 			if ((size_t) ASN1_STRING_length(current_name->d.dNSName) != strlen(dns_name)) {
