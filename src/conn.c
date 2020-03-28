@@ -368,89 +368,89 @@ conn_info(conn_t *conn)
 	/* It's all a bit messed up.. But it works. */
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
 		return conn_info_ftp(conn);
-	} else {
-		char s[1005];
-		long long int i = 0;
+	}
 
-		do {
-			const char *t;
+	char s[1005];
+	long long int i = 0;
 
-			conn->supported = true;
-			conn->currentbyte = 0;
-			if (!conn_setup(conn))
-				return 0;
-			conn_exec(conn);
-			conn_disconnect(conn);
+	do {
+		const char *t;
 
-			http_filename(conn->http, conn->output_filename);
-
-			/* Code 3xx == redirect */
-			if (conn->http->status / 100 != 3)
-				break;
-			if ((t = http_header(conn->http, "location:")) == NULL)
-				return 0;
-			sscanf(t, "%1000s", s);
-			if (s[0] == '/') {
-				snprintf(conn->http->headers,
-					 sizeof(conn->http->headers),
-					 "%s%s:%i%s",
-					 scheme_from_proto(conn->proto),
-					 conn->host, conn->port, s);
-				strlcpy(s, conn->http->headers, sizeof(s));
-			} else if (strstr(s, "://") == NULL) {
-				conn_url(conn->http->headers,
-					 sizeof(conn->http->headers), conn);
-				strlcat(conn->http->headers, s,
-					sizeof(conn->http->headers));
-				strlcpy(s, conn->http->headers, sizeof(s));
-			}
-
-			if (!conn_set(conn, s)) {
-				return 0;
-			}
-
-			/* check if the download has been redirected to FTP and
-			 * report it back to the caller */
-			if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
-				return -1;
-			}
-
-			if (++i >= conn->conf->max_redirect) {
-				fprintf(stderr, _("Too many redirects.\n"));
-				return 0;
-			}
-		} while (conn->http->status / 100 == 3);
-
-		/* Check for non-recoverable errors */
-		if (conn->http->status != 416 && conn->http->status / 100 != 2)
+		conn->supported = true;
+		conn->currentbyte = 0;
+		if (!conn_setup(conn))
 			return 0;
+		conn_exec(conn);
+		conn_disconnect(conn);
 
-		conn->size = http_size_from_range(conn->http);
-		/* We assume partial requests are supported if a Content-Range
-		 * header is present.
-		 */
-		conn->supported = conn->http->status == 206 || conn->size > 0;
+		http_filename(conn->http, conn->output_filename);
 
-		if (conn->size <= 0) {
-			/* Sanity check */
-			switch (conn->http->status) {
-			case 200:
-			case 206:
-			case 416:
-				break;
-			default: /* unexpected */
-				return 0;
-			}
-
-			/* So we got an invalid or no size, fall back */
-			conn->supported = false;
-			conn->size = LLONG_MAX;
-		} else {
-			/* If Content-Length and Content-Range disagree, it's a
-			 * server bug; we take the larger and hope for the best.
-			 */
-			conn->size = max(conn->size, http_size(conn->http));
+		/* Code 3xx == redirect */
+		if (conn->http->status / 100 != 3)
+			break;
+		if ((t = http_header(conn->http, "location:")) == NULL)
+			return 0;
+		sscanf(t, "%1000s", s);
+		if (s[0] == '/') {
+			snprintf(conn->http->headers,
+					sizeof(conn->http->headers),
+					"%s%s:%i%s",
+					scheme_from_proto(conn->proto),
+					conn->host, conn->port, s);
+			strlcpy(s, conn->http->headers, sizeof(s));
+		} else if (strstr(s, "://") == NULL) {
+			conn_url(conn->http->headers,
+					sizeof(conn->http->headers), conn);
+			strlcat(conn->http->headers, s,
+				sizeof(conn->http->headers));
+			strlcpy(s, conn->http->headers, sizeof(s));
 		}
+
+		if (!conn_set(conn, s)) {
+			return 0;
+		}
+
+		/* check if the download has been redirected to FTP and
+		 * report it back to the caller */
+		if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
+			return -1;
+		}
+
+		if (++i >= conn->conf->max_redirect) {
+			fprintf(stderr, _("Too many redirects.\n"));
+			return 0;
+		}
+	} while (conn->http->status / 100 == 3);
+
+	/* Check for non-recoverable errors */
+	if (conn->http->status != 416 && conn->http->status / 100 != 2)
+		return 0;
+
+	conn->size = http_size_from_range(conn->http);
+	/* We assume partial requests are supported if a Content-Range
+	 * header is present.
+	 */
+	conn->supported = conn->http->status == 206 || conn->size > 0;
+
+	if (conn->size <= 0) {
+		/* Sanity check */
+		switch (conn->http->status) {
+		case 200:
+		case 206:
+		case 416:
+			break;
+		default: /* unexpected */
+			return 0;
+		}
+
+		/* So we got an invalid or no size, fall back */
+		conn->supported = false;
+		conn->size = LLONG_MAX;
+	} else {
+		/* If Content-Length and Content-Range disagree, it's a
+		 * server bug; we take the larger and hope for the best.
+		 */
+		conn->size = max(conn->size, http_size(conn->http));
 	}
 
 	return 1;
