@@ -205,6 +205,7 @@ void
 http_addheader(http_t *conn, const char *format, ...)
 {
 	char s[MAX_STRING];
+	size_t j;
 	va_list params;
 
 	va_start(params, format);
@@ -212,7 +213,17 @@ http_addheader(http_t *conn, const char *format, ...)
 	strlcat(s, "\r\n", sizeof(s));
 	va_end(params);
 
-	strlcat(conn->request, s, sizeof(conn->request));
+	j = strlcat(conn->request, s, conn->req_size);
+	if (j > conn->req_size) {
+		conn->req_size *= 2;
+		char *tmp = realloc(conn->request, conn->req_size);
+		if (!tmp) {
+			printf("%s\n", strerror(errno));
+			return;
+		}
+		conn->request = tmp;
+		strlcat(conn->request, s + j - (conn->req_size / 2), conn->req_size);
+	}
 }
 
 int
@@ -220,14 +231,14 @@ http_exec(http_t *conn)
 {
 	int i = 0;
 	ssize_t nwrite = 0;
-	char s[2] = {0}, *s2;
+	char *s2;
 
 #ifdef DEBUG
 	fprintf(stderr, "--- Sending request ---\n%s--- End of request ---\n",
 		conn->request);
 #endif
 
-	strlcat(conn->request, "\r\n", sizeof(conn->request));
+	strlcat(conn->request, "\r\n", conn->req_size);
 
 	while (nwrite < (ssize_t)strlen(conn->request)) {
 		if ((i =
@@ -243,27 +254,34 @@ http_exec(http_t *conn)
 		nwrite += i;
 	}
 
-	*conn->headers = 0;
-
 	/* Read the headers byte by byte to make sure we don't touch the
 	   actual data */
-	while (1) {
-		if (tcp_read(&conn->tcp, s, 1) <= 0) {
+	*conn->headers = 0;
+	for (char *p = conn->headers;;) {
+		if ((i = tcp_read(&conn->tcp, p, 1)) <= 0) {
 			fprintf(stderr, _("Connection gone.\n"));
 			return 0;
 		}
-
-		if (*s == '\r') {
-			continue;
-		} else if (*s == '\n') {
-			if (i == 0)
-				break;
-			i = 0;
-		} else {
-			i++;
+		if (p + 10 > conn->headers + conn->head_size) {
+			conn->head_size *= 2;
+			char *tmp = realloc(conn->headers, conn->head_size);
+			if (!tmp) {
+				printf("%s\n", strerror(errno));
+				return 0;
+			}
+			p = tmp + (p - conn->headers);
+			conn->headers = tmp;
 		}
-		/* FIXME wasteful */
-		strlcat(conn->headers, s, sizeof(conn->headers));
+
+		if (*p == '\r') {
+			continue;
+		} else if (*p == '\n') {
+			if (*(p - 1) == '\n') {
+				*p = 0;
+				break;
+			}
+		}
+		p += i;
 	}
 
 #ifdef DEBUG

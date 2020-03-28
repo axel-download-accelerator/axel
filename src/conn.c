@@ -309,6 +309,9 @@ conn_setup(conn_t *conn)
 		conn->http->firstbyte =
 			conn->supported ? conn->currentbyte : -1;
 		conn->http->lastbyte = conn->lastbyte;
+
+		conn->http->req_size = 2048;
+		conn->http->request = malloc(conn->http->req_size);
 		http_get(conn->http, s);
 		for (i = 0; i < conn->conf->add_header_count; i++)
 			http_addheader(conn->http, "%s",
@@ -325,6 +328,8 @@ conn_exec(conn_t *conn)
 			return 0;
 		return ftp_wait(conn->ftp) / 100 == 1;
 	} else {
+		conn->http->head_size = 1024;
+		conn->http->headers = malloc(conn->http->head_size);
 		if (!http_exec(conn->http))
 			return 0;
 		return conn->http->status / 100 == 2;
@@ -368,7 +373,7 @@ conn_info(conn_t *conn)
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
 		return conn_info_ftp(conn);
 	}
-	
+
 	char s[1005];
 	long long int i = 0;
 
@@ -392,11 +397,24 @@ conn_info(conn_t *conn)
 		sscanf(t, "%1000s", s);
 		if (s[0] == '/') {
 			snprintf(conn->http->headers,
-					sizeof(conn->http->headers),
+					conn->http->head_size,
 					"%s%s:%i%s",
 					scheme_from_proto(conn->proto),
 					conn->host, conn->port, s);
-			strlcpy(s, conn->http->headers, sizeof(s));
+			size_t j = strlcpy(s, conn->http->headers, sizeof(s));
+			if (j > conn->http->head_size) {
+				conn->http->head_size *= 2;
+				char *tmp = realloc(conn->http->headers,
+					conn->http->head_size);
+				if (!tmp) {
+					printf("%s\n", strerror(errno));
+					return 0;
+				}
+				conn->http->headers = tmp;
+				strlcat(conn->http->headers,
+					s + j - (conn->http->head_size / 2), 
+					conn->http->head_size);
+			}
 		} else if (strstr(s, "://") == NULL) {
 			conn_url(conn->http->headers,
 					sizeof(conn->http->headers), conn);
@@ -451,7 +469,6 @@ conn_info(conn_t *conn)
 			*/
 		conn->size = max(conn->size, http_size(conn->http));
 	}
-	}
-
+	
 	return 1;
 }
