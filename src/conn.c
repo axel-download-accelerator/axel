@@ -43,6 +43,7 @@
 
 /* Connection stuff */
 
+#include "config.h"
 #include "axel.h"
 
 /**

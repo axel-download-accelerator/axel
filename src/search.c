@@ -40,6 +40,7 @@
 
 /* filesearching.com searcher */
 
+#include "config.h"
 #include "axel.h"
 #include "sleep.h"
 

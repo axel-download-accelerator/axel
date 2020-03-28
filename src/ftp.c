@@ -38,6 +38,7 @@
 
 /* FTP control file */
 
+#include "config.h"
 #include "axel.h"
 
 int

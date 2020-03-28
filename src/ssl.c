@@ -37,6 +37,7 @@
 
 /* SSL interface */
 
+#include "config.h"
 #include <openssl/err.h>
 #include "axel.h"
 

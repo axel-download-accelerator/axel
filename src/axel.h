@@ -43,8 +43,6 @@
 #ifndef AXEL_AXEL_H
 #define AXEL_AXEL_H
 
-#include "config.h"
-
 #include <time.h>
 #include <ctype.h>
 #include <fcntl.h>

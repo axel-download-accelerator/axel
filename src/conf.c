@@ -41,6 +41,7 @@
 
 /* Configuration handling file */
 
+#include "config.h"
 #include "axel.h"
 
 /* Some nifty macro's.. */

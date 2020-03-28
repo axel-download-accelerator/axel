@@ -45,6 +45,7 @@
 
 /* HTTP control file */
 
+#include "config.h"
 #include "axel.h"
 
 inline static int

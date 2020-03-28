@@ -46,6 +46,7 @@
 
 /* Main control */
 
+#include "config.h"
 #include "axel.h"
 #include "assert.h"
 #include "sleep.h"
