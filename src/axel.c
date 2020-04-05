@@ -132,8 +132,9 @@ axel_new(conf_t *conf, int count, const void *url)
 		axel->url = u;
 
 		for (i = 0; i < count; i++) {
-			strlcpy(u[i].text, res[i].url, sizeof(u[i].text));
+			strlcpy(u[i].text, res->url, sizeof(u[i].text));
 			u[i].next = &u[i + 1];
+			res = res->next;
 		}
 		u[count - 1].next = u;
 	}
