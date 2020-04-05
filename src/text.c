@@ -414,10 +414,7 @@ main(int argc, char *argv[])
 		if (axel->message) {
 			if (conf->alternate_output == 1) {
 				/* clreol-simulation */
-				putchar('\r');
-				for (int i = get_term_width(); i > 0; i--)
-					putchar(' ');
-				putchar('\r');
+				fputs("\e[2K\r", stdout);
 			} else {
 				putchar('\n');
 			}
