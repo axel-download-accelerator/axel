@@ -6,6 +6,7 @@ axel_SOURCES = \
 	src/axel.c \
 	src/axel.h \
 	src/sleep.h \
+	src/sleep.c \
 	src/conf.c \
 	src/conf.h \
 	src/conn.c \

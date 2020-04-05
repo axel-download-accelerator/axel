@@ -32,9 +32,19 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef AXEL_SLEEP_H
-#define AXEL_SLEEP_H
+#include "config.h"
+#define _POSIX_C_SOURCE 200112L
 
-int axel_sleep(struct timespec delay);
+#include <errno.h>
+#include <time.h>
 
-#endif /* AXEL_SLEEP_H */
+#include "sleep.h"
+
+
+int
+axel_sleep(struct timespec delay)
+{
+	int res;
+	while ((res = nanosleep(&delay, &delay)) && errno == EINTR) ;
+	return res;
+}
