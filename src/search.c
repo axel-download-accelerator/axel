@@ -115,11 +115,14 @@ search_readlist(search_t *results, FILE *fd)
 			free(tmp);
 			break;
 		}
-		if (strlen(tmp->url) == MAX_STRING) {
+		size_t len = strcspn(tmp->url, "\r\n");
+		/* Check the string ends with LF or CRLF */
+		if (!tmp->url[len]) {
 			fprintf(stderr, _("Error when trying to read URL (Too long?).\n"));
 			free(tmp);
 			goto free_list;
 		}
+		tmp->url[len] = '\0';
 		cur->next = tmp;
 		cur = tmp;
 	}
