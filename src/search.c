@@ -111,10 +111,13 @@ search_readlist(search_t *results, FILE *fd)
 			fprintf(stderr, _("%s\n"), strerror(errno));
 			goto free_list;
 		}
-		if (fgets(tmp->url, MAX_STRING, fd) == 0) {
-			free(tmp);
-			break;
-		}
+		do {
+			if (fgets(tmp->url, MAX_STRING, fd) == 0) {
+				free(tmp);
+				return nresults;
+			}
+			/* Ignore lines starting with "#" */
+		} while (tmp->url[0] == '#');
 		size_t len = strcspn(tmp->url, "\r\n");
 		/* Check the string ends with LF or CRLF */
 		if (!tmp->url[len]) {
