@@ -67,15 +67,17 @@ static char *buffer = NULL;
 
 /* Create a new axel_t structure */
 axel_t *
-axel_new(conf_t *conf, int count, const void *url)
+axel_new(conf_t *conf, int count, const search_t *res)
 {
-	const search_t *res;
 	axel_t *axel;
 	int status;
 	uint64_t delay;
 	url_t *u;
 	char *s;
 	int i;
+
+	if (!count || !res)
+		return NULL;
 
 	axel = calloc(1, sizeof(axel_t));
 	if (!axel)
@@ -111,32 +113,16 @@ axel_new(conf_t *conf, int count, const void *url)
 			goto nomem;
 	}
 
-	if (!url) {
-		axel_message(axel, _("Invalid URL"));
-		axel_close(axel);
-		return NULL;
+	u = malloc(sizeof(url_t) * count);
+	if (!u)
+		goto nomem;
+	axel->url = u;
+
+	for (i = 0; i < count; i++) {
+		strlcpy(u[i].text, res[i].url, sizeof(u[i].text));
+		u[i].next = &u[i + 1];
 	}
-
-	if (count == 0) {
-		axel->url = malloc(sizeof(url_t));
-		if (!axel->url)
-			goto nomem;
-
-		axel->url->next = axel->url;
-		strlcpy(axel->url->text, url, sizeof(axel->url->text));
-	} else {
-		res = url;
-		u = malloc(sizeof(url_t) * count);
-		if (!u)
-			goto nomem;
-		axel->url = u;
-
-		for (i = 0; i < count; i++) {
-			strlcpy(u[i].text, res[i].url, sizeof(u[i].text));
-			u[i].next = &u[i + 1];
-		}
-		u[count - 1].next = u;
-	}
+	u[count - 1].next = u;
 
 	axel->conn[0].conf = axel->conf;
 	if (!conn_set(&axel->conn[0], axel->url->text)) {

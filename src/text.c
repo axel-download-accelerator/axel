@@ -297,12 +297,6 @@ main(int argc, char *argv[])
 			print_messages(axel);
 			goto close_axel;
 		}
-	} else if (argc - optind == 1) {
-		axel = axel_new(conf, 0, s);
-		if (!axel || axel->ready == -1) {
-			print_messages(axel);
-			goto close_axel;
-		}
 	} else {
 		search = calloc(argc - optind, sizeof(search_t));
 		if (!search)
