@@ -41,6 +41,8 @@
 /* filesearching.com searcher */
 
 #include "config.h"
+#include <stdio.h>
+
 #include "axel.h"
 #include "sleep.h"
 
@@ -91,6 +93,46 @@ out:
 	return ret;
 }
 #endif
+
+/**
+ * Scan url list from file
+ *
+ * @returns number of URLs
+ */
+int
+search_readlist(search_t *results, FILE *fd)
+{
+	int nresults = 0;
+	search_t *cur, *tmp;
+
+	for (cur = results; ; nresults++) {
+		tmp = malloc(sizeof(search_t));
+		if (!tmp) {
+			fprintf(stderr, _("%s\n"), strerror(errno));
+			goto free_list;
+		}
+		if (fgets(tmp->url, MAX_STRING, fd) == 0) {
+			free(tmp);
+			break;
+		}
+		if (strlen(tmp->url) == MAX_STRING) {
+			fprintf(stderr, _("Error when trying to read URL (Too long?).\n"));
+			free(tmp);
+			goto free_list;
+		}
+		cur->next = tmp;
+		cur = tmp;
+	}
+
+	return nresults;
+ free_list:
+	for (cur = results->next; cur;) {
+		tmp = cur;
+		cur = cur->next;
+		free(tmp);
+	}
+	return 0;
+}
 
 int
 search_makelist(search_t *results, char *orig_url)
@@ -305,7 +347,11 @@ search_speedtest(void *r)
 void
 search_sortlist(search_t *results, int count)
 {
+	// FIXME sort linked list nodes
 	qsort(results, count, sizeof(search_t), search_sortlist_qsort);
+	for (int i = 1; i < count; i++) {
+		results[i - 1].next = &results[i];
+	}
 }
 
 static

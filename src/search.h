@@ -45,8 +45,10 @@ typedef struct {
 	off_t speed, size;
 	pthread_t speed_thread[1];
 	conf_t *conf;
+	void *next;
 } search_t;
 
+int search_readlist(search_t *results, FILE *fd);
 int search_makelist(search_t *results, char *url);
 int search_getspeeds(search_t *results, int count);
 void search_sortlist(search_t *results, int count);

@@ -96,9 +96,11 @@ main(int argc, char *argv[])
 {
 	char fn[MAX_STRING];
 	int do_search = 0;
-	search_t *search;
+	search_t *search, *list;
+	search_t *tmp, *cur;
 	conf_t conf[1];
 	axel_t *axel;
+	int prealloc_num, url_num = 0;
 	int j, ret = 1;
 	char *s;
 
@@ -238,63 +240,76 @@ main(int argc, char *argv[])
 	ssl_init(conf);
 #endif				/* HAVE_SSL */
 
-	if (argc - optind == 0) {
+	prealloc_num = url_num = argc - optind;
+	if (url_num == 0) {
 		print_help();
 		goto free_conf;
-	} else if (strcmp(argv[optind], "-") == 0) {
-		s = malloc(MAX_STRING);
-		if (!s)
-			goto free_conf;
+	}
 
-		if (scanf("%1024[^\n]s", s) != 1) {
-			fprintf(stderr,
-				_("Error when trying to read URL (Too long?).\n"));
-			free(s);
-			goto free_conf;
-		}
-	} else {
-		s = argv[optind];
-		if (strlen(s) > MAX_STRING) {
-			fprintf(stderr,
-				_("Can't handle URLs of length over %zu\n"),
-				MAX_STRING);
-			goto free_conf;
+	list = calloc(prealloc_num, sizeof(search_t));
+	if (!list) {
+		fprintf(stderr, _("%s\n"), strerror(errno));
+		goto free_conf;
+	}
+
+	/* load URls from argv and stdin */
+	tmp = cur = list;
+	for (argv += optind; *argv; argv++) {
+		if (argv[0][0] == '-' && !argv[0][1]) {
+			/* add URL list from stdin to end of list */
+			/* "-" and the last node will be ignored */
+			url_num += search_readlist(list + prealloc_num - 2, stdin) - 1;
+		} else {
+			/* add URL from argv */
+			strlcpy(tmp->url, *argv, sizeof(tmp->url));
+			cur->next = tmp++;
+			cur = cur->next;
 		}
 	}
 
-	printf(_("Initializing download: %s\n"), s);
+	printf(_("Initializing download: %s\n"), list[0].url);
 	if (do_search) {
 		search = calloc(conf->search_amount + 1, sizeof(search_t));
-		if (!search)
-			goto free_conf;
+		if (!search) {
+			return 1;
+		}
 
 		search[0].conf = conf;
 		if (conf->verbose)
 			printf(_("Doing search...\n"));
-		int i = search_makelist(search, s);
+		// FIXME duplicated URL list[0].url
+		int i = search_makelist(search, list[0].url);
 		if (i < 0) {
 			fprintf(stderr, _("File not found\n"));
-			goto free_conf;
+			return 1;
 		}
 		if (conf->verbose)
 			printf(_("Testing speeds, this can take a while...\n"));
+
+		// FIXME only URLs in 'search' are tested and sorted
 		j = search_getspeeds(search, i);
 		if (j < 0) {
 			fprintf(stderr, _("Speed testing failed\n"));
+			// FIXME may leak memory
 			return 1;
 		}
 
 		search_sortlist(search, i);
+		j = min(j, conf->search_top);
+		/* add search results into URL list */
+		search[j - 1].next = list;
+		url_num += j;
 		if (conf->verbose) {
 			printf(_("%i usable servers found, will use these URLs:\n"),
 			       j);
-			j = min(j, conf->search_top);
 			printf("%-60s %15s\n", "URL", _("Speed"));
 			for (i = 0; i < j; i++)
 				printf("%-70.70s %5jd\n", search[i].url,
 				       search[i].speed);
 			printf("\n");
 		}
+		/* FIXME this is lost; also, should not this append to the
+		 * existing list? */
 		axel = axel_new(conf, j, search);
 		free(search);
 		if (!axel || axel->ready == -1) {
@@ -302,23 +317,21 @@ main(int argc, char *argv[])
 			goto close_axel;
 		}
 	} else {
-		search = calloc(argc - optind, sizeof(search_t));
-		if (!search)
-			goto free_conf;
-
-		for (int i = 0; i < argc - optind; i++)
-			strlcpy(search[i].url, argv[optind + i],
-				sizeof(search[i].url));
-		axel = axel_new(conf, argc - optind, search);
-		free(search);
-		if (!axel || axel->ready == -1) {
-			print_messages(axel);
-			goto close_axel;
-		}
+		search = list;
 	}
+
+#ifdef DEBUG
+	tmp = search;
+	for (int i = 0; i < url_num; i++) {
+		printf("URL loaded: %s\n", tmp->url);
+		tmp = tmp->next;
+	}
+#endif
+
+	axel = axel_new(conf, url_num, search);
 	print_messages(axel);
-	if (s != argv[optind]) {
-		free(s);
+	if (!axel || axel->ready == -1) {
+		goto close_axel;
 	}
 
 	/* Check if a file name has been specified */
