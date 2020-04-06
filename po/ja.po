@@ -3,11 +3,11 @@
 # This file is distributed under the same license as the axel package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Axel\n"
+"Project-Id-Version: axel 2.17.8\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2016-08-21 01:20+0800\n"
-"Last-Translator: Lion Yang <lion@aosc.xyz>\n"
+"PO-Revision-Date: 2020-04-06 21:58+0200\n"
+"Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -231,6 +231,15 @@ msgstr "無効なプロキシストリング: %s\n"
 #, fuzzy, c-format
 msgid "Connection gone while writing.\n"
 msgstr "接続が失われています。\n"
+
+#: src/text.c:136
+#, fuzzy, c-format
+msgid ""
+"Too many custom headers (-H)! Currently only %u custom headers can be "
+"appended.\n"
+msgstr ""
+"カスタムヘッダーが多すぎます（-H）！ 現在%u個のカスタムヘッダーのみを追加でき"
+"ます。\n"
 
 #: src/text.c:209
 #, c-format
@@ -460,6 +469,21 @@ msgstr ""
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL エラー: %s\n"
+
+#: src/ssl.c:99
+#, fuzzy, c-format
+msgid "SSL error: Certificate error\n"
+msgstr "SSL エラー： 証明書エラー\n"
+
+#: src/ssl.c:106
+#, fuzzy, c-format
+msgid "SSL error: Certificate not found\n"
+msgstr "SSL エラー： 証明書が見つかりません\n"
+
+#: src/ssl.c:112
+#, fuzzy, c-format
+msgid "SSL error: Hostname verification failed\n"
+msgstr "SSL エラー： ホスト名の検証に失敗しました\n"
 
 #: src/tcp.c:74
 #, c-format
