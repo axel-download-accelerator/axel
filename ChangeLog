@@ -1,3 +1,31 @@
+Version: 2.17.8, 2020-04-06
+
+  [ Ismael Luceno ]
+
+* Code cleanup, documentation, and build system improvements
+* Hostname wildcard matching support
+* Replaced progressbar line clearing with terminal control sequence
+* Updated translations: German, Italian, Japanese, Portuguese, Spanish
+
+  [ Jason ]
+
+* Fixed parsing of Content-Disposition HTTP header
+
+  [ Joao Eriberto Mota Filho ]
+
+* Added missing copyrights to headers
+
+  [ Ted Reed ]
+
+* Added SSL Certificate Hostname verification support
+
+  [ vewupom ]
+
+* Check if custom HTTP headers fit into add_header
+* Fixed User-Agent HTTP header never being included
+
+
+
 Version: 2.17.7, 2020-01-26
 
   [ Ismael Luceno ]
