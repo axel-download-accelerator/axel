@@ -15,80 +15,76 @@ msgstr ""
 "Last-Revision: Li Jin <punkid.online@gmail.com>\n"
 "X-Generator: Poedit 1.8.8\n"
 
-#: src/axel.c:94
+#: src/axel.c:99
 msgid "Buffer resized for this speed."
 msgstr "为这个速率调整缓冲区大小。"
 
-#: src/axel.c:112
-msgid "Invalid URL"
-msgstr "不可用的URL。"
-
-#: src/axel.c:140
+#: src/axel.c:129
 msgid "Could not parse URL.\n"
 msgstr "无法解析 URL。\n"
 
-#: src/axel.c:164
+#: src/axel.c:153
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "发现不完整的下载，忽略no-clobber选项\n"
 
-#: src/axel.c:167
+#: src/axel.c:156
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "文件'%s' 已存在\n"
 
-#: src/axel.c:197
+#: src/axel.c:186
 #, fuzzy, c-format
 msgid "File size: %zu bytes"
 msgstr "文件大小：%zu 字节"
 
-#: src/axel.c:200
+#: src/axel.c:189
 #, fuzzy
 msgid "File size: unavailable"
 msgstr "文件大小：不可用"
 
-#: src/axel.c:229
+#: src/axel.c:218
 #, c-format
 msgid "Opening output file %s"
 msgstr "正在打开输出文件 %s"
 
-#: src/axel.c:237
+#: src/axel.c:226
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "服务器不支持，使用单个连接从头下载。"
 
-#: src/axel.c:254
+#: src/axel.c:243
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: 错误，已清空的状态文件\n"
 
-#: src/axel.c:262
+#: src/axel.c:251
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr ""
 
-#: src/axel.c:274
+#: src/axel.c:263
 #, c-format
 msgid "State file has old format.\n"
 msgstr "状态文件版本陈旧\n"
 
-#: src/axel.c:307
+#: src/axel.c:296
 #, fuzzy, c-format
 msgid "State file found: %zu bytes downloaded, %zu to go."
 msgstr "找到状态文件：已下载 %zu 字节，剩余 %zu 字节。"
 
-#: src/axel.c:313 src/axel.c:324
+#: src/axel.c:302 src/axel.c:313
 msgid "Error opening local file"
 msgstr "无法打开本地文件"
 
-#: src/axel.c:337
+#: src/axel.c:326
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "文件系统/操作系统不讨喜…… 正在寻求解决方法（不开心）。"
 
-#: src/axel.c:350
+#: src/axel.c:339
 msgid "Error creating local file"
 msgstr "无法创建本地文件"
 
-#: src/axel.c:383
+#: src/axel.c:372
 #, c-format
 msgid ""
 "\n"
@@ -97,208 +93,208 @@ msgstr ""
 "\n"
 "重新激活链接:%d \n"
 
-#: src/axel.c:413
+#: src/axel.c:402
 msgid "Starting download"
 msgstr "正在开始下载"
 
-#: src/axel.c:421 src/axel.c:604
+#: src/axel.c:410 src/axel.c:593
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "连接 %1$i 正通过接口 %4$s 从 %2$s:%3$i 下载"
 
-#: src/axel.c:431 src/axel.c:616
+#: src/axel.c:420 src/axel.c:605
 msgid "pthread error!!!"
 msgstr "pthread 出错啦！！！"
 
-#: src/axel.c:477
+#: src/axel.c:466
 #, fuzzy, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "写命令 %s 出错"
 
-#: src/axel.c:509
+#: src/axel.c:498
 #, c-format
 msgid "Connection %i timed out"
 msgstr "连接 %i 超时"
 
-#: src/axel.c:522
+#: src/axel.c:511
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "连接 %i 出错！连接中断"
 
-#: src/axel.c:536
+#: src/axel.c:525
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "连接 %i 被异常中断"
 
-#: src/axel.c:540 src/axel.c:556
+#: src/axel.c:529 src/axel.c:545
 #, c-format
 msgid "Connection %i finished"
 msgstr "连接 %i 完成下载"
 
-#: src/axel.c:566
+#: src/axel.c:555
 msgid "Write error!"
 msgstr "写错误！"
 
-#: src/axel.c:664
+#: src/axel.c:653
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "强制调整流量时出错：%s"
 
-#: src/axel.c:844
+#: src/axel.c:833
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr ""
 
-#: src/axel.c:863
+#: src/axel.c:852
 #, c-format
 msgid "Downloading %lld-%lld using conn. %i\n"
 msgstr "使用链接下载 %lld-%lld [%i]\n"
 
-#: src/conf.c:68
+#: src/conf.c:70
 #, c-format
 msgid "I/O error while reading config file: %s\n"
 msgstr "配置文件I/O错误:%s\n"
 
-#: src/conf.c:83
+#: src/conf.c:85
 #, c-format
 msgid "Unknown protocol %s\n"
 msgstr "未知的协议 %s\n"
 
-#: src/conf.c:187
+#: src/conf.c:189
 #, c-format
 msgid "Requested too many connections, max is %i\n"
 msgstr ""
 
-#: src/conf.c:202
+#: src/conf.c:204
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "%s 中第 %i 行出错。\n"
 
-#: src/conf.c:266
+#: src/conf.c:271
 #, fuzzy, c-format
 msgid "HOME env variable too long\n"
 msgstr "文件名太长！\n"
 
-#: src/conn.c:76
+#: src/conn.c:78
 #, fuzzy, c-format
 msgid "Unsupported protocol\n"
 msgstr "未知的协议\n"
 
-#: src/conn.c:82
+#: src/conn.c:84
 #, c-format
 msgid "Secure protocol is not supported\n"
 msgstr ""
 
-#: src/conn.c:417 src/ftp.c:131
+#: src/conn.c:419 src/ftp.c:133
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "太多重定向。\n"
 
-#: src/ftp.c:102
+#: src/ftp.c:104
 #, c-format
 msgid "Can't change directory to %s\n"
 msgstr "无法变更目录到 %s\n"
 
-#: src/ftp.c:125 src/ftp.c:185
+#: src/ftp.c:127 src/ftp.c:187
 #, c-format
 msgid "File not found.\n"
 msgstr "找不到文件。\n"
 
-#: src/ftp.c:188
+#: src/ftp.c:190
 #, c-format
 msgid "Multiple matches for this URL.\n"
 msgstr "此 URL 有多个匹配。\n"
 
-#: src/ftp.c:260
+#: src/ftp.c:262
 #, c-format
 msgid "Error opening passive data connection.\n"
 msgstr "无法打开被动数据连接。\n"
 
-#: src/ftp.c:294
+#: src/ftp.c:296
 #, c-format
 msgid "Error writing command %s\n"
 msgstr "写命令 %s 出错\n"
 
-#: src/ftp.c:319 src/http.c:249
+#: src/ftp.c:321 src/http.c:253
 #, c-format
 msgid "Connection gone.\n"
 msgstr "连接丢失。\n"
 
-#: src/http.c:114
+#: src/http.c:118
 #, c-format
 msgid "Invalid proxy string: %s\n"
 msgstr "代理字符串无效：%s\n"
 
-#: src/http.c:237
+#: src/http.c:241
 #, c-format
 msgid "Connection gone while writing.\n"
 msgstr "写入时连接丢失。\n"
 
-#: src/text.c:201
+#: src/text.c:209
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "不能将 stdout 重定向到 /dev/null。\n"
 
-#: src/text.c:244
+#: src/text.c:251
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "尝试读取 URL 时出错（URL 太长？）。\n"
 
-#: src/text.c:252
+#: src/text.c:259
 #, fuzzy, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr "不能处理长度超过 %zu 的 URL\n"
 
-#: src/text.c:258
+#: src/text.c:265
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "正在初始化下载：%s\n"
 
-#: src/text.c:266
+#: src/text.c:273
 #, c-format
 msgid "Doing search...\n"
 msgstr "正在搜索…\n"
 
-#: src/text.c:269
+#: src/text.c:276
 #, c-format
 msgid "File not found\n"
 msgstr "找不到文件\n"
 
-#: src/text.c:273
+#: src/text.c:280
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "正在测试速度，可能需要一些时间…\n"
 
-#: src/text.c:276
+#: src/text.c:283
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "速度测试失败\n"
 
-#: src/text.c:282
+#: src/text.c:289
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "找到 %i 个可用的服务器，将使用这些 URL：\n"
 
-#: src/text.c:285
+#: src/text.c:292
 msgid "Speed"
 msgstr "速度"
 
-#: src/text.c:333
+#: src/text.c:334
 #, c-format
 msgid "Filename too long!\n"
 msgstr "文件名太长！\n"
 
-#: src/text.c:346
+#: src/text.c:347
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "没有状态文件，无法继续下载！\n"
 
-#: src/text.c:350
+#: src/text.c:351
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "找到状态文件，但未有下载数据。重新开始下载。\n"
 
-#: src/text.c:438
+#: src/text.c:436
 #, c-format
 msgid ""
 "\n"
@@ -307,48 +303,48 @@ msgstr ""
 "\n"
 "已下载 %s，用时 %s。（%.2f KB/s）\n"
 
-#: src/text.c:475
+#: src/text.c:473
 msgid "Kilo"
 msgstr "千"
 
-#: src/text.c:475
+#: src/text.c:473
 msgid "Mega"
 msgstr "兆"
 
-#: src/text.c:475
+#: src/text.c:473
 msgid "Giga"
 msgstr "吉"
 
-#: src/text.c:475
+#: src/text.c:473
 msgid "Tera"
 msgstr "兆兆"
 
-#: src/text.c:481
+#: src/text.c:479
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %s字节"
 
-#: src/text.c:497
+#: src/text.c:495
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i 时 %02i 分 %02i 秒"
 
-#: src/text.c:499
+#: src/text.c:497
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i 分 %02i 秒"
 
-#: src/text.c:501
+#: src/text.c:499
 #, fuzzy, c-format
 msgid "%i second(s)"
 msgstr "%i 秒"
 
-#: src/text.c:594
+#: src/text.c:592
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "无法设置备用输出，挂起.\n"
 
-#: src/text.c:656
+#: src/text.c:654
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -391,7 +387,7 @@ msgstr ""
 "\n"
 "请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
 
-#: src/text.c:678
+#: src/text.c:676
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -436,16 +432,16 @@ msgstr ""
 "\n"
 "请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
 
-#: src/text.c:706
+#: src/text.c:704
 #, c-format
 msgid "Axel version %s (%s)\n"
 msgstr "Axel 版本 %s (%s)\n"
 
-#: src/text.c:714
+#: src/text.c:712
 msgid "and others."
 msgstr "及其他人。"
 
-#: src/text.c:715
+#: src/text.c:713
 #, fuzzy
 msgid ""
 "Please, see the CREDITS file.\n"
@@ -454,12 +450,12 @@ msgstr ""
 "请阅读 CREDITS 文件。\n"
 "\n"
 
-#: src/ssl.c:93
+#: src/ssl.c:91
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL 错误：%s\n"
 
-#: src/tcp.c:72
+#: src/tcp.c:74
 #, c-format
 msgid "Unable to connect to server %s:%i: %s\n"
 msgstr "无法连接到服务器 %s:%i：%s\n"
