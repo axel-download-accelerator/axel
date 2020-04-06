@@ -111,15 +111,21 @@ search_readlist(search_t *results, FILE *fd)
 			fprintf(stderr, _("%s\n"), strerror(errno));
 			goto free_list;
 		}
-		if (fgets(tmp->url, MAX_STRING, fd) == 0) {
-			free(tmp);
-			break;
-		}
-		if (strlen(tmp->url) == MAX_STRING) {
+		do {
+			if (fgets(tmp->url, MAX_STRING, fd) == 0) {
+				free(tmp);
+				return nresults;
+			}
+			/* Ignore lines starting with "#" */
+		} while (tmp->url[0] == '#');
+		size_t len = strcspn(tmp->url, "\r\n");
+		/* Check the string ends with LF or CRLF */
+		if (!tmp->url[len]) {
 			fprintf(stderr, _("Error when trying to read URL (Too long?).\n"));
 			free(tmp);
 			goto free_list;
 		}
+		tmp->url[len] = '\0';
 		cur->next = tmp;
 		cur = tmp;
 	}

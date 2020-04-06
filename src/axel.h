@@ -130,7 +130,7 @@ typedef struct {
 	url_t *url;
 } axel_t;
 
-axel_t *axel_new(conf_t *conf, int count, const void *url);
+axel_t *axel_new(conf_t *conf, int count, const search_t *urls);
 int axel_open(axel_t *axel);
 void axel_start(axel_t *axel);
 void axel_do(axel_t *axel);
@@ -138,5 +138,8 @@ void axel_close(axel_t *axel);
 void print_messages(axel_t *axel);
 
 double axel_gettime(void);
+
+#define DN_MATCH_MALFORMED -1
+int dn_match(const char *hostname, const char *pat, size_t pat_len);
 
 #endif				/* AXEL_AXEL_H */

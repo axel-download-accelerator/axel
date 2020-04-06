@@ -6,6 +6,7 @@ axel_SOURCES = \
 	src/axel.c \
 	src/axel.h \
 	src/sleep.h \
+	src/sleep.c \
 	src/conf.c \
 	src/conf.h \
 	src/conn.c \
@@ -23,6 +24,7 @@ axel_SOURCES = \
 
 if WITH_SSL
 axel_SOURCES += \
+	src/dn-match.c \
 	src/ssl.c \
 	src/ssl_verify.c
 endif

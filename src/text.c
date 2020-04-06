@@ -101,7 +101,7 @@ main(int argc, char *argv[])
 	conf_t conf[1];
 	axel_t *axel;
 	int prealloc_num, url_num = 0;
-	int j, cur_head = 0, ret = 1;
+	int j, ret = 1;
 	char *s;
 
 	fn[0] = 0;
@@ -133,7 +133,12 @@ main(int argc, char *argv[])
 				      "User-Agent", optarg);
 			break;
 		case 'H':
-			strlcpy(conf->add_header[cur_head++], optarg,
+			if(!(conf->add_header_count<MAX_ADD_HEADERS)) {
+				fprintf(stderr,
+					_("Too many custom headers (-H)! Currently only %u custom headers can be appended.\n"), MAX_ADD_HEADERS-HDR_count_init);
+				goto free_conf;
+			}
+			strlcpy(conf->add_header[conf->add_header_count++], optarg,
 				sizeof(conf->add_header[0]));
 			break;
 		case 's':
@@ -215,7 +220,6 @@ main(int argc, char *argv[])
 			goto free_conf;
 		}
 	}
-	conf->add_header_count = cur_head;
 
 	/* disable alternate output and verbosity when quiet is specified */
 	if (conf->verbose < 0)
@@ -255,7 +259,11 @@ main(int argc, char *argv[])
 			/* add URL list from stdin to end of list */
 			/* "-" and the last node will be ignored */
 			url_num += search_readlist(list + prealloc_num - 2, stdin) - 1;
-			continue;
+		} else {
+			/* add URL from argv */
+			strlcpy(tmp->url, *argv, sizeof(tmp->url));
+			cur->next = tmp++;
+			cur = cur->next;
 		}
 		/* add URL from argv */
 		strlcpy(tmp->url, *argv, sizeof(tmp->url));
@@ -303,6 +311,14 @@ main(int argc, char *argv[])
 				printf("%-70.70s %5i\n", search[i].url,
 				       search[i].speed);
 			printf("\n");
+		}
+		/* FIXME this is lost; also, should not this append to the
+		 * existing list? */
+		axel = axel_new(conf, j, search);
+		free(search);
+		if (!axel || axel->ready == -1) {
+			print_messages(axel);
+			goto close_axel;
 		}
 	} else {
 		search = list;
@@ -413,10 +429,7 @@ main(int argc, char *argv[])
 		if (axel->message) {
 			if (conf->alternate_output == 1) {
 				/* clreol-simulation */
-				putchar('\r');
-				for (int i = get_term_width(); i > 0; i--)
-					putchar(' ');
-				putchar('\r');
+				fputs("\e[2K\r", stdout);
 			} else {
 				putchar('\n');
 			}
