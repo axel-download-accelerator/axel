@@ -233,6 +233,13 @@ msgstr "String proxy tidak valid: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "Koneksi hilang saat menulis.\n"
 
+#: src/text.c:136
+#, c-format
+msgid ""
+"Too many custom headers (-H)! Currently only %u custom headers can be "
+"appended.\n"
+msgstr ""
+
 #: src/text.c:209
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
@@ -464,6 +471,21 @@ msgstr ""
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL galat: %s\n"
+
+#: src/ssl.c:99
+#, c-format
+msgid "SSL error: Certificate error\n"
+msgstr ""
+
+#: src/ssl.c:106
+#, c-format
+msgid "SSL error: Certificate not found\n"
+msgstr ""
+
+#: src/ssl.c:112
+#, c-format
+msgid "SSL error: Hostname verification failed\n"
+msgstr ""
 
 #: src/tcp.c:74
 #, c-format
