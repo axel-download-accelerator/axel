@@ -2,10 +2,10 @@
 # Ismael Luceno <ismael@iodev.co.uk>, 2019
 msgid ""
 msgstr ""
-"Project-Id-Version: Axel\n"
+"Project-Id-Version: axel 2.17.8\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2019-07-12 20:01+0200\n"
+"PO-Revision-Date: 2020-04-06 20:56+0200\n"
 "Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: Deutsch\n"
 "Language: de\n"
@@ -229,6 +229,15 @@ msgstr "Ungültige Proxy-Angabe: %s\n"
 #, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Verbindung verloren beim Schreiben.\n"
+
+#: src/text.c:136
+#, c-format
+msgid ""
+"Too many custom headers (-H)! Currently only %u custom headers can be "
+"appended.\n"
+msgstr ""
+"Zu viele benutzerdefinierte Header (-H)! Derzeit können nur %u "
+"benutzerdefinierte Header angehängt werden.\n"
 
 #: src/text.c:209
 #, c-format
@@ -462,6 +471,21 @@ msgstr ""
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL-Fehler: %s\n"
+
+#: src/ssl.c:99
+#, c-format
+msgid "SSL error: Certificate error\n"
+msgstr "SSL-Fehler: Zertifikatfehler\n"
+
+#: src/ssl.c:106
+#, c-format
+msgid "SSL error: Certificate not found\n"
+msgstr "SSL-Fehler: Zertifikat nicht gefunden\n"
+
+#: src/ssl.c:112
+#, c-format
+msgid "SSL error: Hostname verification failed\n"
+msgstr "SSL-Fehler: Überprüfung des Hostnames fehlgeschlagen\n"
 
 #: src/tcp.c:74
 #, c-format
