@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: axel 2.17.4\n"
+"Project-Id-Version: axel 2.17.8\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2019-07-14 17:07+0200\n"
+"PO-Revision-Date: 2020-04-06 21:11+0200\n"
 "Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
@@ -232,6 +232,15 @@ msgstr "String de proxy inválida: %s\n"
 #, c-format
 msgid "Connection gone while writing.\n"
 msgstr "Conexão perdida enquanto escrevia no disco.\n"
+
+#: src/text.c:136
+#, c-format
+msgid ""
+"Too many custom headers (-H)! Currently only %u custom headers can be "
+"appended.\n"
+msgstr ""
+"Demasiados cabeçalhos personalizados (-H)! Atualmente apenas %u cabeçalhos "
+"personalizados podem ser anexados.\n"
 
 #: src/text.c:209
 #, c-format
@@ -465,6 +474,21 @@ msgstr "Por favor, veja o arquivo CREDITS.\n"
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "Erro SSL: %s\n"
+
+#: src/ssl.c:99
+#, c-format
+msgid "SSL error: Certificate error\n"
+msgstr "Erro SSL: Erro de Certificado\n"
+
+#: src/ssl.c:106
+#, c-format
+msgid "SSL error: Certificate not found\n"
+msgstr "Erro SSL: Certificado não encontrado\n"
+
+#: src/ssl.c:112
+#, c-format
+msgid "SSL error: Hostname verification failed\n"
+msgstr "Erro SSL: Verificação do Hostname falhou\n"
 
 #: src/tcp.c:74
 #, c-format
