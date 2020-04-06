@@ -248,19 +248,32 @@ main(int argc, char *argv[])
 		goto free_conf;
 	}
 
-	/* load URls from argv and stdin */
-	tmp = cur = list;
-	for (argv += optind; *argv; argv++) {
-		if (argv[0][0] == '-' && !argv[0][1]) {
-			/* add URL list from stdin to end of list */
-			/* "-" and the last node will be ignored */
-			url_num += search_readlist(list + prealloc_num - 2, stdin) - 1;
-			continue;
+	argv += optind;
+	/* if "-" is the only argument */
+	if (prealloc_num == 1 && argv[0][0] == '-' && !argv[0][1]) {
+		url_num = search_readlist(list, stdin);
+		if (url_num == 0) {
+			print_help();
+			goto free_conf;
 		}
-		/* add URL from argv */
-		strlcpy(tmp->url, *argv, sizeof(tmp->url));
-		cur->next = tmp++;
-		cur = cur->next;
+		tmp = list;
+		list = list->next;
+		free(tmp);
+	} else {
+		/* load URLs from argv and stdin */
+		tmp = cur = list;
+		for (; *argv; argv++) {
+			if (argv[0][0] == '-' && !argv[0][1]) {
+				/* add URL list from stdin to end of list */
+				/* "-" and the last node will be ignored */
+				url_num += search_readlist(list + prealloc_num - 2, stdin) - 1;
+				continue;
+			}
+			/* add URL from argv */
+			strlcpy(tmp->url, *argv, sizeof(tmp->url));
+			cur->next = tmp++;
+			cur = cur->next;
+		}
 	}
 
 	printf(_("Initializing download: %s\n"), list[0].url);
