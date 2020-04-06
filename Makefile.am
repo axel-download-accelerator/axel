@@ -25,8 +25,10 @@ dist-hook:
 
 MSG = echo '==>'
 ERR = ! echo '!!! ERROR:'
-.PHONY: relcheck
-relcheck:
+.PHONY: relcheck update-po
+update-po:
+	$(MAKE) -C po update-po
+relcheck: update-po
 	@$(MSG) 'Checking for non-UTF8 translations...'
 	@$(AWK) -f $(top_srcdir)/scripts/pocheck.awk $(top_srcdir)/po/*.po
 	@$(MSG) 'Checking the state of the project...'
