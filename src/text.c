@@ -312,14 +312,6 @@ main(int argc, char *argv[])
 				       search[i].speed);
 			printf("\n");
 		}
-		/* FIXME this is lost; also, should not this append to the
-		 * existing list? */
-		axel = axel_new(conf, j, search);
-		free(search);
-		if (!axel || axel->ready == -1) {
-			print_messages(axel);
-			goto close_axel;
-		}
 	} else {
 		search = list;
 	}
