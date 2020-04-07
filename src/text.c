@@ -96,7 +96,7 @@ main(int argc, char *argv[])
 {
 	char fn[MAX_STRING];
 	int do_search = 0;
-	search_t *search, *list;
+	search_t *search, *list, *tail;
 	search_t *tmp, *cur;
 	conf_t conf[1];
 	axel_t *axel;
@@ -252,23 +252,35 @@ main(int argc, char *argv[])
 		goto free_conf;
 	}
 
-	/* load URls from argv and stdin */
+	/* Load URLs from argv and stdin */
 	tmp = cur = list;
+	tail = list + prealloc_num - 1;
 	for (argv += optind; *argv; argv++) {
 		if (argv[0][0] == '-' && !argv[0][1]) {
-			/* add URL list from stdin to end of list */
-			/* "-" and the last node will be ignored */
-			url_num += search_readlist(list + prealloc_num - 2, stdin) - 1;
+			/* Add URL list from stdin to end of list, "-"s will be ignored */
+			if (list + prealloc_num - 1 == tail) {
+				/* add nodes to end of the list */
+				url_num += search_readlist(list + prealloc_num - 1, stdin);
+			}
+			if (list == tail) { /* Only "-"s in argument list */
+				list = list->next;
+				free(tail);
+			} else {
+				/* Move forward, because "-" is ignored */
+				(tail - 1)->next = tail->next;
+			}
+			tail--;
+			url_num--;
 		} else {
-			/* add URL from argv */
+			/* Add URL from argv */
 			strlcpy(tmp->url, *argv, sizeof(tmp->url));
 			cur->next = tmp++;
 			cur = cur->next;
 		}
-		/* add URL from argv */
-		strlcpy(tmp->url, *argv, sizeof(tmp->url));
-		cur->next = tmp++;
-		cur = cur->next;
+	}
+	/* Fix next pointer of first node */
+	if (tail == list && url_num > 1) {
+		list->next = (list + 1)->next;
 	}
 
 	printf(_("Initializing download: %s\n"), list[0].url);
