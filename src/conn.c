@@ -59,6 +59,7 @@ conn_set(conn_t *conn, const char *set_url)
 	if ((i = strstr(set_url, "://")) == NULL) {
 		conn->proto = PROTO_DEFAULT;
 		conn->port = PROTO_DEFAULT_PORT;
+		conn->use_default = true;
 		strlcpy(url, set_url, sizeof(url));
 	} else {
 		int proto_len = i - set_url;
@@ -270,15 +271,29 @@ conn_init(conn_t *conn)
 	} else {
 		conn->http->local_if = conn->local_if;
 		conn->http->tcp.ai_family = conn->conf->ai_family;
-		if (!http_connect(conn->http, conn->proto, proxy, conn->host,
-				  conn->port, conn->user, conn->pass,
-				  conn->conf->io_timeout)) {
+		for (;;) {
+			if (!http_connect(conn->http, conn->proto, proxy, conn->host,
+					conn->port, conn->user, conn->pass,
+					conn->conf->io_timeout)) {
+				if (conn->proto == PROTO_HTTPS && conn->use_default) {
+					/* Fallback to http */
+					conn->proto = PROTO_HTTP;
+					if (conn->port == PROTO_HTTPS_PORT)
+						conn->port = PROTO_HTTP_PORT;
+					printf(_("Fallback to http\n"));
+#ifdef DEBUG
+					printf("proto: %d, port: %d\n", conn->proto, conn->port);
+#endif
+					continue;
+				}
+				conn->message = conn->http->headers;
+				conn_disconnect(conn);
+				return 0;
+			}
 			conn->message = conn->http->headers;
-			conn_disconnect(conn);
-			return 0;
+			conn->tcp = &conn->http->tcp;
+			break;
 		}
-		conn->message = conn->http->headers;
-		conn->tcp = &conn->http->tcp;
 	}
 	return 1;
 }

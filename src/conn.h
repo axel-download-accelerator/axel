@@ -80,6 +80,7 @@ typedef struct {
 
 	int proto;
 	int port;
+	bool use_default; /* default to HTTPS */
 	int proxy;
 	char host[MAX_STRING];
 	char dir[MAX_STRING];
