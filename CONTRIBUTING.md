@@ -35,3 +35,17 @@ You can also find other developers in the #axel channel on freenode.
 
   -- Eriberto, Sun, 20 Mar 2016 16:27:53 -0300,
      updated on Sun, 08 Sep 2017 23:27:00 -0300.
+
+## Submitting Changes
+
+### Coding style
+As of version 2.15, Axel adopted a new coding style, very similar to that of the
+Linux Kernel, with the additional requirement to insert a newline after the
+return type of procedure declarations.
+
+To aid the transition for imported code, an `.indent.pro` file is provided in
+the top level source directory.  It should work with both GNU and BSD
+implementations of `indent`, although the results may be slightly different.
+
+Small variations are acceptable, and *non-compliance* in existing code, by
+itself, *is not something to fix*.
