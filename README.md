@@ -33,8 +33,12 @@ development process[3]. You can also find other developers in the
 [2]: https://tracker.debian.org/pkg/axel
 [3]: https://groups.google.com/forum/#!forum/axel-accelerator-dev
 
-## Building from source
+## Installing from binaries
+Your operating system may contain a precompiled version of Axel, and if so you
+should probably use it.  If the package is outdated please get in touch with the
+package maintainer or open a support ticket with your distro.
 
+## Building from source
 WARNING: Building from the source code repository is recommended only when doing
 development, otherwise only use release tarballs.
 
@@ -51,8 +55,7 @@ you need to generate the buildsystem first with:
     autoreconf -i
 
 
-### Dependencies for release tarballs ###
-
+### Dependencies
 * `gettext` (or `gettext-tiny`)
 * `pkg-config`
 
@@ -60,18 +63,14 @@ Optional:
 
 * `libssl` (OpenSSL, LibreSSL or compatible) -- for SSL/TLS support.
 
-### Extra dependencies for building from snapshots ###
-
+#### Extra dependencies for building from snapshots
 * `autoconf-archive`
 * `autoconf`
 * `automake`
 * `autopoint`
 * `txt2man`
 
-### Building on Ubuntu from Git ###
-
-#### Packages ####
-
+#### Packages on Debian-based systems
 * `build-essential`
 * `autoconf`
 * `autoconf-archive`
@@ -80,22 +79,16 @@ Optional:
 * `gettext`
 * `libssl-dev`
 * `pkg-config`
+* `txt2man`
 
-### Build instructions ###
 
-	$ autoreconf -fiv
-	$ ./configure && make && sudo make install
+#### Packages on Mac OS X (Homebrew)
+* `autoconf-archive`
+* `automake`
+* `gettext`
+* `openssl`
 
-## Mac OS X ##
-### Install with Homebrew ###
-
-    brew install axel
-
-### Building ##
-
-Install the following homebrew packages:
-
-	brew install autoconf-archive automake gettext openssl
+### Building on Mac OS X (Homebrew)
 
 You'll need to provide some extra options to autotools so it can find gettext
 and openssl.
@@ -104,7 +97,7 @@ and openssl.
 	OPENSSL=/usr/local/opt/openssl
 	PATH="$GETTEXT/bin:$PATH"
 
-	autoreconf -fiv -I$GETTEXT/share/aclocal/
+	[ -x configure ] || autoreconf -fiv -I$GETTEXT/share/aclocal/
 
 	CFLAGS="-I$GETTEXT/include -I$OPENSSL/include" \
 	LDFLAGS=-L$GETTEXT/lib ./configure
