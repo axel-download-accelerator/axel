@@ -30,7 +30,7 @@ paid development time through:
 
 - *Ismael Luceno*
   + [Github Sponsors](https://github.com/sponsors/ismaell)
-  + [|[Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/ismaell)
+  + [![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/ismaell)
   + [![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ismael/donate)
 
 ## Installing from binaries
