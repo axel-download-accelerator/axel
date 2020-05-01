@@ -33,20 +33,23 @@ development process[3]. You can also find other developers in the
 [2]: https://tracker.debian.org/pkg/axel
 [3]: https://groups.google.com/forum/#!forum/axel-accelerator-dev
 
+## Building from source
 
+WARNING: Building from the source code repository is recommended only when doing
+development, otherwise only use release tarballs.
 
-
-
-## Building from source ##
-
-Release tarballs contain a pre-generated buildsystem, but if you need to
-edit/patch it, or you're building from a copy of the repository, then you may
-need to run `autoreconf -i` to generate it. Further instructions are provided in
-the [INSTALL](INSTALL) file. The basic actions for most users are:
+Axel uses GNU autotools for it's buildsystem; instructions are provided in the
+[INSTALL](INSTALL) file. The basic actions for most users are:
 
     ./configure && make && make install
 
-To build without SSL/TLS support, use `./configure --without-ssl`.
+To build without SSL/TLS support, pass to `configure` the `--without-ssl` flag.
+
+If you're working from the source code repository instead of a release tarball,
+you need to generate the buildsystem first with:
+
+    autoreconf -i
+
 
 ### Dependencies for release tarballs ###
 
