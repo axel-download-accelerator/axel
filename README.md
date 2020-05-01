@@ -1,6 +1,5 @@
-# AXEL
+# AXEL - Lightweight CLI download accelerator
 
-#### Axel - Lightweight CLI download accelerator
 
 ## 1. Help this project ##
 
