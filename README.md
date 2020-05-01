@@ -15,23 +15,23 @@ Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone
 else who has contributed to it over the years.
 
 ## How to help
+If you can code and are interested in improving Axel, please read the
+[CONTRIBUTING.md](CONTRIBUTING.md) file; if you're looking for ideas check our
+[open tickets](https://github.com/axel-download-accelerator/axel/issues/).
 
-Axel needs your help. **If you are a programmer** and want to
-help a nice project, this is your opportunity.
+Additionally, there is a
+[google group](https://groups.google.com/forum/#!forum/axel-accelerator-dev) to
+discuss and to coordinate development. You can also find other developers in the
+`#axel` channel on [Freenode](https://freenode.net/).
 
-Axel was imported from its old repository[1] to GitHub (the original
-homepage and developers are inactive).
+The sustainability of the project mainly depends on developers dedicating time,
+so if you want to contribute but can't code, there's also the option to fund
+paid development time through:
 
-If you are interested in helping Axel, please read the
-[CONTRIBUTING.md](CONTRIBUTING.md) file.
-
-Additionally, there is a group to discuss and to coordinate the
-development process[3]. You can also find other developers in the
-`#axel` channel on freenode.
-
-[1]: https://alioth.debian.org/projects/axel
-[2]: https://tracker.debian.org/pkg/axel
-[3]: https://groups.google.com/forum/#!forum/axel-accelerator-dev
+- *Ismael Luceno*
+  + [Github Sponsors](https://github.com/sponsors/ismaell)
+  + [|[Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/ismaell)
+  + [![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ismael/donate)
 
 ## Installing from binaries
 Your operating system may contain a precompiled version of Axel, and if so you
