@@ -18,8 +18,6 @@ these steps:
 To find issues and bugs to fix, you can check these addresses:
 
    - https://github.com/axel-download-accelerator/axel/issues
-   - https://alioth.debian.org/tracker/?atid=413085&group_id=100070&func=browse
-       (ALIOTH IS THE OLD HOMEPAGE, BUT HAS OPENED BUGS)
    - https://bugs.debian.org/cgi-bin/pkgreport.cgi?dist=unstable;package=axel
    - https://bugs.launchpad.net/ubuntu/+source/axel/+bugs
    - https://apps.fedoraproject.org/packages/axel/bugs
