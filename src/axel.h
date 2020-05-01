@@ -94,6 +94,7 @@ typedef struct {
 typedef message_t url_t;
 typedef message_t if_t;
 
+#include "abuf.h"
 #include "conf.h"
 #include "tcp.h"
 #include "ftp.h"

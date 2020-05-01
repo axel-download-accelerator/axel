@@ -3,6 +3,8 @@ axel_SOURCES = \
 	compat-android.h \
 	compat-bsd.h \
 	compat-ssl.h \
+	src/abuf.c \
+	src/abuf.h \
 	src/axel.c \
 	src/axel.h \
 	src/sleep.h \
