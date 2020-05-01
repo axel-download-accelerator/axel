@@ -1,7 +1,7 @@
 # AXEL - Lightweight CLI download accelerator
 
 
-## 1. Help this project ##
+## How to help
 
 Axel needs your help. **If you are a programmer** and want to
 help a nice project, this is your opportunity.
