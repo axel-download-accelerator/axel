@@ -1,5 +1,18 @@
 # AXEL - Lightweight CLI download accelerator
 
+## About
+
+Axel tries to accelerate the download process by using multiple
+connections per file, and can also balance the load between
+different servers.
+
+Axel tries to be as light as possible, so it might be useful on
+byte-critical systems.
+
+Axel supports HTTP, HTTPS, FTP and FTPS protocols.
+
+Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone
+else who has contributed to it over the years.
 
 ## How to help
 
@@ -20,18 +33,9 @@ development process[3]. You can also find other developers in the
 [2]: https://tracker.debian.org/pkg/axel
 [3]: https://groups.google.com/forum/#!forum/axel-accelerator-dev
 
-## 2. What is Axel? ##
 
-Axel tries to accelerate the download process by using multiple
-connections per file, and can also balance the load between
-different servers.
 
-Axel tries to be as light as possible, so it might be useful on
-byte-critical systems.
 
-Axel supports HTTP, HTTPS, FTP and FTPS protocols.
-
-Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone else who has contributed to it.
 
 ## Building from source ##
 
