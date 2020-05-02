@@ -43,13 +43,10 @@
 #ifndef AXEL_HTTP_H
 #define AXEL_HTTP_H
 
-#define MAX_QUERY	2048	/* Should not grow larger.. */
-
 typedef struct {
 	char host[MAX_STRING];
 	char auth[MAX_STRING];
-	char request[MAX_QUERY];
-	char headers[MAX_QUERY];
+	abuf_t request[1], headers[1];
 	int port;
 	int proto;		/* FTP through HTTP proxies */
 	int proxy;

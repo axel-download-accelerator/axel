@@ -697,6 +697,11 @@ axel_close(axel_t *axel)
 	print_messages(axel);
 
 	close(axel->outfd);
+
+	if (!PROTO_IS_FTP(axel->conn->proto) || axel->conn->proxy) {
+		abuf_setup(axel->conn->http->request, ABUF_FREE);
+		abuf_setup(axel->conn->http->headers, ABUF_FREE);
+	}
 	free(axel->conn);
 	free(axel);
 	free(buffer);

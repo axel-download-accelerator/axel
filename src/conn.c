@@ -273,11 +273,11 @@ conn_init(conn_t *conn)
 		if (!http_connect(conn->http, conn->proto, proxy, conn->host,
 				  conn->port, conn->user, conn->pass,
 				  conn->conf->io_timeout)) {
-			conn->message = conn->http->headers;
+			conn->message = conn->http->headers->p;
 			conn_disconnect(conn);
 			return 0;
 		}
-		conn->message = conn->http->headers;
+		conn->message = conn->http->headers->p;
 		conn->tcp = &conn->http->tcp;
 	}
 	return 1;
@@ -310,6 +310,8 @@ conn_setup(conn_t *conn)
 		conn->http->firstbyte =
 			conn->supported ? conn->currentbyte : -1;
 		conn->http->lastbyte = conn->lastbyte;
+
+		abuf_setup(conn->http->request, 2048);
 		http_get(conn->http, s);
 		for (i = 0; i < conn->conf->add_header_count; i++)
 			http_addheader(conn->http, "%s",
@@ -326,6 +328,7 @@ conn_exec(conn_t *conn)
 			return 0;
 		return ftp_wait(conn->ftp) / 100 == 1;
 	} else {
+		abuf_setup(conn->http->headers, 1024);
 		if (!http_exec(conn->http))
 			return 0;
 		return conn->http->status / 100 == 2;
@@ -392,18 +395,17 @@ conn_info(conn_t *conn)
 			return 0;
 		sscanf(t, "%1000s", s);
 		if (s[0] == '/') {
-			snprintf(conn->http->headers,
-					sizeof(conn->http->headers),
-					"%s%s:%i%s",
-					scheme_from_proto(conn->proto),
-					conn->host, conn->port, s);
-			strlcpy(s, conn->http->headers, sizeof(s));
+			abuf_printf(conn->http->headers, "%s%s:%i%s",
+				    scheme_from_proto(conn->proto),
+				    conn->host, conn->port, s);
+			strlcpy(s, conn->http->headers->p, sizeof(s));
 		} else if (strstr(s, "://") == NULL) {
-			conn_url(conn->http->headers,
-					sizeof(conn->http->headers), conn);
-			strlcat(conn->http->headers, s,
-				sizeof(conn->http->headers));
-			strlcpy(s, conn->http->headers, sizeof(s));
+			conn_url(conn->http->headers->p,
+				 conn->http->headers->len,
+				 conn);
+			strlcat(conn->http->headers->p, s,
+				conn->http->headers->len);
+			strlcpy(s, conn->http->headers->p, sizeof(s));
 		}
 
 		if (!conn_set(conn, s)) {
