@@ -347,17 +347,24 @@ axel_open(axel_t *axel)
 	return 1;
 }
 
+/**
+ * Steals half of the largest available chunk of work of at least
+ * MIN_CHUNK_WORTH size, from an active connection to feed a finished one.
+ *
+ * Must be called with the conn_t lock held.
+ */
 static
 void
 reactivate_connection(axel_t *axel, int thread)
 {
-	long long int max_remaining = 0;
+	/* TODO Make the minimum also depend on the connection speed */
+	long long int max_remaining = MIN_CHUNK_WORTH - 1;
 	int idx = -1;
 
 	if (axel->conn[thread].enabled ||
 	    axel->conn[thread].currentbyte < axel->conn[thread].lastbyte)
 		return;
-	/* find some more work to do */
+
 	for (int j = 0; j < axel->conf->num_connections; j++) {
 		long long int remaining =
 		    axel->conn[j].lastbyte - axel->conn[j].currentbyte;
@@ -366,16 +373,16 @@ reactivate_connection(axel_t *axel, int thread)
 			idx = j;
 		}
 	}
-	/* do not reactivate unless large enough */
-	if (max_remaining > MIN_CHUNK_WORTH && idx != -1) {
+
+	if (idx == -1)
+		return;
 #ifdef DEBUG
-		printf(_("\nReactivate connection %d\n"), thread);
+	printf(_("\nReactivate connection %d\n"), thread);
 #endif
-		axel->conn[thread].lastbyte = axel->conn[idx].lastbyte;
-		axel->conn[idx].lastbyte =
-		    axel->conn[idx].currentbyte + max_remaining / 2;
-		axel->conn[thread].currentbyte = axel->conn[idx].lastbyte;
-	}
+	axel->conn[thread].lastbyte = axel->conn[idx].lastbyte;
+	axel->conn[idx].lastbyte = axel->conn[idx].currentbyte
+		+ max_remaining / 2;
+	axel->conn[thread].currentbyte = axel->conn[idx].lastbyte;
 }
 
 /* Start downloading */
