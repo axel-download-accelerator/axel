@@ -34,12 +34,15 @@
 
 #define _ISOC99_SOURCE
 
+#include "config.h"
+
 #include <errno.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
 
-#include "abuf.h"
+#include "axel.h"
+
 
 /**
  * Abstract buffer allocation/free.

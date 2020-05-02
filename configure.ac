@@ -39,6 +39,9 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
 AX_IS_RELEASE([git-directory])
 AX_COMPILER_FLAGS()
 
+# GCC function attributes
+AX_GCC_FUNC_ATTRIBUTE([format])
+
 # Built-in functions
 AX_GCC_BUILTIN([__builtin_clzll])
 

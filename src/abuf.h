@@ -41,7 +41,7 @@ typedef struct {
 } abuf_t;
 
 int abuf_setup(abuf_t *abuf, size_t len);
-int abuf_printf(abuf_t *abuf, const char *fmt, ...);
+int abuf_printf(abuf_t *abuf, const char *fmt, ...) PRINTF_FUNC(2);
 
 #define ABUF_FREE 0
 

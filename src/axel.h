@@ -70,6 +70,13 @@
 #include "compat-bsd.h"
 #include "compat-ssl.h"
 
+/* GCC function attributes */
+#ifdef HAVE_FUNC_ATTRIBUTE_FORMAT
+#define PRINTF_FUNC(argn) __attribute__((format(__printf__, argn, argn+1)))
+#else
+#define PRINTF_FUNC(argn)
+#endif
+
 /* Internationalization */
 #ifdef ENABLE_NLS
 #define _(x)			gettext(x)
