@@ -410,7 +410,9 @@ axel_start(axel_t *axel)
 
 	for (i = 0; i < axel->conf->num_connections; i++) {
 		if (axel->conn[i].currentbyte > axel->conn[i].lastbyte) {
+			pthread_mutex_lock(&axel->conn[i].lock);
 			reactivate_connection(axel, i);
+			pthread_mutex_unlock(&axel->conn[i].lock);
 		} else if (axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
 			if (axel->conf->verbose >= 2) {
 				axel_message(axel,
