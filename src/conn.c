@@ -283,6 +283,11 @@ conn_init(conn_t *conn)
 	return 1;
 }
 
+/**
+ * Setup the connection.
+ *
+ * Must be called with the conn_t lock held.
+ */
 int
 conn_setup(conn_t *conn)
 {
