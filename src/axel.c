@@ -160,8 +160,24 @@ axel_new(conf_t *conf, int count, const search_t *res)
 		}
 	}
 
+#ifdef HAVE_SSL
+	status = (strstr(axel->url->text, "://") == NULL);
+#endif
 	do {
 		if (!conn_init(&axel->conn[0])) {
+#ifdef HAVE_SSL
+			if (status == 1) {
+#ifdef DEBUG
+				fprintf(stderr, "Fallback to scheme %s\n",
+					scheme_from_proto(PROTO_FALLBACK));
+#endif
+				axel->conn[0].proto = PROTO_FALLBACK;
+				if (axel->conn[0].port == PROTO_DEFAULT)
+					axel->conn[0].port = PROTO_FALLBACK_PORT;
+				status = -1; /* Just for going into the next loop */
+				continue;
+			}
+#endif
 			axel_message(axel, "%s", axel->conn[0].message);
 			axel->ready = -1;
 			return axel;
@@ -384,13 +400,33 @@ axel_start(axel_t *axel)
 {
 	int i;
 	url_t *url_ptr;
+#ifdef HAVE_SSL
+	int use_default = 0;
+	char s[MAX_STRING + 10];
+#endif
 
 	/* HTTP might've redirected and FTP handles wildcards, so
 	   re-scan the URL for every conn */
 	url_ptr = axel->url;
 	for (i = 0; i < axel->conf->num_connections; i++) {
+#ifndef HAVE_SSL
 		conn_set(&axel->conn[i], url_ptr->text);
 		url_ptr = url_ptr->next;
+#else
+		if (use_default) {
+			sprintf(s, "%s%s", scheme_from_proto(PROTO_FALLBACK),
+				url_ptr->text);
+			conn_set(&axel->conn[i], s);
+			url_ptr = url_ptr->next;
+			use_default = 0;
+		} else {
+			conn_set(&axel->conn[i], url_ptr->text);
+			if (strstr(url_ptr->text, "://") == NULL)
+				use_default = 1;
+			else
+				url_ptr = url_ptr->next;
+		}
+#endif
 		axel->conn[i].local_if = axel->conf->interfaces->text;
 		axel->conf->interfaces = axel->conf->interfaces->next;
 		axel->conn[i].conf = axel->conf;
@@ -439,6 +475,10 @@ axel_do(axel_t *axel)
 	url_t *url_ptr;
 	struct timespec delay = {.tv_sec = 0, .tv_nsec = 100000000};
 	unsigned int max_speed_ratio;
+#ifdef HAVE_SSL
+	int use_default = 0;
+	char s[MAX_STRING + 10];
+#endif
 
 	/* Create statefile if necessary */
 	if (axel_gettime() > axel->next_state) {
@@ -584,8 +624,24 @@ axel_do(axel_t *axel)
 				pthread_join(*(axel->conn[i].setup_thread),
 					     NULL);
 
+#ifndef HAVE_SSL
 				conn_set(&axel->conn[i], url_ptr->text);
 				url_ptr = url_ptr->next;
+#else
+				if (use_default) {
+					sprintf(s, "%s%s", scheme_from_proto(PROTO_FALLBACK),
+						url_ptr->text);
+					conn_set(&axel->conn[i], s);
+					url_ptr = url_ptr->next;
+					use_default = 0;
+				} else {
+					conn_set(&axel->conn[i], url_ptr->text);
+					if (strstr(url_ptr->text, "://") == NULL)
+						use_default = 1;
+					else
+						url_ptr = url_ptr->next;
+				}
+#endif
 				/* axel->conn[i].local_if = axel->conf->interfaces->text;
 				   axel->conf->interfaces = axel->conf->interfaces->next; */
 				if (axel->conf->verbose >= 2)
