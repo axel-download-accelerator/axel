@@ -237,7 +237,7 @@ http_exec(http_t *conn)
 
 #ifdef DEBUG
 	fprintf(stderr, "--- Sending request ---\n%s--- End of request ---\n",
-		conn->request);
+		conn->request->p);
 #endif
 
 	strlcat(conn->request->p, "\r\n", conn->request->len);
@@ -292,7 +292,7 @@ http_exec(http_t *conn)
 
 #ifdef DEBUG
 	fprintf(stderr, "--- Reply headers ---\n%s--- End of headers ---\n",
-		conn->headers);
+		conn->headers->p);
 #endif
 
 	sscanf(conn->headers->p, "%*s %3i", &conn->status);
