@@ -39,6 +39,13 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
 AX_IS_RELEASE([git-directory])
 AX_COMPILER_FLAGS()
 
+# Debugging code
+AC_ARG_ENABLE(debug,
+    AS_HELP_STRING([--enable-debug], [enable debugging, default: no]))
+AS_IF([! test "x$enable_debug" = xyes ], [
+    AC_DEFINE([NDEBUG], [1], [disable debugging code])
+])
+
 # GCC function attributes
 AX_GCC_FUNC_ATTRIBUTE([format])
 

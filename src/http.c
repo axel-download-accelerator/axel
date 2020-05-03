@@ -235,7 +235,7 @@ http_exec(http_t *conn)
 {
 	char *s2;
 
-#ifdef DEBUG
+#ifndef NDEBUG
 	fprintf(stderr, "--- Sending request ---\n%s--- End of request ---\n",
 		conn->request->p);
 #endif
@@ -290,7 +290,7 @@ http_exec(http_t *conn)
 		}
 	}
 
-#ifdef DEBUG
+#ifndef NDEBUG
 	fprintf(stderr, "--- Reply headers ---\n%s--- End of headers ---\n",
 		conn->headers->p);
 #endif

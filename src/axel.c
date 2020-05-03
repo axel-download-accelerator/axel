@@ -259,7 +259,7 @@ axel_open(axel_t *axel)
 				     sizeof(axel->conn[0].currentbyte))) {
 			/* FIXME this might be wrong, the file may have been
 			 * truncated, we need another way to check. */
-#ifdef DEBUG
+#ifndef NDEBUG
 			printf(_("State file has old format.\n"));
 #endif
 			old_format = 1;
@@ -376,7 +376,7 @@ reactivate_connection(axel_t *axel, int thread)
 
 	if (idx == -1)
 		return;
-#ifdef DEBUG
+#ifndef NDEBUG
 	printf(_("\nReactivate connection %d\n"), thread);
 #endif
 	axel->conn[thread].lastbyte = axel->conn[idx].lastbyte;
@@ -859,7 +859,7 @@ axel_divide(axel_t *axel)
 	/* Last connection downloads remaining bytes */
 	size_t tail = axel->size % seg_len;
 	axel->conn[axel->conf->num_connections - 1].lastbyte += tail;
-#ifdef DEBUG
+#ifndef NDEBUG
 	for (int i = 0; i < axel->conf->num_connections; i++) {
 		printf(_("Downloading %lld-%lld using conn. %i\n"),
 		       axel->conn[i].currentbyte,

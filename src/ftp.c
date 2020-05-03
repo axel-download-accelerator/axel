@@ -168,7 +168,7 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 		free(reply);
 		return -1;
 	}
-#ifdef DEBUG
+#ifndef NDEBUG
 	fprintf(stderr, "%s", reply);
 #endif
 
@@ -288,7 +288,7 @@ ftp_command(ftp_t *conn, const char *format, ...)
 	strlcat(cmd, "\r\n", sizeof(cmd));
 	va_end(params);
 
-#ifdef DEBUG
+#ifndef NDEBUG
 	fprintf(stderr, "fd(%i)<--%s", conn->tcp.fd, cmd);
 #endif
 
@@ -354,7 +354,7 @@ ftp_wait(ftp_t *conn)
 	}
 	while (complete != 2);
 
-#ifdef DEBUG
+#ifndef NDEBUG
 	fprintf(stderr, "fd(%i)-->%s", conn->tcp.fd, conn->message);
 #endif
 
