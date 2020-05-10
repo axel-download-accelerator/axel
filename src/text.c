@@ -58,6 +58,7 @@ static void print_alternate_output(axel_t *axel);
 static void print_progress(size_t cur, size_t prev, size_t total, double kbps);
 static void print_help(void);
 static void print_version(void);
+static void print_version_info(void);
 static int get_term_width(void);
 
 int run = 1;
@@ -198,7 +199,7 @@ main(int argc, char *argv[])
 				j++;
 			break;
 		case 'V':
-			print_version();
+			print_version_info();
 			ret = 0;
 			goto free_conf;
 		case 'q':
@@ -650,6 +651,7 @@ get_term_width(void)
 void
 print_help(void)
 {
+	print_version();
 #ifdef NOGETOPTLONG
 	printf(_("Usage: axel [options] url1 [url2] [url...]\n"
 		 "\n"
@@ -701,7 +703,13 @@ print_help(void)
 void
 print_version(void)
 {
-	printf(_("Axel version %s (%s)\n"), VERSION, ARCH);
+	printf(_("Axel %s (%s)\n"), VERSION, ARCH);
+}
+
+void
+print_version_info(void)
+{
+	print_version();
 	printf("\nCopyright 2001-2007 Wilmer van der Gaast,\n"
 	       "\t  2007-2009 Giridhar Appaji Nag,\n"
 	       "\t  2008-2010 Philipp Hagemeister,\n"
