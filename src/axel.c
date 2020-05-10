@@ -65,6 +65,55 @@ static char *buffer = NULL;
 
 #define MIN_CHUNK_WORTH (100 * 1024) /* 100 KB */
 
+
+static
+char *
+stfile_makename(const char *bname)
+{
+	const char suffix[] = ".st";
+	const size_t bname_len = strlen(bname);
+	char *buf = malloc(bname_len + sizeof(suffix));
+	if (!buf) {
+		perror("stfile_open");
+		abort();
+	}
+	memcpy(buf, bname, bname_len);
+	memcpy(buf + bname_len, suffix, sizeof(suffix));
+	return buf;
+}
+
+
+static
+int
+stfile_unlink(const char *bname)
+{
+	char *stname = stfile_makename(bname);
+	int ret = unlink(stname);
+	return ret;
+}
+
+static
+int
+stfile_access(const char *bname, int mode)
+{
+	char *stname = stfile_makename(bname);
+	int ret = access(stname, mode);
+	free(stname);
+	return ret;
+}
+
+
+static
+int
+stfile_open(const char *bname, int flags, mode_t mode)
+{
+	char *stname = stfile_makename(bname);
+	int fd = open(stname, flags, mode);
+	free(stname);
+	return fd;
+}
+
+
 /* Create a new axel_t structure */
 axel_t *
 axel_new(conf_t *conf, int count, const search_t *res)
@@ -106,9 +155,7 @@ axel_new(conf_t *conf, int count, const search_t *res)
 		axel->delay_time.tv_nsec = delay % 1000000000;
 	}
 	if (buffer == NULL) {
-		/* reserve 4 additional bytes for file extension ".st" */
-		buffer = malloc(max(MAX_STRING + 4,
-				(size_t)axel->conf->buffer_size));
+		buffer = malloc(axel->conf->buffer_size);
 		if (!buffer)
 			goto nomem;
 	}
@@ -146,18 +193,15 @@ axel_new(conf_t *conf, int count, const search_t *res)
 			sizeof(axel->filename));
 
 	if (axel->conf->no_clobber && access(axel->filename, F_OK) == 0) {
-		char stfile[MAX_STRING + 3];
-
-		snprintf(stfile, sizeof(stfile), "%s.st", axel->filename);
-		if (access(stfile, F_OK) == 0) {
-			printf(_("Incomplete download found, ignoring "
-				 "no-clobber option\n"));
-		} else {
+		int ret = stfile_access(axel->filename, F_OK);
+		if (ret) {
 			printf(_("File '%s' already there; not retrieving.\n"),
 			       axel->filename);
 			axel->ready = -1;
 			return axel;
 		}
+		printf(_("Incomplete download found, ignoring "
+			 "no-clobber option\n"));
 	}
 
 	do {
@@ -216,7 +260,6 @@ axel_open(axel_t *axel)
 
 	if (axel->conf->verbose > 0)
 		axel_message(axel, _("Opening output file %s"), axel->filename);
-	snprintf(buffer, MAX_STRING + 4, "%s.st", axel->filename);
 
 	axel->outfd = -1;
 
@@ -232,7 +275,7 @@ axel_open(axel_t *axel)
 
 		axel->conn = new_conn;
 		axel_divide(axel);
-	} else if ((fd = open(buffer, O_RDONLY)) != -1) {
+	} else if ((fd = stfile_open(axel->filename, O_RDONLY, 0)) != -1) {
 		int old_format = 0;
 		off_t stsize = lseek(fd, 0, SEEK_END);
 		lseek(fd, 0, SEEK_SET);
@@ -695,8 +738,7 @@ axel_close(axel_t *axel)
 
 	/* Delete state file if necessary */
 	if (axel->ready == 1) {
-		snprintf(buffer, MAX_STRING + 4, "%s.st", axel->filename);
-		unlink(buffer);
+		stfile_unlink(axel->filename);
 	}
 	/* Else: Create it.. */
 	else if (axel->bytes_done > 0) {
@@ -726,25 +768,25 @@ axel_gettime(void)
 	return (double)time->tv_sec + (double)time->tv_usec / 1000000;
 }
 
-/* Save the state of the current download */
+/**
+ * Save the state of the current download.
+ */
 static
 void
 save_state(axel_t *axel)
 {
-	int fd, i;
-	char fn[MAX_STRING + 4];
-	ssize_t nwrite;
-
 	/* No use for such a file if the server doesn't support
 	   resuming anyway.. */
 	if (!axel->conn[0].supported)
 		return;
 
-	snprintf(fn, sizeof(fn), "%s.st", axel->filename);
-	if ((fd = open(fn, O_CREAT | O_TRUNC | O_WRONLY, 0666)) == -1) {
+	int fd;
+	fd = stfile_open(axel->filename, O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	if (fd == -1) {
 		return;		/* Not 100% fatal.. */
 	}
 
+	ssize_t nwrite;
 	nwrite =
 	    write(fd, &axel->conf->num_connections,
 		  sizeof(axel->conf->num_connections));
@@ -753,7 +795,7 @@ save_state(axel_t *axel)
 	nwrite = write(fd, &axel->bytes_done, sizeof(axel->bytes_done));
 	assert(nwrite == sizeof(axel->bytes_done));
 
-	for (i = 0; i < axel->conf->num_connections; i++) {
+	for (int i = 0; i < axel->conf->num_connections; i++) {
 		nwrite =
 		    write(fd, &axel->conn[i].currentbyte,
 			  sizeof(axel->conn[i].currentbyte));
