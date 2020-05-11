@@ -94,6 +94,10 @@ ssl_connect(int fd, char *hostname)
 		return NULL;
 	}
 
+	if (conf->insecure) {
+		return ssl;
+	}
+
 	err = SSL_get_verify_result(ssl);
 	if (err != X509_V_OK) {
 		fprintf(stderr, _("SSL error: Certificate error\n"));
