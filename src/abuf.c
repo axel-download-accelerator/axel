@@ -73,7 +73,7 @@ abuf_printf(abuf_t *abuf, const char *fmt, ...)
 		if (r < 0)
 			return r;
 	}
-		
+
 	va_end(ap);
 	return 0;
 }
