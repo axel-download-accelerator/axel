@@ -49,7 +49,6 @@
 #include "axel.h"
 
 #define HDR_CHUNK 512
-#define REQ_CHUNK 512
 
 inline static int
 is_default_port(int proto, int port)
@@ -216,17 +215,8 @@ http_addheader(http_t *conn, const char *format, ...)
 	strlcat(s, "\r\n", sizeof(s));
 	va_end(params);
 
-	size_t j = strlcat(conn->request->p, s, conn->request->len);
-	if (j > conn->request->len) {
-		size_t done = conn->request->len - 1;
-		int tmp = abuf_setup(conn->request,
-				     conn->request->len + REQ_CHUNK);
-		if (tmp < 0) {
-			fprintf(stderr, "Out of memory\n");
-			return;
-		}
-		strlcpy(conn->request->p + done, s + done,
-			conn->request->len - done);
+	if (abuf_strcat(conn->request, s) < 0) {
+		fprintf(stderr, "Out of memory\n");
 	}
 }
 
