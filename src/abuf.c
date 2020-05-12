@@ -77,3 +77,22 @@ abuf_printf(abuf_t *abuf, const char *fmt, ...)
 	va_end(ap);
 	return 0;
 }
+
+/**
+ * String concatenation.  The buffer must contain a valid C string.
+ * @returns 0 if OK, or negative value on error.
+ */
+int
+abuf_strcat(abuf_t *abuf, const char *src)
+{
+	size_t nread = strlcat(abuf->p, src, abuf->len);
+	if (nread > abuf->len) {
+		size_t done = abuf->len - 1;
+		int ret = abuf_setup(abuf, nread);
+		if (ret < 0)
+			return ret;
+		memcpy(abuf->p + done, src + done, nread - done);
+	}
+
+	return 0;
+}
