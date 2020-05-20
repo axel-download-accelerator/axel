@@ -13,6 +13,8 @@ axel_SOURCES = \
 	src/conf.h \
 	src/conn.c \
 	src/conn.h \
+	src/cookie.c \
+	src/cookie.h \
 	src/ftp.c \
 	src/ftp.h \
 	src/http.c \

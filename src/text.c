@@ -97,6 +97,10 @@ main(int argc, char *argv[])
 {
 	char fn[MAX_STRING];
 	int do_search = 0;
+	char *cookiefile = 0;
+	cookie_t *cookielist;
+	int cookie_count;
+	FILE *fd;
 	search_t *search;
 	conf_t conf[1];
 	axel_t *axel;
@@ -121,7 +125,7 @@ main(int argc, char *argv[])
 	j = -1;
 	while (1) {
 		int option = getopt_long(argc, argv,
-					 "s:n:o:S::46NqvhVakcH:U:T:",
+					 "s:n:o:S::46NqvhVakb:cH:U:T:",
 					 axel_options, NULL);
 		if (option == -1)
 			break;
@@ -182,6 +186,13 @@ main(int argc, char *argv[])
 		case 'k':
 			conf->insecure = 1;
 			break;
+		case 'b':
+			if (!optarg) {
+				print_help();
+				goto free_conf;
+			}
+			cookiefile = optarg;
+			break;
 		case 'c':
 			conf->no_clobber = 1;
 			break;
@@ -229,6 +240,29 @@ main(int argc, char *argv[])
 	if (conf->num_connections < 1) {
 		print_help();
 		goto free_conf;
+	}
+
+	if (cookiefile) {
+		fd = fopen(cookiefile, "r");
+		if (!fd) {
+			fprintf(stderr, _("Error opening cookie file %s\n"), cookiefile);
+			goto free_conf;
+		}
+		cookielist = calloc(COOKIE_PREALLOCATE_NUM, sizeof(cookie_t));
+		if (!cookielist) {
+			fprintf(stderr, _("Out of memory\n"));
+			goto free_conf;
+		}
+		for (int i = 0; i < COOKIE_PREALLOCATE_NUM - 1; i++)
+			cookielist[i].next = &cookielist[i + 1];
+		cookie_count = cookielist_loadfile(cookielist, fd);
+		fclose(fd);
+
+		// FIXME length of add_header string may not be enough.
+		cookielist_header(conf->add_header[conf->add_header_count++],
+			 cookielist, cookie_count, sizeof(conf->add_header[0]));
+		cookielist_free(cookielist, cookie_count);
+		free(cookielist);
 	}
 
 	if (conf->max_redirect < 0) {
