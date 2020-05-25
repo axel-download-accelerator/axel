@@ -89,6 +89,7 @@ stfile_unlink(const char *bname)
 {
 	char *stname = stfile_makename(bname);
 	int ret = unlink(stname);
+	free(stname);
 	return ret;
 }
 
