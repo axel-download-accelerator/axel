@@ -71,7 +71,7 @@ typedef struct {
 	unsigned io_timeout;
 
 	int add_header_count;
-	char add_header[MAX_ADD_HEADERS][MAX_STRING];
+	abuf_t add_header[MAX_ADD_HEADERS];
 } conf_t;
 
 int conf_loadfile(conf_t *conf, const char *file);
@@ -84,9 +84,9 @@ enum {
 };
 
 inline static void
-conf_hdr_make(char *dst, const char *k, const char *v)
+conf_hdr_make(abuf_t *abuf, const char *k, const char *v)
 {
-	snprintf(dst, sizeof(((conf_t *)0)->add_header[0]), "%s: %s", k, v);
+	abuf_printf(abuf, "%s: %s", k, v);
 }
 
 #endif				/* AXEL_CONF_H */

@@ -132,7 +132,7 @@ main(int argc, char *argv[])
 
 		switch (option) {
 		case 'U':
-			conf_hdr_make(conf->add_header[HDR_USER_AGENT],
+			conf_hdr_make(&conf->add_header[HDR_USER_AGENT],
 				      "User-Agent", optarg);
 			break;
 		case 'H':
@@ -141,8 +141,7 @@ main(int argc, char *argv[])
 					_("Too many custom headers (-H)! Currently only %u custom headers can be appended.\n"), MAX_ADD_HEADERS-HDR_count_init);
 				goto free_conf;
 			}
-			strlcpy(conf->add_header[conf->add_header_count++], optarg,
-				sizeof(conf->add_header[0]));
+			abuf_strcat(&conf->add_header[conf->add_header_count++], optarg);
 			break;
 		case 's':
 			if (!sscanf(optarg, "%i", &conf->max_speed)) {
@@ -259,8 +258,8 @@ main(int argc, char *argv[])
 		fclose(fd);
 
 		// FIXME length of add_header string may not be enough.
-		cookielist_header(conf->add_header[conf->add_header_count++],
-			 cookielist, cookie_count, sizeof(conf->add_header[0]));
+		cookielist_header(&conf->add_header[conf->add_header_count++],
+			 cookielist, cookie_count);
 		cookielist_free(cookielist, cookie_count);
 		free(cookielist);
 	}

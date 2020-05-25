@@ -54,7 +54,7 @@ typedef struct {
 
 void cookielist_free(cookie_t *cookielist, int num);
 int cookielist_loadfile(cookie_t *cookielist, FILE *fd);
-void cookielist_header(char *dst, const cookie_t *cookielist, int num, int maxlen);
+void cookielist_header(abuf_t *abuf, const cookie_t *cookielist, int num);
 
 int cookie_setup(cookie_t *cookie);
 int cookie_strcpy(char *str, const char *dst, const char *space);

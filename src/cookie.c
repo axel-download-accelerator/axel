@@ -122,17 +122,17 @@ cookielist_loadfile(cookie_t *cookielist, FILE *fd)
 }
 
 void
-cookielist_header(char *dst, const cookie_t *cookielist, int num, int maxlen)
+cookielist_header(abuf_t *abuf, const cookie_t *cookielist, int num)
 {
-    strlcpy(dst, "Cookie:", maxlen);
+    strlcpy(abuf->p, "Cookie:", abuf->len);
     const cookie_t *cookie = cookielist;
     // TODO simplify the code
     for (int i = 0; i < num; i++) {
-        strlcat(dst, " ", maxlen);
-        strlcat(dst, cookie->name, maxlen);
-        strlcat(dst, "=", maxlen);
-        strlcat(dst, cookie->value, maxlen);
-        strlcat(dst, ";", maxlen);
+        abuf_strcat(abuf, " ");
+        abuf_strcat(abuf, cookie->name);
+        abuf_strcat(abuf, "=");
+        abuf_strcat(abuf, cookie->value);
+        abuf_strcat(abuf, ";");
         cookie = cookie->next;
     }
 }
