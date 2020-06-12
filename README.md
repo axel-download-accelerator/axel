@@ -1,27 +1,6 @@
-# AXEL
+# AXEL - Lightweight CLI download accelerator
 
-#### Axel - Lightweight CLI download accelerator
-
-## 1. Help this project ##
-
-Axel needs your help. **If you are a programmer** and want to
-help a nice project, this is your opportunity.
-
-Axel was imported from its old repository[1] to GitHub (the original
-homepage and developers are inactive).
-
-If you are interested in helping Axel, please read the
-[CONTRIBUTING.md](CONTRIBUTING.md) file.
-
-Additionally, there is a group to discuss and to coordinate the
-development process[3]. You can also find other developers in the
-`#axel` channel on freenode.
-
-[1]: https://alioth.debian.org/projects/axel
-[2]: https://tracker.debian.org/pkg/axel
-[3]: https://groups.google.com/forum/#!forum/axel-accelerator-dev
-
-## 2. What is Axel? ##
+## About
 
 Axel tries to accelerate the download process by using multiple
 connections per file, and can also balance the load between
@@ -32,21 +11,51 @@ byte-critical systems.
 
 Axel supports HTTP, HTTPS, FTP and FTPS protocols.
 
-Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone else who has contributed to it.
+Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone
+else who has contributed to it over the years.
 
-## Building from source ##
+## How to help
+If you can code and are interested in improving Axel, please read the
+[CONTRIBUTING.md](CONTRIBUTING.md) file; if you're looking for ideas check our
+[open tickets](https://github.com/axel-download-accelerator/axel/issues/).
 
-Release tarballs contain a pre-generated buildsystem, but if you need to
-edit/patch it, or you're building from a copy of the repository, then you may
-need to run `autoreconf -i` to generate it. Further instructions are provided in
-the [INSTALL](INSTALL) file. The basic actions for most users are:
+Additionally, there is a
+[google group](https://groups.google.com/forum/#!forum/axel-accelerator-dev) to
+discuss and to coordinate development. You can also find other developers in the
+`#axel` channel on [Freenode](https://freenode.net/).
+
+The sustainability of the project mainly depends on developers dedicating time,
+so if you want to contribute but can't code, there's also the option to fund
+paid development time through:
+
+- *Ismael Luceno*
+  + [Github Sponsors](https://github.com/sponsors/ismaell)
+  + [![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/ismaell)
+  + [![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ismael/donate)
+
+## Installing from binaries
+Your operating system may contain a precompiled version of Axel, and if so you
+should probably use it.  If the package is outdated please get in touch with the
+package maintainer or open a support ticket with your distro.
+
+## Building from source
+WARNING: Building from the source code repository is recommended only when doing
+development, otherwise only use release tarballs.
+
+Axel uses GNU autotools for it's buildsystem; instructions are provided in the
+[INSTALL](INSTALL) file. The basic actions for most users are:
 
     ./configure && make && make install
 
-To build without SSL/TLS support, use `./configure --without-ssl`.
+To build without SSL/TLS support, pass to `configure` the `--without-ssl` flag.
 
-### Dependencies for release tarballs ###
+If you're working from the source code repository instead of a release tarball,
+you need to generate the buildsystem first with:
 
+    autoreconf -i
+
+
+### Dependencies
 * `gettext` (or `gettext-tiny`)
 * `pkg-config`
 
@@ -54,18 +63,14 @@ Optional:
 
 * `libssl` (OpenSSL, LibreSSL or compatible) -- for SSL/TLS support.
 
-### Extra dependencies for building from snapshots ###
-
+#### Extra dependencies for building from snapshots
 * `autoconf-archive`
 * `autoconf`
 * `automake`
 * `autopoint`
 * `txt2man`
 
-### Building on Ubuntu from Git ###
-
-#### Packages ####
-
+#### Packages on Debian-based systems
 * `build-essential`
 * `autoconf`
 * `autoconf-archive`
@@ -74,22 +79,16 @@ Optional:
 * `gettext`
 * `libssl-dev`
 * `pkg-config`
+* `txt2man`
 
-### Build instructions ###
 
-	$ autoreconf -fiv
-	$ ./configure && make && sudo make install
+#### Packages on Mac OS X (Homebrew)
+* `autoconf-archive`
+* `automake`
+* `gettext`
+* `openssl`
 
-## Mac OS X ##
-### Install with Homebrew ###
-
-    brew install axel
-
-### Building ##
-
-Install the following homebrew packages:
-
-	brew install autoconf-archive automake gettext openssl
+### Building on Mac OS X (Homebrew)
 
 You'll need to provide some extra options to autotools so it can find gettext
 and openssl.
@@ -98,7 +97,7 @@ and openssl.
 	OPENSSL=/usr/local/opt/openssl
 	PATH="$GETTEXT/bin:$PATH"
 
-	autoreconf -fiv -I$GETTEXT/share/aclocal/
+	[ -x configure ] || autoreconf -fiv -I$GETTEXT/share/aclocal/
 
 	CFLAGS="-I$GETTEXT/include -I$OPENSSL/include" \
 	LDFLAGS=-L$GETTEXT/lib ./configure

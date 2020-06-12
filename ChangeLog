@@ -1,3 +1,57 @@
+Version: 2.17.9, 2020-04-06
+
+  [ Ismael Luceno ]
+
+* Added coding style aid and licensing rules to CONTRIBUTING.md.
+* Fixed some race conditions with conn_t.
+* Updated and improved README.md.
+* Cleanup of code & build system.
+* Added a new buffer handling abstraction.
+* Removed limitations on state file name length.
+* Removed limitations on HTTP query length.
+* Added some missing function documentation.
+* Fixed insecure mode certificate checking error.
+* Fixed progress bar for large number of connections.
+* Made the help flag report axel's version number.
+
+  [ Jason ]
+
+* Fixed a memory leak when deleting the download state file.
+* Improved the new buffer handling abstraction and ported HTTP header
+  handling to it.
+* Code cleanup.
+* Updated Chinese translation.
+
+
+
+Version: 2.17.8, 2020-04-06
+
+  [ Ismael Luceno ]
+
+* Code cleanup, documentation, and build system improvements
+* Hostname wildcard matching support
+* Replaced progressbar line clearing with terminal control sequence
+* Updated translations: German, Italian, Japanese, Portuguese, Spanish
+
+  [ Jason ]
+
+* Fixed parsing of Content-Disposition HTTP header
+
+  [ Joao Eriberto Mota Filho ]
+
+* Added missing copyrights to headers
+
+  [ Ted Reed ]
+
+* Added SSL Certificate Hostname verification support
+
+  [ vewupom ]
+
+* Check if custom HTTP headers fit into add_header
+* Fixed User-Agent HTTP header never being included
+
+
+
 Version: 2.17.7, 2020-01-26
 
   [ Ismael Luceno ]

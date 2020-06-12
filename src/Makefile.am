@@ -1,9 +1,14 @@
 bin_PROGRAMS = axel
 axel_SOURCES = \
-	src/android-compat.h \
+	compat-android.h \
+	compat-bsd.h \
+	compat-ssl.h \
+	src/abuf.c \
+	src/abuf.h \
 	src/axel.c \
 	src/axel.h \
 	src/sleep.h \
+	src/sleep.c \
 	src/conf.c \
 	src/conf.h \
 	src/conn.c \
@@ -14,11 +19,17 @@ axel_SOURCES = \
 	src/http.h \
 	src/search.c \
 	src/search.h \
-	src/ssl.c \
 	src/ssl.h \
 	src/tcp.c \
 	src/tcp.h \
 	src/text.c
+
+if WITH_SSL
+axel_SOURCES += \
+	src/dn-match.c \
+	src/ssl.c \
+	src/ssl_verify.c
+endif
 
 AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
 	-Wno-declaration-after-statement \

@@ -1,7 +1,7 @@
 /*
   Axel -- A lighter download accelerator for Linux and other Unices
 
-  Copyright 2017, 2020 Ismael Luceno
+  Copyright 2020  Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -32,9 +32,18 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef AXEL_SLEEP_H
-#define AXEL_SLEEP_H
+#ifndef AXEL_ABUF_H
+#define AXEL_ABUF_H
 
-int axel_sleep(struct timespec delay);
+typedef struct {
+	char *p;
+	size_t len;
+} abuf_t;
 
-#endif /* AXEL_SLEEP_H */
+int abuf_setup(abuf_t *abuf, size_t len);
+int abuf_printf(abuf_t *abuf, const char *fmt, ...) PRINTF_FUNC(2);
+int abuf_strcat(abuf_t *abuf, const char *src);
+
+#define ABUF_FREE 0
+
+#endif /* AXEL_ABUF_H */

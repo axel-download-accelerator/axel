@@ -40,6 +40,7 @@
 
 /* filesearching.com searcher */
 
+#include "config.h"
 #include "axel.h"
 #include "sleep.h"
 
@@ -135,8 +136,16 @@ search_makelist(search_t *results, char *orig_url)
 	memset(conn, 0, sizeof(conn_t));
 	conn->conf = results->conf;
 
-	if (!conn_set(conn, s) || !conn_setup(conn) || !conn_exec(conn))
+	if (!conn_set(conn, s))
 		goto done;
+
+	{
+		pthread_mutex_unlock(&conn->lock);
+		int tmp = conn_setup(conn);
+		pthread_mutex_unlock(&conn->lock);
+		if (!tmp || !conn_exec(conn))
+			goto done;
+	}
 
 	{
 		int j = 0;

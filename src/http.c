@@ -45,7 +45,10 @@
 
 /* HTTP control file */
 
+#include "config.h"
 #include "axel.h"
+
+#define HDR_CHUNK 512
 
 inline static int
 is_default_port(int proto, int port)
@@ -164,7 +167,7 @@ http_get(http_t *conn, char *lurl)
 		postfix = "]";
 	}
 
-	*conn->request = 0;
+	*conn->request->p = 0;
 	if (conn->proxy) {
 		const char *proto = scheme_from_proto(conn->proto);
 		if (is_default_port(conn->proto, conn->port)) {
@@ -212,42 +215,44 @@ http_addheader(http_t *conn, const char *format, ...)
 	strlcat(s, "\r\n", sizeof(s));
 	va_end(params);
 
-	strlcat(conn->request, s, sizeof(conn->request));
+	if (abuf_strcat(conn->request, s) < 0) {
+		fprintf(stderr, "Out of memory\n");
+	}
 }
 
 int
 http_exec(http_t *conn)
 {
-	int i = 0;
-	ssize_t nwrite = 0;
-	char s[2] = {0}, *s2;
+	char *s2;
 
-#ifdef DEBUG
+#ifndef NDEBUG
 	fprintf(stderr, "--- Sending request ---\n%s--- End of request ---\n",
-		conn->request);
+		conn->request->p);
 #endif
 
-	strlcat(conn->request, "\r\n", sizeof(conn->request));
+	strlcat(conn->request->p, "\r\n", conn->request->len);
 
-	while (nwrite < (ssize_t)strlen(conn->request)) {
-		if ((i =
-		     tcp_write(&conn->tcp, conn->request + nwrite,
-			       strlen(conn->request) - nwrite)) < 0) {
+	const size_t reqlen = strlen(conn->request->p);
+	size_t nwrite = 0;
+	while (nwrite < reqlen) {
+		ssize_t tmp;
+		tmp = tcp_write(&conn->tcp, conn->request->p + nwrite,
+				reqlen - nwrite);
+		if (tmp < 0) {
 			if (errno == EINTR || errno == EAGAIN)
 				continue;
-
 			fprintf(stderr,
 				_("Connection gone while writing.\n"));
 			return 0;
 		}
-		nwrite += i;
+		nwrite += tmp;
 	}
 
-	*conn->headers = 0;
+	*conn->headers->p = 0;
 
 	/* Read the headers byte by byte to make sure we don't touch the
 	   actual data */
-	while (1) {
+	for (char *s = conn->headers->p;;) {
 		if (tcp_read(&conn->tcp, s, 1) <= 0) {
 			fprintf(stderr, _("Connection gone.\n"));
 			return 0;
@@ -256,25 +261,40 @@ http_exec(http_t *conn)
 		if (*s == '\r') {
 			continue;
 		} else if (*s == '\n') {
-			if (i == 0)
+			if (s > conn->headers->p && s[-1] == '\n') {
+				*s = 0;
 				break;
-			i = 0;
-		} else {
-			i++;
+			}
 		}
-		/* FIXME wasteful */
-		strlcat(conn->headers, s, sizeof(conn->headers));
+		s++;
+
+		size_t pos = s - conn->headers->p;
+		if (pos + 10 < conn->headers->len) {
+			int tmp = abuf_setup(conn->headers,
+					     conn->headers->len + HDR_CHUNK);
+			if (tmp < 0) {
+				fprintf(stderr, "Out of memory\n");
+				return 0;
+			}
+			s = conn->headers->p + pos;
+		}
 	}
 
-#ifdef DEBUG
+#ifndef NDEBUG
 	fprintf(stderr, "--- Reply headers ---\n%s--- End of headers ---\n",
-		conn->headers);
+		conn->headers->p);
 #endif
 
-	sscanf(conn->headers, "%*s %3i", &conn->status);
-	s2 = strchr(conn->headers, '\n');
+	sscanf(conn->headers->p, "%*s %3i", &conn->status);
+	s2 = strchr(conn->headers->p, '\n');
 	*s2 = 0;
-	strlcpy(conn->request, conn->headers, sizeof(conn->request));
+	const size_t reslen = s2 - conn->headers->p + 1;
+	if (conn->request->len < reqlen) {
+		int ret = abuf_setup(conn->request, reslen);
+		if (ret < 0)
+			return 0;
+	}
+	memcpy(conn->request->p, conn->headers->p, reslen);
 	*s2 = '\n';
 
 	return 1;
@@ -283,7 +303,7 @@ http_exec(http_t *conn)
 const char *
 http_header(const http_t *conn, const char *header)
 {
-	const char *p = conn->headers;
+	const char *p = conn->headers->p;
 	size_t hlen = strlen(header);
 
 	do {
@@ -331,22 +351,37 @@ http_size_from_range(http_t *conn)
 	return j;
 }
 
+/**
+ * Extract file name from Content-Disposition HTTP header.
+ *
+ * Header format:
+ * Content-Disposition: inline
+ * Content-Disposition: attachment
+ * Content-Disposition: attachment; filename="filename.jpg"
+ */
 void
 http_filename(const http_t *conn, char *filename)
 {
 	const char *h;
 	if ((h = http_header(conn, "Content-Disposition:")) != NULL) {
-		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\' ]",
+		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^\n\"\']",
 		       filename);
+		/* Trim spaces at the end of string */
+		const char space[] = "\t ";
+		for (char *n, *p = filename; (p = strpbrk(p, space)); p = n) {
+			n = p + strspn(p, space);
+			if (!*n) {
+				*p = 0;
+				break;
+			}
+		}
 
 		/* Replace common invalid characters in filename
 		   https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
-		char *i = filename;
-		const char *invalid_characters = "/\\?%*:|<>";
+		const char invalid[] = "/\\?%*:|<>";
 		const char replacement = '_';
-		while ((i = strpbrk(i, invalid_characters)) != NULL) {
+		for (char *i = filename; (i = strpbrk(i, invalid)); i++) {
 			*i = replacement;
-			i++;
 		}
 	}
 }

@@ -20,6 +20,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_SRCDIR([src/conf.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_LIBOBJ_DIR([lib])
 AM_INIT_AUTOMAKE([subdir-objects])
 PKG_PROG_PKG_CONFIG
 
@@ -37,6 +38,16 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
 # Compiler Warnings
 AX_IS_RELEASE([git-directory])
 AX_COMPILER_FLAGS()
+
+# Debugging code
+AC_ARG_ENABLE(debug,
+    AS_HELP_STRING([--enable-debug], [enable debugging, default: no]))
+AS_IF([! test "x$enable_debug" = xyes ], [
+    AC_DEFINE([NDEBUG], [1], [disable debugging code])
+])
+
+# GCC function attributes
+AX_GCC_FUNC_ATTRIBUTE([format])
 
 # Built-in functions
 AX_GCC_BUILTIN([__builtin_clzll])
@@ -99,7 +110,6 @@ AC_CHECK_FUNCS([ \
     AC_MSG_ERROR([$ac_func is required; it should be part of libc.])
 ])
 
-AC_CONFIG_LIBOBJ_DIR([lib])
 AC_REPLACE_FUNCS([ \
 	strlcpy \
 	strlcat \
@@ -109,9 +119,16 @@ AC_REPLACE_FUNCS([ \
 AC_ARG_WITH([ssl],
     AC_HELP_STRING([--without-ssl],[disable TLS support]), [], [with_ssl=yes])
 
+AM_CONDITIONAL([WITH_SSL], [test "x$with_ssl" != xno])
 AS_IF([test "x$with_ssl" != xno], [
     PKG_CHECK_MODULES([SSL], [openssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
+    save_LIBS="$LIBS"
+    LIBS="$LIBS $SSL_LIBS"
+    AC_REPLACE_FUNCS([ \
+	ASN1_STRING_get0_data \
+    ])
+    LIBS="$save_LIBS"
 ], AC_MSG_NOTICE([SSL support disabled]))
 
 # Add Gettext
@@ -132,7 +149,7 @@ AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
 
 case "$host_os" in
 darwin*)
-    AC_DEFINE(_DARWIN_C_SOURCE, 1, [Define on Darwin to expose all libc features])
+    AC_DEFINE([_DARWIN_C_SOURCE], 1, [Define on Darwin to expose all libc features])
 ;;
 solaris*)
     LIBS="$LIBS -lsocket -lnsl"

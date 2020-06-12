@@ -18,8 +18,7 @@
 
 #include <sys/types.h>
 #include <string.h>
-
-size_t strlcpy(char *, const char *, size_t);
+#include "compat-bsd.h"
 
 /*
  * Copy string src to buffer dst of size dsize.  At most dsize-1

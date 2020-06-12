@@ -46,6 +46,7 @@
 
 /* Main control */
 
+#include "config.h"
 #include "axel.h"
 #include "assert.h"
 #include "sleep.h"
@@ -64,17 +65,69 @@ static char *buffer = NULL;
 
 #define MIN_CHUNK_WORTH (100 * 1024) /* 100 KB */
 
+
+static
+char *
+stfile_makename(const char *bname)
+{
+	const char suffix[] = ".st";
+	const size_t bname_len = strlen(bname);
+	char *buf = malloc(bname_len + sizeof(suffix));
+	if (!buf) {
+		perror("stfile_open");
+		abort();
+	}
+	memcpy(buf, bname, bname_len);
+	memcpy(buf + bname_len, suffix, sizeof(suffix));
+	return buf;
+}
+
+
+static
+int
+stfile_unlink(const char *bname)
+{
+	char *stname = stfile_makename(bname);
+	int ret = unlink(stname);
+	free(stname);
+	return ret;
+}
+
+static
+int
+stfile_access(const char *bname, int mode)
+{
+	char *stname = stfile_makename(bname);
+	int ret = access(stname, mode);
+	free(stname);
+	return ret;
+}
+
+
+static
+int
+stfile_open(const char *bname, int flags, mode_t mode)
+{
+	char *stname = stfile_makename(bname);
+	int fd = open(stname, flags, mode);
+	free(stname);
+	return fd;
+}
+
+
 /* Create a new axel_t structure */
 axel_t *
-axel_new(conf_t *conf, int count, const void *url)
+axel_new(conf_t *conf, int count, const search_t *res)
 {
-	const search_t *res;
 	axel_t *axel;
 	int status;
 	uint64_t delay;
 	url_t *u;
 	char *s;
 	int i;
+
+	if (!count || !res)
+		return NULL;
 
 	axel = calloc(1, sizeof(axel_t));
 	if (!axel)
@@ -103,39 +156,21 @@ axel_new(conf_t *conf, int count, const void *url)
 		axel->delay_time.tv_nsec = delay % 1000000000;
 	}
 	if (buffer == NULL) {
-		/* reserve 4 additional bytes for file extension ".st" */
-		buffer = malloc(max(MAX_STRING + 4,
-				(size_t)axel->conf->buffer_size));
+		buffer = malloc(axel->conf->buffer_size);
 		if (!buffer)
 			goto nomem;
 	}
 
-	if (!url) {
-		axel_message(axel, _("Invalid URL"));
-		axel_close(axel);
-		return NULL;
+	u = malloc(sizeof(url_t) * count);
+	if (!u)
+		goto nomem;
+	axel->url = u;
+
+	for (i = 0; i < count; i++) {
+		strlcpy(u[i].text, res[i].url, sizeof(u[i].text));
+		u[i].next = &u[i + 1];
 	}
-
-	if (count == 0) {
-		axel->url = malloc(sizeof(url_t));
-		if (!axel->url)
-			goto nomem;
-
-		axel->url->next = axel->url;
-		strlcpy(axel->url->text, url, sizeof(axel->url->text));
-	} else {
-		res = url;
-		u = malloc(sizeof(url_t) * count);
-		if (!u)
-			goto nomem;
-		axel->url = u;
-
-		for (i = 0; i < count; i++) {
-			strlcpy(u[i].text, res[i].url, sizeof(u[i].text));
-			u[i].next = &u[i + 1];
-		}
-		u[count - 1].next = u;
-	}
+	u[count - 1].next = u;
 
 	axel->conn[0].conf = axel->conf;
 	if (!conn_set(&axel->conn[0], axel->url->text)) {
@@ -159,18 +194,15 @@ axel_new(conf_t *conf, int count, const void *url)
 			sizeof(axel->filename));
 
 	if (axel->conf->no_clobber && access(axel->filename, F_OK) == 0) {
-		char stfile[MAX_STRING + 3];
-
-		snprintf(stfile, sizeof(stfile), "%s.st", axel->filename);
-		if (access(stfile, F_OK) == 0) {
-			printf(_("Incomplete download found, ignoring "
-				 "no-clobber option\n"));
-		} else {
+		int ret = stfile_access(axel->filename, F_OK);
+		if (ret) {
 			printf(_("File '%s' already there; not retrieving.\n"),
 			       axel->filename);
 			axel->ready = -1;
 			return axel;
 		}
+		printf(_("Incomplete download found, ignoring "
+			 "no-clobber option\n"));
 	}
 
 	do {
@@ -229,7 +261,6 @@ axel_open(axel_t *axel)
 
 	if (axel->conf->verbose > 0)
 		axel_message(axel, _("Opening output file %s"), axel->filename);
-	snprintf(buffer, MAX_STRING + 4, "%s.st", axel->filename);
 
 	axel->outfd = -1;
 
@@ -245,7 +276,7 @@ axel_open(axel_t *axel)
 
 		axel->conn = new_conn;
 		axel_divide(axel);
-	} else if ((fd = open(buffer, O_RDONLY)) != -1) {
+	} else if ((fd = stfile_open(axel->filename, O_RDONLY, 0)) != -1) {
 		int old_format = 0;
 		off_t stsize = lseek(fd, 0, SEEK_END);
 		lseek(fd, 0, SEEK_SET);
@@ -272,7 +303,7 @@ axel_open(axel_t *axel)
 				     sizeof(axel->conn[0].currentbyte))) {
 			/* FIXME this might be wrong, the file may have been
 			 * truncated, we need another way to check. */
-#ifdef DEBUG
+#ifndef NDEBUG
 			printf(_("State file has old format.\n"));
 #endif
 			old_format = 1;
@@ -360,17 +391,24 @@ axel_open(axel_t *axel)
 	return 1;
 }
 
+/**
+ * Steals half of the largest available chunk of work of at least
+ * MIN_CHUNK_WORTH size, from an active connection to feed a finished one.
+ *
+ * Must be called with the conn_t lock held.
+ */
 static
 void
 reactivate_connection(axel_t *axel, int thread)
 {
-	long long int max_remaining = 0;
+	/* TODO Make the minimum also depend on the connection speed */
+	long long int max_remaining = MIN_CHUNK_WORTH - 1;
 	int idx = -1;
 
 	if (axel->conn[thread].enabled ||
 	    axel->conn[thread].currentbyte < axel->conn[thread].lastbyte)
 		return;
-	/* find some more work to do */
+
 	for (int j = 0; j < axel->conf->num_connections; j++) {
 		long long int remaining =
 		    axel->conn[j].lastbyte - axel->conn[j].currentbyte;
@@ -379,16 +417,16 @@ reactivate_connection(axel_t *axel, int thread)
 			idx = j;
 		}
 	}
-	/* do not reactivate unless large enough */
-	if (max_remaining > MIN_CHUNK_WORTH && idx != -1) {
-#ifdef DEBUG
-		printf(_("\nReactivate connection %d\n"), thread);
+
+	if (idx == -1)
+		return;
+#ifndef NDEBUG
+	printf(_("\nReactivate connection %d\n"), thread);
 #endif
-		axel->conn[thread].lastbyte = axel->conn[idx].lastbyte;
-		axel->conn[idx].lastbyte =
-		    axel->conn[idx].currentbyte + max_remaining / 2;
-		axel->conn[thread].currentbyte = axel->conn[idx].lastbyte;
-	}
+	axel->conn[thread].lastbyte = axel->conn[idx].lastbyte;
+	axel->conn[idx].lastbyte = axel->conn[idx].currentbyte
+		+ max_remaining / 2;
+	axel->conn[thread].currentbyte = axel->conn[idx].lastbyte;
 }
 
 /* Start downloading */
@@ -416,7 +454,9 @@ axel_start(axel_t *axel)
 
 	for (i = 0; i < axel->conf->num_connections; i++) {
 		if (axel->conn[i].currentbyte > axel->conn[i].lastbyte) {
+			pthread_mutex_lock(&axel->conn[i].lock);
 			reactivate_connection(axel, i);
+			pthread_mutex_unlock(&axel->conn[i].lock);
 		} else if (axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
 			if (axel->conf->verbose >= 2) {
 				axel_message(axel,
@@ -699,8 +739,7 @@ axel_close(axel_t *axel)
 
 	/* Delete state file if necessary */
 	if (axel->ready == 1) {
-		snprintf(buffer, MAX_STRING + 4, "%s.st", axel->filename);
-		unlink(buffer);
+		stfile_unlink(axel->filename);
 	}
 	/* Else: Create it.. */
 	else if (axel->bytes_done > 0) {
@@ -710,6 +749,11 @@ axel_close(axel_t *axel)
 	print_messages(axel);
 
 	close(axel->outfd);
+
+	if (!PROTO_IS_FTP(axel->conn->proto) || axel->conn->proxy) {
+		abuf_setup(axel->conn->http->request, ABUF_FREE);
+		abuf_setup(axel->conn->http->headers, ABUF_FREE);
+	}
 	free(axel->conn);
 	free(axel);
 	free(buffer);
@@ -725,25 +769,25 @@ axel_gettime(void)
 	return (double)time->tv_sec + (double)time->tv_usec / 1000000;
 }
 
-/* Save the state of the current download */
+/**
+ * Save the state of the current download.
+ */
 static
 void
 save_state(axel_t *axel)
 {
-	int fd, i;
-	char fn[MAX_STRING + 4];
-	ssize_t nwrite;
-
 	/* No use for such a file if the server doesn't support
 	   resuming anyway.. */
 	if (!axel->conn[0].supported)
 		return;
 
-	snprintf(fn, sizeof(fn), "%s.st", axel->filename);
-	if ((fd = open(fn, O_CREAT | O_TRUNC | O_WRONLY, 0666)) == -1) {
+	int fd;
+	fd = stfile_open(axel->filename, O_CREAT | O_TRUNC | O_WRONLY, 0666);
+	if (fd == -1) {
 		return;		/* Not 100% fatal.. */
 	}
 
+	ssize_t nwrite;
 	nwrite =
 	    write(fd, &axel->conf->num_connections,
 		  sizeof(axel->conf->num_connections));
@@ -752,7 +796,7 @@ save_state(axel_t *axel)
 	nwrite = write(fd, &axel->bytes_done, sizeof(axel->bytes_done));
 	assert(nwrite == sizeof(axel->bytes_done));
 
-	for (i = 0; i < axel->conf->num_connections; i++) {
+	for (int i = 0; i < axel->conf->num_connections; i++) {
 		nwrite =
 		    write(fd, &axel->conn[i].currentbyte,
 			  sizeof(axel->conn[i].currentbyte));
@@ -860,7 +904,7 @@ axel_divide(axel_t *axel)
 	/* Last connection downloads remaining bytes */
 	size_t tail = axel->size % seg_len;
 	axel->conn[axel->conf->num_connections - 1].lastbyte += tail;
-#ifdef DEBUG
+#ifndef NDEBUG
 	for (int i = 0; i < axel->conf->num_connections; i++) {
 		printf(_("Downloading %lld-%lld using conn. %i\n"),
 		       axel->conn[i].currentbyte,

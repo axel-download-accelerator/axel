@@ -1,7 +1,7 @@
 /*
   Axel -- A lighter download accelerator for Linux and other Unices
 
-  Copyright 2017, 2020 Ismael Luceno
+  Copyright 2020  Ismael Luceno
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -32,9 +32,67 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-#ifndef AXEL_SLEEP_H
-#define AXEL_SLEEP_H
+#define _ISOC99_SOURCE
 
-int axel_sleep(struct timespec delay);
+#include "config.h"
 
-#endif /* AXEL_SLEEP_H */
+#include <errno.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <stdio.h>
+
+#include "axel.h"
+
+
+/**
+ * Abstract buffer allocation/free.
+ * @returns 0 if OK, a negative value on error.
+ */
+int
+abuf_setup(abuf_t *abuf, size_t len)
+{
+	char *p = realloc(abuf->p, len);
+	if (!p && len)
+		return -ENOMEM;
+	abuf->p = p;
+	abuf->len = len;
+	return 0;
+}
+
+int
+abuf_printf(abuf_t *abuf, const char *fmt, ...)
+{
+	va_list ap;
+	va_start(ap, fmt);
+
+	for (;;) {
+		size_t len = vsnprintf(abuf->p, abuf->len, fmt, ap);
+		if (len < abuf->len)
+			break;
+		int r = abuf_setup(abuf, len + 1);
+		if (r < 0)
+			return r;
+	}
+
+	va_end(ap);
+	return 0;
+}
+
+/**
+ * String concatenation.  The buffer must contain a valid C string.
+ * @returns 0 if OK, or negative value on error.
+ */
+int
+abuf_strcat(abuf_t *abuf, const char *src)
+{
+	size_t nread = strlcat(abuf->p, src, abuf->len);
+	if (nread > abuf->len) {
+		size_t done = abuf->len - 1;
+		int ret = abuf_setup(abuf, nread);
+		if (ret < 0)
+			return ret;
+		memcpy(abuf->p + done, src + done, nread - done);
+	}
+
+	return 0;
+}

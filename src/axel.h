@@ -43,8 +43,6 @@
 #ifndef AXEL_AXEL_H
 #define AXEL_AXEL_H
 
-#include "config.h"
-
 #include <time.h>
 #include <ctype.h>
 #include <fcntl.h>
@@ -68,7 +66,16 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <pthread.h>
-#include "android-compat.h"
+#include "compat-android.h"
+#include "compat-bsd.h"
+#include "compat-ssl.h"
+
+/* GCC function attributes */
+#ifdef HAVE_FUNC_ATTRIBUTE_FORMAT
+#define PRINTF_FUNC(argn) __attribute__((format(__printf__, argn, argn+1)))
+#else
+#define PRINTF_FUNC(argn)
+#endif
 
 /* Internationalization */
 #ifdef ENABLE_NLS
@@ -94,6 +101,7 @@ typedef struct {
 typedef message_t url_t;
 typedef message_t if_t;
 
+#include "abuf.h"
 #include "conf.h"
 #include "tcp.h"
 #include "ftp.h"
@@ -130,7 +138,7 @@ typedef struct {
 	url_t *url;
 } axel_t;
 
-axel_t *axel_new(conf_t *conf, int count, const void *url);
+axel_t *axel_new(conf_t *conf, int count, const search_t *urls);
 int axel_open(axel_t *axel);
 void axel_start(axel_t *axel);
 void axel_do(axel_t *axel);
@@ -139,13 +147,7 @@ void print_messages(axel_t *axel);
 
 double axel_gettime(void);
 
-
-#ifndef HAVE_STRLCAT
-size_t strlcat(char *, const char *, size_t);
-#endif /* HAVE_strlcat */
-
-#ifndef HAVE_STRLCPY
-size_t strlcpy(char *, const char *, size_t);
-#endif /* HAVE_STRLCPY */
+#define DN_MATCH_MALFORMED -1
+int dn_match(const char *hostname, const char *pat, size_t pat_len);
 
 #endif				/* AXEL_AXEL_H */

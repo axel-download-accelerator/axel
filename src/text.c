@@ -45,9 +45,9 @@
 
 /* Text interface */
 
-#include "axel.h"
-
+#include "config.h"
 #include <sys/ioctl.h>
+#include "axel.h"
 
 
 static void stop(int signal);
@@ -58,6 +58,7 @@ static void print_alternate_output(axel_t *axel);
 static void print_progress(size_t cur, size_t prev, size_t total, double kbps);
 static void print_help(void);
 static void print_version(void);
+static void print_version_info(void);
 static int get_term_width(void);
 
 int run = 1;
@@ -99,7 +100,7 @@ main(int argc, char *argv[])
 	search_t *search;
 	conf_t conf[1];
 	axel_t *axel;
-	int j, cur_head = 0, ret = 1;
+	int j, ret = 1;
 	char *s;
 
 	fn[0] = 0;
@@ -131,7 +132,12 @@ main(int argc, char *argv[])
 				      "User-Agent", optarg);
 			break;
 		case 'H':
-			strlcpy(conf->add_header[cur_head++], optarg,
+			if(!(conf->add_header_count<MAX_ADD_HEADERS)) {
+				fprintf(stderr,
+					_("Too many custom headers (-H)! Currently only %u custom headers can be appended.\n"), MAX_ADD_HEADERS-HDR_count_init);
+				goto free_conf;
+			}
+			strlcpy(conf->add_header[conf->add_header_count++], optarg,
 				sizeof(conf->add_header[0]));
 			break;
 		case 's':
@@ -193,7 +199,7 @@ main(int argc, char *argv[])
 				j++;
 			break;
 		case 'V':
-			print_version();
+			print_version_info();
 			ret = 0;
 			goto free_conf;
 		case 'q':
@@ -213,7 +219,6 @@ main(int argc, char *argv[])
 			goto free_conf;
 		}
 	}
-	conf->add_header_count = cur_head;
 
 	/* disable alternate output and verbosity when quiet is specified */
 	if (conf->verbose < 0)
@@ -293,12 +298,6 @@ main(int argc, char *argv[])
 		}
 		axel = axel_new(conf, j, search);
 		free(search);
-		if (!axel || axel->ready == -1) {
-			print_messages(axel);
-			goto close_axel;
-		}
-	} else if (argc - optind == 1) {
-		axel = axel_new(conf, 0, s);
 		if (!axel || axel->ready == -1) {
 			print_messages(axel);
 			goto close_axel;
@@ -414,10 +413,7 @@ main(int argc, char *argv[])
 		if (axel->message) {
 			if (conf->alternate_output == 1) {
 				/* clreol-simulation */
-				putchar('\r');
-				for (int i = get_term_width(); i > 0; i--)
-					putchar(' ');
-				putchar('\r');
+				fputs("\e[2K\r", stdout);
 			} else {
 				putchar('\n');
 			}
@@ -553,6 +549,17 @@ print_progress(size_t cur, size_t prev, size_t total, double kbps)
 	}
 }
 
+static
+char
+alt_id(int n)
+{
+	const char *p = "09AZaz";
+	while (*p && n > p[1] - p[0]) {
+		n -= p[1] - p[0] + 1;
+		p += 2;
+	}
+	return *p ? *p + n : '*';
+}
 
 static void
 print_alternate_output_progress(axel_t *axel, char *progress, int width,
@@ -569,8 +576,7 @@ print_alternate_output_progress(axel_t *axel, char *progress, int width,
 		if (axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
 			if (now <= axel->conn[i].last_transfer
 				   + axel->conf->connection_timeout / 2) {
-				progress[offset] = i
-					+ (i < 10 ? '0' : ('A' - 10));
+				progress[offset] = alt_id(i);
 			} else
 				progress[offset] = '#';
 		}
@@ -655,6 +661,7 @@ get_term_width(void)
 void
 print_help(void)
 {
+	print_version();
 #ifdef NOGETOPTLONG
 	printf(_("Usage: axel [options] url1 [url2] [url...]\n"
 		 "\n"
@@ -706,7 +713,13 @@ print_help(void)
 void
 print_version(void)
 {
-	printf(_("Axel version %s (%s)\n"), VERSION, ARCH);
+	printf(_("Axel %s (%s)\n"), VERSION, ARCH);
+}
+
+void
+print_version_info(void)
+{
+	print_version();
 	printf("\nCopyright 2001-2007 Wilmer van der Gaast,\n"
 	       "\t  2007-2009 Giridhar Appaji Nag,\n"
 	       "\t  2008-2010 Philipp Hagemeister,\n"
