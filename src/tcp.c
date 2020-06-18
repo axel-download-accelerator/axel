@@ -44,10 +44,12 @@
 
 #include "config.h"
 #include <sys/types.h>
+#ifndef _WIN32
 #include <sys/socket.h>
 #include <netdb.h>
 #include <sys/ioctl.h>
 #include <netinet/tcp.h>
+#endif
 #include "axel.h"
 
 #ifndef TCP_FASTOPEN_CONNECT

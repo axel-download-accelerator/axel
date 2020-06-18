@@ -46,7 +46,9 @@
 /* Text interface */
 
 #include "config.h"
+#ifndef _WIN32
 #include <sys/ioctl.h>
+#endif
 #include "axel.h"
 
 
