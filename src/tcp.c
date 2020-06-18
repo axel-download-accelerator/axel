@@ -230,8 +230,27 @@ tcp_close(tcp_t *tcp)
 		close(tcp->fd);
 		tcp->fd = -1;
 	}
-}
 
+#ifdef _WIN32
+int
+get_if_ip(char *dst, size_t len, const char *iface)
+{
+	char name[155];
+    PHOSTENT hostinfo;
+	int ret = 0;
+
+	if (!gethostname(name, sizeof(name)))
+		return 0;
+
+	/* FIXME gethostbyname should be replaced */
+    if ((hostinfo = gethostbyname(name))) {
+		strlcpy(dst, inet_ntoa(*(struct in_addr *)*hostinfo->h_addr_list), len);
+		ret = 1;
+    }
+
+	return ret;
+}
+#else /* !_WIN32 */
 int
 get_if_ip(char *dst, size_t len, const char *iface)
 {
@@ -255,3 +274,4 @@ get_if_ip(char *dst, size_t len, const char *iface)
 
 	return ret;
 }
+#endif /* !_WIN32 */
