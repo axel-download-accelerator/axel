@@ -54,6 +54,10 @@ you need to generate the buildsystem first with:
 
     autoreconf -i
 
+When working from a git repository the build system will detect that and will
+add -Werror to the CFLAGS if supported; so if you're not doing development you
+should probably consider passing `--disable-Werror` to `configure` in order to
+prevent build failures due to mere warnings.
 
 ### Dependencies
 * `gettext` (or `gettext-tiny`)
