@@ -5,15 +5,16 @@ msgstr ""
 "Project-Id-Version: Axel\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2020-06-03 12:08+0200\n"
-"Last-Translator: Jeff Bai <jeffbai@aosc.xyz>\n"
+"PO-Revision-Date: 2020-08-20 13:40+0800\n"
+"Last-Translator: WhiredPlanck <fungdaat31@outlook.com>\n"
 "Language-Team: Simplified Chinese <i18n-zh@i18n.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Last-Revision: Li Jin <punkid.online@gmail.com>\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 2.4.1\n"
+"POT-Creation-Date: \n"
 
 #: src/axel.c:149
 msgid "Buffer resized for this speed."
@@ -34,12 +35,11 @@ msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "发现不完整的下载，忽略 no-clobber 选项\n"
 
 #: src/axel.c:231
-#, fuzzy, c-format
+#, c-format
 msgid "File size: %zu bytes"
 msgstr "文件大小：%zu 字节"
 
 #: src/axel.c:234
-#, fuzzy
 msgid "File size: unavailable"
 msgstr "文件大小：不可用"
 
@@ -68,7 +68,7 @@ msgid "State file has old format.\n"
 msgstr "状态文件版本陈旧\n"
 
 #: src/axel.c:340
-#, fuzzy, c-format
+#, c-format
 msgid "State file found: %zu bytes downloaded, %zu to go."
 msgstr "找到状态文件：已下载 %zu 字节，剩余 %zu 字节。"
 
@@ -78,7 +78,7 @@ msgstr "无法打开本地文件"
 
 #: src/axel.c:370
 msgid "Crappy filesystem/OS.. Working around. :-("
-msgstr "文件系统/操作系统不讨喜…… 正在寻求解决方法（不开心）。"
+msgstr "文件系统/操作系统不讨喜…… 正在寻求解决方法。:-("
 
 #: src/axel.c:383
 msgid "Error creating local file"
@@ -107,7 +107,7 @@ msgid "pthread error!!!"
 msgstr "pthread 出错啦！！！"
 
 #: src/axel.c:519
-#, fuzzy, c-format
+#, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "等待连接 %s 时出错"
 
@@ -133,7 +133,7 @@ msgstr "连接 %i 完成下载"
 
 #: src/axel.c:608
 msgid "Write error!"
-msgstr "写错误！"
+msgstr "写入错误！"
 
 #: src/axel.c:706
 #, c-format
@@ -171,14 +171,14 @@ msgid "Error in %s line %i.\n"
 msgstr "%s 中第 %i 行出错。\n"
 
 #: src/conf.c:271
-#, fuzzy, c-format
+#, c-format
 msgid "HOME env variable too long\n"
 msgstr "HOME 环境变量太长！\n"
 
 #: src/conn.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported protocol\n"
-msgstr "未知的协议\n"
+msgstr "不支持的协议\n"
 
 #: src/conn.c:84
 #, c-format
@@ -248,7 +248,7 @@ msgid "Error when trying to read URL (Too long?).\n"
 msgstr "尝试读取 URL 时出错（URL 太长？）。\n"
 
 #: src/text.c:260
-#, fuzzy, c-format
+#, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr "不能处理长度超过 %zu 的 URL\n"
 
@@ -324,7 +324,7 @@ msgstr "吉"
 
 #: src/text.c:474
 msgid "Tera"
-msgstr "兆兆"
+msgstr "太"
 
 #: src/text.c:480
 #, c-format
@@ -342,7 +342,7 @@ msgid "%i:%02i minute(s)"
 msgstr "%i 分 %02i 秒"
 
 #: src/text.c:500
-#, fuzzy, c-format
+#, c-format
 msgid "%i second(s)"
 msgstr "%i 秒"
 
@@ -352,7 +352,7 @@ msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "无法设置备用输出，进入挂起状态。\n"
 
 #: src/text.c:666
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -396,10 +396,11 @@ msgstr ""
 "-T x\t设置 I/O 和连接的超时时长\n"
 "-V\t版本信息\n"
 "\n"
-"请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
+"请前往 https://github.com/axel-download-accelerator/axel/issues 报告问"
+"题\n"
 
 #: src/text.c:688
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
 "\n"
@@ -446,24 +447,24 @@ msgstr ""
 "--timeout=x\t\t-T x\t设置 I/O 和连接的超时时长\n"
 "--version\t\t-V\t版本信息\n"
 "\n"
-"请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
+"请前往 https://github.com/axel-download-accelerator/axel/issues 报告问"
+"题\n"
 
 #: src/text.c:716
-#, fuzzy, c-format
+#, c-format
 msgid "Axel %s (%s)\n"
 msgstr "Axel %s (%s)\n"
 
 #: src/text.c:730
 msgid "and others."
-msgstr "及其他人。"
+msgstr "及其他贡献者。"
 
 #: src/text.c:731
-#, fuzzy
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
 msgstr ""
-"请阅读 CREDITS 文件。\n"
+"请参阅 CREDITS 文件。\n"
 "\n"
 
 #: src/ssl.c:91
