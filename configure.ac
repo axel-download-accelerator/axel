@@ -126,7 +126,7 @@ AS_IF([test "x$with_ssl" != xno], [
     save_LIBS="$LIBS"
     LIBS="$LIBS $SSL_LIBS"
     AC_REPLACE_FUNCS([ \
-	ASN1_STRING_get0_data \
+        ASN1_STRING_get0_data \
     ])
     LIBS="$save_LIBS"
 ], AC_MSG_NOTICE([SSL support disabled]))
