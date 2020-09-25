@@ -45,12 +45,10 @@ compiler:
   - gcc
   - clang
 
-matrix:
+jobs:
   exclude:
     - os: osx
       compiler: gcc
-
-jobs:
   allow_failures:
     - os: osx
 
