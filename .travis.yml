@@ -53,10 +53,6 @@ jobs:
   allow_failures:
     - os: osx
 
-jobs:
-  allow_failures:
-    - os: osx
-
 script:
   - if [ "${TRAVIS_OS_NAME}" = osx ]; then
       target=all
