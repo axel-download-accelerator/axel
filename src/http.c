@@ -113,8 +113,6 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 
 	if (proxy != NULL) {
 		if (*proxy != 0) {
-			snprintf(conn->host, sizeof(conn->host),
-				 "%s:%i", host, port);
 			if (!conn_set(tconn, proxy)) {
 				fprintf(stderr,
 					_("Invalid proxy string: %s\n"), proxy);
