@@ -15,6 +15,7 @@ addons:
       - libssl-dev
       - linux-libc-dev
       - txt2man
+      - gettext
   homebrew:
     update: true
     packages:
