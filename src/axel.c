@@ -788,6 +788,7 @@ save_state(axel_t *axel)
 	}
 
 	ssize_t nwrite;
+	(void)nwrite; /* workaround unused variable warning */
 	nwrite =
 	    write(fd, &axel->conf->num_connections,
 		  sizeof(axel->conf->num_connections));
