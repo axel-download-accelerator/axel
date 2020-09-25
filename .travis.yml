@@ -68,6 +68,6 @@ script:
              PKG_CONFIG_PATH="$OPENSSL/lib/pkgconfig"
              PATH="$GETTEXT/bin:$PATH";
     fi
-  - autoreconf -fiv &&
-    ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS" &&
-    make DIST_TARGETS=dist-gzip GZIP_ENV=--fast $target
+  - autoreconf -fiv
+  - ./configure $CONF_FLAGS CFLAGS="$G_CFLAGS"
+  - make DIST_TARGETS=dist-gzip GZIP_ENV=--fast $target
