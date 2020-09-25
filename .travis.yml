@@ -1,5 +1,3 @@
-dist: xenial
-
 language: c
 
 cache:
@@ -37,6 +35,11 @@ env:
 os:
   - linux
   - osx
+
+dist:
+  - xenial
+  - bionic
+  - focal
 
 compiler:
   - gcc
