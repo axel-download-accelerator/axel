@@ -41,6 +41,11 @@ dist:
   - bionic
   - focal
 
+arch:
+  - amd64
+  - arm64
+  - ppc64le
+
 compiler:
   - gcc
   - clang
