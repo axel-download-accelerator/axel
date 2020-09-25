@@ -453,7 +453,7 @@ axel_start(axel_t *axel)
 		axel_message(axel, _("Starting download"));
 
 	for (i = 0; i < axel->conf->num_connections; i++) {
-		if (axel->conn[i].currentbyte > axel->conn[i].lastbyte) {
+		if (axel->conn[i].currentbyte >= axel->conn[i].lastbyte) {
 			pthread_mutex_lock(&axel->conn[i].lock);
 			reactivate_connection(axel, i);
 			pthread_mutex_unlock(&axel->conn[i].lock);
@@ -571,7 +571,7 @@ axel_do(axel_t *axel)
 		if (size == 0) {
 			if (axel->conf->verbose) {
 				/* Only abnormal behaviour if: */
-				if (axel->conn[i].currentbyte <=
+				if (axel->conn[i].currentbyte <
 				    axel->conn[i].lastbyte &&
 				    axel->size != LLONG_MAX) {
 					axel_message(axel,
