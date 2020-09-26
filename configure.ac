@@ -121,6 +121,10 @@ AC_ARG_WITH([ssl],
 
 AM_CONDITIONAL([WITH_SSL], [test "x$with_ssl" != xno])
 AS_IF([test "x$with_ssl" != xno], [
+    AS_IF([test "x$with_ssl" = xyes], [], [
+        PKG_CONFIG_PATH="$with_ssl/lib/pkgconfig$PATH_SEPARATOR$PKG_CONFIG_PATH"
+        export PKG_CONFIG_PATH
+    ])
     PKG_CHECK_MODULES([SSL], [openssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
     save_LIBS="$LIBS"
