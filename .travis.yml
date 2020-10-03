@@ -37,10 +37,7 @@ os:
   - linux
   - osx
 
-dist:
-  - xenial
-  - bionic
-  - focal
+dist: focal
 
 arch:
   - amd64
@@ -52,6 +49,11 @@ compiler:
   - clang
 
 jobs:
+  include:
+    - os: linux
+      dist: bionic
+    - os: linux
+      dist: xenial
   exclude:
     - os: osx
       compiler: gcc
