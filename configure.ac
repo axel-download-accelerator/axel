@@ -192,6 +192,27 @@ AX_PTHREAD()
 
 #### Definitions ####
 
+# OS
+AC_CANONICAL_HOST
+AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
+
+case "$host_os" in
+darwin*)
+    AC_DEFINE([_DARWIN_C_SOURCE], 1, [Define on Darwin to expose all libc features])
+;;
+solaris*)
+    LIBS="$LIBS -lsocket -lnsl"
+;;
+hpux*)
+    if [ -d /usr/local/lib/hpux32 ]; then
+       LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
+    fi
+;;
+*mingw32)
+    AC_DEFINE([_WIN32_WINNT], [0x0600],
+              [Request NT 6 API to expose AI_ADDRCONFIG in WinSock2])
+;;
+esac
 
 # BSD vs GNU date
 AS_IF([date -j >/dev/null 2>&1], [
