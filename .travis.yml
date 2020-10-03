@@ -30,8 +30,8 @@ env:
     - MAKEFLAGS="-j4"
     - target=distcheck
   matrix:
-    - CONF_FLAGS="--without-ssl"
     - CONF_FLAGS="--with-ssl"
+    - CONF_FLAGS="--without-ssl"
 
 os:
   - linux
