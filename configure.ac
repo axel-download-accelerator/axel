@@ -163,7 +163,7 @@ hpux*)
        LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
     fi
 ;;
-*-mingw32)
+*mingw32)
     AC_DEFINE([_WIN32_WINNT], [0x0600],
               [Request NT 6 API to expose AI_ADDRCONFIG in WinSock2])
 ;;
