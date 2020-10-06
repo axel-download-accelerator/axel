@@ -24,11 +24,10 @@ typedef u_short sa_family_t;
 /* 0 for BLOCK and !0 for NONBLOCK */
 #define O_NONBLOCK (u_long)1
 
-/* set socket to BLOCK/NONBLOCK */
-static inline int
-SET_SOCK_BLOCK(SOCKET s, u_long mode)
-{
-    return ioctlsocket(s, FIONBIO, &mode);
+#define F_SETFL FIONBIO
+int fcntl(fd, flag, mode) {
+	u_int m = mode;
+	return ioctlsocket(fd, flag, &m);
 }
 
 /* set socket timeout */
@@ -36,8 +35,8 @@ static inline int
 SET_SOCK_TIMEOUT(SOCKET s, int optname, unsigned int io_timeout)
 {
 	char optval[32];
-	sprintf(optval, "%u000", io_timeout); /* second to millisecond */
-    return setsockopt(s, SOL_SOCKET, optname, optval, sizeof(optval));
+	sprintf(optval, "%u000", io_timeout);	/* second to millisecond */
+	return setsockopt(s, SOL_SOCKET, optname, optval, sizeof(optval));
 }
 
 #else /* _WIN32 */
@@ -46,15 +45,15 @@ SET_SOCK_TIMEOUT(SOCKET s, int optname, unsigned int io_timeout)
 #define WSAClose()
 
 typedef int SOCKET;
-#define INVALID_SOCKET  -1
+#define INVALID_SOCKET -1
 
 #define closesocket(sock_fd) close(sock_fd)
-#define SET_SOCK_BLOCK(sock_fd, mode) fcntl(sock_fd, F_SETFL, mode)
 
 static inline int
-SET_SOCK_TIMEOUT(SOCKET s, int optname, unsigned int io_timeout) {
-	struct timeval tval = { .tv_sec  = io_timeout };
-    return setsockopt(s, SOL_SOCKET, optname, &tval, sizeof(tval));
+SET_SOCK_TIMEOUT(SOCKET s, int optname, unsigned int io_timeout)
+{
+	struct timeval tval = {.tv_sec = io_timeout };
+	return setsockopt(s, SOL_SOCKET, optname, &tval, sizeof(tval));
 }
 
 #endif /* _WIN32 */

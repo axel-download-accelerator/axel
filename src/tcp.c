@@ -140,7 +140,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 						  NULL, 0);
 		} else if (io_timeout) {
 			/* Set O_NONBLOCK so we can timeout */
-			SET_SOCK_BLOCK(sock_fd, O_NONBLOCK);
+			fcntl(sock_fd, F_SETFL, O_NONBLOCK);
 		}
 		ret = connect(sock_fd, gai_result->ai_addr,
 			      gai_result->ai_addrlen);
@@ -178,7 +178,7 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 		return -1;
 	}
 
-	SET_SOCK_BLOCK(sock_fd, 0);
+	fcntl(sock_fd, F_SETFL, 0);
 
 #ifdef HAVE_SSL
 	if (secure) {
