@@ -169,11 +169,11 @@ AS_CASE(["$host_os"],
   ])
 
 # BSD vs GNU date
-if date -j >/dev/null 2>&1; then
+AS_IF([date -j >/dev/null 2>&1], [
   pdate() { date -j -f '%Y-%m-%dT%H:%M:%SZ' "$@"; }
-else
+], [
   pdate() { date -d "$@"; }
-fi
+])
 RELDATE_PRETTY=$(pdate '_AXEL_RELDATE' '+%B %e, %Y')
 AC_SUBST([RELDATE_PRETTY])
 
