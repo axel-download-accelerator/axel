@@ -151,23 +151,22 @@ AX_PTHREAD()
 AC_CANONICAL_HOST
 AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
 
-case "$host_os" in
-darwin*)
+AS_CASE(["$host_os"],
+  [darwin*], [
     AC_DEFINE([_DARWIN_C_SOURCE], 1, [Define on Darwin to expose all libc features])
-;;
-solaris*)
+  ],
+  [solaris*], [
     LIBS="$LIBS -lsocket -lnsl"
-;;
-hpux*)
-    if [ -d /usr/local/lib/hpux32 ]; then
-       LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
-    fi
-;;
-*mingw32)
+  ],
+  [hpux*], [
+    AS_IF([test -d /usr/local/lib/hpux32], [
+      LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
+    ])
+  ],
+  [*mingw32], [
     AC_DEFINE([_WIN32_WINNT], [0x0600],
               [Request NT 6 API to expose AI_ADDRCONFIG in WinSock2])
-;;
-esac
+  ])
 
 # BSD vs GNU date
 if date -j >/dev/null 2>&1; then
