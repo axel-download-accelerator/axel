@@ -68,3 +68,20 @@ m4_define([AC_PACKAGE_BUGREPORT], [$2])
 
 # MKINSTALLDIRS isn't needed; remove
 AC_DEFUN([AM_MKINSTALLDIRS], [])
+
+# AXEL_CHECK_MACRO(MACRO, HEADER, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+# ---------------------------------------------------------------------
+AC_DEFUN([AXEL_CHECK_MACRO],
+[_AC_INIT_LITERAL([$1])
+_AC_INIT_LITERAL([$2])
+AC_CACHE_CHECK([for $1], [axel_cv_macro_$1],
+  [AC_COMPILE_IFELSE(
+    [AC_LANG_SOURCE([[#include <]$2[>]], [[(void)]$1;])],
+      [axel_cv_macro_$1=yes],
+      [axel_cv_macro_$1=no])
+  ])
+AS_IF([test "x$axel_cv_macro_$1" = "xyes"],
+  [$3], m4_default([$4], [
+    AC_MSG_ERROR([The $1 macro is required; it should be defined by $2.])
+  ]))
+])
