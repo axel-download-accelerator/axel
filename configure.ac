@@ -115,6 +115,9 @@ AC_REPLACE_FUNCS([ \
 	strlcat \
 ])
 
+# Check for missing features/flags
+AXEL_CHECK_MACRO([O_NONBLOCK], [fcntl.h])
+
 # Optional (but included-by-default) ssl support
 AC_ARG_WITH([ssl],
     AC_HELP_STRING([--without-ssl],[disable TLS support]), [], [with_ssl=yes])
