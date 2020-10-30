@@ -26,6 +26,27 @@ PKG_PROG_PKG_CONFIG
 
 AM_SILENT_RULES([yes])
 
+# OS-specific stuff
+AC_CANONICAL_HOST
+AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
+
+# Make system extensions available to the code
+AS_CASE(["$host_os"],
+  [darwin*], [
+    AC_DEFINE([_DARWIN_C_SOURCE], 1, [Define on Darwin to expose all libc features])
+  ],
+  [solaris*], [
+    LIBS="$LIBS -lsocket -lnsl"
+  ],
+  [hpux*], [
+    AS_IF([test -d /usr/local/lib/hpux32], [
+      LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
+    ])
+  ],
+  [*mingw32], [
+    AC_DEFINE([_WIN32_WINNT], [0x0600],
+              [Request NT 6 API to expose AI_ADDRCONFIG in WinSock2])
+  ])
 AC_USE_SYSTEM_EXTENSIONS
 
 # Compiler checks
@@ -150,26 +171,6 @@ AX_PTHREAD()
 
 #### Definitions ####
 
-# OS
-AC_CANONICAL_HOST
-AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
-
-AS_CASE(["$host_os"],
-  [darwin*], [
-    AC_DEFINE([_DARWIN_C_SOURCE], 1, [Define on Darwin to expose all libc features])
-  ],
-  [solaris*], [
-    LIBS="$LIBS -lsocket -lnsl"
-  ],
-  [hpux*], [
-    AS_IF([test -d /usr/local/lib/hpux32], [
-      LDFLAGS="$LDFLAGS -L/usr/local/lib/hpux32"
-    ])
-  ],
-  [*mingw32], [
-    AC_DEFINE([_WIN32_WINNT], [0x0600],
-              [Request NT 6 API to expose AI_ADDRCONFIG in WinSock2])
-  ])
 
 # BSD vs GNU date
 AS_IF([date -j >/dev/null 2>&1], [
