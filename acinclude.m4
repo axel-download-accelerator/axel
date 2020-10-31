@@ -85,3 +85,31 @@ AS_IF([test "x$axel_cv_macro_$1" = "xyes"],
     AC_MSG_ERROR([The $1 macro is required; it should be defined by $2.])
   ]))
 ])
+
+# AXEL_DEFAULT_TYPE(TYPE-ID, DEFAULT)
+# ---------------------------------------------------------------------
+AC_DEFUN([AXEL_DEFAULT_TYPE], [
+  _AC_INIT_LITERAL([$1])
+  AH_VERBATIM(AS_TR_CPP([HAVE_$1_default]),
+    [#ifndef ]AS_TR_CPP([HAVE_$1])[
+typedef $2 $1;
+#endif])
+])
+
+# AXEL_CHECK_TYPE(TYPE-ID, COMPAT-TEST, [INCLUDES])
+# ---------------------------------------------------------------------
+AC_DEFUN([AXEL_CHECK_TYPE], [
+  _AC_INIT_LITERAL([$1])
+  AC_CHECK_TYPE([$1], [
+    AC_CACHE_CHECK([for $1 compatibility], [axel_cv_type_compat_$1], [
+      AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM([AC_INCLUDES_DEFAULT([$3])],
+	  [switch(0) case 0: case ($2):;])],
+	[axel_cv_type_compat_$1=yes], [axel_cv_type_compat_$1=no])
+    ])
+    AS_IF([test "x$axel_cv_type_compat_$1" = xno],
+      [AC_MSG_ERROR([The $1 type is not fit ($2).])])
+    AC_DEFINE(AS_TR_CPP([HAVE_$1]), [1],
+              [Define to 1 if the system has the type `$1'.])
+  ],, [AC_INCLUDES_DEFAULT([$3])])
+])
