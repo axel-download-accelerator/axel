@@ -103,10 +103,20 @@ AC_CHECK_HEADERS([ \
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
+
+# Ensure optional C99 integer types we need
+AC_TYPE_INT8_T
+AC_TYPE_UINT8_T
+AC_TYPE_INT16_T
+AC_TYPE_UINT16_T
+AC_TYPE_INT32_T
+AC_TYPE_UINT32_T
+AC_TYPE_INT64_T
+AC_TYPE_UINT64_T
+
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
-AC_TYPE_UINT16_T
 AC_TYPE_MODE_T
 AC_TYPE_SIGNAL
 
