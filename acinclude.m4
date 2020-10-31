@@ -76,7 +76,7 @@ AC_DEFUN([AXEL_CHECK_MACRO],
 _AC_INIT_LITERAL([$2])
 AC_CACHE_CHECK([for $1], [axel_cv_macro_$1],
   [AC_COMPILE_IFELSE(
-    [AC_LANG_SOURCE([[#include <]$2[>]], [[(void)]$1;])],
+    [AC_LANG_PROGRAM([[#include <]$2[>]], [[(void)]$1;])],
       [axel_cv_macro_$1=yes],
       [axel_cv_macro_$1=no])
   ])
