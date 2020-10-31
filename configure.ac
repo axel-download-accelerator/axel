@@ -33,7 +33,8 @@ AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
 # Make system extensions available to the code
 AS_CASE(["$host_os"],
   [darwin*], [
-    AC_DEFINE([_DARWIN_C_SOURCE], 1, [Define on Darwin to expose all libc features])
+    AC_DEFINE([_DARWIN_C_SOURCE], [1],
+              [Define on Darwin to expose all libc features])
   ],
   [solaris*], [
     LIBS="$LIBS -lsocket -lnsl"
