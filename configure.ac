@@ -106,6 +106,7 @@ AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_UINT16_T
+AC_TYPE_MODE_T
 
 # Checks for library functions.
 AC_CHECK_FUNCS([ \
