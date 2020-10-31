@@ -114,11 +114,15 @@ AC_TYPE_UINT32_T
 AC_TYPE_INT64_T
 AC_TYPE_UINT64_T
 
-AC_TYPE_OFF_T
+# POSIX types
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_MODE_T
 AC_TYPE_SIGNAL
+
+# Custom type checks and replacements
+AXEL_CHECK_TYPE([off_t], [sizeof(off_t) >= sizeof(int64_t)])
+AXEL_DEFAULT_TYPE([off_t], [int64_t])
 
 # Checks for library functions.
 AC_CHECK_FUNCS([ \
