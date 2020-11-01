@@ -57,6 +57,9 @@ AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
     AC_MSG_ERROR([C99 compiler required])
 ])
 
+# Large file support
+AC_SYS_LARGEFILE
+
 # Compiler Warnings
 AX_IS_RELEASE([git-directory])
 AX_COMPILER_FLAGS()
@@ -179,9 +182,6 @@ AS_IF([test "x$with_ssl" != xno], [
 # Add Gettext
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.11.1])
-
-# Large file support
-AC_SYS_LARGEFILE
 
 # POSIX threads
 AX_PTHREAD()
