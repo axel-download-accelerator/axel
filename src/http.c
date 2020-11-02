@@ -285,7 +285,8 @@ http_exec(http_t *conn)
 
 	sscanf(conn->headers->p, "%*s %3i", &conn->status);
 	s2 = strchr(conn->headers->p, '\n');
-	*s2 = 0;
+	if (s2)
+		*s2 = 0;
 	const size_t reslen = s2 - conn->headers->p + 1;
 	if (conn->request->len < reqlen) {
 		int ret = abuf_setup(conn->request, reslen);
