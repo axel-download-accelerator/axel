@@ -150,4 +150,6 @@ double axel_gettime(void);
 #define DN_MATCH_MALFORMED -1
 int dn_match(const char *hostname, const char *pat, size_t pat_len);
 
+char *axel_size_human(char *dst, size_t len, size_t value);
+
 #endif				/* AXEL_AXEL_H */

@@ -228,8 +228,10 @@ axel_new(conf_t *conf, int count, const search_t *res)
 	axel->size = axel->conn[0].size;
 	if (axel->conf->verbose > 0) {
 		if (axel->size != LLONG_MAX) {
-			axel_message(axel, _("File size: %zu bytes"),
-				     axel->size);
+			char hsize[32];
+			axel_size_human(hsize, sizeof(hsize), axel->size);
+			axel_message(axel, _("File size: %s (%zu bytes)"),
+				     hsize, axel->size);
 		} else {
 			axel_message(axel, _("File size: unavailable"));
 		}
