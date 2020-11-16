@@ -111,22 +111,17 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	conn->port = port;
 	conn->proto = proto;
 
-	if (proxy != NULL) {
-		if (*proxy != 0) {
-			if (!conn_set(tconn, proxy)) {
-				fprintf(stderr,
-					_("Invalid proxy string: %s\n"), proxy);
-				return 0;
-			}
-			host = tconn->host;
-			port = tconn->port;
-			proto = tconn->proto;
-			puser = tconn->user;
-			ppass = tconn->pass;
-			conn->proxy = 1;
-		} else {
-			conn->proxy = 0;
+	if (proxy && *proxy) {
+		if (!conn_set(tconn, proxy)) {
+			fprintf(stderr, _("Invalid proxy string: %s\n"), proxy);
+			return 0;
 		}
+		host = tconn->host;
+		port = tconn->port;
+		proto = tconn->proto;
+		puser = tconn->user;
+		ppass = tconn->pass;
+		conn->proxy = 1;
 	}
 
 	if (tcp_connect(&conn->tcp, host, port, PROTO_IS_SECURE(proto),
