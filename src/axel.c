@@ -236,7 +236,7 @@ axel_new(conf_t *conf, int count, const search_t *res)
 	}
 
 	/* Wildcards in URL --> Get complete filename */
-	if (strchr(axel->filename, '*') || strchr(axel->filename, '?'))
+	if (axel->filename[strcspn(axel->filename, "*?")])
 		strlcpy(axel->filename, axel->conn[0].file,
 			sizeof(axel->filename));
 
