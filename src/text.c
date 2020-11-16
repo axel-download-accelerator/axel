@@ -51,7 +51,6 @@
 
 
 static void stop(int signal);
-static char *size_human(char *dst, size_t len, size_t value);
 static char *time_human(char *dst, size_t len, unsigned int value);
 static void print_commas(long long int bytes_done);
 static void print_alternate_output(axel_t *axel);
@@ -432,7 +431,7 @@ main(int argc, char *argv[])
 
 	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
 	time_human(htime, sizeof(htime), axel_gettime() - axel->start_time);
-	size_human(hsize, sizeof(hsize), axel->bytes_done - axel->start_byte);
+	axel_size_human(hsize, sizeof(hsize), axel->bytes_done - axel->start_byte);
 
 	printf(_("\nDownloaded %s in %s. (%.2f KB/s)\n"), hsize, htime,
 	       (double)axel->bytes_per_second / 1024);
@@ -467,7 +466,7 @@ log2i(unsigned long long x)
 
 /* Convert a number of bytes to a human-readable form */
 char *
-size_human(char *dst, size_t len, size_t value)
+axel_size_human(char *dst, size_t len, size_t value)
 {
 	double fval = (double)value;
 	const char * const oname[] = {
