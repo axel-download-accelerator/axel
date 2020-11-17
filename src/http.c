@@ -191,7 +191,7 @@ http_get(http_t *conn, char *lurl)
 	if (conn->lastbyte && conn->firstbyte >= 0) {
 		http_addheader(conn, "Range: bytes=%lld-%lld",
 			       conn->firstbyte, conn->lastbyte - 1);
-	} else if (conn->firstbyte > 0) {
+	} else if (conn->firstbyte >= 0) {
 		http_addheader(conn, "Range: bytes=%lld-",
 			       conn->firstbyte);
 	}
