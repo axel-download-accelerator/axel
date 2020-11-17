@@ -444,9 +444,9 @@ conn_info(conn_t *conn)
 	if (conn->size <= 0) {
 		/* Sanity check */
 		switch (conn->http->status) {
-		case 200:
-		case 206:
-		case 416:
+		case 200: /* OK -> unsupported */
+		case 416: /* Range Not Satisfiable -> broken? */
+		case 206: /* Partial Content */
 			break;
 		default: /* unexpected */
 			return 0;
