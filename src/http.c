@@ -330,16 +330,15 @@ long long int
 http_size_from_range(http_t *conn)
 {
 	const char *i;
-	long long int j;
-
 	if ((i = http_header(conn, "Content-Range:")) == NULL)
 		return -2;
 
 	i = strchr(i, '/');
-	if (i == NULL)
+	if (!i++)
 		return -2;
 
-	if (sscanf(i + 1, "%lld", &j) != 1)
+	long long int j = strtoll(i, NULL, 10);
+	if (!j && *i != '0')
 		return -3;
 
 	return j;
