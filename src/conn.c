@@ -446,21 +446,20 @@ conn_info(conn_t *conn)
 		switch (conn->http->status) {
 		case 200: /* OK -> unsupported */
 		case 416: /* Range Not Satisfiable -> broken? */
+			conn->supported = false;
 		case 206: /* Partial Content */
 			break;
 		default: /* unexpected */
 			return 0;
 		}
-
-		/* So we got an invalid or no size, fall back */
-		conn->supported = false;
-		conn->size = LLONG_MAX;
-	} else {
-		/* If Content-Length and Content-Range disagree, it's a
-		 * server bug; we take the larger and hope for the best.
-		 */
-		conn->size = max(conn->size, http_size(conn->http));
 	}
-
+	/* If Content-Range is missing or disagrees with Content-Length, it's a
+	 * server bug; we take the larger and hope for the best.
+	 */
+	conn->size = max(conn->size, http_size(conn->http));
+	if (conn->size <= 0) {
+		conn->size = LLONG_MAX;
+		conn->supported = false;
+	}
 	return 1;
 }
