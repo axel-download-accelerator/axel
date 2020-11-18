@@ -302,7 +302,7 @@ conn_setup(conn_t *conn)
 		conn->tcp = &conn->ftp->data_tcp;
 
 		if (conn->currentbyte) {
-			ftp_command(conn->ftp, "REST %lld", conn->currentbyte);
+			ftp_command(conn->ftp, "REST %jd", conn->currentbyte);
 			if (ftp_wait(conn->ftp) / 100 != 3 &&
 			    conn->ftp->status / 100 != 2)
 				return 0;

@@ -65,6 +65,6 @@ __attribute__((format(printf, 2, 3)))
 int ftp_command(ftp_t *conn, const char *format, ...);
 int ftp_cwd(ftp_t *conn, char *cwd);
 int ftp_data(ftp_t *conn, unsigned io_timeout);
-long long int ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout);
+off_t ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout);
 
 #endif				/* AXEL_FTP_H */
