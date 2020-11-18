@@ -42,7 +42,7 @@
 typedef struct {
 	char url[MAX_STRING];
 	double speed_start_time;
-	int speed, size;
+	off_t speed, size;
 	pthread_t speed_thread[1];
 	conf_t *conf;
 } search_t;

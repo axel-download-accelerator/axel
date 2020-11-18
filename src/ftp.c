@@ -111,17 +111,17 @@ ftp_cwd(ftp_t *conn, char *cwd)
 }
 
 /* Get file size. Should work with all reasonable servers now */
-long long int
+off_t
 ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 {
-	long long int i, j, size = MAX_STRING;
+	off_t i, j, size = MAX_STRING;
 	char *reply, *s, fn[MAX_STRING];
 
 	/* Try the SIZE command first, if possible */
 	if (!strchr(file, '*') && !strchr(file, '?')) {
 		ftp_command(conn, "SIZE %s", file);
 		if (ftp_wait(conn) / 100 == 2) {
-			sscanf(conn->message, "%*i %lld", &i);
+			sscanf(conn->message, "%*i %jd", &i);
 			return i;
 		} else if (conn->status / 10 != 50) {
 			fprintf(stderr, _("File not found.\n"));
@@ -213,10 +213,10 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 	   possible wildcards. */
 	else {
 		s = strstr(reply, "\n-");
-		i = sscanf(s, "%*s %*i %*s %*s %lld %*s %*i %*s %100s", &size,
+		i = sscanf(s, "%*s %*i %*s %*s %jd %*s %*i %*s %100s", &size,
 			   fn);
 		if (i < 2) {
-			i = sscanf(s, "%*s %*i %lld %*i %*s %*i %*i %100s",
+			i = sscanf(s, "%*s %*i %jd %*i %*s %*i %*i %100s",
 				   &size, fn);
 			if (i < 2) {
 				return -2;

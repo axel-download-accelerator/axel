@@ -85,9 +85,9 @@ typedef struct {
 
 	ftp_t ftp[1];
 	http_t http[1];
-	long long int size;	/* File size, not 'connection size'.. */
-	long long int currentbyte;
-	long long int lastbyte;
+	off_t size; /* File size, not 'connection size'.. */
+	off_t currentbyte;
+	off_t lastbyte;
 	tcp_t *tcp;
 	bool enabled;
 	bool supported;

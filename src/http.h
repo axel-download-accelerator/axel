@@ -51,8 +51,8 @@ typedef struct {
 	int proto;		/* FTP through HTTP proxies */
 	int proxy;
 	char proxy_auth[MAX_STRING];
-	long long int firstbyte;
-	long long int lastbyte;
+	off_t firstbyte;
+	off_t lastbyte;
 	int status;
 	tcp_t tcp;
 	char *local_if;
@@ -69,8 +69,8 @@ void http_addheader(http_t *conn, const char *format, ...);
 int http_exec(http_t *conn);
 const char *http_header(const http_t *conn, const char *header);
 void http_filename(const http_t *conn, char *filename);
-long long int http_size(http_t *conn);
-long long int http_size_from_range(http_t *conn);
+off_t http_size(http_t *conn);
+off_t http_size_from_range(http_t *conn);
 void http_encode(char *s, size_t len);
 void http_decode(char *s);
 

@@ -128,7 +128,7 @@ search_makelist(search_t *results, char *orig_url)
 		 /* Sorting:         */ "o=n&"
 		 /* Filename:        */ "q=%s&"
 		 /* Num. of results: */ "m=%i&"
-		 /* Size (min/max):  */ "s1=%lld&s2=%lld",
+		 /* Size (min/max):  */ "s1=%jd&s2=%jd",
 		 conn->file, results->conf->search_amount,
 		 conn->size, conn->size);
 

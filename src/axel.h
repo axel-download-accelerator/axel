@@ -129,8 +129,8 @@ typedef struct {
 	char filename[MAX_STRING];
 	double start_time;
 	int next_state, finish_time;
-	size_t bytes_done, start_byte, size;
-	int bytes_per_second;
+	off_t bytes_done, start_byte, size;
+	long long int bytes_per_second;
 	struct timespec delay_time;
 	int outfd;
 	int ready;
