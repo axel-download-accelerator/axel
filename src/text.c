@@ -52,9 +52,9 @@
 
 static void stop(int signal);
 static char *time_human(char *dst, size_t len, unsigned int value);
-static void print_commas(long long int bytes_done);
+static void print_commas(off_t bytes_done);
 static void print_alternate_output(axel_t *axel);
-static void print_progress(size_t cur, size_t prev, size_t total, double kbps);
+static void print_progress(off_t cur, off_t prev, off_t total, double kbps);
 static void print_help(void);
 static void print_version(void);
 static void print_version_info(void);
@@ -140,7 +140,7 @@ main(int argc, char *argv[])
 				sizeof(conf->add_header[0]));
 			break;
 		case 's':
-			if (!sscanf(optarg, "%i", &conf->max_speed)) {
+			if (!sscanf(optarg, "%llu", &conf->max_speed)) {
 				print_help();
 				goto free_conf;
 			}
@@ -291,7 +291,7 @@ main(int argc, char *argv[])
 			j = min(j, conf->search_top);
 			printf("%-60s %15s\n", "URL", _("Speed"));
 			for (i = 0; i < j; i++)
-				printf("%-70.70s %5i\n", search[i].url,
+				printf("%-70.70s %5jd\n", search[i].url,
 				       search[i].speed);
 			printf("\n");
 		}
@@ -396,7 +396,7 @@ main(int argc, char *argv[])
 	signal(SIGTERM, stop);
 
 	while (!axel->ready && run) {
-		size_t prev;
+		off_t prev;
 
 		prev = axel->bytes_done;
 		axel_do(axel);
@@ -504,7 +504,7 @@ time_human(char *dst, size_t len, unsigned int value)
 /* Part of the infamous wget-like interface. Just put it in a function
 	because I need it quite often.. */
 void
-print_commas(long long int bytes_done)
+print_commas(off_t bytes_done)
 {
 	int i, j;
 
@@ -523,15 +523,14 @@ print_commas(long long int bytes_done)
 /**
  * The infamous wget-like 'interface'.. ;)
  */
-static
-void
-print_progress(size_t cur, size_t prev, size_t total, double kbps)
+static void
+print_progress(off_t cur, off_t prev, off_t total, double kbps)
 {
 	prev /= 1024;
 	cur /= 1024;
 
 	bool print_speed = prev > 0;
-	for (size_t i = prev; i < cur; i++) {
+	for (off_t i = prev; i < cur; i++) {
 		if (i % 50 == 0) {
 			if (print_speed)
 				printf("  [%6.1fKB/s]", kbps);
@@ -539,7 +538,7 @@ print_progress(size_t cur, size_t prev, size_t total, double kbps)
 			if (total == LLONG_MAX)
 				printf("\n[ N/A]  ");
 			else
-				printf("\n[%3zu%%]  ",
+				printf("\n[%3jd%%]  ",
 				       min(100U, 102400 * i / total));
 		} else if (i % 10 == 0) {
 			putchar(' ');
@@ -562,7 +561,7 @@ alt_id(int n)
 
 static void
 print_alternate_output_progress(axel_t *axel, char *progress, int width,
-				long long int done, long long int total,
+				off_t done, off_t total,
 				double now)
 {
 	if (!width)
@@ -591,8 +590,8 @@ print_alternate_output_progress(axel_t *axel, char *progress, int width,
 static void
 print_alternate_output(axel_t *axel)
 {
-	long long int done = axel->bytes_done;
-	long long int total = axel->size;
+	off_t done = axel->bytes_done;
+	off_t total = axel->size;
 	double now = axel_gettime();
 	int width = get_term_width();
 	char *progress;

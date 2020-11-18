@@ -161,10 +161,21 @@ conf_loadfile(conf_t *conf, const char *file)
 			KEY(search_amount)
 			KEY(search_top)
 		else
-			goto other_keys;
+			goto long_num_keys;
 
 		/* Save numeric option */
 		*((int *)dst) = atoi(value);
+		continue;
+
+		/* Long numeric options */
+ long_num_keys:
+		MATCH
+			KEY(max_speed)
+		else
+			goto other_keys;
+
+		/* Save numeric option */
+		*((unsigned long long *)dst) = strtoull(value, NULL, 10);
 		continue;
 
  other_keys:

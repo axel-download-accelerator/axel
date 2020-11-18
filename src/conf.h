@@ -53,7 +53,7 @@ typedef struct {
 	int reconnect_delay;
 	int max_redirect;
 	int buffer_size;
-	int max_speed;
+	unsigned long long max_speed;
 	int verbose;
 	int alternate_output;
 	int insecure;
