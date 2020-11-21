@@ -692,6 +692,10 @@ axel_do(axel_t *axel)
 		    axel->conf->max_speed;
 		if (max_speed_ratio > 1050) {
 			axel->delay_time.tv_nsec += 10000000;
+			if (axel->delay_time.tv_nsec >= 1000000000) {
+				axel->delay_time.tv_sec++;
+				axel->delay_time.tv_nsec -= 1000000000;
+			}
 		} else if (max_speed_ratio < 950) {
 			if (axel->delay_time.tv_nsec >= 10000000) {
 				axel->delay_time.tv_nsec -= 10000000;
