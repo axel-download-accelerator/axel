@@ -9,8 +9,7 @@ SUBDIRS = po
 EXTRA_DIST = \
 	scripts/pocheck.awk \
 	README.md \
-	CONTRIBUTING.md \
-	CREDITS
+	CONTRIBUTING.md
 
 include doc/Makefile.am
 
