@@ -5,7 +5,7 @@ When updating, change these files (if needed):
 - AUTHORS
 - CREDITS
 - src/text.c (years in Copyright lines near EOF)
-- run: make -C po update-po
+- run: make update-po
 
 
 When done:
