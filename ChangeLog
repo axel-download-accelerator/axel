@@ -1,3 +1,37 @@
+Version: 2.17.10, 2020-11-22
+
+  [ Ismael Luceno ]
+
+* Portability improvements
+  - Made the stop signal handler portable
+* Made build system improvements
+  - Now you can specify where OpenSSL is installed
+  - Fixed MinGW detection
+  - Further improved portability
+* Bug fixes
+  - Potential null pointer dereference
+  - Fixed incrementig procedure for delay_time
+* Optimized wildcard search in URLs
+* Added human-readable file size report at the begining of downloads
+* Reworked Request Range support check
+* Added "Accept-Encoding" header to requests
+* Cleanup of Source Code
+* Updated the documentation
+* Updated translations
+
+  [ Tianyi Wang ]
+
+* Fixed speed limiting
+* Fixed data type for sizes and offsets on 32-bit systems
+* Fixed duplicated non-default port when using proxy
+* Fixed request range comparison and overflow
+
+  [ WhiredPlanck ]
+
+* Fixed typos and warnings in Simplified Chinese translation
+
+
+
 Version: 2.17.9, 2020-04-06
 
   [ Ismael Luceno ]
