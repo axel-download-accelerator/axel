@@ -48,13 +48,31 @@ implementations of `indent`, although the results may be slightly different.
 Small variations are acceptable, and *non-compliance* in existing code, by
 itself, *is not something to fix*.
 
-### Licensing Rules
+### Conditions
+By making a contribution to the project you certify that either you hold
+copyright to the work; or you have obtained permission, or are implicitly
+permitted by the work's licensing terms (to the best of your knowledge), to
+submit it under a license compatible with the licensing terms of the project
+(See the Licensing section in this document).
+
+You also understand that this project is public, and agree your contribution and
+all personal information submitted with it will be kept indefinitely and may be
+redistributed with the project.
+
+In order to keep track of the source of a contribution, each party involved in
+the sumbission must sign-off the commit, meaning that they abide by the
+aforementioned rules.
+
+### Licensing
 Axel is provided under the terms of the GNU General Public License version 2 or
 (at your option) any later version, as described in the COPYING file, plus an
 exception for linking against OpenSSL 1.x.
 
 By submitting code for inclusion in the project you agree to license it under
 these terms, or more permissive ones.
+
+Contributions made with a different licensing must state it explicitly in the
+file header.
 
 Here's the wording in the header of each file licensed under GPL-2.0:
 
