@@ -216,7 +216,9 @@ axel_new(conf_t *conf, int count, const search_t *res)
 		 * depends on the protocol used. */
 		status = conn_info(&axel->conn[0]);
 		if (!status) {
-			axel_message(axel, "%s", axel->conn[0].message);
+			char msg[80];
+			int code = conn_info_status_get(msg, sizeof(msg), axel->conn);
+			fprintf(stderr, _("ERROR %d: %s.\n"), code, msg);
 			axel->ready = -1;
 			return axel;
 		}

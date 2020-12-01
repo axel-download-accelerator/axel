@@ -463,3 +463,21 @@ conn_info(conn_t *conn)
 	}
 	return 1;
 }
+
+int
+conn_info_status_get(char *msg, size_t size, conn_t *conn)
+{
+	if (is_proto_http(conn->proto)) {
+		char *p = conn->http->headers->p;
+		/* Skip protocol and code */
+		while (*p++ != ' ');
+		while (*p++ != ' ');
+		size_t len = strcspn(p, "\r\n");
+		if (len) {
+			strlcpy(msg, p, min(len + 1, size));
+			return conn->http->status;
+		}
+	}
+	strlcpy(msg, _("Unknown Error"), size);
+	return -1;
+}
