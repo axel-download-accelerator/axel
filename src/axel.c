@@ -913,7 +913,7 @@ axel_divide(axel_t *axel)
 	axel->conn[axel->conf->num_connections - 1].lastbyte += tail;
 #ifndef NDEBUG
 	for (int i = 0; i < axel->conf->num_connections; i++) {
-		printf(_("Downloading %lld-%lld using conn. %i\n"),
+		printf(_("Downloading %jd-%jd using conn. %i\n"),
 		       axel->conn[i].currentbyte,
 		       axel->conn[i].lastbyte, i);
 	}
