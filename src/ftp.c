@@ -358,8 +358,8 @@ ftp_wait(ftp_t *conn)
 	fprintf(stderr, "fd(%i)-->%s", conn->tcp.fd, conn->message);
 #endif
 
-	int j = strcspn(conn->message, "\r\n");
-	conn->message[j] = 0;
-	conn->message = realloc(conn->message, j + 1);
+	int k = strcspn(conn->message, "\r\n");
+	conn->message[k] = 0;
+	conn->message = realloc(conn->message, k + 1);
 	return conn->status;
 }
