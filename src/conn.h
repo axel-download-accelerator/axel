@@ -70,6 +70,13 @@
 #define PROTO_DEFAULT          PROTO_HTTP
 #define PROTO_DEFAULT_PORT     PROTO_HTTP_PORT
 
+static inline
+int
+is_proto_http(int proto)
+{
+	return (proto & PROTO_PROTO_MASK) == PROTO_PROTO_HTTP;
+}
+
 typedef struct {
 	conf_t *conf;
 
@@ -107,6 +114,7 @@ int conn_init(conn_t *conn);
 int conn_setup(conn_t *conn);
 int conn_exec(conn_t *conn);
 int conn_info(conn_t *conn);
+int conn_info_status_get(char *msg, size_t size, conn_t *conn);
 const char *scheme_from_proto(int proto);
 
 #endif				/* AXEL_CONN_H */
