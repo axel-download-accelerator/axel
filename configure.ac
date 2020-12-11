@@ -130,6 +130,12 @@ AC_TYPE_SIGNAL
 AXEL_CHECK_TYPE([off_t], [sizeof(off_t) >= sizeof(int64_t)])
 AXEL_DEFAULT_TYPE([off_t], [int64_t])
 
+# OS-specific issues
+AS_CASE(["$host_os"],
+  [darwin*], [
+    AXEL_CHECK_TYPE([intmax_t], [sizeof(intmax_t) >= sizeof(int64_t)])
+  ])
+
 # Checks for library functions.
 AC_CHECK_FUNCS([ \
 	getaddrinfo \
