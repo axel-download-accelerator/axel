@@ -291,7 +291,7 @@ main(int argc, char *argv[])
 			j = min(j, conf->search_top);
 			printf("%-60s %15s\n", "URL", _("Speed"));
 			for (i = 0; i < j; i++)
-				printf("%-70.70s %5jd\n", search[i].url,
+				printf("%-70.70s %5lld\n", search[i].url,
 				       search[i].speed);
 			printf("\n");
 		}
@@ -539,7 +539,7 @@ print_progress(off_t cur, off_t prev, off_t total, double kbps)
 			if (total == LLONG_MAX)
 				printf("\n[ N/A]  ");
 			else
-				printf("\n[%3jd%%]  ",
+				printf("\n[%3lld%%]  ",
 				       min(100U, 102400 * i / total));
 		} else if (i % 10 == 0) {
 			putchar(' ');

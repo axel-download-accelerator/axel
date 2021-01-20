@@ -232,8 +232,8 @@ axel_new(conf_t *conf, int count, const search_t *res)
 		if (axel->size != LLONG_MAX) {
 			char hsize[32];
 			axel_size_human(hsize, sizeof(hsize), axel->size);
-			axel_message(axel, _("File size: %s (%jd bytes)"),
-				     hsize, axel->size);
+			axel_message(axel, _("File size: %s (%lld bytes)"),
+				     hsize, (long long)axel->size);
 		} else {
 			axel_message(axel, _("File size: unavailable"));
 		}
@@ -341,8 +341,8 @@ axel_open(axel_t *axel)
 		}
 
 		axel_message(axel,
-			     _("State file found: %jd bytes downloaded, %jd to go."),
-			     axel->bytes_done, axel->size - axel->bytes_done);
+			     _("State file found: %lld bytes downloaded, %lld to go."),
+			     axel->bytes_done, (long long)axel->size - axel->bytes_done);
 
 		close(fd);
 
