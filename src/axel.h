@@ -105,6 +105,7 @@ typedef message_t if_t;
 #include "conf.h"
 #include "tcp.h"
 #include "ftp.h"
+#include "cookie.h"
 #include "http.h"
 #include "conn.h"
 #include "ssl.h"

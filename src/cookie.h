@@ -1,12 +1,7 @@
 /*
   Axel -- A lighter download accelerator for Linux and other Unices
 
-  Copyright 2001-2007 Wilmer van der Gaast
-  Copyright 2008      Philipp Hagemeister
-  Copyright 2008      Y Giridhar Appaji Nag
-  Copyright 2016      Stephen Thirlwall
-  Copyright 2017      Antonio Quartulli
-  Copyright 2017-2019 Ismael Luceno
+  Copyright 2020    Jason
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -34,59 +29,35 @@
 
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+  USA.
 */
 
-/* Configuration handling include file */
+#ifndef AXEL_COOKIE_H
+#define AXEL_COOKIE_H
 
-#ifndef AXEL_CONF_H
-#define AXEL_CONF_H
+/* At least 4096 bytes per cookie according to RFC6265 section 6.1 */
+#define MAX_COOKIE 4096
 
+#define COOKIE_CHUNK 512
+
+#define COOKIE_PREALLOCATE_NUM 10
+
+/* Basic support for cookies */
 typedef struct {
-	char default_filename[MAX_STRING];
-	char http_proxy[MAX_STRING];
-	char no_proxy[MAX_STRING];
-	uint16_t num_connections;
-	int strip_cgi_parameters;
-	int save_state_interval;
-	int connection_timeout;
-	int reconnect_delay;
-	int max_redirect;
-	int buffer_size;
-	unsigned long long max_speed;
-	int verbose;
-	int alternate_output;
-	int insecure;
-	int no_clobber;
+	char *name;
+	char *value;
+	void *next;
+} cookie_t;
 
-	if_t *interfaces;
+#define free_if_exists(variable) { if (variable) free(variable); }
 
-	sa_family_t ai_family;
+void cookielist_free(cookie_t *cookielist, int num);
+int cookielist_loadfile(cookie_t *cookielist, FILE *fd);
+void cookielist_header(abuf_t *abuf, const cookie_t *cookielist, int num);
 
-	int search_timeout;
-	int search_threads;
-	int search_amount;
-	int search_top;
+int cookie_setup(cookie_t *cookie);
+int cookie_strcpy(char *str, const char *dst, const char *space);
+int cookie_load(cookie_t *cookie, const abuf_t *abuf);
 
-	unsigned io_timeout;
-
-	int add_header_count;
-	abuf_t add_header[MAX_ADD_HEADERS];
-} conf_t;
-
-int conf_loadfile(conf_t *conf, const char *file);
-int conf_init(conf_t *conf);
-void conf_free(conf_t *conf);
-
-enum {
-	HDR_USER_AGENT,
-	HDR_count_init,
-};
-
-inline static void
-conf_hdr_make(abuf_t *abuf, const char *k, const char *v)
-{
-	abuf_printf(abuf, "%s: %s", k, v);
-}
-
-#endif				/* AXEL_CONF_H */
+#endif /* AXEL_COOKIE_H */

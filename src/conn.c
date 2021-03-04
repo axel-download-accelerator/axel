@@ -320,7 +320,7 @@ conn_setup(conn_t *conn)
 		http_get(conn->http, s);
 		for (i = 0; i < conn->conf->add_header_count; i++)
 			http_addheader(conn->http, "%s",
-				       conn->conf->add_header[i]);
+				       conn->conf->add_header[i].p);
 	}
 	return 1;
 }

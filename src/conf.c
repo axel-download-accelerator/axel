@@ -200,7 +200,7 @@ conf_loadfile(conf_t *conf, const char *file)
 				_("Requested too many connections, max is %i\n"),
 				USHRT_MAX);
 		} else if (!strcmp(key, "user_agent")) {
-			conf_hdr_make(conf->add_header[HDR_USER_AGENT],
+			conf_hdr_make(&conf->add_header[HDR_USER_AGENT],
 				      "User-Agent", DEFAULT_USER_AGENT);
 			continue;
 		}
@@ -253,7 +253,11 @@ conf_init(conf_t *conf)
 
 	conf->ai_family = AF_UNSPEC;
 
-	conf_hdr_make(conf->add_header[HDR_USER_AGENT],
+	for (i = 0; i < MAX_ADD_HEADERS; i++) {
+		abuf_setup(&conf->add_header[i], 1024);
+	}
+
+	conf_hdr_make(&conf->add_header[HDR_USER_AGENT],
 		      "User-Agent", DEFAULT_USER_AGENT);
 	conf->add_header_count = HDR_count_init;
 
@@ -301,6 +305,10 @@ void
 conf_free(conf_t *conf)
 {
 	free(conf->interfaces);
+	
+	for (int i = 0; i < MAX_ADD_HEADERS; i++) {
+		abuf_setup(&conf->add_header[i], ABUF_FREE);
+	}
 }
 
 int
