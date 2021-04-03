@@ -82,6 +82,7 @@ static struct option axel_options[] = {
 	{"help",            0,      NULL, 'h'},
 	{"version",         0,      NULL, 'V'},
 	{"alternate",       0,      NULL, 'a'},
+	{"percentage",      0,      NULL, 'p'},
 	{"insecure",        0,      NULL, 'k'},
 	{"no-clobber",      0,      NULL, 'c'},
 	{"header",          1,      NULL, 'H'},
@@ -130,7 +131,7 @@ main(int argc, char *argv[])
 	j = -1;
 	while (1) {
 		int option = getopt_long(argc, argv,
-					 "s:n:o:S::46NqvhVakcH:U:T:",
+					 "s:n:o:S::46NqvhVapkcH:U:T:",
 					 axel_options, NULL);
 		if (option == -1)
 			break;
@@ -188,6 +189,9 @@ main(int argc, char *argv[])
 		case 'a':
 			conf->alternate_output = 1;
 			break;
+		case 'p':
+			conf->percentage = 1;
+			break;
 		case 'k':
 			conf->insecure = 1;
 			break;
@@ -229,10 +233,11 @@ main(int argc, char *argv[])
 		}
 	}
 
-	/* disable alternate output and verbosity when quiet is specified */
-	if (conf->verbose < 0)
+	/* disable alternate outputs and verbosity when quiet is specified */
+	if (conf->verbose < 0) {
 		conf->alternate_output = 0;
-	else if (j > -1)
+		conf->percentage = 0;
+	} else if (j > -1)
 		conf->verbose = j;
 
 	if (conf->num_connections < 1) {
@@ -272,7 +277,9 @@ main(int argc, char *argv[])
 		}
 	}
 
-	printf(_("Initializing download: %s\n"), s);
+	if (!conf->percentage)
+		printf(_("Initializing download: %s\n"), s);
+
 	if (do_search) {
 		search = calloc(conf->search_amount + 1, sizeof(search_t));
 		if (!search)
@@ -390,7 +397,7 @@ main(int argc, char *argv[])
 	axel_start(axel);
 	print_messages(axel);
 
-	if (conf->alternate_output) {
+	if (conf->alternate_output || conf->percentage) {
 		putchar('\n');
 	} else {
 		if (axel->bytes_done > 0) {	/* Print first dots if resuming */
@@ -411,7 +418,10 @@ main(int argc, char *argv[])
 		prev = axel->bytes_done;
 		axel_do(axel);
 
-		if (conf->alternate_output) {
+		if (conf->percentage) {
+			if (!axel->message && prev != axel->bytes_done)
+				printf("%u\n", calc_percentage(axel->bytes_done, axel->size));
+		} else 	if (conf->alternate_output) {
 			if (!axel->message && prev != axel->bytes_done)
 				print_alternate_output(axel);
 		} else if (conf->verbose > -1) {
@@ -687,6 +697,7 @@ print_help(void)
 		 "-q\tLeave stdout alone\n"
 		 "-v\tMore status information\n"
 		 "-a\tAlternate progress indicator\n"
+		 "-p\tPrint simple percentages instead of progress bar (0-100)\n"
 		 "-h\tThis information\n"
 		 "-T x\tSet I/O and connection timeout\n"
 		 "-V\tVersion information\n"
@@ -710,6 +721,7 @@ print_help(void)
 		 "--quiet\t\t\t-q\tLeave stdout alone\n"
 		 "--verbose\t\t-v\tMore status information\n"
 		 "--alternate\t\t-a\tAlternate progress indicator\n"
+		 "--percentage\t\t-p\tPrint simple percentages instead of progress bar (0-100)\n"
 		 "--help\t\t\t-h\tThis information\n"
 		 "--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
 		 "--version\t\t-V\tVersion information\n"
