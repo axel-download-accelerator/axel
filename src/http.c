@@ -112,7 +112,7 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	conn->proto = proto;
 
 	if (proxy && *proxy) {
-		if (!conn_set(tconn, proxy)) {
+		if (!conn_set(tconn, proxy, true)) {
 			fprintf(stderr, _("Invalid proxy string: %s\n"), proxy);
 			return 0;
 		}
