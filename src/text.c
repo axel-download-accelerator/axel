@@ -91,6 +91,16 @@ static struct option axel_options[] = {
 };
 #endif
 
+/**
+ * Unified percentage calculation for all progress indicators.
+ */
+static
+unsigned
+calc_percentage(off_t cur, off_t total)
+{
+	return min(100, (100 * cur + total / 2) / total);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -539,8 +549,8 @@ print_progress(off_t cur, off_t prev, off_t total, double kbps)
 			if (total == LLONG_MAX)
 				printf("\n[ N/A]  ");
 			else
-				printf("\n[%3jd%%]  ",
-				       min(100U, 102400 * i / total));
+				printf("\n[%3u%%]  ",
+				       calc_percentage(1024 * i, total));
 		} else if (i % 10 == 0) {
 			putchar(' ');
 		}
@@ -584,8 +594,7 @@ print_alternate_output_progress(axel_t *axel, char *progress, int width,
 	}
 
 	progress[width] = '\0';
-	printf("\r[%3ld%%] [%s", min(100, (long)(done * 100. / total + .5)),
-	       progress);
+	printf("\r[%3u%%] [%s", calc_percentage(done, total), progress);
 }
 
 static void
