@@ -1,6 +1,7 @@
 # AXEL - Lightweight CLI download accelerator
-<a href="https://www.patreon.com/ismaell/creators"><img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="drawing" width="150"/></a>
-<a href="https://liberapay.com/ismael/donate"><img src="https://liberapay.com/assets/widgets/donate.svg" alt="drawing" width="100"/></a>
+[![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/ismaell)
+[![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ismael/donate)
+
 
 ## About
 
@@ -30,8 +31,9 @@ The sustainability of the project mainly depends on developers dedicating time,
 so if you want to contribute but can't code, there's also the option to fund
 paid development time through:
 
+- [Donate - *Liberapay*](https://liberapay.com/ismael/donate)
 - [Become a Github Sponsor - *Ismael Luceno*](https://github.com/sponsors/ismaell) 
-- [Patreon](https://www.patreon.com/ismaell/creators) or [Donate](https://liberapay.com/ismael/donate)
+- [Support on our Patreon](https://www.patreon.com/ismaell/creators)
 
 ## Installing from binaries
 Your operating system may contain a precompiled version of Axel, and if so you
