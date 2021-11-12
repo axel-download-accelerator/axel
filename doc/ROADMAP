@@ -1,7 +1,7 @@
 Roadmap for Axel v3 (by Philipp Hagemeister, 2008-2010)
 ===================
 
-Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://github.com/axel-download-accelerator/axel/issues ) for detailled information.
+Note: This document provides only a rough overview what to do next. Refer to the bugtracker ( https://github.com/axel-download-accelerator/axel/issues ) for detailed information.
 Pre-release version numbers of Axel 3 will start with 2.99. Starting with the 3.x series, the following version scheme will be adopted:
 
 x.y.z
@@ -34,7 +34,7 @@ Code structure
  } else {
  // ... do HTTP stuff (20 lines)
  }
- We should at least abstract the switch between HTTP and FTP and look what can be done about simplifiying and documenting the functions here.
+ We should at least abstract the switch between HTTP and FTP and look what can be done about simplifying and documenting the functions here.
 
  Furthermore, redirecting should be cached somehow/done only once lest we reach the redirect limit because it's less than -n.
 * tcp.c
@@ -68,7 +68,7 @@ Check spaces in FTP and HTTP URLs
 * Cookies (#310835)
  Can be implemented via -H. The bug called for reading the Netcape-style cookies.txt (Wget's --load--cokies option). Domain-specific cookies could be rather complex to implement. If the implementation of this feature costs more than 100B, it should be deselectable.
 * Rate-limit status messages (#TODO)
-* Don't discard first HTTP connection, but use it adaptively (start requests from the end, RST as soon as first task is fullfilled)
+* Don't discard first HTTP connection, but use it adaptively (start requests from the end, RST as soon as first task is fulfilled)
 * A -1 option: Just make one request, and only one.
 * IPv6 support
 

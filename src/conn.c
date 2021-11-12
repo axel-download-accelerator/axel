@@ -296,7 +296,7 @@ conn_setup(conn_t *conn)
 			return 0;
 
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
-		/* Set up data connnection */
+		/* Set up data connection */
 		if (!ftp_data(conn->ftp, conn->conf->io_timeout))
 			return 0;
 		conn->tcp = &conn->ftp->data_tcp;
