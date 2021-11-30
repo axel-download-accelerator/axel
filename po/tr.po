@@ -1,0 +1,492 @@
+# Turkish translation for axel
+# Copyright (C) 2021 Ahmet Arda Kavakci <ahmetardakavakci@gmail.com>
+# This file is distributed under the same license as the axel package.
+msgid ""
+msgstr ""
+"Project-Id-Version: axel 2.17.8\n"
+"Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
+"issues\n"
+"PO-Revision-Date: 2021-11-30 15:52+0300\n"
+"Last-Translator: Ahmet Arda Kavakci <ahmetardakavakci@gmail.com>\n"
+"Language-Team: Turkish \n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/axel.c:149
+msgid "Buffer resized for this speed."
+msgstr "Ara bellek bu hız için yeniden boyutlandırıldı."
+
+#: src/axel.c:177
+msgid "Could not parse URL.\n"
+msgstr "URL çözümlenemedi.\n"
+
+#: src/axel.c:199
+#, c-format
+msgid "File '%s' already there; not retrieving.\n"
+msgstr "'%s' adlı dosya halihazırda bulunuyor; erişim reddedildi.\n"
+
+#: src/axel.c:204
+#, c-format
+msgid "Incomplete download found, ignoring no-clobber option\n"
+msgstr "Tamamlanmamış indirme bulundu, no-clobber (çakışma önleyici) görmezeden geliniyor\n"
+
+#: src/axel.c:233
+#, c-format
+msgid "File size: %s (%jd bytes)"
+msgstr "Dosya boyutu: %s (%jd bayt)"
+
+#: src/axel.c:236
+msgid "File size: unavailable"
+msgstr "Dosya boyutu: müsait değil"
+
+#: src/axel.c:265
+#, c-format
+msgid "Opening output file %s"
+msgstr "%s çıktı dosyası açılıyor"
+
+#: src/axel.c:272
+msgid "Server unsupported, starting from scratch with one connection."
+msgstr "Sunucu desteklenmiyor, tek bağlantı ile baştan başlanıyor."
+
+#: src/axel.c:289
+#, c-format
+msgid "%s.st: Error, truncated state file\n"
+msgstr "%s.st: Hata, eksikli durum dosyası\n"
+
+#: src/axel.c:297
+#, c-format
+msgid "Bogus number of connections stored in state file\n"
+msgstr "Durum dosyasında sahte sayıda bağlantı bulunuyor\n"
+
+#: src/axel.c:309
+#, c-format
+msgid "State file has old format.\n"
+msgstr "Durum dosyası eski biçeme sahip.\n"
+
+#: src/axel.c:342
+#, c-format
+msgid "State file found: %jd bytes downloaded, %jd to go."
+msgstr "Durum dosyası bulundu: %jd bayt indirildi, %jd kaldı."
+
+#: src/axel.c:348 src/axel.c:359
+msgid "Error opening local file"
+msgstr "Yerel dosyayı açarken hata"
+
+#: src/axel.c:372
+msgid "Crappy filesystem/OS.. Working around. :-("
+msgstr "Dosya sistemi veya İS berbat durumda.. Bir şeyler deneniyor. :-("
+
+#: src/axel.c:385
+msgid "Error creating local file"
+msgstr "Yerel dosya oluşturulurken hata"
+
+#: src/axel.c:426
+#, c-format
+msgid ""
+"\n"
+"Reactivate connection %d\n"
+msgstr ""
+"\n"
+"%d\n bağlantısını tekrar çalıştır"
+
+#: src/axel.c:455
+msgid "Starting download"
+msgstr "İndirme başlatılıyor"
+
+#: src/axel.c:465 src/axel.c:648
+#, c-format
+msgid "Connection %i downloading from %s:%i using interface %s"
+msgstr "%i bağlantısı %s:%i konumundan %s arayüzü kullanılarak indiriliyor"
+
+#: src/axel.c:475 src/axel.c:660
+msgid "pthread error!!!"
+msgstr "pthread hatası!!!"
+
+#: src/axel.c:521
+#, c-format
+msgid "Error while waiting for connection: %s"
+msgstr "Bağlantı beklenirken hata: %s"
+
+#: src/axel.c:553
+#, c-format
+msgid "Connection %i timed out"
+msgstr "%i bağlantısı zaman aşımına uğradı"
+
+#: src/axel.c:566
+#, c-format
+msgid "Error on connection %i! Connection closed"
+msgstr "%i bağlantısında hata! Bağlantı kapatıldı."
+
+#: src/axel.c:580
+#, c-format
+msgid "Connection %i unexpectedly closed"
+msgstr "%i bağlantısı beklenmedik bir şekilde kapatıldı"
+
+#: src/axel.c:584 src/axel.c:600
+#, c-format
+msgid "Connection %i finished"
+msgstr "%i bağlantısı tamamlandı"
+
+#: src/axel.c:610
+msgid "Write error!"
+msgstr "Yazma hatası!"
+
+#: src/axel.c:712
+#, c-format
+msgid "Error while enforcing throttling: %s"
+msgstr "Kısmaya zorlanırken hata: %s"
+
+#: src/axel.c:897
+#, c-format
+msgid "Too few bytes remaining, forcing a single connection\n"
+msgstr "Geriye çok az bayt kaldığı için tekli bağlantıya zorlanıyor\n"
+
+#: src/axel.c:916
+#, c-format
+msgid "Downloading %lld-%lld using conn. %i\n"
+msgstr "%lld-%lld conn kullanılarak indiriliyor. %i\n"
+
+#: src/conf.c:70
+#, c-format
+msgid "I/O error while reading config file: %s\n"
+msgstr "Yapılandırma dosyası okunurken G/Ç hatası: %s\n"
+
+#: src/conf.c:85
+#, c-format
+msgid "Unknown protocol %s\n"
+msgstr "Bilinmeyen protokol %s\n"
+
+#: src/conf.c:200
+#, c-format
+msgid "Requested too many connections, max is %i\n"
+msgstr "Çok fazla bağlantı istendi, en fazla %i\n"
+
+#: src/conf.c:215
+#, c-format
+msgid "Error in %s line %i.\n"
+msgstr "%s konumunda, %i. satırda hata.\n"
+
+#: src/conf.c:282
+#, c-format
+msgid "HOME env variable too long\n"
+msgstr "HOME ortam değişkeni çok uzun\n"
+
+#: src/conn.c:78
+#, c-format
+msgid "Unsupported protocol\n"
+msgstr "Desteklenmeyen protokol\n"
+
+#: src/conn.c:84
+#, c-format
+msgid "Secure protocol is not supported\n"
+msgstr "Güvenli protokol desteklenmiyor\n"
+
+#: src/conn.c:429 src/ftp.c:133
+#, c-format
+msgid "Too many redirects.\n"
+msgstr "Çok fazla URL yönlendirmesi.\n"
+
+#: src/ftp.c:104
+#, c-format
+msgid "Can't change directory to %s\n"
+msgstr "Dizin %s dizinine değiştirilemiyor\n"
+
+#: src/ftp.c:127 src/ftp.c:187
+#, c-format
+msgid "File not found.\n"
+msgstr "Dosya bulunamadı.\n"
+
+#: src/ftp.c:190
+#, c-format
+msgid "Multiple matches for this URL.\n"
+msgstr "Bu URL için birden fazla eşleşme var.\n"
+
+#: src/ftp.c:262
+#, c-format
+msgid "Error opening passive data connection.\n"
+msgstr "Pasif veri bağlantısı açılırken hata.\n"
+
+#: src/ftp.c:296
+#, c-format
+msgid "Error writing command %s\n"
+msgstr "Komut yazılırken hata: %s\n"
+
+#: src/ftp.c:321 src/http.c:250
+#, c-format
+msgid "Connection gone.\n"
+msgstr "Bağlantı kayboldu.\n"
+
+#: src/http.c:116
+#, c-format
+msgid "Invalid proxy string: %s\n"
+msgstr "Geçersiz vekil sunucu (proxy) girdisi: %s\n"
+
+#: src/http.c:238
+#, c-format
+msgid "Connection gone while writing.\n"
+msgstr "Yazılırken bağlantı kayboldu.\n"
+
+#: src/text.c:136
+#, c-format
+msgid ""
+"Too many custom headers (-H)! Currently only %u custom headers can be "
+"appended.\n"
+msgstr ""
+"Çok fazla özelleştirilmiş üstbilgi (-H)! Şimdilik sadece %u özel üstbilgileri "
+"eklenebilir.\n"
+
+#: src/text.c:209
+#, c-format
+msgid "Can't redirect stdout to /dev/null.\n"
+msgstr "stdout, /dev/null'a yönlendirilemiyor.\n"
+
+#: src/text.c:251
+#, c-format
+msgid "Error when trying to read URL (Too long?).\n"
+msgstr "URL okunurken hata (Çok mu uzun?).\n"
+
+#: src/text.c:259
+#, c-format
+msgid "Can't handle URLs of length over %zu\n"
+msgstr "Uzunluğu %zu karakterden fazla olan URL'ler desteklenmiyor\n" 
+
+#: src/text.c:265
+#, c-format
+msgid "Initializing download: %s\n"
+msgstr "İndirme başlatılıyor: %s\n"
+
+#: src/text.c:273
+#, c-format
+msgid "Doing search...\n"
+msgstr "Arama yapılıyor...\n"
+
+#: src/text.c:276
+#, c-format
+msgid "File not found\n"
+msgstr "Dosya bulunamadı\n"
+
+#: src/text.c:280
+#, c-format
+msgid "Testing speeds, this can take a while...\n"
+msgstr "Hızlar test ediliyor. Bu biraz zaman alabilir...\n"
+
+#: src/text.c:283
+#, c-format
+msgid "Speed testing failed\n"
+msgstr "Hız testi başarısız\n"
+
+#: src/text.c:289
+#, c-format
+msgid "%i usable servers found, will use these URLs:\n"
+msgstr "%i adet kullanılabilir sunucu bulundu. Bu URL'ler kullanılacak:\n"
+
+#: src/text.c:292
+msgid "Speed"
+msgstr "Hız"
+
+#: src/text.c:334
+#, c-format
+msgid "Filename too long!\n"
+msgstr "Dosya ismi çok uzun!\n"
+
+#: src/text.c:347
+#, c-format
+msgid "No state file, cannot resume!\n"
+msgstr "Durum dosyası yok, devam edilemiyor!\n"
+
+#: src/text.c:351
+#, c-format
+msgid "State file found, but no downloaded data. Starting from scratch.\n"
+msgstr "Durum dosyası bulundu, ancak indirilmiş veri yok. İndirmeye baştan başlanıyor.\n"
+
+#: src/text.c:436
+#, c-format
+msgid ""
+"\n"
+"Downloaded %s in %s. (%.2f KB/s)\n"
+msgstr ""
+"\n"
+"İndirilen: %s / %s. (%.2f KB/s)\n"
+
+#: src/text.c:473
+msgid "Kilo"
+msgstr "Kilo"
+
+#: src/text.c:473
+msgid "Mega"
+msgstr "Mega"
+
+#: src/text.c:473
+msgid "Giga"
+msgstr "Giga"
+
+#: src/text.c:473
+msgid "Tera"
+msgstr "Tera"
+
+#: src/text.c:479
+#, c-format
+msgid "%g %sbyte(s)"
+msgstr "%g %sbayt"
+
+#: src/text.c:495
+#, c-format
+msgid "%i:%02i:%02i hour(s)"
+msgstr "%i:%02i:%02i saat"
+
+#: src/text.c:497
+#, c-format
+msgid "%i:%02i minute(s)"
+msgstr "%i:%02i dakika"
+
+#: src/text.c:499
+#, c-format
+msgid "%i second(s)"
+msgstr "%i saniye"
+
+#: src/text.c:602
+#, c-format
+msgid "Can't setup alternate output. Deactivating.\n"
+msgstr "Alternatif çıktı kurulamadı. Devre dışı bırakılıyor.\n"
+
+#: src/text.c:665
+#, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"-s x\tSpecify maximum speed (bytes per second)\n"
+"-n x\tSpecify maximum number of connections\n"
+"-o f\tSpecify local output file\n"
+"-S[n]\tSearch for mirrors and download from n servers\n"
+"-4\tUse the IPv4 protocol\n"
+"-6\tUse the IPv6 protocol\n"
+"-H x\tAdd HTTP header string\n"
+"-U x\tSet user agent\n"
+"-N\tJust don't use any proxy server\n"
+"-k\tDon't verify the SSL certificate\n"
+"-c\tSkip download if file already exists\n"
+"-q\tLeave stdout alone\n"
+"-v\tMore status information\n"
+"-a\tAlternate progress indicator\n"
+"-h\tThis information\n"
+"-T x\tSet I/O and connection timeout\n"
+"-V\tVersion information\n"
+"\n"
+"Visit https://github.com/axel-download-accelerator/axel/issues\n"
+msgstr ""
+"Kullanım: axel [seçenekler] url1 [url2] [url...]\n"
+"\n"
+"-s x\tMaksimum hızı belirle (bayt/saniye)\n"
+"-n x\tMaksimum bağlantı sayısını belirle\n"
+"-o f\tYerel çıktı dosyasını belirle\n"
+"-S[n]\tYansıma (mirror) ara ve n adet sunucudan indir\n"
+"-4\tIPv4 protokolünü kullan\n"
+"-6\tIPv6 protokolünü kullan\n"
+"-H x\tHTTP üstbilgi girdisi ekle\n"
+"-U x\tKullanıcı aracısı (user agent) ayarla\n"
+"-N\tTam anlamıyla hiçbir vekil sunucu (proxy) kullanma\n"
+"-k\tSSL sertifikasını doğrulama\n"
+"-c\tDosya hâlihazırda bulunuyorsa indirmeyi atla.\n"
+"-q\tstdout'u yalnız bırak\n"
+"-v\tDaha fazla durum bilgisi\n"
+"-a\tİlerleme göstergesini değiştir\n"
+"-h\tBu mesajı göster\n"
+"-T x\tG/Ç ve bağlantı zaman aşımı ayarla\n"
+"-V\tSürüm bilgisi\n"
+"\n"
+"Hata bildirmek için https://github.com/axel-download-accelerator/axel/issues ziyaret edin.\n"
+
+#: src/text.c:687
+#, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
+"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
+"--max-redirect=x\t\tSpecify maximum number of redirections\n"
+"--output=f\t\t-o f\tSpecify local output file\n"
+"--search[=n]\t\t-S[n]\tSearch for mirrors and download from n servers\n"
+"--ipv4\t\t\t-4\tUse the IPv4 protocol\n"
+"--ipv6\t\t\t-6\tUse the IPv6 protocol\n"
+"--header=x\t\t-H x\tAdd HTTP header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
+"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+"--insecure\t\t-k\tDon't verify the SSL certificate\n"
+"--no-clobber\t\t-c\tSkip download if file already exists\n"
+"--quiet\t\t\t-q\tLeave stdout alone\n"
+"--verbose\t\t-v\tMore status information\n"
+"--alternate\t\t-a\tAlternate progress indicator\n"
+"--help\t\t\t-h\tThis information\n"
+"--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
+"--version\t\t-V\tVersion information\n"
+"\n"
+"Visit https://github.com/axel-download-accelerator/axel/issues to report "
+"bugs\n"
+msgstr ""
+"Kullanım: axel [seçenekler] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tMaksimum hızı belirle (bayt/saniye)\n"
+"--num-connections=x\t-n x\tMaksimum bağlantı sayısını belirle\n"
+"--max-redirect=x\t\tMaksimum yönlendirme sayısını belirle\n"
+"--output=f\t\t-o f\tYerel çıktı dosyasını belirle\n"
+"--search[=n]\t\t-S[n]\tYansıma (mirror) ara ve n adet sunucudan indir\n"
+"--ipv4\t\t\t-4\tIPv4 protokolünü kullan\n"
+"--ipv6\t\t\t-6\tIPv6 protokolünü kullan\n"
+"--header=x\t\t-H x\tHTTP üstbilgi girdisi ekle\n"
+"--user-agent=x\t\t-U x\tKullanıcı aracısı (user agent) ayarla\n"
+"--no-proxy\t\t-N\tTam anlamıyla hiçbir vekil sunucu (proxy) kullanma\n"
+"--insecure\t\t-k\tSSL sertifikasını doğrulama\n"
+"--no-clobber\t\t-c\tDosya hâlihazırda bulunuyorsa indirmeyi atla.\n"
+"--quiet\t\t\t-q\tstdout'u yalnız bırak\n"
+"--verbose\t\t-v\tDaha fazla durum bilgisi\n"
+"--alternate\t\t-a\tİlerleme göstergesini değiştir\n"
+"--help\t\t\t-h\tBu mesajı göster\n"
+"--timeout=x\t\t-T x\tG/Ç ve bağlantı zaman aşımı ayarla\n"
+"--version\t\t-V\tSürüm bilgisi\n"
+"\n"
+"Hata bildirmek için https://github.com/axel-download-accelerator/axel/issues"
+"ziyaret edin.\n"
+
+#: src/text.c:715
+#, c-format
+msgid "Axel %s (%s)\n"
+msgstr "Axel %s (%s)\n"
+
+#: src/text.c:729
+msgid "and others."
+msgstr "ve diğerleri."
+
+#: src/text.c:730
+msgid ""
+"Please, see the CREDITS file.\n"
+"\n"
+msgstr "Lütfen CREDITS dosyasına göz atın.\n"
+"\n"
+
+#: src/ssl.c:91
+#, c-format
+msgid "SSL error: %s\n"
+msgstr "SSL hatası: %s\n"
+
+#: src/ssl.c:103
+#, c-format
+msgid "SSL error: Certificate error\n"
+msgstr "SSL hatası: Sertifika hatası\n"
+
+#: src/ssl.c:110
+#, c-format
+msgid "SSL error: Certificate not found\n"
+msgstr "SSL hatası: Sertifika bulunamadı\n"
+
+#: src/ssl.c:116
+#, c-format
+msgid "SSL error: Hostname verification failed\n"
+msgstr "SSL hatası: Ana makine adı onaylanamadı\n"
+
+#: src/tcp.c:74
+#, c-format
+msgid "Unable to connect to server %s:%i: %s\n"
+msgstr "Sunucuya bağlanılamadı: %s:%i %s\n"
