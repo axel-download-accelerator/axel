@@ -1,3 +1,7 @@
+/*
+ * Copyright 2020  Ismael Luceno <ismael@iodev.co.uk>
+ */
+
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
 #include "compat-ssl.h"
