@@ -306,7 +306,6 @@ int
 ftp_wait(ftp_t *conn)
 {
 	int size = MAX_STRING, r = 0, complete, i, j;
-	char *s;
 
 	{
 		void *new_msg = realloc(conn->message, size);
