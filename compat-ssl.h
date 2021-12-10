@@ -1,5 +1,6 @@
 /*
  * Copyright 2020  Ismael Luceno <ismael@iodev.co.uk>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #if defined(HEADER_ASN1_H) && !defined(HAVE_ASN1_STRING_GET0_DATA)

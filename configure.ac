@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
 # Autoconf for axel
 AC_COPYRIGHT([
 Copyright 2016      Joao Eriberto Mota Filho

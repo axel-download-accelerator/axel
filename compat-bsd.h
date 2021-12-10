@@ -1,5 +1,6 @@
 /*
  * Copyright 2019  Ismael Luceno <ismael@iodev.co.uk>
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #ifndef HAVE_STRLCAT

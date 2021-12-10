@@ -1,5 +1,7 @@
 /*
  * Copyright 2020  Ismael Luceno <ismael@iodev.co.uk>
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include <openssl/ssl.h>
