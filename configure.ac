@@ -36,6 +36,10 @@ AC_DEFINE_UNQUOTED([ARCH], ["$host_os"], ["Define architecture"])
 
 # Make system extensions available to the code
 AS_CASE(["$host_os"],
+  [freebsd*], [
+    AC_DEFINE([__BSD_VISIBLE], [1],
+              [Workaround to expose legacy BSD typedefs needed by sockets API])
+  ],
   [darwin*], [
     AC_DEFINE([_DARWIN_C_SOURCE], [1],
               [Define on Darwin to expose all libc features])
