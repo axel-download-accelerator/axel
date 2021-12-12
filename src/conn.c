@@ -389,9 +389,10 @@ conn_info(conn_t *conn)
 		conn->supported = true;
 		conn->currentbyte = 0;
 		pthread_mutex_lock(&conn->lock);
-		if (!conn_setup(conn))
-			return 0;
+		int setup_ret = conn_setup(conn);
 		pthread_mutex_unlock(&conn->lock);
+		if (!setup_ret)
+			return 0;
 		conn_exec(conn);
 		conn_disconnect(conn);
 
