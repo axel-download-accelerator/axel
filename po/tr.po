@@ -97,8 +97,7 @@ msgid ""
 "Reactivate connection %d\n"
 msgstr ""
 "\n"
-"%d\n"
-" bağlantısını tekrar çalıştır"
+"%d bağlantısını tekrar çalıştır\n"
 
 #: src/axel.c:459
 msgid "Starting download"
