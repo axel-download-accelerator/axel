@@ -157,10 +157,10 @@ msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr ""
 "Es sind zu wenige Bytes übrig, also eine einzelne Verbindung erzwingen\n"
 
-#: src/axel.c:916
+#: src/axel.c:920
 #, c-format
-msgid "Downloading %lld-%lld using conn. %i\n"
-msgstr "Herunterladen von %lld-%lld mithilfe der Verbindung %i\n"
+msgid "Downloading %jd-%jd using conn. %i\n"
+msgstr "Herunterladen von %jd-%jd mithilfe der Verbindung %i\n"
 
 #: src/conf.c:72
 #, c-format
@@ -388,6 +388,7 @@ msgid ""
 "-q\tLeave stdout alone\n"
 "-v\tMore status information\n"
 "-a\tAlternate progress indicator\n"
+"-p\tPrint simple percentages instead of progress bar (0-100)\n"
 "-h\tThis information\n"
 "-T x\tSet I/O and connection timeout\n"
 "-V\tVersion information\n"
@@ -436,6 +437,8 @@ msgid ""
 "--quiet\t\t\t-q\tLeave stdout alone\n"
 "--verbose\t\t-v\tMore status information\n"
 "--alternate\t\t-a\tAlternate progress indicator\n"
+"--percentage\t\t-p\tPrint simple percentages instead of progress bar "
+"(0-100)\n"
 "--help\t\t\t-h\tThis information\n"
 "--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
 "--version\t\t-V\tVersion information\n"

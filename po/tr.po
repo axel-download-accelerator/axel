@@ -154,8 +154,8 @@ msgstr "Geriye çok az bayt kaldığı için tekli bağlantıya zorlanıyor\n"
 
 #: src/axel.c:920
 #, fuzzy, c-format
-msgid "Downloading %lld-%lld using conn. %i\n"
-msgstr "%lld-%lld conn kullanılarak indiriliyor. %i\n"
+msgid "Downloading %jd-%jd using conn. %i\n"
+msgstr "%jd-%jd conn kullanılarak indiriliyor. %i\n"
 
 #: src/conf.c:72
 #, c-format
@@ -385,6 +385,7 @@ msgid ""
 "-q\tLeave stdout alone\n"
 "-v\tMore status information\n"
 "-a\tAlternate progress indicator\n"
+"-p\tPrint simple percentages instead of progress bar (0-100)\n"
 "-h\tThis information\n"
 "-T x\tSet I/O and connection timeout\n"
 "-V\tVersion information\n"
@@ -434,6 +435,8 @@ msgid ""
 "--quiet\t\t\t-q\tLeave stdout alone\n"
 "--verbose\t\t-v\tMore status information\n"
 "--alternate\t\t-a\tAlternate progress indicator\n"
+"--percentage\t\t-p\tPrint simple percentages instead of progress bar "
+"(0-100)\n"
 "--help\t\t\t-h\tThis information\n"
 "--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
 "--version\t\t-V\tVersion information\n"
