@@ -1,3 +1,30 @@
+Version: 2.17.11, 2021-12-19
+
+[ Ismael Luceno ]
+
+* Fixed a deadlock in conn_info
+* Fixed build on FreeBSD (workaround for hidden typedefs)
+* Added SPDX license information
+* Improved reporting of HTTP status codes
+* Source-code simplifications
+* Buildsystem improvements
+  - Check intmax_t >= int64_t on Mac OS X
+  - Improved output when pkg-config is unavailable
+
+[ Sean E. Russell ]
+
+* Implemented percentage output mode for piping
+
+[ Dimitris Apostolou ]
+
+* Fixed typos
+
+[ Ahmet Arda Kavakcı ]
+
+* Added Turkish Translation
+
+
+
 Version: 2.17.10, 2020-11-22
 
   [ Ismael Luceno ]
