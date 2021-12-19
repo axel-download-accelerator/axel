@@ -197,6 +197,10 @@ msgstr "Güvenli protokol desteklenmiyor\n"
 msgid "Too many redirects.\n"
 msgstr "Çok fazla URL yönlendirmesi.\n"
 
+#: src/conn.c:484
+msgid "Unknown Error"
+msgstr ""
+
 #: src/ftp.c:106
 #, c-format
 msgid "Can't change directory to %s\n"

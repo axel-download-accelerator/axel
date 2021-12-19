@@ -202,6 +202,10 @@ msgstr "Das sichere Protokoll wird nicht unterstützt\n"
 msgid "Too many redirects.\n"
 msgstr "Zu viele Weiterleitungen (redirects).\n"
 
+#: src/conn.c:484
+msgid "Unknown Error"
+msgstr "Unbekannter Fehler"
+
 #: src/ftp.c:106
 #, c-format
 msgid "Can't change directory to %s\n"

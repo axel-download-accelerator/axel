@@ -198,6 +198,10 @@ msgstr "Protokol aman tidak didukung\n"
 msgid "Too many redirects.\n"
 msgstr "Terlalu banyak pengalihan.\n"
 
+#: src/conn.c:484
+msgid "Unknown Error"
+msgstr ""
+
 #: src/ftp.c:106
 #, c-format
 msgid "Can't change directory to %s\n"

@@ -195,6 +195,10 @@ msgstr "不支持安全协议\n"
 msgid "Too many redirects.\n"
 msgstr "重定向次数过多。\n"
 
+#: src/conn.c:484
+msgid "Unknown Error"
+msgstr ""
+
 #: src/ftp.c:106
 #, c-format
 msgid "Can't change directory to %s\n"

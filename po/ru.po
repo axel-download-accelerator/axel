@@ -193,6 +193,10 @@ msgstr "Безопасный протокол не поддерживается\
 msgid "Too many redirects.\n"
 msgstr "Слишком много перенаправлений.\n"
 
+#: src/conn.c:484
+msgid "Unknown Error"
+msgstr ""
+
 #: src/ftp.c:106
 #, c-format
 msgid "Can't change directory to %s\n"
