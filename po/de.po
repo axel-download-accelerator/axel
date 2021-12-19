@@ -1,18 +1,18 @@
 # German translations for axel package.
 #
-# Copyright 2019-2020  Ismael Luceno
+# Copyright 2019-2021  Ismael Luceno
 #
 # This file is distributed under the same license as the axel package.
 #
 # Hermann J. Beckers <hj.beckers@onlinehome.de>, 2001
-# Ismael Luceno <ismael@iodev.co.uk>, 2019-2020
+# Ismael Luceno <ismael@iodev.co.uk>, 2019-2021
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: axel 2.17.8\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2020-11-22 19:49+0100\n"
+"PO-Revision-Date: 2021-12-20 02:09+0100\n"
 "Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: Deutsch\n"
 "Language: de\n"
@@ -39,6 +39,11 @@ msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr ""
 "Es wurde ein unvollständiger Download gefunden, die No-Clobber-Option wurde "
 "ignoriert\n"
+
+#: src/axel.c:223
+#, c-format
+msgid "ERROR %d: %s.\n"
+msgstr "FEHLER %d: %s.\n"
 
 #: src/axel.c:237
 #, c-format

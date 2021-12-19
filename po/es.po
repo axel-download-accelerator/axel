@@ -1,17 +1,17 @@
 # Spanish translations for axel package.
 #
-# Copyright 2017-2020  Ismael Luceno
+# Copyright 2017-2021  Ismael Luceno
 #
 # This file is distributed under the same license as the axel package.
 #
-# Ismael Luceno <ismael@iodev.co.uk>, 2017-2020
+# Ismael Luceno <ismael@iodev.co.uk>, 2017-2021
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: axel 2.17.8\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2020-11-22 19:43+0100\n"
+"PO-Revision-Date: 2021-12-20 02:10+0100\n"
 "Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -37,6 +37,11 @@ msgstr "Archivo '%s' ya existe; no recuperando.\n"
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "Descarga incompleta encontrada, ignorando opción no-clobber\n"
+
+#: src/axel.c:223
+#, c-format
+msgid "ERROR %d: %s.\n"
+msgstr "ERROR %d: %s.\n"
 
 #: src/axel.c:237
 #, c-format

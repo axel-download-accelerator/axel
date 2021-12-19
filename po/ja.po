@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: axel 2.17.8\n"
 "Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
 "issues\n"
-"PO-Revision-Date: 2020-11-22 19:56+0100\n"
+"PO-Revision-Date: 2021-12-20 02:05+0100\n"
 "Last-Translator: Ismael Luceno <ismael@iodev.co.uk>\n"
 "Language-Team: debian-japanese@lists.debian.org\n"
 "Language: ja\n"
@@ -32,6 +32,11 @@ msgstr "ファイル '%s' はすでに存在します。 だからそれは取�
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr ""
 "不完全なダウンロードが見つかりましたが、no-clobberオプションは無視されます\n"
+
+#: src/axel.c:223
+#, c-format
+msgid "ERROR %d: %s.\n"
+msgstr "エラー %d: %s.\n"
 
 #: src/axel.c:237
 #, fuzzy, c-format
