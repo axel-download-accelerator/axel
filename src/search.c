@@ -142,7 +142,7 @@ search_makelist(search_t *results, char *orig_url)
 		goto done;
 
 	{
-		pthread_mutex_unlock(&conn->lock);
+		pthread_mutex_lock(&conn->lock);
 		int tmp = conn_setup(conn);
 		pthread_mutex_unlock(&conn->lock);
 		if (!tmp || !conn_exec(conn))
