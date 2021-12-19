@@ -2,10 +2,10 @@ When updating, change these files (if needed):
 
 - VERSION [0]
 - ChangeLog [1]
-- AUTHORS
-- CREDITS
 - src/text.c (years in Copyright lines near EOF)
 - run: make update-po
+- commit changes
+- tag the release
 
 
 When done:
