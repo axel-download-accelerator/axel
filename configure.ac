@@ -25,8 +25,7 @@ AC_CONFIG_LIBOBJ_DIR([lib])
 AM_INIT_AUTOMAKE([subdir-objects])
 PKG_PROG_PKG_CONFIG
 AS_IF([test -z "$PKG_CONFIG"],
-  [AC_MSG_WARN([pkg-config is needed for auto-configuration of dependencies])
-   PKG_CONFIG=false])
+  [AC_MSG_WARN([pkg-config is needed for auto-configuration of dependencies])])
 
 AM_SILENT_RULES([yes])
 
