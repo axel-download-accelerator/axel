@@ -41,6 +41,13 @@
 #if !defined(AXEL_SSL_H) && defined(HAVE_SSL)
 #define AXEL_SSL_H
 
+#include <config.h>
+
+#ifdef HAVE_WOLFSSL
+#include <wolfssl/options.h>
+#include <wolfssl/wolfcrypt/settings.h>
+#endif
+
 #include <openssl/ssl.h>
 
 void ssl_init(conf_t *conf);

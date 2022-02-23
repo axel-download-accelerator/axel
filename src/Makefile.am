@@ -31,7 +31,7 @@ axel_SOURCES += \
 	src/ssl_verify.c
 endif
 
-AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
+AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) $(SSL_CFLAGS)\
 	-Wno-declaration-after-statement \
 	-Wno-error=cast-align \
 	-Wno-error=inline

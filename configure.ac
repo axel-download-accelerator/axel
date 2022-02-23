@@ -184,8 +184,17 @@ AS_IF([test "x$with_ssl" != xno], [
         PKG_CONFIG_PATH="$with_ssl/lib/pkgconfig$PATH_SEPARATOR$PKG_CONFIG_PATH"
         export PKG_CONFIG_PATH
     ])
-    PKG_CHECK_MODULES([SSL], [openssl])
+    # try to use wolfSSL first and then callback to openssl
+    PKG_CHECK_MODULES([WOLFSSL], [wolfssl],
+        [AC_DEFINE([HAVE_WOLFSSL], [1], [Using wolfSSL])
+            SSL_CFLAGS="$WOLFSSL_CFLAGS $WOLFSSL_CFLAGS/wolfssl"
+            SSL_LIBS="$WOLFSSL_LIBS"
+            ],
+            [PKG_CHECK_MODULES([SSL], [openssl])]
+        )
+
     AC_DEFINE([HAVE_SSL], [1], [SSL])
+
     save_LIBS="$LIBS"
     LIBS="$LIBS $SSL_LIBS"
     AC_REPLACE_FUNCS([ \

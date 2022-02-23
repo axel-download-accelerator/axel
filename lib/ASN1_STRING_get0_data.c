@@ -4,6 +4,13 @@
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "config.h"
+
+#ifdef HAVE_WOLFSSL
+#include <wolfssl/options.h>
+#include <wolfssl/wolfcrypt/settings.h>
+#endif
+
 #include <openssl/ssl.h>
 #include <openssl/x509v3.h>
 #include "compat-ssl.h"

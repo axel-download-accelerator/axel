@@ -40,6 +40,13 @@
 /* SSL interface */
 
 #include "config.h"
+#ifdef HAVE_WOLFSSL
+#include <wolfssl/options.h>
+#include <wolfssl/wolfcrypt/settings.h>
+#endif
+
+#include <openssl/ssl.h>
+
 #include <openssl/err.h>
 #include "axel.h"
 
