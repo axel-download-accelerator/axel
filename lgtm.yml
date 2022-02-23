@@ -1,0 +1,15 @@
+extraction:
+  cpp:
+    prepare:
+      packages:
+        - autoconf-archive
+        - autopoint
+        - clang
+        - libssl-dev
+        - linux-libc-dev
+        - txt2man
+        - gettext
+    configure:
+      command:
+      - autoreconf -ivf
+      - ./configure
