@@ -24,7 +24,8 @@ axel_SOURCES = \
 	src/tcp.h \
 	src/text.c
 
-AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
+axel_CFLAGS = $(AM_CFLAGS) $(PTHREAD_CFLAGS)
+AM_CFLAGS = $(WARN_CFLAGS) \
 	-Wno-declaration-after-statement \
 	-Wno-error=cast-align \
 	-Wno-error=inline
