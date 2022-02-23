@@ -24,17 +24,18 @@ axel_SOURCES = \
 	src/tcp.h \
 	src/text.c
 
+AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
+	-Wno-declaration-after-statement \
+	-Wno-error=cast-align \
+	-Wno-error=inline
+
 if WITH_SSL
 axel_SOURCES += \
 	src/dn-match.c \
 	src/ssl.c \
 	src/ssl_verify.c
+AM_CFLAGS += $(SSL_CFLAGS)
 endif
-
-AM_CFLAGS = $(PTHREAD_CFLAGS) $(WARN_CFLAGS) \
-	-Wno-declaration-after-statement \
-	-Wno-error=cast-align \
-	-Wno-error=inline
 
 axel_LDADD = $(LIBOBJS) $(SSL_LIBS) $(LIBINTL) $(PTHREAD_LIBS)
 axel_CC = $(PTHREAD_CC)
