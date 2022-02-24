@@ -22,10 +22,24 @@ AC_CONFIG_SRCDIR([src/conf.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_LIBOBJ_DIR([lib])
+
+dnl Validate arguments; fail early
+AC_ARG_WITH([ssl], [
+AS_HELP_STRING(
+        [--with-ssl=@<:@openssl@:>@],
+        [Which TLS/SSL implementation to use, default: openssl])
+AS_HELP_STRING(
+        [--without-ssl], [disable TLS support])],
+    [AS_CASE(["$withval"],
+        [openssl|no],,
+        [AC_MSG_ERROR([Invalid argument: --with-ssl=$withval])])],
+    [with_ssl=openssl])
+
 AM_INIT_AUTOMAKE([subdir-objects])
 PKG_PROG_PKG_CONFIG
 AS_IF([test -z "$PKG_CONFIG"],
   [AC_MSG_WARN([pkg-config is needed for auto-configuration of dependencies])])
+export PKG_CONFIG_PATH
 
 AM_SILENT_RULES([yes])
 
@@ -174,24 +188,23 @@ AC_REPLACE_FUNCS([ \
 AXEL_CHECK_MACRO([O_NONBLOCK], [fcntl.h])
 
 # Optional (but included-by-default) ssl support
-AC_ARG_WITH([ssl],
-    AC_HELP_STRING([--without-ssl],[disable TLS support]), [], [with_ssl=yes])
-
 AM_CONDITIONAL([WITH_SSL], [test "x$with_ssl" != xno])
+AC_ARG_VAR([SSL_PREFIX], [installation prefix of the TLS/SSL library])
 AS_IF([test "x$with_ssl" != xno], [
-    AS_IF([test "x$with_ssl" = xyes], [], [
-        PKG_CONFIG_PATH="$with_ssl/lib/pkgconfig$PATH_SEPARATOR$PKG_CONFIG_PATH"
-        export PKG_CONFIG_PATH
+    save_PKG_CONFIG_PATH="$PKG_CONFIG_PATH"
+    AS_IF([test ${SSL_PREFIX+y}], [
+	PKG_CONFIG_PATH="$SSL_PREFIX/lib/pkgconfig$PATH_SEPARATOR$PKG_CONFIG_PATH"
     ])
-    PKG_CHECK_MODULES([SSL], [openssl])
+    PKG_CHECK_MODULES([SSL], [$with_ssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
+    PKG_CONFIG_PATH="$save_PKG_CONFIG_PATH"
     save_LIBS="$LIBS"
     LIBS="$LIBS $SSL_LIBS"
     AC_REPLACE_FUNCS([ \
         ASN1_STRING_get0_data \
     ])
     LIBS="$save_LIBS"
-], AC_MSG_NOTICE([SSL support disabled]))
+], AC_MSG_NOTICE([TLS/SSL support disabled]))
 
 # Add Gettext
 AM_GNU_GETTEXT([external])
