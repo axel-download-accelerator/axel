@@ -40,7 +40,17 @@
 /* SSL interface */
 
 #include "config.h"
+
+#ifdef HAVE_WOLFSSL
+#include <wolfssl/options.h>
+#include <wolfssl/wolfcrypt/settings.h>
+#include <wolfssl/openssl/ssl.h>
+#include <wolfssl/openssl/err.h>
+#else
+#include <openssl/ssl.h>
 #include <openssl/err.h>
+#endif
+
 #include "axel.h"
 
 static pthread_mutex_t ssl_lock;

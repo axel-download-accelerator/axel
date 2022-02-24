@@ -26,12 +26,12 @@ AC_CONFIG_LIBOBJ_DIR([lib])
 dnl Validate arguments; fail early
 AC_ARG_WITH([ssl], [
 AS_HELP_STRING(
-        [--with-ssl=@<:@openssl@:>@],
+        [--with-ssl=@<:@openssl/wolfssl@:>@],
         [Which TLS/SSL implementation to use, default: openssl])
 AS_HELP_STRING(
         [--without-ssl], [disable TLS support])],
     [AS_CASE(["$withval"],
-        [openssl|no],,
+        [openssl|wolfssl|no],,
         [AC_MSG_ERROR([Invalid argument: --with-ssl=$withval])])],
     [with_ssl=openssl])
 
@@ -197,6 +197,10 @@ AS_IF([test "x$with_ssl" != xno], [
     ])
     PKG_CHECK_MODULES([SSL], [$with_ssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
+    AS_CASE(["$with_ssl"],
+	[wolfssl], [
+	    AC_DEFINE([HAVE_WOLFSSL], [1], [wolfSSL])
+	])
     PKG_CONFIG_PATH="$save_PKG_CONFIG_PATH"
     save_LIBS="$LIBS"
     LIBS="$LIBS $SSL_LIBS"

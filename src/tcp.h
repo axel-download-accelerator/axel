@@ -44,7 +44,13 @@
 #define AXEL_TCP_H
 
 #ifdef HAVE_SSL
+#ifdef HAVE_WOLFSSL
+#include <wolfssl/options.h>
+#include <wolfssl/wolfcrypt/settings.h>
+#include <wolfssl/openssl/ssl.h>
+#else
 #include <openssl/ssl.h>
+#endif
 #endif
 
 typedef struct {
