@@ -201,6 +201,14 @@ AS_IF([test "x$with_ssl" != xno], [
     PKG_CHECK_MODULES([SSL], [$with_ssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
     AS_CASE(["$with_ssl"],
+	[openssl], [
+	    save_LIBS="$LIBS"
+	    LIBS="$LIBS $SSL_LIBS"
+	    AC_REPLACE_FUNCS([ \
+		ASN1_STRING_get0_data \
+	    ])
+	    LIBS="$save_LIBS"
+	],
 	[wolfssl], [
 	    AC_CHECK_DECLS([
 		X509_NAME_get_entry,
@@ -216,12 +224,6 @@ AS_IF([test "x$with_ssl" != xno], [
 	    AC_DEFINE([HAVE_WOLFSSL], [1], [wolfSSL])
 	])
     PKG_CONFIG_PATH="$save_PKG_CONFIG_PATH"
-    save_LIBS="$LIBS"
-    LIBS="$LIBS $SSL_LIBS"
-    AC_REPLACE_FUNCS([ \
-        ASN1_STRING_get0_data \
-    ])
-    LIBS="$save_LIBS"
 ], AC_MSG_NOTICE([TLS/SSL support disabled]))
 
 # Add Gettext
