@@ -202,6 +202,17 @@ AS_IF([test "x$with_ssl" != xno], [
     AC_DEFINE([HAVE_SSL], [1], [SSL])
     AS_CASE(["$with_ssl"],
 	[wolfssl], [
+	    AC_CHECK_DECLS([
+		X509_NAME_get_entry,
+		X509_get_ext_d2i,
+	        X509_V_OK
+	    ],, [
+	        AC_MSG_ERROR([wolfSSL with extra OpenSSL API compatibility required])
+	    ], [
+	        #include <wolfssl/options.h>
+		#include <wolfssl/wolfcrypt/settings.h>
+		#include <wolfssl/openssl/ssl.h>
+	    ])
 	    AC_DEFINE([HAVE_WOLFSSL], [1], [wolfSSL])
 	])
     PKG_CONFIG_PATH="$save_PKG_CONFIG_PATH"
