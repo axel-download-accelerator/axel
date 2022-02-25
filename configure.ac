@@ -12,6 +12,9 @@ This file is under the same license as Axel.
 
 AC_PREREQ([2.69])
 PKG_PREREQ([0.29])
+m4_ifdef([AX_IS_RELEASE],, [
+    m4_fatal([autoconf-archive is required])
+])
 
 AXEL_PKG([axel], [https://github.com/axel-download-accelerator/axel/issues])
 AXEL_VER_READ([VERSION])
