@@ -151,7 +151,7 @@ axel_new(conf_t *conf, int count, const search_t *res)
 					     _("Buffer resized for this speed."));
 			axel->conf->buffer_size = axel->conf->max_speed;
 		}
-		delay = 1000000000 * axel->conf->buffer_size *
+		delay = axel->conf->buffer_size * 1000000000 *
 			axel->conf->num_connections / axel->conf->max_speed;
 
 		axel->delay_time.tv_sec  = delay / 1000000000;
