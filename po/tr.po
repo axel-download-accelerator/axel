@@ -52,7 +52,7 @@ msgstr "Dosya boyutu: müsait değil"
 #: src/axel.c:269
 #, c-format
 msgid "Opening output file %s"
-msgstr "%s çıktı dosyası açılıyor"
+msgstr "%s çıktı dosyası oluşturuluyor"
 
 #: src/axel.c:276
 msgid "Server unsupported, starting from scratch with one connection."
