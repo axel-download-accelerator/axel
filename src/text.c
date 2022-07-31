@@ -363,8 +363,8 @@ main(int argc, char *argv[])
 		char statefn[MAX_STRING + 3];
 		snprintf(statefn, sizeof(statefn), "%s.st", fn);
 		if (access(fn, F_OK) == 0 && access(statefn, F_OK) != 0) {
-			fprintf(stderr, _("No state file, cannot resume!\n"));
-			goto close_axel;
+			fprintf(stderr, _("No state file, cannot resume! Running anyway.\n"));
+			unlink(statefn);
 		}
 		if (access(statefn, F_OK) == 0 && access(fn, F_OK) != 0) {
 			printf(_("State file found, but no downloaded data. Starting from scratch.\n"));
