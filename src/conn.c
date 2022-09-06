@@ -381,7 +381,9 @@ conn_info(conn_t *conn)
 	}
 
 	char s[1005];
-	long long int i = 0;
+	char *urls[max_redirect];
+    int num_urls = 0;
+    char *curr_url;
 
 	do {
 		const char *t;
@@ -428,10 +430,18 @@ conn_info(conn_t *conn)
 			return -1;
 		}
 
-		if (++i >= conn->conf->max_redirect) {
-			fprintf(stderr, _("Too many redirects.\n"));
-			return 0;
-		}
+        /* Check if the current URL has already been visited ... */
+        curr_url = conn_url(conn->http->headers->p, conn->http->headers->len, conn);
+        for (int i = 0; i < num_urls; i++) {
+		    if (!strcmp(curr_url, urls[i]) {
+			    fprintf(stderr, _("Too many redirects.\n"));
+			    return 0;
+		    }
+        }
+
+        /* ... if not, store the current URL */
+        urls[num_urls] = curr_url;
+        num_urls++;
 	} while (conn->http->status / 100 == 3);
 
 	/* Check for non-recoverable errors */
