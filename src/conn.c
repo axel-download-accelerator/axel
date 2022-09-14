@@ -437,7 +437,8 @@ conn_info(conn_t *conn)
 		}
 
         /* Check if the current URL has already been visited ... */
-        curr_url = conn_url(conn->http->headers->p, conn->http->headers->len, conn);
+        curr_url = malloc(MAX_STRING);
+        conn_url(curr_url, MAX_STRING, conn);
         for (int i = 0; i < num_urls; i++) {
 		    if (!strcmp(curr_url, urls[i]) {
 			    fprintf(stderr, _("Redirect loop detected.\n"));
@@ -448,6 +449,7 @@ conn_info(conn_t *conn)
         /* ... if not, store the current URL */
         urls[num_urls] = curr_url;
         num_urls++;
+        free(curr_url);
 	} while (conn->http->status / 100 == 3);
 
 	/* Check for non-recoverable errors */
