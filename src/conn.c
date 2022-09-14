@@ -384,6 +384,7 @@ conn_info(conn_t *conn)
 	char *urls[max_redirect];
     int num_urls = 0;
     char *curr_url;
+    long long int i = 0;
 
 	do {
 		const char *t;
@@ -428,6 +429,11 @@ conn_info(conn_t *conn)
 		 * report it back to the caller */
 		if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
 			return -1;
+		}
+
+        if (++i >= conn->conf->max_redirect) {
+			fprintf(stderr, _("Too many redirects.\n"));
+			return 0;
 		}
 
         /* Check if the current URL has already been visited ... */
