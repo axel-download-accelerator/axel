@@ -440,7 +440,7 @@ conn_info(conn_t *conn)
         curr_url = conn_url(conn->http->headers->p, conn->http->headers->len, conn);
         for (int i = 0; i < num_urls; i++) {
 		    if (!strcmp(curr_url, urls[i]) {
-			    fprintf(stderr, _("Too many redirects.\n"));
+			    fprintf(stderr, _("Redirect loop detected.\n"));
 			    return 0;
 		    }
         }
