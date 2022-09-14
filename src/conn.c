@@ -382,9 +382,9 @@ conn_info(conn_t *conn)
 
 	char s[1005];
 	char *urls[max_redirect];
-    int num_urls = 0;
-    char *curr_url;
-    long long int i = 0;
+	int num_urls = 0;
+	char *curr_url;
+	long long int i = 0;
 
 	do {
 		const char *t;
@@ -431,26 +431,31 @@ conn_info(conn_t *conn)
 			return -1;
 		}
 
-        if (++i >= conn->conf->max_redirect) {
+		if (++i >= conn->conf->max_redirect) {
 			fprintf(stderr, _("Too many redirects.\n"));
 			return 0;
 		}
 
-        /* Check if the current URL has already been visited ... */
-        curr_url = malloc(MAX_STRING);
-        conn_url(curr_url, MAX_STRING, conn);
-        for (int i = 0; i < num_urls; i++) {
-		    if (!strcmp(curr_url, urls[i]) {
-			    fprintf(stderr, _("Redirect loop detected.\n"));
-			    return 0;
-		    }
-        }
+		/* Check if the current URL has already been visited ... */
+		curr_url = malloc(MAX_STRING);
+		if (conn_url(curr_url, MAX_STRING, conn)) {
+			for (int i = 0; i < num_urls; i++) {
+				if (!strcmp(curr_url, urls[i]) {
+					fprintf(stderr, _("Redirect loop detected.\n"));
+					return 0;
+				}
+			}
 
-        /* ... if not, store the current URL */
-        urls[num_urls] = curr_url;
-        num_urls++;
-        free(curr_url);
+			/* ... if not, store the current URL */
+			urls[num_urls] = curr_url;
+			num_urls++;
+		}
 	} while (conn->http->status / 100 == 3);
+
+	/* Free the memory allocated for the URLs */
+	for (int i = 0; i < num_urls; i++) {
+		free(urls[i]);
+	}
 
 	/* Check for non-recoverable errors */
 	if (conn->http->status != 416 && conn->http->status / 100 != 2)
