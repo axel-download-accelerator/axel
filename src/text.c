@@ -57,6 +57,7 @@ static char *time_human(char *dst, size_t len, unsigned int value);
 static void print_commas(off_t bytes_done);
 static void print_alternate_output(axel_t *axel);
 static void print_progress(off_t cur, off_t prev, off_t total, double kbps);
+static void print_progress_in_percentage(off_t cur, off_t prev, off_t total);
 static void print_help(void);
 static void print_version(void);
 static void print_version_info(void);
@@ -422,7 +423,7 @@ main(int argc, char *argv[])
 
 		if (conf->percentage) {
 			if (!axel->message && prev != axel->bytes_done)
-				printf("%u\n", calc_percentage(axel->bytes_done, axel->size));
+                print_progress_in_percentage(axel->bytes_done, prev, axel->size);
 		} else 	if (conf->alternate_output) {
 			if (!axel->message && prev != axel->bytes_done)
 				print_alternate_output(axel);
@@ -767,4 +768,22 @@ print_messages(axel_t *axel)
 		axel->message = m->next;
 		free(m);
 	}
+}
+
+static
+void
+print_progress_in_percentage(off_t cur, off_t prev, off_t total)
+{
+    static bool first_time = 1;
+    int prev_percent = calc_percentage(prev, total);
+    int cur_percent  = calc_percentage(cur, total);
+    if(first_time){
+        printf("\r%u", cur_percent);
+        first_time=0;
+        return;
+    }
+
+    if(prev_percent != cur_percent){
+        printf("\r%u", cur_percent);
+    }
 }
