@@ -77,6 +77,21 @@ axel_fscanf(FILE *fp, const char *format, ...)
 }
 
 static int
+parse_progress_style(conf_t *conf, const char *value)
+{
+	if (!strcasecmp(value, "auto")) {/* no-op */}
+	else if (!strcasecmp(value, "alternative"))
+		conf->progress_style = AXEL_PROGRESS_STYLE_ALTERNATIVE;
+	else if (!strcasecmp(value, "classic"))
+		conf->progress_style = AXEL_PROGRESS_STYLE_CLASSIC;
+	else if (!strcasecmp(value, "percent"))
+		conf->progress_style = AXEL_PROGRESS_STYLE_PERCENTAGE;
+	else
+		fprintf(stderr, _("Unknown progress style %s\n"), value);
+	return 1;
+}
+
+static int
 parse_protocol(conf_t *conf, const char *value)
 {
 	if (strcasecmp(value, "ipv4") == 0)
@@ -155,8 +170,6 @@ conf_loadfile(conf_t *conf, const char *file)
 			KEY(buffer_size)
 			KEY(max_speed)
 			KEY(verbose)
-			KEY(alternate_output)
-			KEY(percentage)
 			KEY(insecure)
 			KEY(no_clobber)
 			KEY(search_timeout)
@@ -187,6 +200,9 @@ conf_loadfile(conf_t *conf, const char *file)
 			continue;
 		else if (strcmp(key, "interfaces") == 0) {
 			if (parse_interfaces(conf, value))
+				continue;
+		} else if (strcmp(key, "progress_style") == 0) {
+			if (parse_progress_style(conf, value))
 				continue;
 		} else if (strcmp(key, "use_protocol") == 0) {
 			if (parse_protocol(conf, value))
@@ -266,9 +282,11 @@ conf_init(conf_t *conf)
 
 	conf->interfaces->next = conf->interfaces;
 
-    /* Detect if stdout is a tty, set the default indicator to alternate.
-       Otherwise, keep it to original.*/
-    conf->alternate_output = isatty(STDOUT_FILENO);
+	/* Detect if stdout is a tty, set the default indicator to alternate.
+	 * Otherwise, keep it to original. */
+	conf->progress_style = isatty(STDOUT_FILENO)
+		? AXEL_PROGRESS_STYLE_ALTERNATIVE
+		: AXEL_PROGRESS_STYLE_CLASSIC;
 
 	if ((s2 = getenv("http_proxy")) || (s2 = getenv("HTTP_PROXY")))
 		strlcpy(conf->http_proxy, s2, sizeof(conf->http_proxy));
