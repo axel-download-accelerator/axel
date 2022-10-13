@@ -57,10 +57,13 @@ typedef struct {
 	int buffer_size;
 	unsigned long long max_speed;
 	int verbose;
-	int alternate_output;
 	int insecure;
 	int no_clobber;
-	int percentage;
+	enum {
+		AXEL_PROGRESS_STYLE_CLASSIC,
+		AXEL_PROGRESS_STYLE_ALTERNATIVE,
+		AXEL_PROGRESS_STYLE_PERCENTAGE,
+	} progress_style;
 
 	if_t *interfaces;
 

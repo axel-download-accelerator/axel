@@ -189,10 +189,10 @@ main(int argc, char *argv[])
 			conf->ai_family = AF_INET;
 			break;
 		case 'a':
-			conf->alternate_output = 1;
+			conf->progress_style = AXEL_PROGRESS_STYLE_ALTERNATIVE;
 			break;
 		case 'p':
-			conf->percentage = 1;
+			conf->progress_style = AXEL_PROGRESS_STYLE_PERCENTAGE;
 			break;
 		case 'k':
 			conf->insecure = 1;
@@ -237,8 +237,7 @@ main(int argc, char *argv[])
 
 	/* disable alternate outputs and verbosity when quiet is specified */
 	if (conf->verbose < 0) {
-		conf->alternate_output = 0;
-		conf->percentage = 0;
+		conf->progress_style = AXEL_PROGRESS_STYLE_CLASSIC;
 	} else if (j > -1)
 		conf->verbose = j;
 
@@ -279,7 +278,7 @@ main(int argc, char *argv[])
 		}
 	}
 
-	if (!conf->percentage)
+	if (conf->progress_style != AXEL_PROGRESS_STYLE_PERCENTAGE)
 		printf(_("Initializing download: %s\n"), s);
 
 	if (do_search) {
@@ -399,14 +398,14 @@ main(int argc, char *argv[])
 	axel_start(axel);
 	print_messages(axel);
 
-	if (conf->alternate_output || conf->percentage) {
+	if (conf->progress_style == AXEL_PROGRESS_STYLE_ALTERNATIVE
+	    || conf->progress_style == AXEL_PROGRESS_STYLE_PERCENTAGE) {
 		putchar('\n');
-	} else {
-		if (axel->bytes_done > 0) {	/* Print first dots if resuming */
-			putchar('\n');
-			print_commas(axel->bytes_done);
-			fflush(stdout);
-		}
+	} else if (axel->bytes_done > 0) {	/* Print first dots if resuming */
+		putchar('\n');
+		print_commas(axel->bytes_done);
+		fflush(stdout);
+
 	}
 	axel->start_byte = axel->bytes_done;
 
@@ -420,10 +419,10 @@ main(int argc, char *argv[])
 		prev = axel->bytes_done;
 		axel_do(axel);
 
-		if (conf->percentage) {
+		if (conf->progress_style == AXEL_PROGRESS_STYLE_PERCENTAGE) {
 			if (!axel->message && prev != axel->bytes_done)
 				printf("%u\n", calc_percentage(axel->bytes_done, axel->size));
-		} else 	if (conf->alternate_output) {
+		} else 	if (conf->progress_style == AXEL_PROGRESS_STYLE_ALTERNATIVE) {
 			if (!axel->message && prev != axel->bytes_done)
 				print_alternate_output(axel);
 		} else if (conf->verbose > -1) {
@@ -432,7 +431,7 @@ main(int argc, char *argv[])
 		}
 
 		if (axel->message) {
-			if (conf->alternate_output == 1) {
+			if (conf->progress_style == AXEL_PROGRESS_STYLE_ALTERNATIVE) {
 				/* clreol-simulation */
 				fputs("\e[2K\r", stdout);
 			} else {
@@ -440,7 +439,7 @@ main(int argc, char *argv[])
 			}
 			print_messages(axel);
 			if (!axel->ready) {
-				if (conf->alternate_output != 1)
+				if (conf->progress_style != AXEL_PROGRESS_STYLE_ALTERNATIVE)
 					print_commas(axel->bytes_done);
 				else
 					print_alternate_output(axel);
@@ -621,7 +620,7 @@ print_alternate_output(axel_t *axel)
 	if (width < 40) {
 		fprintf(stderr,
 			_("Can't setup alternate output. Deactivating.\n"));
-		axel->conf->alternate_output = 0;
+		axel->conf->progress_style = AXEL_PROGRESS_STYLE_CLASSIC;
 
 		return;
 	}
