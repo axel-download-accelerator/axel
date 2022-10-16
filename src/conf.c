@@ -52,7 +52,7 @@
 	else if (!strcmp(key, #name))	\
 		dst = &conf->name;
 
-int parse_interfaces(conf_t *conf, char *s);
+static int parse_interfaces(conf_t *conf, char *s);
 
 #ifdef __GNUC__
 __attribute__((format(scanf, 2, 3)))
@@ -324,6 +324,7 @@ conf_free(conf_t *conf)
 	free(conf->interfaces);
 }
 
+static
 int
 parse_interfaces(conf_t *conf, char *s)
 {
