@@ -350,7 +350,6 @@ parse_interfaces(conf_t *conf, char *s)
 		return 1;
 	}
 
-	s[strlen(s) + 1] = 0;
 	conf->interfaces = iface = malloc(sizeof(if_t));
 	if (!conf->interfaces)
 		return 0;
