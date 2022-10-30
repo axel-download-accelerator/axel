@@ -47,6 +47,7 @@
 
 #include "config.h"
 #include "axel.h"
+#include "hash.h"
 
 /**
  * Convert an URL to a conn_t structure.
@@ -379,8 +380,13 @@ conn_info(conn_t *conn)
 
 	char s[1005];
 	long long int i = 0;
-	char *visited_urls[conn->conf->max_redirect];
+
+	uint64_t secret = axel_rand64();
+	uint32_t *visited_urls = NULL;
 	int num_urls = 0;
+	char *curr_url = malloc(MAX_STRING);
+	if (curr_url)
+		visited_urls = malloc(conn->conf->max_redirect * sizeof(*visited_urls));
 
 	do {
 		const char *t;
@@ -433,25 +439,24 @@ conn_info(conn_t *conn)
 		}
 
 		/* Check if the current URL has already been visited */
-		char *curr_url = malloc(MAX_STRING);
-		if (curr_url) {
+		if (visited_urls) {
 			int url_len = conn_url(curr_url, MAX_STRING, conn);
 			if (url_len > 0) {
+				uint32_t url_hash = axel_hash32(curr_url, url_len, &secret);
 				for (int j = 0; j < num_urls; j++) {
-					if (!strcmp(curr_url, visited_urls[j])) {
+					if (visited_urls[j] == url_hash) {
 						fprintf(stderr, _("Redirect loop detected.\n"));
 						return 0;
 					}
 				}
-				visited_urls[num_urls++] = curr_url;
+				visited_urls[num_urls++] = url_hash;
 			}
 		}
 	} while (conn->http->status / 100 == 3);
 
 	/* Free the memory allocated for the redirect loop detection */
-	for (int j = 0; j < num_urls; j++) {
-		free(visited_urls[i]);
-	}
+	free(visited_urls);
+	free(curr_url);
 
 	/* Check for non-recoverable errors */
 	if (conn->http->status != 416 && conn->http->status / 100 != 2)
