@@ -19,6 +19,7 @@ axel_SOURCES = \
 	src/hash.h \
 	src/http.c \
 	src/http.h \
+	src/random.c \
 	src/search.c \
 	src/search.h \
 	src/ssl.h \
