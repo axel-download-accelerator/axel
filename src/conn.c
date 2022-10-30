@@ -185,7 +185,7 @@ scheme_from_proto(int proto)
 }
 
 /* Generate a nice URL string. */
-char *
+int
 conn_url(char *dst, size_t len, conn_t *conn)
 {
 	const char *prefix = "", *postfix = "";
@@ -194,7 +194,7 @@ conn_url(char *dst, size_t len, conn_t *conn)
 
 	size_t scheme_len = strlcpy(dst, scheme, len);
 	if (scheme_len > len)
-		return NULL;
+		return -1;
 
 	len -= scheme_len;
 
@@ -203,7 +203,7 @@ conn_url(char *dst, size_t len, conn_t *conn)
 	if (*conn->user != 0 && strcmp(conn->user, "anonymous") != 0) {
 		int plen = snprintf(p, len, "%s:%s@", conn->user, conn->pass);
 		if (plen < 0)
-			return NULL;
+			return -1;
 		len -= plen;
 		p += plen;
 	}
@@ -213,11 +213,8 @@ conn_url(char *dst, size_t len, conn_t *conn)
 		postfix = "]";
 	}
 
-	int plen;
-	plen = snprintf(p, len, "%s%s%s:%i%s%s", prefix, conn->host, postfix,
-			conn->port, conn->dir, conn->file);
-
-	return plen < 0 ? NULL : dst;
+	return snprintf(p, len, "%s%s%s:%i%s%s", prefix, conn->host, postfix,
+	                conn->port, conn->dir, conn->file);
 }
 
 /* Simple... */
@@ -438,7 +435,8 @@ conn_info(conn_t *conn)
 		/* Check if the current URL has already been visited */
 		char *curr_url = malloc(MAX_STRING);
 		if (curr_url) {
-			if (conn_url(curr_url, MAX_STRING, conn)) {
+			int url_len = conn_url(curr_url, MAX_STRING, conn);
+			if (url_len > 0) {
 				for (int j = 0; j < num_urls; j++) {
 					if (!strcmp(curr_url, visited_urls[j])) {
 						fprintf(stderr, _("Redirect loop detected.\n"));
