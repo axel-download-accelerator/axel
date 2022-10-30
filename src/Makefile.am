@@ -15,6 +15,8 @@ axel_SOURCES = \
 	src/conn.h \
 	src/ftp.c \
 	src/ftp.h \
+	src/hash.c \
+	src/hash.h \
 	src/http.c \
 	src/http.h \
 	src/search.c \
