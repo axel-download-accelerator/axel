@@ -3,8 +3,8 @@
 #include "config.h"
 #include "axel.h"
 
-uint64_t
-axel_rand64(void)
+ssize_t
+axel_rand64(uint64_t *out)
 {
 	static int fd = -1;
 	if (fd == -1) {
@@ -13,8 +13,5 @@ axel_rand64(void)
 		if (!atomic_compare_exchange_strong(&fd, &expect, tmp))
 			close(tmp);
 	}
-
-	uint64_t ret[1];
-	read(fd, ret, sizeof(*ret));
-	return *ret;
+	return read(fd, out, sizeof(*out));
 }

@@ -369,6 +369,53 @@ conn_info_ftp(conn_t *conn)
 	return 1;
 }
 
+struct urlseq {
+	uint64_t secret[1];
+	char buf[MAX_STRING];
+	int num_urls;
+	uint32_t visited_urls[];
+};
+
+static
+void *
+urlseq_teardown(struct urlseq **u)
+{
+	free(*u);
+	return *u = NULL;
+}
+
+static
+struct urlseq *
+urlseq_init(unsigned int urlcount)
+{
+	struct urlseq *u;
+	u = malloc(sizeof(*u) + sizeof(u->visited_urls[0]) * urlcount);
+	if (!u || axel_rand64(u->secret) < (ssize_t)sizeof(u->secret[0]))
+		return urlseq_teardown(&u);
+	u->num_urls = 0;
+	return u;
+}
+
+static
+int
+urlseq_check_loop(struct urlseq *u, conn_t *conn)
+{
+	if (!u)
+		return 0;
+
+	int url_len = conn_url(u->buf, sizeof(u->buf), conn);
+	if (url_len <= 0)
+		return 0;
+
+	uint32_t url_hash = axel_hash32(u->buf, url_len, u->secret);
+	for (int j = 0; j < u->num_urls; j++) {
+		if (u->visited_urls[j] == url_hash)
+			return 1;
+	}
+	u->visited_urls[u->num_urls++] = url_hash;
+	return 0;
+}
+
 /* Get file size and other information */
 int
 conn_info(conn_t *conn)
@@ -381,12 +428,7 @@ conn_info(conn_t *conn)
 	char s[1005];
 	long long int i = 0;
 
-	uint64_t secret = axel_rand64();
-	uint32_t *visited_urls = NULL;
-	int num_urls = 0;
-	char *curr_url = malloc(MAX_STRING);
-	if (curr_url)
-		visited_urls = malloc(conn->conf->max_redirect * sizeof(*visited_urls));
+	struct urlseq *urlseq = urlseq_init(conn->conf->max_redirect);
 
 	do {
 		const char *t;
@@ -439,24 +481,14 @@ conn_info(conn_t *conn)
 		}
 
 		/* Check if the current URL has already been visited */
-		if (visited_urls) {
-			int url_len = conn_url(curr_url, MAX_STRING, conn);
-			if (url_len > 0) {
-				uint32_t url_hash = axel_hash32(curr_url, url_len, &secret);
-				for (int j = 0; j < num_urls; j++) {
-					if (visited_urls[j] == url_hash) {
-						fprintf(stderr, _("Redirect loop detected.\n"));
-						return 0;
-					}
-				}
-				visited_urls[num_urls++] = url_hash;
-			}
+		if (urlseq_check_loop(urlseq, conn)) {
+			fprintf(stderr, _("Redirect loop detected.\n"));
+			return 0;
 		}
 	} while (conn->http->status / 100 == 3);
 
 	/* Free the memory allocated for the redirect loop detection */
-	free(visited_urls);
-	free(curr_url);
+	urlseq_teardown(&urlseq);
 
 	/* Check for non-recoverable errors */
 	if (conn->http->status != 416 && conn->http->status / 100 != 2)

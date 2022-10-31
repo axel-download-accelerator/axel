@@ -148,7 +148,7 @@ void axel_close(axel_t *axel);
 void print_messages(axel_t *axel);
 
 double axel_gettime(void);
-uint64_t axel_rand64(void);
+ssize_t axel_rand64(uint64_t *);
 
 #define DN_MATCH_MALFORMED -1
 int dn_match(const char *hostname, const char *pat, size_t pat_len);
