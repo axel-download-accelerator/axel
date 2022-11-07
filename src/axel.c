@@ -123,7 +123,6 @@ axel_new(conf_t *conf, int count, const search_t *res)
 {
 	axel_t *axel;
 	int status;
-	uint64_t delay;
 	url_t *u;
 	char *s;
 	int i;
@@ -151,11 +150,12 @@ axel_new(conf_t *conf, int count, const search_t *res)
 					     _("Buffer resized for this speed."));
 			axel->conf->buffer_size = axel->conf->max_speed;
 		}
-		delay = axel->conf->buffer_size * 1000000000 *
+		uint64_t delay =
+			UINT64_C(1073741824) * axel->conf->buffer_size *
 			axel->conf->num_connections / axel->conf->max_speed;
 
-		axel->delay_time.tv_sec  = delay / 1000000000;
-		axel->delay_time.tv_nsec = delay % 1000000000;
+		axel->delay_time.tv_sec  = delay / 1073741824;
+		axel->delay_time.tv_nsec = delay % 1073741824;
 	}
 	if (buffer == NULL) {
 		buffer = malloc(axel->conf->buffer_size);
