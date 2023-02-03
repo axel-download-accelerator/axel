@@ -30,7 +30,7 @@ jobs:
       shell: msys2 {0}
       run: |
         autoreconf -ifv
-        ./configure --build=x86_64-pc-msys
+        ./configure
         make
  
     - name: Upload
