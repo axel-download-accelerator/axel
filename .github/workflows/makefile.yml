@@ -10,7 +10,7 @@ jobs:
     - name: Set up msys2
       uses: msys2/setup-msys2@v2
       with:
-        msystem: MINGW64
+        msystem: msys
         update: true
         install: >-
           base-devel
@@ -30,7 +30,7 @@ jobs:
       shell: msys2 {0}
       run: |
         autoreconf -ifv
-        ./configure
+        ./configure --build=x86_64-pc-msys
         make
  
     - name: Upload
