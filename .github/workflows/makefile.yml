@@ -1,0 +1,55 @@
+name: Build axel
+on: [push, pull_request]
+jobs:
+  build_axel:
+    permissions:
+      contents: write
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up msys2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: true
+        install: >-
+          base-devel
+          gcc
+          make
+          gettext
+          gettext-devel
+          autoconf
+          automake
+          autoconf-archive
+          libtool
+          pkg-config
+          mingw-w64-x86_64-openssl
+          openssl-devel
+        
+    - name: Build axel
+      shell: msys2 {0}
+      run: |
+        autoreconf -ifv
+        ./configure
+        make
+ 
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: axel
+        path: |
+          ${{ github.workspace }}\**\*.exe
+          
+    - name: Package Release
+      run: 7z a axel.7z -r ${{ github.workspace }}\**\*.exe
+      
+    - name: Release
+      if: startsWith(github.event.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        #tag_name: ${{ github.ref }}
+        #name: Release ${{ github.ref }}
+        body: TODO New Release.
+        draft: false
+        prerelease: false
+        files: axel.7z

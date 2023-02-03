@@ -1,0 +1,48 @@
+name: build axel
+on: [push, pull_request]
+jobs:
+  build_axel:
+    permissions:
+      contents: write
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Cygwin
+      uses: cygwin/cygwin-install-action@master
+      with:
+        packages: wget make gcc-g++ autoconf automake libtool pkg-config autoconf-archive gettext libssl-devel
+
+# shell参数说明：--login(登录)  -o igncr(涉及换行符) -i(交互式)
+    - name: Build axel
+      shell: bash --login --noprofile --norc -o igncr -i {0}
+      run: |
+        wget https://github.com/axel-download-accelerator/axel/releases/download/v2.17.11/axel-2.17.11.tar.gz
+        tar -zxvf axel-2.17.11.tar.gz
+        cd axel-2.17.11
+        ./configure
+        make
+        
+# 注意修改Cygwin路径      
+    - name: copy files
+      run: |
+        cd c:\cygwin\bin
+        cp cygssl-1.1.dll, cygcrypto-1.1.dll, cygwin1.dll, cygz.dll ${{ github.workspace }}\
+        cp ${{ github.workspace }}\**\*.exe ${{ github.workspace }}\
+        
+    - name: Upload
+      uses: actions/upload-artifact@v3
+      with:
+        name: axel
+        path: |
+          ${{ github.workspace }}\*.exe
+          ${{ github.workspace }}\*.dll
+          
+    - name: Package Release
+      run: 7z a axel-win64.7z -r ${{ github.workspace }}\*.exe ${{ github.workspace }}\*.dll
+      
+    - name: Release
+      if: startsWith(github.event.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        files: axel-win64.7z
+        draft: true
