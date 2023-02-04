@@ -31,7 +31,7 @@ jobs:
       shell: msys2 {0}
       run: |
         autoreconf -ifv
-        ./configure
+        ./configure  LIBS=-lintl --disable-nls
         make
  
     - name: Upload
