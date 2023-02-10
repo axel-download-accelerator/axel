@@ -4,9 +4,10 @@ jobs:
   build_axel:
     permissions:
       contents: write
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
+    - run: git config --global core.autocrlf false
     - name: Set up msys2
       uses: msys2/setup-msys2@v2
       with:
