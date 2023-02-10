@@ -1,0 +1,509 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: axel\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: src/axel.c:151
+msgid "Buffer resized for this speed."
+msgstr "ბუფერის ზომა ამ სიჩქარისთვის შეიცვლება."
+
+#: src/axel.c:179
+msgid "Could not parse URL.\n"
+msgstr "URL-ის დამუშავების შეცდომა\n"
+
+#: src/axel.c:201
+#, c-format
+msgid "File '%s' already there; not retrieving.\n"
+msgstr "ფაილი '%s' უკვე გვაქვს; აღარ გადმოვიწერ.\n"
+
+#: src/axel.c:206
+#, c-format
+msgid "Incomplete download found, ignoring no-clobber option\n"
+msgstr "გადმოწერა არასრულია. პარამეტრი no-clobber გამოტოვებულია\n"
+
+#: src/axel.c:223
+#, c-format
+msgid "ERROR %d: %s.\n"
+msgstr "შეცდომა %d: %s.\n"
+
+#: src/axel.c:237
+#, c-format
+msgid "File size: %s (%jd bytes)"
+msgstr "ფაილის ზომა: %s (%jd ბაიტი)"
+
+#: src/axel.c:240
+msgid "File size: unavailable"
+msgstr "ფაილის ზომა: მიუწვდომელია"
+
+#: src/axel.c:269
+#, c-format
+msgid "Opening output file %s"
+msgstr "გამოტანის ფაილის (%s) გახსნა"
+
+#: src/axel.c:276
+msgid "Server unsupported, starting from scratch with one connection."
+msgstr "სერვერი მხარდაჭერილი არაა. ვიწყებ ნულიდან, ერთი მიერთებით."
+
+#: src/axel.c:293
+#, c-format
+msgid "%s.st: Error, truncated state file\n"
+msgstr "%s.st: შეცდომა. მდგომარეობის ფაილი არასრულია\n"
+
+#: src/axel.c:301
+#, c-format
+msgid "Bogus number of connections stored in state file\n"
+msgstr ""
+"მდგომარეობის ფაილში დამახსოვრებული მიერთებების რაოდენობა ბუნდოვანია\n"
+
+#: src/axel.c:313
+#, c-format
+msgid "State file has old format.\n"
+msgstr "მდგომარეობის ფაილის ძველი ფორმატი.\n"
+
+#: src/axel.c:346
+#, c-format
+msgid "State file found: %jd bytes downloaded, %jd to go."
+msgstr ""
+"აღმოჩენილია მდგომარეობის ფაილი: %jd ბაიტი გადმოწერილია, %jd კი დარჩენილი."
+
+#: src/axel.c:352 src/axel.c:363
+msgid "Error opening local file"
+msgstr "შეცდომა ლოკალური ფაილის გახსნისას"
+
+#: src/axel.c:376
+msgid "Crappy filesystem/OS.. Working around. :-("
+msgstr "საზიზღარი ფაილური სისტემა/ოს-ი. ვეცდები, რამე ვქნა. :-("
+
+#: src/axel.c:389
+msgid "Error creating local file"
+msgstr "ლოკალური ფაილის გახსნის შეცდომა"
+
+#: src/axel.c:430
+#, c-format
+msgid ""
+"\n"
+"Reactivate connection %d\n"
+msgstr ""
+"\n"
+"კავშირის თავიდან აქტივაცია: %d\n"
+
+#: src/axel.c:459
+msgid "Starting download"
+msgstr "გადმოწერის დასაწყისი"
+
+#: src/axel.c:469 src/axel.c:652
+#, c-format
+msgid "Connection %i downloading from %s:%i using interface %s"
+msgstr "მიერთება %i ვიწერ %s:%i-დან %s ინტერფეისის გამოყენებით"
+
+#: src/axel.c:479 src/axel.c:664
+msgid "pthread error!!!"
+msgstr "pthread-ის შეცდომა!!!"
+
+#: src/axel.c:525
+#, c-format
+msgid "Error while waiting for connection: %s"
+msgstr "შეცდომა კავშირის მოლოდინისას: %s"
+
+#: src/axel.c:557
+#, c-format
+msgid "Connection %i timed out"
+msgstr "%i: შეერთების მოლოდინის ვადა ამოიწურა"
+
+#: src/axel.c:570
+#, c-format
+msgid "Error on connection %i! Connection closed"
+msgstr "შეცდომა მიერთებაზე %i! კავშირი დახურულია"
+
+#: src/axel.c:584
+#, c-format
+msgid "Connection %i unexpectedly closed"
+msgstr "მიერთება %i მოულოდნელად დაიხურა"
+
+#: src/axel.c:588 src/axel.c:604
+#, c-format
+msgid "Connection %i finished"
+msgstr "მიერთება %i დასრულდა"
+
+#: src/axel.c:614
+msgid "Write error!"
+msgstr "ჩაწერის შეცდომა!"
+
+#: src/axel.c:716
+#, c-format
+msgid "Error while enforcing throttling: %s"
+msgstr "შეცდომა ნაძალადევი შეზღუდვისას: %s"
+
+#: src/axel.c:901
+#, c-format
+msgid "Too few bytes remaining, forcing a single connection\n"
+msgstr "ძალიან ცოტაღა დარჩა. ერთ მიერთებას ვიტოვებ\n"
+
+#: src/axel.c:920
+#, c-format
+msgid "Downloading %jd-%jd using conn. %i\n"
+msgstr "ვიწერ: %jd-%jd მიერთებებით %i\n"
+
+#: src/conf.c:72
+#, c-format
+msgid "I/O error while reading config file: %s\n"
+msgstr "I/O შეცდომა კონფიგურაციის ფაილის წაკითხვისას: %s\n"
+
+#: src/conf.c:87
+#, c-format
+msgid "Unknown protocol %s\n"
+msgstr "უცნობი პროტოკოლი: %s\n"
+
+#: src/conf.c:203
+#, c-format
+msgid "Requested too many connections, max is %i\n"
+msgstr "მოთხოვნილია მეტისმეტად ბევრი მიერთება. მაქსიმუმია %i\n"
+
+#: src/conf.c:218
+#, c-format
+msgid "Error in %s line %i.\n"
+msgstr "შეცდომა %s-ში, ხაზზე %i.\n"
+
+#: src/conf.c:285
+#, c-format
+msgid "HOME env variable too long\n"
+msgstr "გარემოს ცვლადის HOME მნიშვნელობა მეტისმეტად გრძელია\n"
+
+#: src/conn.c:80
+#, c-format
+msgid "Unsupported protocol\n"
+msgstr "მხარდაუჭერელი პროტოკოლი\n"
+
+#: src/conn.c:86
+#, c-format
+msgid "Secure protocol is not supported\n"
+msgstr "დაცული პროტოკოლი მხარდაჭერილი არაა\n"
+
+#: src/conn.c:432 src/ftp.c:135
+#, c-format
+msgid "Too many redirects.\n"
+msgstr "მეტისმეტად ბევრი გადამისამართება.\n"
+
+#: src/conn.c:484
+msgid "Unknown Error"
+msgstr "უცნობი შეცდომა"
+
+#: src/ftp.c:106
+#, c-format
+msgid "Can't change directory to %s\n"
+msgstr "საქაღალდის %s-ზე შეცვლა შეუძლებელია\n"
+
+#: src/ftp.c:129 src/ftp.c:189
+#, c-format
+msgid "File not found.\n"
+msgstr "ფაილი ვერ მოიძებნა.\n"
+
+#: src/ftp.c:192
+#, c-format
+msgid "Multiple matches for this URL.\n"
+msgstr "ამ URL-ს ბევრი დამთხვევა გააჩნია.\n"
+
+#: src/ftp.c:264
+#, c-format
+msgid "Error opening passive data connection.\n"
+msgstr "პასიური მიერთების გახსნის შეცდომა.\n"
+
+#: src/ftp.c:298
+#, c-format
+msgid "Error writing command %s\n"
+msgstr "ბრძანების (%s) ჩაწერის შეცდომა\n"
+
+#: src/ftp.c:322 src/http.c:252
+#, c-format
+msgid "Connection gone.\n"
+msgstr "მიერთება გაქრა.\n"
+
+#: src/http.c:118
+#, c-format
+msgid "Invalid proxy string: %s\n"
+msgstr "პროქსის არასწორი სტრიქონი: %s\n"
+
+#: src/http.c:240
+#, c-format
+msgid "Connection gone while writing.\n"
+msgstr "მიერთება მასში ჩაწერისას გაქრა.\n"
+
+#: src/text.c:149
+#, c-format
+msgid ""
+"Too many custom headers (-H)! Currently only %u custom headers can be "
+"appended.\n"
+msgstr ""
+"ხელით მითითებული თავსართების (-H) რაოდენობა ძალიან დიდია! ამჟამად მხოლოდ "
+"%u თავსართი შეგიძლიათ დაუმატოთ.\n"
+
+#: src/text.c:225
+#, c-format
+msgid "Can't redirect stdout to /dev/null.\n"
+msgstr "შეცდომა stdout-ის /dev/null-ზე გადამისამართებისას.\n"
+
+#: src/text.c:268
+#, c-format
+msgid "Error when trying to read URL (Too long?).\n"
+msgstr "შეცდომა URL-ის წაკითხვისას (მეტისმეტად გრძელია?).\n"
+
+#: src/text.c:276
+#, c-format
+msgid "Can't handle URLs of length over %zu\n"
+msgstr "%zu-ზე გრძელი URL-ების დამუშავება შეუძლებელია\n"
+
+#: src/text.c:283
+#, c-format
+msgid "Initializing download: %s\n"
+msgstr "გადმოწერის ინიციალიზაცია: %s\n"
+
+#: src/text.c:292
+#, c-format
+msgid "Doing search...\n"
+msgstr "ვეძებ...\n"
+
+#: src/text.c:295
+#, c-format
+msgid "File not found\n"
+msgstr "ფაილი ვერ ვიპოვე\n"
+
+#: src/text.c:299
+#, c-format
+msgid "Testing speeds, this can take a while...\n"
+msgstr "სიჩქარის ტესტირება. ამას საკმაო დრო შეიძლება დასჭირდეს...\n"
+
+#: src/text.c:302
+#, c-format
+msgid "Speed testing failed\n"
+msgstr "სიჩქარის ტესტირების შეცდომა\n"
+
+#: src/text.c:308
+#, c-format
+msgid "%i usable servers found, will use these URLs:\n"
+msgstr "ნაპოვნია %i სასარგებლო სერვერი. გამოვიყენებ შემდეგ URL-ებს:\n"
+
+#: src/text.c:311
+msgid "Speed"
+msgstr "სიჩქარე"
+
+#: src/text.c:353
+#, c-format
+msgid "Filename too long!\n"
+msgstr "ფაილის სახელი ძალიან გრძელია!\n"
+
+#: src/text.c:366
+#, c-format
+msgid "No state file, cannot resume!\n"
+msgstr "მდგომარეობის ფაილი არ არსებობს. გაგრძელება შეუძლებელია!\n"
+
+#: src/text.c:370
+#, c-format
+msgid "State file found, but no downloaded data. Starting from scratch.\n"
+msgstr ""
+"აღმოჩენილია მდგომარეობის ფაილი, მაგრამ არა გადმოწერილი მონაცემები. "
+"ვიწყებ ნულიდან.\n"
+
+#: src/text.c:458
+#, c-format
+msgid ""
+"\n"
+"Downloaded %s in %s. (%.2f KB/s)\n"
+msgstr ""
+"\n"
+"გადმოწერილია %s %s-ში. (%.2f კბ/წმ)\n"
+
+#: src/text.c:495
+msgid "Kilo"
+msgstr "კილო"
+
+#: src/text.c:495
+msgid "Mega"
+msgstr "მეგა"
+
+#: src/text.c:495
+msgid "Giga"
+msgstr "გიგა"
+
+#: src/text.c:495
+msgid "Tera"
+msgstr "ტერა"
+
+#: src/text.c:501
+#, c-format
+msgid "%g %sbyte(s)"
+msgstr "%g %sბაიტი"
+
+#: src/text.c:517
+#, c-format
+msgid "%i:%02i:%02i hour(s)"
+msgstr "%i:%02i:%02i საათი"
+
+#: src/text.c:519
+#, c-format
+msgid "%i:%02i minute(s)"
+msgstr "%i:%02i წუთი"
+
+#: src/text.c:521
+#, c-format
+msgid "%i second(s)"
+msgstr "%i წამი"
+
+#: src/text.c:623
+#, c-format
+msgid "Can't setup alternate output. Deactivating.\n"
+msgstr "გამოტანის შეცვლის შეცდომა. დეაქტივაცია.\n"
+
+#: src/text.c:686
+#, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"-s x\tSpecify maximum speed (bytes per second)\n"
+"-n x\tSpecify maximum number of connections\n"
+"-o f\tSpecify local output file\n"
+"-S[n]\tSearch for mirrors and download from n servers\n"
+"-4\tUse the IPv4 protocol\n"
+"-6\tUse the IPv6 protocol\n"
+"-H x\tAdd HTTP header string\n"
+"-U x\tSet user agent\n"
+"-N\tJust don't use any proxy server\n"
+"-k\tDon't verify the SSL certificate\n"
+"-c\tSkip download if file already exists\n"
+"-q\tLeave stdout alone\n"
+"-v\tMore status information\n"
+"-a\tAlternate progress indicator\n"
+"-p\tPrint simple percentages instead of progress bar (0-100)\n"
+"-h\tThis information\n"
+"-T x\tSet I/O and connection timeout\n"
+"-V\tVersion information\n"
+"\n"
+"Visit https://github.com/axel-download-accelerator/axel/issues\n"
+msgstr ""
+"გამოყენება: axel [პარამეტრები] url1 [url2] [url...]\n"
+"\n"
+"-s x\tმაქსიმალური სიჩქარის მითითება (ბაიტი წამში)\n"
+"-n x\tმიერთებების მაქსიმალური რაოდენობა\n"
+"-o f\tლოკალური გამოტანის ფაილის მითითება\n"
+"-S[n]\tსარკეების მძებნა და n სარკიდან გადმოწერა\n"
+"-4\tIPv4 პროტოკოლის გამოყენება\n"
+"-6\tIPv6 პროტოკოლის გამოყენება\n"
+"-H x\tHTTP თავსართის დამატება\n"
+"-U x\tმომხმარებლის აგენტის დაყენება\n"
+"-N\tპროქსი სერვერის გამოყენების გამორთვა\n"
+"-k\tSSL სერტიფიკატის შემოწმების გამორთვა\n"
+"-c\tგამოტოვება, თუ ფაილი უკვე არსებობს\n"
+"-q\tstdout-ზე არაფერი იქნება გამოტანილი\n"
+"-v\tმდგომარეობის შესახებ მეტი ინფორმაცია\n"
+"-a\tმიმდინარეობის მაჩვენებლის შეცვლა\n"
+"-p\tზოლის მაგიერ პროცენტების დაწერა (0-100)\n"
+"-h\tეს ინფორმაცია\n"
+"-T x\tშეტანა/გამოტანისა და მიერთების მოლოდინის ვადის დაყენება\n"
+"-V\tინფორმაცია ვერსიის შესახებ\n"
+"\n"
+"გვეწვიეთ https://github.com/axel-download-accelerator/axel/issues\n"
+
+#: src/text.c:709
+#, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
+"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
+"--max-redirect=x\t\tSpecify maximum number of redirections\n"
+"--output=f\t\t-o f\tSpecify local output file\n"
+"--search[=n]\t\t-S[n]\tSearch for mirrors and download from n servers\n"
+"--ipv4\t\t\t-4\tUse the IPv4 protocol\n"
+"--ipv6\t\t\t-6\tUse the IPv6 protocol\n"
+"--header=x\t\t-H x\tAdd HTTP header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
+"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+"--insecure\t\t-k\tDon't verify the SSL certificate\n"
+"--no-clobber\t\t-c\tSkip download if file already exists\n"
+"--quiet\t\t\t-q\tLeave stdout alone\n"
+"--verbose\t\t-v\tMore status information\n"
+"--alternate\t\t-a\tAlternate progress indicator\n"
+"--percentage\t\t-p\tPrint simple percentages instead of progress bar "
+"(0-100)\n"
+"--help\t\t\t-h\tThis information\n"
+"--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
+"--version\t\t-V\tVersion information\n"
+"\n"
+"Visit https://github.com/axel-download-accelerator/axel/issues to report "
+"bugs\n"
+msgstr ""
+"გამოყენება: axel [პარამეტრები] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tმაქსიმალური სიჩქარის მითითება (ბაიტი წამში)\n"
+"--num-connections=x\t-n x\tმიერთებების მაქსიმალური რაოდენობა\n"
+"--max-redirect=x\t\tგადამისამართებების მაქსიმალური რაოდენობა\n"
+"--output=f\t\t-o f\tლოკალური გამოტანის ფაილის მითითება\n"
+"--search[=n]\t\t-S[n]\tსარკეების მძებნა და n სარკიდან გადმოწერა\n"
+"--ipv4\t\t\t-4\tIPv4 პროტოკოლის გამოყენება\n"
+"--ipv6\t\t\t-6\tIPv6 პროტოკოლის გამოყენება\n"
+"--header=x\t\t-H x\tHTTP თავსართის დამატება\n"
+"--user-agent=x\t\t-U x\tმომხმარებლის აგენტის დაყენება\n"
+"--no-proxy\t\t-N\tპროქსი სერვერის გამოყენების გამორთვა\n"
+"--insecure\t\t-k\tSSL სერტიფიკატის შემოწმების გამორთვა\n"
+"--no-clobber\t\t-c\tგამოტოვება, თუ ფაილი უკვე არსებობს\n"
+"--quiet\t\t\t-q\tstdout-ზე არაფერი იქნება გამოტანილი\n"
+"--verbose\t\t-v\tმდგომარეობის შესახებ მეტი ინფორმაცია\n"
+"--alternate\t\t-a\tმიმდინარეობის მაჩვენებლის შეცვლა\n"
+"--percentage\t\t-p\tზოლის მაგიერ პროცენტების დაწერა (0-100)\n"
+"--help\t\t\t-h\tეს ინფორმაცია\n"
+"--timeout=x\t\t-T x\tშეტანა/გამოტანისა და მიერთების მოლოდინის ვადის "
+"დაყენება\n"
+"--version\t\t-V\tინფორმაცია ვერსიის შესახებ\n"
+"\n"
+"შეცდომების შესახებ მოგვწერეთ ბმულზე https://github.com/axel-download-"
+"accelerator/axel/issues\n"
+
+#: src/text.c:738
+#, c-format
+msgid "Axel %s (%s)\n"
+msgstr "Axel %s (%s)\n"
+
+#: src/text.c:752
+msgid "and others."
+msgstr "და სხვები."
+
+#: src/text.c:753
+msgid ""
+"Please, see the CREDITS file.\n"
+"\n"
+msgstr ""
+"იხილეთ ფაილი CREDITS.\n"
+"\n"
+
+#: src/ssl.c:93
+#, c-format
+msgid "SSL error: %s\n"
+msgstr "SSL-ის შეცდომა: %s\n"
+
+#: src/ssl.c:105
+#, c-format
+msgid "SSL error: Certificate error\n"
+msgstr "SSL-ის შეცდომა: სერტიფიკატის შეცდომა\n"
+
+#: src/ssl.c:112
+#, c-format
+msgid "SSL error: Certificate not found\n"
+msgstr "SSL-ის შეცდომა: სერტიფიკატი ვერ ვიპოვე\n"
+
+#: src/ssl.c:118
+#, c-format
+msgid "SSL error: Hostname verification failed\n"
+msgstr "SSL-ის შეცდომა: ჰოსტის სახელის გადამოწმების შეცდომა\n"
+
+#: src/tcp.c:76
+#, c-format
+msgid "Unable to connect to server %s:%i: %s\n"
+msgstr "სერვერთან (%s:%i) მიერთების შეცდომა: %s\n"
