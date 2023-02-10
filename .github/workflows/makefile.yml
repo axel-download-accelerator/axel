@@ -27,6 +27,7 @@ jobs:
           wget
           
     - name: Setup txt2man
+      shell: msys2 {0}
       run: |
         wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz
         tar -zxvf txt2man-1.7.1.tar.gz
