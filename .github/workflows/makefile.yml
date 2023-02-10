@@ -31,7 +31,7 @@ jobs:
           
     - name: Setup txt2man
       run: |
-      wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz && tar -zxvf txt2man-1.7.1.tar.gz && cd txt2man-1.7.1 && make && make install
+        wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz && tar -zxvf txt2man-1.7.1.tar.gz && cd txt2man-1.7.1 && make && make install
                
     - name: Build axel
       shell: msys2 {0}
