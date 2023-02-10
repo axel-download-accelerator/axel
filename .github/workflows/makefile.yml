@@ -4,7 +4,7 @@ jobs:
   build_axel:
     permissions:
       contents: write
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Set up msys2
@@ -27,13 +27,19 @@ jobs:
           mingw-w64-x86_64-openssl
           openssl-devel
         
-
+    - name: Build axel
+      shell: msys2 {0}
+      run: |
+        autoreconf -ifv
+        ./configure  LIBS=-lintl --disable-nls
+        make
+ 
     - name: Upload
       uses: actions/upload-artifact@v3
       with:
         name: axel
         path: |
-          ${{ github.workspace }}\**\*
+          ${{ github.workspace }}\**\*.exe
           
     - name: Package Release
       run: 7z a axel.7z -r ${{ github.workspace }}\**\*.exe
