@@ -24,13 +24,15 @@ jobs:
           pkg-config
           mingw-w64-x86_64-openssl
           openssl-devel
+          wget
           
     - name: Setup txt2man
       run: |
-        wget https://github.com/axel-download-accelerator/axel/releases/download/v2.17.11/axel-2.17.11.tar.gz
-        tar -zxvf axel-2.17.11.tar.gz
-        cd axel-2.17.11
-        ./configure
+        wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz
+        tar -zxvf txt2man-1.7.1.tar.gz
+        cd txt2man-1.7.1
+        make
+        make install
                
     - name: Build axel
       shell: msys2 {0}
