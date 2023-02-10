@@ -32,7 +32,7 @@ jobs:
       shell: msys2 {0}
       run: |
         autoreconf -ifv
-        ./configure  LIBS=-lintl --disable-nls
+        ./configure  LIBS=-lintl --disable-nls -Wformat=0
         make
  
     - name: Upload
