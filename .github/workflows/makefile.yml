@@ -17,17 +17,13 @@ jobs:
           base-devel
           gcc
           make
-          gettext
           gettext-devel
           autotools
-          autoconf
-          automake
           autoconf-archive
           libtool
           pkg-config
           mingw-w64-x86_64-openssl
           openssl-devel
-          wget
           
     - name: Setup txt2man
       run: |
