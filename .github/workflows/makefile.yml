@@ -27,6 +27,7 @@ jobs:
           pkg-config
           mingw-w64-x86_64-openssl
           openssl-devel
+          txt2man
         
     - name: Build axel
       shell: msys2 {0}
