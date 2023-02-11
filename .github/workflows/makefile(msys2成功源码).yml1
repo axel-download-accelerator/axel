@@ -12,7 +12,7 @@ jobs:
     - name: Set up msys2
       uses: msys2/setup-msys2@v2
       with:
-        msystem: msys2
+        msystem: MINGW64
         update: true
         install: >-
           gcc
@@ -42,7 +42,6 @@ jobs:
         
     - name: Upload
       uses: actions/upload-artifact@v3
-      if: failure()
       with:
         name: axel
         path: |
