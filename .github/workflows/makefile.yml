@@ -47,7 +47,6 @@ jobs:
         
     - name: Upload
       uses: actions/upload-artifact@v3
-      if: failure()
       with:
         name: axel
         path: |
