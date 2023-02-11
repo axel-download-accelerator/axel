@@ -8,41 +8,24 @@ jobs:
     steps:
     - run: git config --global core.autocrlf false
     - uses: actions/checkout@v3
-        
-    - name: Set up msys2
-      uses: msys2/setup-msys2@v2
+    
+    - name: Set up Cygwin
+      uses: cygwin/cygwin-install-action@master
       with:
-        msystem: MINGW64
-        update: true
-        install: >-
-          gcc
-          make
-          gettext-devel
-          autotools
-          autoconf-archive
-          libtool
-          pkg-config
-          openssl-devel
-          
-    - name: Setup txt2man
-      shell: msys2 {0}
-      run: |
-        wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz
-        tar -zxvf txt2man-1.7.1.tar.gz
-        cd txt2man-txt2man-1.7.1
-        make && make install
-               
+        packages: make gcc-g++ autoconf automake libtool pkg-config autoconf-archive gettext gettext-devel libssl-devel
+        
     - name: Build axel
-      shell: msys2 {0}
+      shell: bash --login --noprofile --norc -euxo pipefail -o igncr -i '{0}'
       run: |
-        autoreconf -ifv
-        ./configure  LIBS=-lintl --disable-nls --disable-Werror
+        cd "${{ github.workspace }}"
+        autoreconf -if
+        ./configure
         make
  
-    - name: Copy Files
+    - name: copy files
       run: |
-        cd C:\msys64\usr\bin
-        cp msys-2.0.dll, msys-ssl-3.dll, msys-crypto-3.dll, msys-z.dll ${{ github.workspace }}\
+        cd c:\cygwin\bin
+        cp cygssl-1.1.dll, cygcrypto-1.1.dll, cygwin1.dll, cygz.dll ${{ github.workspace }}\
         cp ${{ github.workspace }}\**\*.exe ${{ github.workspace }}\
         
     - name: Upload
