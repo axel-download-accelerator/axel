@@ -12,7 +12,7 @@ jobs:
     - name: Set up Cygwin
       uses: cygwin/cygwin-install-action@master
       with:
-        packages: make gcc-g++ autoconf automake libtool pkg-config autoconf-archive gettext gettext-devel libssl-devel
+        packages: make gcc-g++ autoconf automake libtool pkg-config autoconf-archive gettext gettext-devel libssl-devel wget
         
     - name: Setup txt2man
       shell: bash --login --noprofile --norc -euxo pipefail -o igncr -i '{0}'
