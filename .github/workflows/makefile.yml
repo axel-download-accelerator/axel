@@ -20,7 +20,7 @@ jobs:
         wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz
         tar -zxvf txt2man-1.7.1.tar.gz
         cd txt2man-txt2man-1.7.1
-        make && make install
+        make && make install DESTDIR=/cygdrive/c/cygwin/bin
         
     - name: Build axel
       shell: bash --login --noprofile --norc -euxo pipefail -o igncr -i '{0}'
