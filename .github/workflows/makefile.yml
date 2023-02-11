@@ -14,6 +14,14 @@ jobs:
       with:
         packages: make gcc-g++ autoconf automake libtool pkg-config autoconf-archive gettext gettext-devel libssl-devel
         
+    - name: Setup txt2man
+      shell: msys2 {0}
+      run: |
+        wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz
+        tar -zxvf txt2man-1.7.1.tar.gz
+        cd txt2man-txt2man-1.7.1
+        make && make install
+        
     - name: Build axel
       shell: bash --login --noprofile --norc -euxo pipefail -o igncr -i '{0}'
       run: |
