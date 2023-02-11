@@ -52,8 +52,8 @@ jobs:
       if: startsWith(github.event.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v0.1.15
       with:
-        #tag_name: ${{ github.ref }}
-        #name: Release ${{ github.ref }}
+        tag_name: ${{ github.ref }}
+        name: Release ${{ github.ref }}
         body: TODO New Release.
         draft: false
         prerelease: false
