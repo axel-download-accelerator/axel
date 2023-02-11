@@ -19,7 +19,7 @@ jobs:
       run: |
         cd "${{ github.workspace }}"
         autoreconf -if
-        ./configure
+        ./configure  LIBS=-lintl --disable-nls --disable-Werror
         make
  
     - name: copy files
