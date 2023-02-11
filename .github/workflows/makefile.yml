@@ -35,10 +35,10 @@ jobs:
       with:
         name: axel
         path: |
-          ${{ github.workspace }}\**\*.exe
+          ${{ github.workspace }}\*.exe
           
     - name: Package Release
-      run: 7z a axel.7z -r ${{ github.workspace }}\*.exe ${{ github.workspace }}\*.dll
+      run: 7z a axel.7z -r ${{ github.workspace }}\*.exe
       
     - name: Release
       if: startsWith(github.event.ref, 'refs/tags/')
