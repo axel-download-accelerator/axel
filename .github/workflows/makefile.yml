@@ -8,13 +8,13 @@ jobs:
     steps:
     - run: git config --global core.autocrlf false
     - uses: actions/checkout@v3
+        
     - name: Set up msys2
       uses: msys2/setup-msys2@v2
       with:
         msystem: msys
         update: true
         install: >-
-          base-devel
           gcc
           make
           gettext-devel
@@ -22,7 +22,6 @@ jobs:
           autoconf-archive
           libtool
           pkg-config
-          mingw-w64-x86_64-openssl
           openssl-devel
           
     - name: Setup txt2man
@@ -31,8 +30,7 @@ jobs:
         wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz
         tar -zxvf txt2man-1.7.1.tar.gz
         cd txt2man-txt2man-1.7.1
-        make
-        make install
+        make && make install
                
     - name: Build axel
       shell: msys2 {0}
@@ -56,7 +54,7 @@ jobs:
           ${{ github.workspace }}\*.dll
           
     - name: Package Release
-      run: 7z a axel.7z -r ${{ github.workspace }}\**\*.exe
+      run: 7z a axel.7z -r ${{ github.workspace }}\*.exe ${{ github.workspace }}\*.dll
       
     - name: Release
       if: startsWith(github.event.ref, 'refs/tags/')
