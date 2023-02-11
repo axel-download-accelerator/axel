@@ -8,41 +8,30 @@ jobs:
     steps:
     - run: git config --global core.autocrlf false
     - uses: actions/checkout@v3
-        
-    - name: Set up msys2
-      uses: msys2/setup-msys2@v2
+    
+    - name: Set up Cygwin
+      uses: cygwin/cygwin-install-action@master
       with:
-        msystem: msys2
-        update: true
-        install: >-
-          gcc
-          make
-          gettext-devel
-          autotools
-          autoconf-archive
-          libtool
-          pkg-config
-          openssl-devel
-          
+        packages: make gcc-g++ autoconf automake libtool pkg-config autoconf-archive gettext gettext-devel libssl-devel wget
+        
     - name: Setup txt2man
-      shell: msys2 {0}
+      shell: bash --login --noprofile --norc -euxo pipefail -o igncr -i '{0}'
       run: |
         wget https://github.com/mvertes/txt2man/archive/refs/tags/txt2man-1.7.1.tar.gz
         tar -zxvf txt2man-1.7.1.tar.gz
         cd txt2man-txt2man-1.7.1
-        make && make install
-               
+        cp txt2man /cygdrive/c/cygwin/bin
+        
     - name: Build axel
-      shell: msys2 {0}
+      shell: bash --login --noprofile --norc -euxo pipefail -o igncr -i '{0}'
       run: |
+        cd "${{ github.workspace }}"
         autoreconf -ifv
         ./configure  LIBS=-lintl --disable-nls --disable-Werror
         make
- 
         
     - name: Upload
       uses: actions/upload-artifact@v3
-      if: failure()
       with:
         name: axel
         path: |
