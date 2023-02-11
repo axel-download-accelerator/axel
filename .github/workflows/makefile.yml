@@ -26,7 +26,7 @@ jobs:
       shell: bash --login --noprofile --norc -euxo pipefail -o igncr -i '{0}'
       run: |
         cd "${{ github.workspace }}"
-        autoreconf -if
+        autoreconf -ifv
         ./configure  LIBS=-lintl --disable-nls --disable-Werror
         make
     - name: Upload
@@ -36,11 +36,6 @@ jobs:
         name: axel
         path: |
           ${{ github.workspace }}\**\*.exe
-          c:\cygwin\bin\cygssl-1.1.dll
-          c:\cygwin\bin\cygcrypto-1.1.dll
-          c:\cygwin\bin\cygwin1.dll
-          c:\cygwin\bin\cygz.dll
-          c:\cygwin\bin\usr\local\bin\*
  
     - name: copy files
       run: |
