@@ -16,7 +16,7 @@ msgstr ""
 "Last-Revision: Li Jin <punkid.online@gmail.com>\n"
 "X-Generator: Poedit 2.4.1\n"
 
-#: src/axel.c:151
+#: src/axel.c:150
 msgid "Buffer resized for this speed."
 msgstr "为这个速率调整缓冲区大小。"
 
@@ -160,42 +160,52 @@ msgstr "使用连接下载 %jd-%jd [%i]\n"
 msgid "I/O error while reading config file: %s\n"
 msgstr "配置文件 I/O 错误：%s\n"
 
-#: src/conf.c:87
+#: src/conf.c:90
+#, fuzzy, c-format
+msgid "Unknown progress style %s\n"
+msgstr "未知的协议 %s\n"
+
+#: src/conf.c:102
 #, c-format
 msgid "Unknown protocol %s\n"
 msgstr "未知的协议 %s\n"
 
-#: src/conf.c:203
+#: src/conf.c:219
 #, c-format
 msgid "Requested too many connections, max is %i\n"
 msgstr "请求连接数过多，最大值为 %i\n"
 
-#: src/conf.c:218
+#: src/conf.c:234
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "%s 中第 %i 行出错。\n"
 
-#: src/conf.c:285
+#: src/conf.c:303
 #, c-format
 msgid "HOME env variable too long\n"
 msgstr "HOME 环境变量太长！\n"
 
-#: src/conn.c:80
+#: src/conn.c:81
 #, c-format
 msgid "Unsupported protocol\n"
 msgstr "不支持的协议\n"
 
-#: src/conn.c:86
+#: src/conn.c:87
 #, c-format
 msgid "Secure protocol is not supported\n"
 msgstr "不支持安全协议\n"
 
-#: src/conn.c:432 src/ftp.c:135
+#: src/conn.c:479 src/ftp.c:135
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "重定向次数过多。\n"
 
-#: src/conn.c:484
+#: src/conn.c:485
+#, c-format
+msgid "Redirect loop detected.\n"
+msgstr ""
+
+#: src/conn.c:540
 msgid "Unknown Error"
 msgstr ""
 
@@ -251,66 +261,66 @@ msgstr "自定义请求头数过多 (-H)！当前只有 %u 个请求头可被添
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "不能将 stdout 重定向到 /dev/null。\n"
 
-#: src/text.c:268
+#: src/text.c:267
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "尝试读取 URL 时出错（URL 太长？）。\n"
 
-#: src/text.c:276
+#: src/text.c:275
 #, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr "不能处理长度超过 %zu 的 URL\n"
 
-#: src/text.c:283
+#: src/text.c:282
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "正在初始化下载：%s\n"
 
-#: src/text.c:292
+#: src/text.c:291
 #, c-format
 msgid "Doing search...\n"
 msgstr "正在搜索…\n"
 
-#: src/text.c:295
+#: src/text.c:294
 #, c-format
 msgid "File not found\n"
 msgstr "找不到文件\n"
 
-#: src/text.c:299
+#: src/text.c:298
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "正在测试速度，可能需要一些时间…\n"
 
-#: src/text.c:302
+#: src/text.c:301
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "速度测试失败\n"
 
-#: src/text.c:308
+#: src/text.c:307
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "找到 %i 个可用的服务器，将使用这些 URL：\n"
 
-#: src/text.c:311
+#: src/text.c:310
 msgid "Speed"
 msgstr "速度"
 
-#: src/text.c:353
+#: src/text.c:352
 #, c-format
 msgid "Filename too long!\n"
 msgstr "文件名太长！\n"
 
-#: src/text.c:366
+#: src/text.c:365
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "没有状态文件，无法恢复下载！\n"
 
-#: src/text.c:370
+#: src/text.c:369
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "找到状态文件，但未有下载数据。重新开始下载。\n"
 
-#: src/text.c:458
+#: src/text.c:457
 #, c-format
 msgid ""
 "\n"
@@ -319,48 +329,48 @@ msgstr ""
 "\n"
 "已下载 %s，用时 %s。（%.2f KB/s）\n"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Kilo"
 msgstr "千"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Mega"
 msgstr "兆"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Giga"
 msgstr "吉"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Tera"
 msgstr "太"
 
-#: src/text.c:501
+#: src/text.c:500
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %s字节"
 
-#: src/text.c:517
+#: src/text.c:516
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i 时 %02i 分 %02i 秒"
 
-#: src/text.c:519
+#: src/text.c:518
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i 分 %02i 秒"
 
-#: src/text.c:521
+#: src/text.c:520
 #, c-format
 msgid "%i second(s)"
 msgstr "%i 秒"
 
-#: src/text.c:623
+#: src/text.c:622
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "无法设置备用输出，进入挂起状态。\n"
 
-#: src/text.c:686
+#: src/text.c:685
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -408,7 +418,7 @@ msgstr ""
 "\n"
 "请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
 
-#: src/text.c:709
+#: src/text.c:708
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -460,16 +470,16 @@ msgstr ""
 "\n"
 "请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
 
-#: src/text.c:738
+#: src/text.c:737
 #, c-format
 msgid "Axel %s (%s)\n"
 msgstr "Axel %s (%s)\n"
 
-#: src/text.c:752
+#: src/text.c:751
 msgid "and others."
 msgstr "及其他贡献者。"
 
-#: src/text.c:753
+#: src/text.c:752
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
@@ -477,22 +487,22 @@ msgstr ""
 "请参阅 CREDITS 文件。\n"
 "\n"
 
-#: src/ssl.c:93
+#: src/ssl.c:103
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL 错误：%s\n"
 
-#: src/ssl.c:105
+#: src/ssl.c:115
 #, c-format
 msgid "SSL error: Certificate error\n"
 msgstr "SSL 错误：证书错误\n"
 
-#: src/ssl.c:112
+#: src/ssl.c:122
 #, c-format
 msgid "SSL error: Certificate not found\n"
 msgstr "SSL 错误：证书不存在\n"
 
-#: src/ssl.c:118
+#: src/ssl.c:128
 #, c-format
 msgid "SSL error: Hostname verification failed\n"
 msgstr "SSL 错误：主机名验证失败\n"
