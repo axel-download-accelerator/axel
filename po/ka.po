@@ -12,7 +12,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: src/axel.c:151
+#: src/axel.c:150
 msgid "Buffer resized for this speed."
 msgstr "ბუფერის ზომა ამ სიჩქარისთვის შეიცვლება."
 
@@ -61,8 +61,7 @@ msgstr "%s.st: შეცდომა. მდგომარეობის ფ�
 #: src/axel.c:301
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
-msgstr ""
-"მდგომარეობის ფაილში დამახსოვრებული მიერთებების რაოდენობა ბუნდოვანია\n"
+msgstr "მდგომარეობის ფაილში დამახსოვრებული მიერთებების რაოდენობა ბუნდოვანია\n"
 
 #: src/axel.c:313
 #, c-format
@@ -158,42 +157,52 @@ msgstr "ვიწერ: %jd-%jd მიერთებებით %i\n"
 msgid "I/O error while reading config file: %s\n"
 msgstr "I/O შეცდომა კონფიგურაციის ფაილის წაკითხვისას: %s\n"
 
-#: src/conf.c:87
+#: src/conf.c:90
+#, fuzzy, c-format
+msgid "Unknown progress style %s\n"
+msgstr "უცნობი პროტოკოლი: %s\n"
+
+#: src/conf.c:102
 #, c-format
 msgid "Unknown protocol %s\n"
 msgstr "უცნობი პროტოკოლი: %s\n"
 
-#: src/conf.c:203
+#: src/conf.c:219
 #, c-format
 msgid "Requested too many connections, max is %i\n"
 msgstr "მოთხოვნილია მეტისმეტად ბევრი მიერთება. მაქსიმუმია %i\n"
 
-#: src/conf.c:218
+#: src/conf.c:234
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "შეცდომა %s-ში, ხაზზე %i.\n"
 
-#: src/conf.c:285
+#: src/conf.c:303
 #, c-format
 msgid "HOME env variable too long\n"
 msgstr "გარემოს ცვლადის HOME მნიშვნელობა მეტისმეტად გრძელია\n"
 
-#: src/conn.c:80
+#: src/conn.c:81
 #, c-format
 msgid "Unsupported protocol\n"
 msgstr "მხარდაუჭერელი პროტოკოლი\n"
 
-#: src/conn.c:86
+#: src/conn.c:87
 #, c-format
 msgid "Secure protocol is not supported\n"
 msgstr "დაცული პროტოკოლი მხარდაჭერილი არაა\n"
 
-#: src/conn.c:432 src/ftp.c:135
+#: src/conn.c:479 src/ftp.c:135
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "მეტისმეტად ბევრი გადამისამართება.\n"
 
-#: src/conn.c:484
+#: src/conn.c:485
+#, c-format
+msgid "Redirect loop detected.\n"
+msgstr ""
+
+#: src/conn.c:540
 msgid "Unknown Error"
 msgstr "უცნობი შეცდომა"
 
@@ -243,76 +252,76 @@ msgid ""
 "Too many custom headers (-H)! Currently only %u custom headers can be "
 "appended.\n"
 msgstr ""
-"ხელით მითითებული თავსართების (-H) რაოდენობა ძალიან დიდია! ამჟამად მხოლოდ "
-"%u თავსართი შეგიძლიათ დაუმატოთ.\n"
+"ხელით მითითებული თავსართების (-H) რაოდენობა ძალიან დიდია! ამჟამად მხოლოდ %u "
+"თავსართი შეგიძლიათ დაუმატოთ.\n"
 
 #: src/text.c:225
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "შეცდომა stdout-ის /dev/null-ზე გადამისამართებისას.\n"
 
-#: src/text.c:268
+#: src/text.c:267
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "შეცდომა URL-ის წაკითხვისას (მეტისმეტად გრძელია?).\n"
 
-#: src/text.c:276
+#: src/text.c:275
 #, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr "%zu-ზე გრძელი URL-ების დამუშავება შეუძლებელია\n"
 
-#: src/text.c:283
+#: src/text.c:282
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "გადმოწერის ინიციალიზაცია: %s\n"
 
-#: src/text.c:292
+#: src/text.c:291
 #, c-format
 msgid "Doing search...\n"
 msgstr "ვეძებ...\n"
 
-#: src/text.c:295
+#: src/text.c:294
 #, c-format
 msgid "File not found\n"
 msgstr "ფაილი ვერ ვიპოვე\n"
 
-#: src/text.c:299
+#: src/text.c:298
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "სიჩქარის ტესტირება. ამას საკმაო დრო შეიძლება დასჭირდეს...\n"
 
-#: src/text.c:302
+#: src/text.c:301
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "სიჩქარის ტესტირების შეცდომა\n"
 
-#: src/text.c:308
+#: src/text.c:307
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "ნაპოვნია %i სასარგებლო სერვერი. გამოვიყენებ შემდეგ URL-ებს:\n"
 
-#: src/text.c:311
+#: src/text.c:310
 msgid "Speed"
 msgstr "სიჩქარე"
 
-#: src/text.c:353
+#: src/text.c:352
 #, c-format
 msgid "Filename too long!\n"
 msgstr "ფაილის სახელი ძალიან გრძელია!\n"
 
-#: src/text.c:366
+#: src/text.c:365
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "მდგომარეობის ფაილი არ არსებობს. გაგრძელება შეუძლებელია!\n"
 
-#: src/text.c:370
+#: src/text.c:369
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ""
-"აღმოჩენილია მდგომარეობის ფაილი, მაგრამ არა გადმოწერილი მონაცემები. "
-"ვიწყებ ნულიდან.\n"
+"აღმოჩენილია მდგომარეობის ფაილი, მაგრამ არა გადმოწერილი მონაცემები. ვიწყებ "
+"ნულიდან.\n"
 
-#: src/text.c:458
+#: src/text.c:457
 #, c-format
 msgid ""
 "\n"
@@ -321,48 +330,48 @@ msgstr ""
 "\n"
 "გადმოწერილია %s %s-ში. (%.2f კბ/წმ)\n"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Kilo"
 msgstr "კილო"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Mega"
 msgstr "მეგა"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Giga"
 msgstr "გიგა"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Tera"
 msgstr "ტერა"
 
-#: src/text.c:501
+#: src/text.c:500
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %sბაიტი"
 
-#: src/text.c:517
+#: src/text.c:516
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i საათი"
 
-#: src/text.c:519
+#: src/text.c:518
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i წუთი"
 
-#: src/text.c:521
+#: src/text.c:520
 #, c-format
 msgid "%i second(s)"
 msgstr "%i წამი"
 
-#: src/text.c:623
+#: src/text.c:622
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "გამოტანის შეცვლის შეცდომა. დეაქტივაცია.\n"
 
-#: src/text.c:686
+#: src/text.c:685
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -411,7 +420,7 @@ msgstr ""
 "\n"
 "გვეწვიეთ https://github.com/axel-download-accelerator/axel/issues\n"
 
-#: src/text.c:709
+#: src/text.c:708
 #, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -466,16 +475,16 @@ msgstr ""
 "შეცდომების შესახებ მოგვწერეთ ბმულზე https://github.com/axel-download-"
 "accelerator/axel/issues\n"
 
-#: src/text.c:738
+#: src/text.c:737
 #, c-format
 msgid "Axel %s (%s)\n"
 msgstr "Axel %s (%s)\n"
 
-#: src/text.c:752
+#: src/text.c:751
 msgid "and others."
 msgstr "და სხვები."
 
-#: src/text.c:753
+#: src/text.c:752
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
@@ -483,22 +492,22 @@ msgstr ""
 "იხილეთ ფაილი CREDITS.\n"
 "\n"
 
-#: src/ssl.c:93
+#: src/ssl.c:103
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "SSL-ის შეცდომა: %s\n"
 
-#: src/ssl.c:105
+#: src/ssl.c:115
 #, c-format
 msgid "SSL error: Certificate error\n"
 msgstr "SSL-ის შეცდომა: სერტიფიკატის შეცდომა\n"
 
-#: src/ssl.c:112
+#: src/ssl.c:122
 #, c-format
 msgid "SSL error: Certificate not found\n"
 msgstr "SSL-ის შეცდომა: სერტიფიკატი ვერ ვიპოვე\n"
 
-#: src/ssl.c:118
+#: src/ssl.c:128
 #, c-format
 msgid "SSL error: Hostname verification failed\n"
 msgstr "SSL-ის შეცდომა: ჰოსტის სახელის გადამოწმების შეცდომა\n"

@@ -89,7 +89,7 @@
 #endif
 
 /* Compiled-in settings */
-#define MAX_STRING		((size_t)1024)
+#define MAX_STRING		((size_t)8100)
 #define MAX_ADD_HEADERS	10
 #define MAX_REDIRECT		20
 #define DEFAULT_IO_TIMEOUT	120

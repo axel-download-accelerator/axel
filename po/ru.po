@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/axel.c:151
+#: src/axel.c:150
 msgid "Buffer resized for this speed."
 msgstr "Размер буфера изменен для этой скорости."
 
@@ -158,42 +158,52 @@ msgstr "Загрузка %jd-%jd с использованием соедине�
 msgid "I/O error while reading config file: %s\n"
 msgstr "Ошибка ввода-вывода при чтении файла конфигурации: %s\n"
 
-#: src/conf.c:87
+#: src/conf.c:90
+#, fuzzy, c-format
+msgid "Unknown progress style %s\n"
+msgstr "Неизвестный протокол %s\n"
+
+#: src/conf.c:102
 #, c-format
 msgid "Unknown protocol %s\n"
 msgstr "Неизвестный протокол %s\n"
 
-#: src/conf.c:203
+#: src/conf.c:219
 #, c-format
 msgid "Requested too many connections, max is %i\n"
 msgstr "Запрошено слишком много соединений, максимум %i\n"
 
-#: src/conf.c:218
+#: src/conf.c:234
 #, c-format
 msgid "Error in %s line %i.\n"
 msgstr "Ошибка в файле %s линия %i.\n"
 
-#: src/conf.c:285
+#: src/conf.c:303
 #, c-format
 msgid "HOME env variable too long\n"
 msgstr "Слишком длинная переменная среды HOME\n"
 
-#: src/conn.c:80
+#: src/conn.c:81
 #, c-format
 msgid "Unsupported protocol\n"
 msgstr "Неподдерживаемый протокол\n"
 
-#: src/conn.c:86
+#: src/conn.c:87
 #, c-format
 msgid "Secure protocol is not supported\n"
 msgstr "Безопасный протокол не поддерживается\n"
 
-#: src/conn.c:432 src/ftp.c:135
+#: src/conn.c:479 src/ftp.c:135
 #, c-format
 msgid "Too many redirects.\n"
 msgstr "Слишком много перенаправлений.\n"
 
-#: src/conn.c:484
+#: src/conn.c:485
+#, c-format
+msgid "Redirect loop detected.\n"
+msgstr ""
+
+#: src/conn.c:540
 msgid "Unknown Error"
 msgstr ""
 
@@ -249,68 +259,68 @@ msgstr ""
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "Невозможно перенаправить stdout в /dev/null.\n"
 
-#: src/text.c:268
+#: src/text.c:267
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "Ошибка при попытке прочитать URL (слишком долго?).\n"
 
-#: src/text.c:276
+#: src/text.c:275
 #, fuzzy, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr "URLs длинной больше %zu не поддерживаются\n"
 
-#: src/text.c:283
+#: src/text.c:282
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "Начинаю скачивание: %s\n"
 
-#: src/text.c:292
+#: src/text.c:291
 #, c-format
 msgid "Doing search...\n"
 msgstr "Ищем...\n"
 
-#: src/text.c:295
+#: src/text.c:294
 #, c-format
 msgid "File not found\n"
 msgstr "Файл не найден\n"
 
-#: src/text.c:299
+#: src/text.c:298
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Пробуем скорости, это может занять некоторое время...\n"
 
-#: src/text.c:302
+#: src/text.c:301
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "Тестирование скорости не удалось\n"
 
-#: src/text.c:308
+#: src/text.c:307
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "Найдено %i полезных серверов, будут использованы следующие URLs:\n"
 
-#: src/text.c:311
+#: src/text.c:310
 msgid "Speed"
 msgstr "скорость"
 
-#: src/text.c:353
+#: src/text.c:352
 #, c-format
 msgid "Filename too long!\n"
 msgstr "Имя файла слишком длинное!\n"
 
-#: src/text.c:366
+#: src/text.c:365
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Файл состояния не найден, возобновление невозможно!\n"
 
-#: src/text.c:370
+#: src/text.c:369
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ""
 "Файл состояния найден, но предварительно скачанные данные отсутствуют. "
 "Начинаем заново.\n"
 
-#: src/text.c:458
+#: src/text.c:457
 #, c-format
 msgid ""
 "\n"
@@ -319,48 +329,48 @@ msgstr ""
 "\n"
 "%s скачано за %s. (%.2f КБ/с)\n"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Kilo"
 msgstr "кило"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Mega"
 msgstr "мега"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Giga"
 msgstr "гига"
 
-#: src/text.c:495
+#: src/text.c:494
 msgid "Tera"
 msgstr "тера"
 
-#: src/text.c:501
+#: src/text.c:500
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %sбайта(ов)"
 
-#: src/text.c:517
+#: src/text.c:516
 #, fuzzy, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i секунд(ы)"
 
-#: src/text.c:519
+#: src/text.c:518
 #, fuzzy, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i секунд(ы)"
 
-#: src/text.c:521
+#: src/text.c:520
 #, fuzzy, c-format
 msgid "%i second(s)"
 msgstr "%i секунд(ы)"
 
-#: src/text.c:623
+#: src/text.c:622
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "Не могу настроить альтернативный выход. Деактивация.\n"
 
-#: src/text.c:686
+#: src/text.c:685
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -400,7 +410,7 @@ msgstr ""
 "-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:709
+#: src/text.c:708
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -443,16 +453,16 @@ msgstr ""
 "--version\t\t-V\tИнформация о версии\n"
 "\n"
 
-#: src/text.c:738
+#: src/text.c:737
 #, fuzzy, c-format
 msgid "Axel %s (%s)\n"
 msgstr "Axel %s (%s)\n"
 
-#: src/text.c:752
+#: src/text.c:751
 msgid "and others."
 msgstr "и другие."
 
-#: src/text.c:753
+#: src/text.c:752
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
@@ -460,22 +470,22 @@ msgstr ""
 "Пожалуйста, смотрите файл CREDITS.\n"
 "\n"
 
-#: src/ssl.c:93
+#: src/ssl.c:103
 #, c-format
 msgid "SSL error: %s\n"
 msgstr "Ошибка SSL: %s\n"
 
-#: src/ssl.c:105
+#: src/ssl.c:115
 #, c-format
 msgid "SSL error: Certificate error\n"
 msgstr ""
 
-#: src/ssl.c:112
+#: src/ssl.c:122
 #, c-format
 msgid "SSL error: Certificate not found\n"
 msgstr ""
 
-#: src/ssl.c:118
+#: src/ssl.c:128
 #, c-format
 msgid "SSL error: Hostname verification failed\n"
 msgstr ""
