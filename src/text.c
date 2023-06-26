@@ -309,7 +309,7 @@ main(int argc, char *argv[])
 			j = min(j, conf->search_top);
 			printf("%-60s %15s\n", "URL", _("Speed"));
 			for (i = 0; i < j; i++)
-				printf("%-70.70s %5jd\n", search[i].url,
+				printf("%-70.70s %5lld\n", search[i].url,
 				       search[i].speed);
 			printf("\n");
 		}

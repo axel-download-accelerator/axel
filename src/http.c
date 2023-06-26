@@ -191,10 +191,10 @@ http_get(http_t *conn, char *lurl)
 	http_addheader(conn, "Accept: */*");
 	http_addheader(conn, "Accept-Encoding: identity");
 	if (conn->lastbyte && conn->firstbyte >= 0) {
-		http_addheader(conn, "Range: bytes=%jd-%jd",
+		http_addheader(conn, "Range: bytes=%lld-%lld",
 			       conn->firstbyte, conn->lastbyte - 1);
 	} else if (conn->firstbyte >= 0) {
-		http_addheader(conn, "Range: bytes=%jd-",
+		http_addheader(conn, "Range: bytes=%lld-",
 			       conn->firstbyte);
 	}
 }
@@ -324,7 +324,7 @@ http_size(http_t *conn)
 	if ((i = http_header(conn, "Content-Length:")) == NULL)
 		return -2;
 
-	sscanf(i, "%jd", &j);
+	sscanf(i, "%lld", &j);
 	return j;
 }
 

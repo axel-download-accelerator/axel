@@ -234,7 +234,7 @@ axel_new(conf_t *conf, int count, const search_t *res)
 		if (axel->size != LLONG_MAX) {
 			char hsize[32];
 			axel_size_human(hsize, sizeof(hsize), axel->size);
-			axel_message(axel, _("File size: %s (%jd bytes)"),
+			axel_message(axel, _("File size: %s (%lld bytes)"),
 				     hsize, axel->size);
 		} else {
 			axel_message(axel, _("File size: unavailable"));
@@ -343,7 +343,7 @@ axel_open(axel_t *axel)
 		}
 
 		axel_message(axel,
-			     _("State file found: %jd bytes downloaded, %jd to go."),
+			     _("State file found: %lld bytes downloaded, %lld to go."),
 			     axel->bytes_done, axel->size - axel->bytes_done);
 
 		close(fd);
@@ -917,7 +917,7 @@ axel_divide(axel_t *axel)
 	axel->conn[axel->conf->num_connections - 1].lastbyte += tail;
 #ifndef NDEBUG
 	for (int i = 0; i < axel->conf->num_connections; i++) {
-		printf(_("Downloading %jd-%jd using conn. %i\n"),
+		printf(_("Downloading %lld-%lld using conn. %i\n"),
 		       axel->conn[i].currentbyte,
 		       axel->conn[i].lastbyte, i);
 	}

@@ -123,7 +123,7 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 	if (!strchr(file, '*') && !strchr(file, '?')) {
 		ftp_command(conn, "SIZE %s", file);
 		if (ftp_wait(conn) / 100 == 2) {
-			sscanf(conn->message, "%*i %jd", &i);
+			sscanf(conn->message, "%*i %lld", &i);
 			return i;
 		} else if (conn->status / 10 != 50) {
 			fprintf(stderr, _("File not found.\n"));
@@ -215,10 +215,10 @@ ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 	   possible wildcards. */
 	else {
 		s = strstr(reply, "\n-");
-		i = sscanf(s, "%*s %*i %*s %*s %jd %*s %*i %*s %100s", &size,
+		i = sscanf(s, "%*s %*i %*s %*s %lld %*s %*i %*s %100s", &size,
 			   fn);
 		if (i < 2) {
-			i = sscanf(s, "%*s %*i %jd %*i %*s %*i %*i %100s",
+			i = sscanf(s, "%*s %*i %lld %*i %*s %*i %*i %100s",
 				   &size, fn);
 			if (i < 2) {
 				return -2;
