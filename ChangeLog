@@ -1,6 +1,36 @@
+Version: 2.17.12, 2024-01-29
+   
+   [ Ahmet Arda Kavakcı ]
+
+* Fixed a wrong translation for Turkish
+
+  [ Cody M. Jones ]
+
+* Implemented early redirect loop detection
+
+  [ Elms ]
+
+* Added LGTM.com support
+
+  [ Ismael Luceno ]
+
+* Buildsystem improvements
+* Added wolfSSL support
+* Fixed potential int overflow
+* Simplified configuration support code
+* Early redirect loop detection improvements
+* Fixed speed-limiting sleep delay overflow
+* Removed HTTP encoding of URLs on the CLI, should be pre-encoded
+
+  [ Temuri Doghonadze ]
+
+* Added Georgian translation
+
+
+
 Version: 2.17.11, 2021-12-19
 
-[ Ismael Luceno ]
+  [ Ismael Luceno ]
 
 * Fixed a deadlock in conn_info
 * Fixed build on FreeBSD (workaround for hidden typedefs)
@@ -11,15 +41,15 @@ Version: 2.17.11, 2021-12-19
   - Check intmax_t >= int64_t on Mac OS X
   - Improved output when pkg-config is unavailable
 
-[ Sean E. Russell ]
+  [ Sean E. Russell ]
 
 * Implemented percentage output mode for piping
 
-[ Dimitris Apostolou ]
+  [ Dimitris Apostolou ]
 
 * Fixed typos
 
-[ Ahmet Arda Kavakcı ]
+  [ Ahmet Arda Kavakcı ]
 
 * Added Turkish Translation
 
@@ -571,10 +601,10 @@ Version 2.5, 2015-11-01
     - Changed the default prefix to /usr.
     - Changed the default etc path to /etc.
     - Changed CFLAGS and LDFLAGS definition lines to allow external values,
-      as GCC hardening sent by Debian.
+* as GCC hardening sent by Debian.
 * gui/: removed. The binary axel-kapt depended on kaptain that is no longer
-        available for QT5 (dead upstream development). For details, see
-        https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=789819
+*   available for QT5 (dead upstream development). For details, see
+*   https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=789819
 * http.c: fix a possible buffer overflow.
 * Makefile: disabled the .po regeneration/merge actions to avoid changes in
     source code when building. I will try to fix it in future.
