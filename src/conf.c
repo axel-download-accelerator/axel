@@ -87,7 +87,7 @@ parse_progress_style(conf_t *conf, const char *value)
 	else if (!strcasecmp(value, "percent"))
 		conf->progress_style = AXEL_PROGRESS_STYLE_PERCENTAGE;
 	else
-		fprintf(stderr, _("Unknown progress style %s\n"), value);
+		fprintf(stderr, _("Unknown progress bar style \"%s\"\n"), value);
 	return 1;
 }
 
@@ -99,7 +99,7 @@ parse_protocol(conf_t *conf, const char *value)
 	else if (strcasecmp(value, "ipv6") == 0)
 		conf->ai_family = AF_INET6;
 	else {
-		fprintf(stderr, _("Unknown protocol %s\n"), value);
+		fprintf(stderr, _("Unknown protocol \"%s\"\n"), value);
 		return 0;
 	}
 
