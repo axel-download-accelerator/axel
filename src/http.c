@@ -424,26 +424,3 @@ http_decode(char *s)
 	} while (*s == '%');
 	*p = 0;
 }
-
-void
-http_encode(char *s, size_t len)
-{
-	char t[MAX_STRING];
-	unsigned i, j;
-
-	for (i = j = 0; s[i] && j < sizeof(t) - 1; i++, j++) {
-		t[j] = s[i];
-		if (s[i] <= 0x20 || s[i] >= 0x7f) {
-			/* Fix buffer overflow */
-			if (j >= sizeof(t) - 3) {
-				break;
-			}
-
-			encode_byte(t + j, s[i]);
-			j += 2;
-		}
-	}
-	t[j] = 0;
-
-	strlcpy(s, t, len);
-}

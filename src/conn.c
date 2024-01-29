@@ -97,8 +97,6 @@ conn_set(conn_t *conn, const char *set_url)
 	} else {
 		*i = 0;
 		snprintf(conn->dir, MAX_STRING, "/%s", i + 1);
-		if (conn->proto == PROTO_HTTP || conn->proto == PROTO_HTTPS)
-			http_encode(conn->dir, sizeof(conn->dir));
 	}
 	j = strchr(conn->dir, '?');
 	if (j != NULL)

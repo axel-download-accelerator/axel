@@ -324,9 +324,11 @@ main(int argc, char *argv[])
 		if (!search)
 			goto free_conf;
 
-		for (int i = 0; i < argc - optind; i++)
+		for (int i = 0; i < argc - optind; i++) {
 			strlcpy(search[i].url, argv[optind + i],
 				sizeof(search[i].url));
+			// FIXME check url here
+		}
 		axel = axel_new(conf, argc - optind, search);
 		free(search);
 		if (!axel || axel->ready == -1) {
