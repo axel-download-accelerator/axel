@@ -748,8 +748,8 @@ print_version_info(void)
 	       "\t  2008-2010 Philipp Hagemeister,\n"
 	       "\t  2015-2017 Joao Eriberto Mota Filho,\n"
 	       "\t  2016-2017 Stephen Thirlwall,\n"
-	       "\t  2017      Ismael Luceno,\n"
 	       "\t  2017      Antonio Quartulli,\n"
+	       "\t  2017-2024 Ismael Luceno,\n"
 	       "\t\t    %s\n%s\n\n", _("and others."),
 	       _("Please, see the CREDITS file.\n\n"));
 }
