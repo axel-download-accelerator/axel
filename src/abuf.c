@@ -53,9 +53,16 @@
 int
 abuf_setup(abuf_t *abuf, size_t len)
 {
-	char *p = realloc(abuf->p, len);
-	if (!p && len)
-		return -ENOMEM;
+	char *p;
+
+	if (len) {
+		p = realloc(abuf->p, len);
+		if (!p)
+			return -ENOMEM;
+	} else {
+		free(abuf->p);
+		p = NULL;
+	}
 	abuf->p = p;
 	abuf->len = len;
 	return 0;
