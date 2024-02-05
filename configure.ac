@@ -34,7 +34,7 @@ AS_HELP_STRING(
 AS_HELP_STRING(
         [--without-ssl], [disable TLS support])],
     [AS_CASE(["$withval"],
-        [openssl|wolfssl|no],,
+        [openssl|wolfssl|yes|no],,
         [AC_MSG_ERROR([Invalid argument: --with-ssl=$withval])])],
     [with_ssl=openssl])
 
@@ -201,7 +201,7 @@ AS_IF([test "x$with_ssl" != xno], [
     PKG_CHECK_MODULES([SSL], [$with_ssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
     AS_CASE(["$with_ssl"],
-	[openssl], [
+	[openssl|yes], [
 	    save_LIBS="$LIBS"
 	    LIBS="$LIBS $SSL_LIBS"
 	    AC_REPLACE_FUNCS([ \
