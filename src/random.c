@@ -3,15 +3,20 @@
 #include "config.h"
 #include "axel.h"
 
+static int rnd_fd = -1;
+
+int
+axel_rnd_init(void)
+{
+	const char rnd_dev[] = "/dev/random";
+	rnd_fd = open(rnd_dev, O_RDONLY);
+	if (rnd_fd == -1)
+		perror(rnd_dev);
+	return rnd_fd;
+}
+
 ssize_t
 axel_rand64(uint64_t *out)
 {
-	static int fd = -1;
-	if (fd == -1) {
-		int tmp = open("/dev/random", O_RDONLY);
-		int expect = -1;
-		if (!atomic_compare_exchange_strong(&fd, &expect, tmp))
-			close(tmp);
-	}
-	return read(fd, out, sizeof(*out));
+	return read(rnd_fd, out, sizeof(*out));
 }

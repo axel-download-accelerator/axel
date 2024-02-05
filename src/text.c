@@ -123,6 +123,8 @@ main(int argc, char *argv[])
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 #endif
+	if (axel_rnd_init() == -1)
+		return 1;
 
 	if (!conf_init(conf)) {
 		return 1;
