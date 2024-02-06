@@ -250,7 +250,7 @@ msgstr "Geçersiz vekil sunucu (proxy) girdisi: %s\n"
 msgid "Connection gone while writing.\n"
 msgstr "Yazılırken bağlantı kayboldu.\n"
 
-#: src/text.c:149
+#: src/text.c:151
 #, c-format
 msgid ""
 "Too many custom headers (-H)! Currently only %u custom headers can be "
@@ -259,73 +259,73 @@ msgstr ""
 "Çok fazla özelleştirilmiş üstbilgi (-H)! Şimdilik sadece %u özel "
 "üstbilgileri eklenebilir.\n"
 
-#: src/text.c:225
+#: src/text.c:227
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "stdout, /dev/null'a yönlendirilemiyor.\n"
 
-#: src/text.c:267
+#: src/text.c:269
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "URL okunurken hata (Çok mu uzun?).\n"
 
-#: src/text.c:275
+#: src/text.c:277
 #, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr "Uzunluğu %zu karakterden fazla olan URL'ler desteklenmiyor\n"
 
-#: src/text.c:282
+#: src/text.c:284
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "İndirme başlatılıyor: %s\n"
 
-#: src/text.c:291
+#: src/text.c:293
 #, c-format
 msgid "Doing search...\n"
 msgstr "Arama yapılıyor...\n"
 
-#: src/text.c:294
+#: src/text.c:296
 #, c-format
 msgid "File not found\n"
 msgstr "Dosya bulunamadı\n"
 
-#: src/text.c:298
+#: src/text.c:300
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "Hızlar test ediliyor. Bu biraz zaman alabilir...\n"
 
-#: src/text.c:301
+#: src/text.c:303
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "Hız testi başarısız\n"
 
-#: src/text.c:307
+#: src/text.c:309
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "%i adet kullanılabilir sunucu bulundu. Bu URL'ler kullanılacak:\n"
 
-#: src/text.c:310
+#: src/text.c:312
 msgid "Speed"
 msgstr "Hız"
 
-#: src/text.c:354
+#: src/text.c:356
 #, c-format
 msgid "Filename too long!\n"
 msgstr "Dosya ismi çok uzun!\n"
 
-#: src/text.c:367
+#: src/text.c:369
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "Durum dosyası yok, devam edilemiyor!\n"
 
-#: src/text.c:371
+#: src/text.c:373
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr ""
 "Durum dosyası bulundu, ancak indirilmiş veri yok. İndirmeye baştan "
 "başlanıyor.\n"
 
-#: src/text.c:459
+#: src/text.c:461
 #, c-format
 msgid ""
 "\n"
@@ -334,48 +334,48 @@ msgstr ""
 "\n"
 "İndirilen: %s / %s. (%.2f KB/s)\n"
 
-#: src/text.c:496
+#: src/text.c:498
 msgid "Kilo"
 msgstr "Kilo"
 
-#: src/text.c:496
+#: src/text.c:498
 msgid "Mega"
 msgstr "Mega"
 
-#: src/text.c:496
+#: src/text.c:498
 msgid "Giga"
 msgstr "Giga"
 
-#: src/text.c:496
+#: src/text.c:498
 msgid "Tera"
 msgstr "Tera"
 
-#: src/text.c:502
+#: src/text.c:504
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %sbayt"
 
-#: src/text.c:518
+#: src/text.c:520
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i:%02i:%02i saat"
 
-#: src/text.c:520
+#: src/text.c:522
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i:%02i dakika"
 
-#: src/text.c:522
+#: src/text.c:524
 #, c-format
 msgid "%i second(s)"
 msgstr "%i saniye"
 
-#: src/text.c:624
+#: src/text.c:626
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "Alternatif çıktı kurulamadı. Devre dışı bırakılıyor.\n"
 
-#: src/text.c:687
+#: src/text.c:689
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -424,7 +424,7 @@ msgstr ""
 "Hata bildirmek için https://github.com/axel-download-accelerator/axel/issues "
 "ziyaret edin.\n"
 
-#: src/text.c:710
+#: src/text.c:712
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -477,16 +477,16 @@ msgstr ""
 "Hata bildirmek için https://github.com/axel-download-accelerator/axel/"
 "issuesziyaret edin.\n"
 
-#: src/text.c:739
+#: src/text.c:741
 #, c-format
 msgid "Axel %s (%s)\n"
 msgstr "Axel %s (%s)\n"
 
-#: src/text.c:753
+#: src/text.c:755
 msgid "and others."
 msgstr "ve diğerleri."
 
-#: src/text.c:754
+#: src/text.c:756
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"

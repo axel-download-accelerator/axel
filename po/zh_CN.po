@@ -249,78 +249,78 @@ msgstr "代理字符串无效：%s\n"
 msgid "Connection gone while writing.\n"
 msgstr "写入时连接丢失。\n"
 
-#: src/text.c:149
+#: src/text.c:151
 #, c-format
 msgid ""
 "Too many custom headers (-H)! Currently only %u custom headers can be "
 "appended.\n"
 msgstr "自定义请求头数过多 (-H)！当前只有 %u 个请求头可被添加。\n"
 
-#: src/text.c:225
+#: src/text.c:227
 #, c-format
 msgid "Can't redirect stdout to /dev/null.\n"
 msgstr "不能将 stdout 重定向到 /dev/null。\n"
 
-#: src/text.c:267
+#: src/text.c:269
 #, c-format
 msgid "Error when trying to read URL (Too long?).\n"
 msgstr "尝试读取 URL 时出错（URL 太长？）。\n"
 
-#: src/text.c:275
+#: src/text.c:277
 #, c-format
 msgid "Can't handle URLs of length over %zu\n"
 msgstr "不能处理长度超过 %zu 的 URL\n"
 
-#: src/text.c:282
+#: src/text.c:284
 #, c-format
 msgid "Initializing download: %s\n"
 msgstr "正在初始化下载：%s\n"
 
-#: src/text.c:291
+#: src/text.c:293
 #, c-format
 msgid "Doing search...\n"
 msgstr "正在搜索…\n"
 
-#: src/text.c:294
+#: src/text.c:296
 #, c-format
 msgid "File not found\n"
 msgstr "找不到文件\n"
 
-#: src/text.c:298
+#: src/text.c:300
 #, c-format
 msgid "Testing speeds, this can take a while...\n"
 msgstr "正在测试速度，可能需要一些时间…\n"
 
-#: src/text.c:301
+#: src/text.c:303
 #, c-format
 msgid "Speed testing failed\n"
 msgstr "速度测试失败\n"
 
-#: src/text.c:307
+#: src/text.c:309
 #, c-format
 msgid "%i usable servers found, will use these URLs:\n"
 msgstr "找到 %i 个可用的服务器，将使用这些 URL：\n"
 
-#: src/text.c:310
+#: src/text.c:312
 msgid "Speed"
 msgstr "速度"
 
-#: src/text.c:354
+#: src/text.c:356
 #, c-format
 msgid "Filename too long!\n"
 msgstr "文件名太长！\n"
 
-#: src/text.c:367
+#: src/text.c:369
 #, c-format
 msgid "No state file, cannot resume!\n"
 msgstr "没有状态文件，无法恢复下载！\n"
 
-#: src/text.c:371
+#: src/text.c:373
 #, c-format
 msgid "State file found, but no downloaded data. Starting from scratch.\n"
 msgstr "找到状态文件，但未有下载数据。重新开始下载。\n"
 
-#: src/text.c:459
+#: src/text.c:461
 #, c-format
 msgid ""
 "\n"
@@ -329,48 +329,48 @@ msgstr ""
 "\n"
 "已下载 %s，用时 %s。（%.2f KB/s）\n"
 
-#: src/text.c:496
+#: src/text.c:498
 msgid "Kilo"
 msgstr "千"
 
-#: src/text.c:496
+#: src/text.c:498
 msgid "Mega"
 msgstr "兆"
 
-#: src/text.c:496
+#: src/text.c:498
 msgid "Giga"
 msgstr "吉"
 
-#: src/text.c:496
+#: src/text.c:498
 msgid "Tera"
 msgstr "太"
 
-#: src/text.c:502
+#: src/text.c:504
 #, c-format
 msgid "%g %sbyte(s)"
 msgstr "%g %s字节"
 
-#: src/text.c:518
+#: src/text.c:520
 #, c-format
 msgid "%i:%02i:%02i hour(s)"
 msgstr "%i 时 %02i 分 %02i 秒"
 
-#: src/text.c:520
+#: src/text.c:522
 #, c-format
 msgid "%i:%02i minute(s)"
 msgstr "%i 分 %02i 秒"
 
-#: src/text.c:522
+#: src/text.c:524
 #, c-format
 msgid "%i second(s)"
 msgstr "%i 秒"
 
-#: src/text.c:624
+#: src/text.c:626
 #, c-format
 msgid "Can't setup alternate output. Deactivating.\n"
 msgstr "无法设置备用输出，进入挂起状态。\n"
 
-#: src/text.c:687
+#: src/text.c:689
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -418,7 +418,7 @@ msgstr ""
 "\n"
 "请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
 
-#: src/text.c:710
+#: src/text.c:712
 #, fuzzy, c-format
 msgid ""
 "Usage: axel [options] url1 [url2] [url...]\n"
@@ -470,16 +470,16 @@ msgstr ""
 "\n"
 "请前往 https://github.com/axel-download-accelerator/axel/issues 报告问题\n"
 
-#: src/text.c:739
+#: src/text.c:741
 #, c-format
 msgid "Axel %s (%s)\n"
 msgstr "Axel %s (%s)\n"
 
-#: src/text.c:753
+#: src/text.c:755
 msgid "and others."
 msgstr "及其他贡献者。"
 
-#: src/text.c:754
+#: src/text.c:756
 msgid ""
 "Please, see the CREDITS file.\n"
 "\n"
