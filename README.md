@@ -1,19 +1,6 @@
 # AXEL - Lightweight CLI download accelerator
 
-	sudo apt install axel
-	
-	# Standard file download:
-	axel http://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.1.0-amd64-netinst.iso
-	axel ftp://ftp.nl.kernel.org/pub/linux/kernel/v2.2/linux-2.2.20.tar.bz2
-	
-	# Use the Belgian, Dutch, English and German kernel.org mirrors to
-	# download a Linux 2.4.17 kernel image:
-	axel ftp://ftp.{be,nl,uk,de}.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
-
-	# Do a search for the linux-2.4.17.tar.bz2 file on filesearching.com
-	# (It'll use the four (if possible) fastest mirrors for the download,
-	# possibly including ftp.kernel.org)
-	$ axel -S4 ftp://ftp.kernel.org/pub/linux/kernel/v2.4/linux-2.4.17.tar.bz2
+Example usage at bottom of [man page](doc/axel.txt).
 
 ## About
 
