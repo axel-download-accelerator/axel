@@ -1,4 +1,3 @@
-#include <stdatomic.h>
 #include <unistd.h>
 #include "config.h"
 #include "axel.h"
