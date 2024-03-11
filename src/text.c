@@ -48,7 +48,9 @@
 /* Text interface */
 
 #include "config.h"
+#ifndef _WIN32
 #include <sys/ioctl.h>
+#endif
 #include "axel.h"
 
 
@@ -672,6 +674,15 @@ print_alternate_output(axel_t *axel)
 	free(progress);
 }
 
+#ifdef _WIN32
+static int
+get_term_width()
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	return csbi.srWindow.Right - csbi.srWindow.Left + 1;
+}
+#else
 static int
 get_term_width(void)
 {
@@ -680,6 +691,7 @@ get_term_width(void)
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 	return w.ws_col;
 }
+#endif
 
 void
 print_help(void)
