@@ -1,5 +1,7 @@
 # AXEL - Lightweight CLI download accelerator
 
+Example usage at bottom of [man page](doc/axel.txt).
+
 ## About
 
 Axel tries to accelerate the download process by using multiple
