@@ -527,8 +527,8 @@ conn_info_status_get(char *msg, size_t size, conn_t *conn)
 	if (is_proto_http(conn->proto)) {
 		char *p = conn->http->headers->p;
 		/* Skip protocol and code */
-		while (*p++ != ' ');
-		while (*p++ != ' ');
+		while (*p++ != ' ' && *p != '\0');
+		while (*p++ != ' ' && *p != '\0');
 		size_t len = strcspn(p, "\r\n");
 		if (len) {
 			strlcpy(msg, p, min(len + 1, size));
