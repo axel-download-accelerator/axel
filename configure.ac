@@ -10,7 +10,7 @@ Copyright 2017      Vlad Glagolev
 This file is under the same license as Axel.
 ])
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.72])
 PKG_PREREQ([0.29])
 m4_ifdef([AX_IS_RELEASE],, [
     m4_fatal([autoconf-archive is required])
@@ -76,8 +76,7 @@ AC_USE_SYSTEM_EXTENSIONS
 
 # Compiler checks
 AC_PROG_CC
-AC_PROG_CC_C99
-AS_IF([test "x$ac_cv_prog_cc_c99" = "xno"], [
+AS_CASE([$ac_prog_cc_stdc], [no|c89], [
     AC_MSG_ERROR([C99 compiler required])
 ])
 
