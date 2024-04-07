@@ -191,6 +191,7 @@ AC_REPLACE_FUNCS([ \
 AXEL_CHECK_MACRO([O_NONBLOCK], [fcntl.h])
 
 # Optional (but included-by-default) ssl support
+AS_IF([test "x$with_ssl" = xyes], [with_ssl=openssl])
 AM_CONDITIONAL([WITH_SSL], [test "x$with_ssl" != xno])
 AC_ARG_VAR([SSL_PREFIX], [installation prefix of the TLS/SSL library])
 AS_IF([test "x$with_ssl" != xno], [
@@ -201,7 +202,7 @@ AS_IF([test "x$with_ssl" != xno], [
     PKG_CHECK_MODULES([SSL], [$with_ssl])
     AC_DEFINE([HAVE_SSL], [1], [SSL])
     AS_CASE(["$with_ssl"],
-	[openssl|yes], [
+	[openssl], [
 	    save_LIBS="$LIBS"
 	    LIBS="$LIBS $SSL_LIBS"
 	    AC_REPLACE_FUNCS([ \
