@@ -203,7 +203,7 @@ msgstr "Слишком много перенаправлений.\n"
 msgid "Redirect loop detected.\n"
 msgstr "Обнаружена петля перенаправления.\n"
 
-#: src/conn.c:538
+#: src/conn.c:539
 msgid "Unknown Error"
 msgstr ""
 

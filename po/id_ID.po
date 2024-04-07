@@ -208,7 +208,7 @@ msgstr "Terlalu banyak pengalihan.\n"
 msgid "Redirect loop detected.\n"
 msgstr "Loop pengalihan terdeteksi.\n"
 
-#: src/conn.c:538
+#: src/conn.c:539
 msgid "Unknown Error"
 msgstr ""
 

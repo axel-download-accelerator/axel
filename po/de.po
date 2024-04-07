@@ -212,7 +212,7 @@ msgstr "Zu viele Weiterleitungen (redirects).\n"
 msgid "Redirect loop detected.\n"
 msgstr "Umleitungsschleife erkannt.\n"
 
-#: src/conn.c:538
+#: src/conn.c:539
 msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
 

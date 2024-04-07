@@ -207,7 +207,7 @@ msgstr "リディレクト回数が多すぎます。\n"
 msgid "Redirect loop detected.\n"
 msgstr "リダイレクションループが検出されました。\n"
 
-#: src/conn.c:538
+#: src/conn.c:539
 msgid "Unknown Error"
 msgstr ""
 

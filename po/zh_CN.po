@@ -205,7 +205,7 @@ msgstr "重定向次数过多。\n"
 msgid "Redirect loop detected.\n"
 msgstr "检测到重定向循环。\n"
 
-#: src/conn.c:538
+#: src/conn.c:539
 msgid "Unknown Error"
 msgstr "未知错误"
 

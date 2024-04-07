@@ -206,7 +206,7 @@ msgstr "Te veel redirects.\n"
 msgid "Redirect loop detected.\n"
 msgstr "Omleidingslus gedetecteerd.\n"
 
-#: src/conn.c:538
+#: src/conn.c:539
 msgid "Unknown Error"
 msgstr ""
 

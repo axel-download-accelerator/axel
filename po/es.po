@@ -209,7 +209,7 @@ msgstr "Demasiadas redirecciones.\n"
 msgid "Redirect loop detected.\n"
 msgstr "Bucle de redirección detectado.\n"
 
-#: src/conn.c:538
+#: src/conn.c:539
 msgid "Unknown Error"
 msgstr "Error desconocido"
 
