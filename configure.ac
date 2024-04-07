@@ -145,7 +145,16 @@ AC_TYPE_UINT64_T
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_MODE_T
-AC_TYPE_SIGNAL
+
+AC_CACHE_CHECK([return type of signal handlers],[ac_cv_type_signal],[AC_COMPILE_IFELSE(
+[AC_LANG_PROGRAM([#include <sys/types.h>
+#include <signal.h>
+], [return *(signal (0, 0)) (0) == 1;])],
+  [ac_cv_type_signal=int],
+  [ac_cv_type_signal=void])])
+AS_IF([test "x$ac_cv_type_signal" = xint], [
+  AC_MSG_ERROR([return type of signal handlers is not compliant with C89])
+])
 
 # Custom type checks and replacements
 AXEL_CHECK_TYPE([off_t], [sizeof(off_t) >= sizeof(int64_t)])

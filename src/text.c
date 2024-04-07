@@ -472,7 +472,7 @@ main(int argc, char *argv[])
 }
 
 /* SIGINT/SIGTERM handler */
-RETSIGTYPE
+void
 stop(int signal)
 {
 	(void)signal;
