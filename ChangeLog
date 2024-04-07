@@ -1,3 +1,19 @@
+Version: 2.17.14, 2024-04-07
+
+  [ Ismael Luceno ]
+
+* Remove inclusion of <stdatomic.h>
+* configure: Fix handling of --with-ssl=yes
+* configure: Force C89-compliant return type of signal handlers
+* configure: Update to autoconf 2.72
+* conn: Fix potential buffer overrun
+
+  [ Peng-Yu Chen ]
+
+* http: Fix filename parsing from Content-Disposition
+
+
+
 Version: 2.17.13, 2024-02-06
 
   [ Ismael Luceno ]
