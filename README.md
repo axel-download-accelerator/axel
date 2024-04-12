@@ -14,6 +14,12 @@ Axel supports HTTP, HTTPS, FTP and FTPS protocols.
 Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone
 else who has contributed to it over the years.
 
+## Usage
+
+For usage information, see the manual page:
+
+    man axel
+
 ## How to help
 If you can code and are interested in improving Axel, please read the
 [CONTRIBUTING.md](CONTRIBUTING.md) file; if you're looking for ideas check our
