@@ -1,18 +1,33 @@
-To create a translation to a new language (e.g. pt_BR):
+For a reference of the translation file format, see:
+https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html
 
-$ ./autogen.sh
-$ ./configure
-$ cd po/
-$ msginit -l pt_BR   # change pt_BR to your new language
-$ edit pt_BR.po      # likewise
+Before you can work in the project, you have to prepare the project build,
+a procedure similar to what's explained in the README.md file:
 
-// Now, edit the empty strings started by msgstr, doing the translation.
-// Send me the translation!
+	autoreconf -i && ./configure
 
-If you want activate the translation locally, add pt_BR to LINGUAS and run:
+This needs to be done only once. If this gives no errors, you're good to go.
 
-$ make update-po
 
-Run the last command if you are updating a .po file.
+Translations can be found in the po/ directory, named after the ISO 639 code
+name of the language (e.g. po/pt_BR.po for Brazilian Portuguese).
 
-  -- Eriberto, Wed, 30 Mar 2016 22:30:52 -0300
+If you want to add a new language, you need to start by generating a template
+file, e.g. for Romanian (code: ro):
+
+	(cd po && msginit -l ro)
+
+This will generate a template po/ro.po file you can edit.
+
+If you're adding a new language, you need to add it's code to the LINGUAS
+file in order to include it in the build.
+
+After updating a .po file, you can build it with:
+
+	make update-po
+
+In order to submit updates or new translations, ideally use Git and make a
+pull request or submit a patch by email.
+
+In order to distinguish these changes, please prefix the commit messages with
+"po: ".
