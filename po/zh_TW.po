@@ -1,0 +1,513 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: axel 2.17.14\n"
+"Report-Msgid-Bugs-To: https://github.com/axel-download-accelerator/axel/"
+"issues\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2024-04-12 20:17+0800\n"
+"Last-Translator: Peter Dave Hello <hsu@peterdavehello.org>\n"
+"Language-Team: Chinese (traditional)\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/axel.c:150
+msgid "Buffer resized for this speed."
+msgstr "已調整緩衝區大小以配合此速度。"
+
+#: src/axel.c:179
+msgid "Could not parse URL.\n"
+msgstr "無法解析 URL。\n"
+
+#: src/axel.c:201
+#, c-format
+msgid "File '%s' already there; not retrieving.\n"
+msgstr "檔案 '%s' 已存在，將略過下載\n"
+
+#: src/axel.c:206
+#, c-format
+msgid "Incomplete download found, ignoring no-clobber option\n"
+msgstr "找到未完成的下載，忽略 no-clobber 選項\n"
+
+#: src/axel.c:223
+#, c-format
+msgid "ERROR %d: %s.\n"
+msgstr "錯誤 %d：%s。\n"
+
+#: src/axel.c:237
+#, c-format
+msgid "File size: %s (%jd bytes)"
+msgstr "檔案大小：%s（%jd 位元組）"
+
+#: src/axel.c:240
+msgid "File size: unavailable"
+msgstr "檔案大小：無法取得"
+
+#: src/axel.c:269
+#, c-format
+msgid "Opening output file %s"
+msgstr "開啟輸出檔案 %s"
+
+#: src/axel.c:276
+msgid "Server unsupported, starting from scratch with one connection."
+msgstr "伺服器不支援，從頭開始並使用單一連線。"
+
+#: src/axel.c:293
+#, c-format
+msgid "%s.st: Error, truncated state file\n"
+msgstr "%s.st：錯誤，狀態檔案被截斷\n"
+
+#: src/axel.c:301
+#, c-format
+msgid "Bogus number of connections stored in state file\n"
+msgstr "狀態檔案中儲存的連線數量不正確\n"
+
+#: src/axel.c:313
+#, c-format
+msgid "State file has old format.\n"
+msgstr "狀態檔案的格式較舊。\n"
+
+#: src/axel.c:346
+#, c-format
+msgid "State file found: %jd bytes downloaded, %jd to go."
+msgstr "找到狀態檔案：%jd 位元組已下載，還剩 %jd 位元組。"
+
+#: src/axel.c:352 src/axel.c:363
+msgid "Error opening local file"
+msgstr "開啟本機檔案時出錯"
+
+#: src/axel.c:376
+msgid "Crappy filesystem/OS.. Working around. :-("
+msgstr "檔案系統/作業系統有問題.. 正在解決。:-( "
+
+#: src/axel.c:389
+msgid "Error creating local file"
+msgstr "建立本機檔案時出錯"
+
+#: src/axel.c:430
+#, c-format
+msgid ""
+"\n"
+"Reactivate connection %d\n"
+msgstr ""
+"\n"
+"重新啟動連線 %d\n"
+
+#: src/axel.c:459
+msgid "Starting download"
+msgstr "開始下載"
+
+#: src/axel.c:469 src/axel.c:652
+#, c-format
+msgid "Connection %i downloading from %s:%i using interface %s"
+msgstr "連線 %i 正在從 %s:%i 使用介面 %s 下載"
+
+#: src/axel.c:479 src/axel.c:664
+msgid "pthread error!!!"
+msgstr "pthread 錯誤!!!"
+
+#: src/axel.c:525
+#, c-format
+msgid "Error while waiting for connection: %s"
+msgstr "等待連線時出錯：%s"
+
+#: src/axel.c:557
+#, c-format
+msgid "Connection %i timed out"
+msgstr "連線 %i 逾時"
+
+#: src/axel.c:570
+#, c-format
+msgid "Error on connection %i! Connection closed"
+msgstr "連線 %i 出錯！連線已關閉"
+
+#: src/axel.c:584
+#, c-format
+msgid "Connection %i unexpectedly closed"
+msgstr "連線 %i 突然關閉"
+
+#: src/axel.c:588 src/axel.c:604
+#, c-format
+msgid "Connection %i finished"
+msgstr "連線 %i 完成"
+
+#: src/axel.c:614
+msgid "Write error!"
+msgstr "寫入錯誤！"
+
+#: src/axel.c:716
+#, c-format
+msgid "Error while enforcing throttling: %s"
+msgstr "執行限速時出錯：%s"
+
+#: src/axel.c:901
+#, c-format
+msgid "Too few bytes remaining, forcing a single connection\n"
+msgstr "剩餘位元組太少，強制使用單一連線\n"
+
+#: src/axel.c:920
+#, c-format
+msgid "Downloading %jd-%jd using conn. %i\n"
+msgstr "正在使用連線 %i 下載 %jd-%jd\n"
+
+#: src/conf.c:72
+#, c-format
+msgid "I/O error while reading config file: %s\n"
+msgstr "讀取設定檔時 I/O 錯誤：%s\n"
+
+#: src/conf.c:90
+#, c-format
+msgid "Unknown progress bar style \"%s\"\n"
+msgstr "未知的進度條樣式 \"%s\"\n"
+
+#: src/conf.c:102
+#, c-format
+msgid "Unknown protocol \"%s\"\n"
+msgstr "未知的協定 \"%s\"\n"
+
+#: src/conf.c:219
+#, c-format
+msgid "Requested too many connections, max is %i\n"
+msgstr "要求的連線數量過多，最大值為 %i\n"
+
+#: src/conf.c:234
+#, c-format
+msgid "Error in %s line %i.\n"
+msgstr "%s 的第 %i 行出錯。\n"
+
+#: src/conf.c:303
+#, c-format
+msgid "HOME env variable too long\n"
+msgstr "HOME 環境變數過長\n"
+
+#: src/conn.c:81
+#, c-format
+msgid "Unsupported protocol\n"
+msgstr "不支援的協定\n"
+
+#: src/conn.c:87
+#, c-format
+msgid "Secure protocol is not supported\n"
+msgstr "不支援安全協定\n"
+
+#: src/conn.c:477 src/ftp.c:135
+#, c-format
+msgid "Too many redirects.\n"
+msgstr "重新導向次數過多。\n"
+
+#: src/conn.c:483
+#, c-format
+msgid "Redirect loop detected.\n"
+msgstr "偵測到重新導向迴圈。\n"
+
+#: src/conn.c:539
+msgid "Unknown Error"
+msgstr "未知的錯誤"
+
+#: src/ftp.c:106
+#, c-format
+msgid "Can't change directory to %s\n"
+msgstr "無法變更目錄至 %s\n"
+
+#: src/ftp.c:129 src/ftp.c:189
+#, c-format
+msgid "File not found.\n"
+msgstr "找不到檔案。\n"
+
+#: src/ftp.c:192
+#, c-format
+msgid "Multiple matches for this URL.\n"
+msgstr "此 URL 有多個符合項。\n"
+
+#: src/ftp.c:264
+#, c-format
+msgid "Error opening passive data connection.\n"
+msgstr "開啟被動資料連線時出錯。\n"
+
+#: src/ftp.c:298
+#, c-format
+msgid "Error writing command %s\n"
+msgstr "寫入指令 %s 時出錯\n"
+
+#: src/ftp.c:322 src/http.c:252
+#, c-format
+msgid "Connection gone.\n"
+msgstr "連線已中斷。\n"
+
+#: src/http.c:118
+#, c-format
+msgid "Invalid proxy string: %s\n"
+msgstr "無效的代理伺服器字串：%s\n"
+
+#: src/http.c:240
+#, c-format
+msgid "Connection gone while writing.\n"
+msgstr "寫入時連線已斷。\n"
+
+#: src/text.c:151
+#, c-format
+msgid ""
+"Too many custom headers (-H)! Currently only %u custom headers can be "
+"appended.\n"
+msgstr ""
+"自訂標頭（-H）過多！目前只能附加 %u 個自訂標頭。\n"
+
+#: src/text.c:227
+#, c-format
+msgid "Can't redirect stdout to /dev/null.\n"
+msgstr "無法將 stdout 重新導向 /dev/null。\n"
+
+#: src/text.c:269
+#, c-format
+msgid "Error when trying to read URL (Too long?).\n"
+msgstr "嘗試讀取 URL 時出錯（URL 太長？）。\n"
+
+#: src/text.c:277
+#, c-format
+msgid "Can't handle URLs of length over %zu\n"
+msgstr "無法處理長度超過 %zu 的 URL\n"
+
+#: src/text.c:284
+#, c-format
+msgid "Initializing download: %s\n"
+msgstr "初始化下載：%s\n"
+
+#: src/text.c:293
+#, c-format
+msgid "Doing search...\n"
+msgstr "正在搜尋...\n"
+
+#: src/text.c:296
+#, c-format
+msgid "File not found\n"
+msgstr "找不到檔案\n"
+
+#: src/text.c:300
+#, c-format
+msgid "Testing speeds, this can take a while...\n"
+msgstr "正在測試速度，這可能需要一些時間...\n"
+
+#: src/text.c:303
+#, c-format
+msgid "Speed testing failed\n"
+msgstr "速度測試失敗\n"
+
+#: src/text.c:309
+#, c-format
+msgid "%i usable servers found, will use these URLs:\n"
+msgstr "找到 %i 個可用的伺服器，將使用這些 URL：\n"
+
+#: src/text.c:312
+msgid "Speed"
+msgstr "速度"
+
+#: src/text.c:356
+#, c-format
+msgid "Filename too long!\n"
+msgstr "檔名太長！\n"
+
+#: src/text.c:369
+#, c-format
+msgid "No state file, cannot resume!\n"
+msgstr "沒有狀態檔案，無法恢復下載！\n"
+
+#: src/text.c:373
+#, c-format
+msgid "State file found, but no downloaded data. Starting from scratch.\n"
+msgstr "找到狀態檔案，但沒有已下載的資料。重新開始下載。\n"
+
+#: src/text.c:461
+#, c-format
+msgid ""
+"\n"
+"Downloaded %s in %s. (%.2f KB/s)\n"
+msgstr ""
+"\n"
+"已花費 %s 下載了 %s。 (%.2f KB/s)\n"
+
+#: src/text.c:498
+msgid "Kilo"
+msgstr "K"
+
+#: src/text.c:498
+msgid "Mega"
+msgstr "M"
+
+#: src/text.c:498
+msgid "Giga"
+msgstr "G"
+
+#: src/text.c:498
+msgid "Tera"
+msgstr "T"
+
+#: src/text.c:504
+#, c-format
+msgid "%g %sbyte(s)"
+msgstr "%g %s 位元組"
+
+#: src/text.c:520
+#, c-format
+msgid "%i:%02i:%02i hour(s)"
+msgstr "%i 時 %02i 分 %02i 秒"
+
+#: src/text.c:522
+#, c-format
+msgid "%i:%02i minute(s)"
+msgstr "%i 分 %02i 秒"
+
+#: src/text.c:524
+#, c-format
+msgid "%i second(s)"
+msgstr "%i 秒"
+
+#: src/text.c:626
+#, c-format
+msgid "Can't setup alternate output. Deactivating.\n"
+msgstr "無法設定替代輸出。停用。\n"
+
+#: src/text.c:689
+#, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"-s x\tSpecify maximum speed (bytes per second)\n"
+"-n x\tSpecify maximum number of connections\n"
+"-o f\tSpecify local output file\n"
+"-S[n]\tSearch for mirrors and download from n servers\n"
+"-4\tUse the IPv4 protocol\n"
+"-6\tUse the IPv6 protocol\n"
+"-H x\tAdd HTTP header string\n"
+"-U x\tSet user agent\n"
+"-N\tJust don't use any proxy server\n"
+"-k\tDon't verify the SSL certificate\n"
+"-c\tSkip download if file already exists\n"
+"-q\tLeave stdout alone\n"
+"-v\tMore status information\n"
+"-a\tAlternate progress indicator\n"
+"-p\tPrint simple percentages instead of progress bar (0-100)\n"
+"-h\tThis information\n"
+"-T x\tSet I/O and connection timeout\n"
+"-V\tVersion information\n"
+"\n"
+"Visit https://github.com/axel-download-accelerator/axel/issues\n"
+msgstr ""
+"使用方法：axel [選項] url1 [url2] [url...]\n"
+"\n"
+"-s x\t指定最大速度（位元組/秒）\n"
+"-n x\t指定最大連線數\n"
+"-o f\t指定本機輸出檔案\n"
+"-S[n]\t搜尋鏡像並從 n 個伺服器下載\n"
+"-4\t使用 IPv4 協定\n"
+"-6\t使用 IPv6 協定\n"
+"-H x\t新增 HTTP 標頭字串\n"
+"-U x\t設定使用者代理字串\n"
+"-N\t僅不使用任何代理伺服器\n"
+"-k\t不驗證 SSL 憑證\n"
+"-c\t如果檔案已存在則跳過下載\n"
+"-q\t保持 stdout 不變\n"
+"-v\t更多狀態資訊\n"
+"-a\t替代進度指示器\n"
+"-p\t列印簡單的百分比而非進度條（0-100）\n"
+"-h\t此資訊\n"
+"-T x\t設定 I/O 和連線逾時\n"
+"-V\t版本資訊\n"
+"\n"
+"請至 https://github.com/axel-download-accelerator/axel/issues 回報問題\n"
+
+#: src/text.c:712
+#, c-format
+msgid ""
+"Usage: axel [options] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
+"--num-connections=x\t-n x\tSpecify maximum number of connections\n"
+"--max-redirect=x\t\tSpecify maximum number of redirections\n"
+"--output=f\t\t-o f\tSpecify local output file\n"
+"--search[=n]\t\t-S[n]\tSearch for mirrors and download from n servers\n"
+"--ipv4\t\t\t-4\tUse the IPv4 protocol\n"
+"--ipv6\t\t\t-6\tUse the IPv6 protocol\n"
+"--header=x\t\t-H x\tAdd HTTP header string\n"
+"--user-agent=x\t\t-U x\tSet user agent\n"
+"--no-proxy\t\t-N\tJust don't use any proxy server\n"
+"--insecure\t\t-k\tDon't verify the SSL certificate\n"
+"--no-clobber\t\t-c\tSkip download if file already exists\n"
+"--quiet\t\t\t-q\tLeave stdout alone\n"
+"--verbose\t\t-v\tMore status information\n"
+"--alternate\t\t-a\tAlternate progress indicator\n"
+"--percentage\t\t-p\tPrint simple percentages instead of progress bar "
+"(0-100)\n"
+"--help\t\t\t-h\tThis information\n"
+"--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
+"--version\t\t-V\tVersion information\n"
+"\n"
+"Visit https://github.com/axel-download-accelerator/axel/issues to report "
+"bugs\n"
+msgstr ""
+"使用方法：axel [選項] url1 [url2] [url...]\n"
+"\n"
+"--max-speed=x\t\t-s x\t指定最大速度（位元組/秒）\n"
+"--num-connections=x\t-n x\t指定最大連線數\n"
+"--max-redirect=x\t\t指定最大重新導向數\n"
+"--output=f\t\t-o f\t指定本機輸出檔案\n"
+"--search[=n]\t\t-S[n]\t搜尋鏡像並從 n 個伺服器下載\n"
+"--ipv4\t\t\t-4\t使用 IPv4 協定\n"
+"--ipv6\t\t\t-6\t使用 IPv6 協定\n"
+"--header=x\t\t-H x\t新增 HTTP 標頭字串\n"
+"--user-agent=x\t\t-U x\t設定使用者代理字串\n"
+"--no-proxy\t\t-N\t僅不使用任何代理伺服器\n"
+"--insecure\t\t-k\t不驗證 SSL 憑證\n"
+"--no-clobber\t\t-c\t如果檔案已存在則跳過下載\n"
+"--quiet\t\t\t-q\t保持 stdout 不變\n"
+"--verbose\t\t-v\t更多狀態資訊\n"
+"--alternate\t\t-a\t替代進度指示器\n"
+"--percentage\t\t-p\t列印簡單的百分比而非進度條（0-100）\n"
+"--help\t\t\t-h\t此資訊\n"
+"--timeout=x\t\t-T x\t設定 I/O 和連線逾時\n"
+"--version\t\t-V\t版本資訊\n"
+"\n"
+"請至 https://github.com/axel-download-accelerator/axel/issues 回報問題\n"
+
+#: src/text.c:741
+#, c-format
+msgid "Axel %s (%s)\n"
+msgstr "Axel %s（%s）\n"
+
+#: src/text.c:755
+msgid "and others."
+msgstr "及其他貢獻者。"
+
+#: src/text.c:756
+msgid ""
+"Please, see the CREDITS file.\n"
+"\n"
+msgstr ""
+"請參閱 CREDITS 檔案。\n"
+"\n"
+
+#: src/ssl.c:103
+#, c-format
+msgid "SSL error: %s\n"
+msgstr "SSL 錯誤：%s\n"
+
+#: src/ssl.c:115
+#, c-format
+msgid "SSL error: Certificate error\n"
+msgstr "SSL 錯誤：憑證錯誤\n"
+
+#: src/ssl.c:122
+#, c-format
+msgid "SSL error: Certificate not found\n"
+msgstr "SSL 錯誤：找不到憑證\n"
+
+#: src/ssl.c:128
+#, c-format
+msgid "SSL error: Hostname verification failed\n"
+msgstr "SSL 錯誤：主機名稱驗證失敗\n"
+
+#: src/tcp.c:76
+#, c-format
+msgid "Unable to connect to server %s:%i: %s\n"
+msgstr "無法連線至伺服器 %s:%i：%s\n"
