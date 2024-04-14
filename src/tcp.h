@@ -54,7 +54,7 @@
 #endif
 
 typedef struct {
-	int fd;
+	SOCKET fd;
 	sa_family_t ai_family;
 #ifdef HAVE_SSL
 	SSL *ssl;
