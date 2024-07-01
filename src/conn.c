@@ -423,7 +423,7 @@ conn_info(conn_t *conn)
 		return conn_info_ftp(conn);
 	}
 
-	char s[1005];
+	char s[8005];
 	long long int i = 0;
 
 	struct urlseq *urlseq = urlseq_init(conn->conf->max_redirect);
@@ -448,7 +448,7 @@ conn_info(conn_t *conn)
 			break;
 		if ((t = http_header(conn->http, "location:")) == NULL)
 			return 0;
-		sscanf(t, "%1000s", s);
+		sscanf(t, "%8000s", s);
 		if (s[0] == '/') {
 			abuf_printf(conn->http->headers, "%s%s:%i%s",
 				    scheme_from_proto(conn->proto),
