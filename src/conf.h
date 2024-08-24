@@ -65,7 +65,7 @@ typedef struct {
 		AXEL_PROGRESS_STYLE_PERCENTAGE,
 	} progress_style;
 
-	if_t *interfaces;
+	if_t_ *interfaces;
 
 	sa_family_t ai_family;
 

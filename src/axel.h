@@ -101,7 +101,7 @@ typedef struct {
 } message_t;
 
 typedef message_t url_t;
-typedef message_t if_t;
+typedef message_t if_t_;
 
 #include "abuf.h"
 #include "conf.h"
