@@ -150,7 +150,7 @@ msgstr "剩餘位元組太少，強制使用單一連線\n"
 #: src/axel.c:920
 #, c-format
 msgid "Downloading %jd-%jd using conn. %i\n"
-msgstr "正在使用連線 %i 下載 %jd-%jd\n"
+msgstr "下載 %jd-%jd 正在使用連線 %i\n"
 
 #: src/conf.c:72
 #, c-format
