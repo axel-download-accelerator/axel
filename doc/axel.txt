@@ -63,6 +63,7 @@ OPTIONS
                   of the different threads, along with current speed and an estimate for the remaining
                   download time.
 
+ --progress, -p    Print simple percentages instead of progress bar (0-100).
  --header=x, -H x  Add an additional HTTP header. This option should be in the form "Header: Value". See
                    RFC 2616 section 4.2 and 14 for details on the format and standardized headers.
 
