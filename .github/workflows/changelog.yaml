@@ -1,0 +1,39 @@
+name: Changelog
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  changelog:
+    name: Generate and publish changelog
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v3
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: --verbose --latest --strip header
+        env:
+          OUTPUT: CHANGES.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Polish changelog
+        shell: bash
+        run: sed -i '1,2d' CHANGES.md
+
+      - name: Upload the changelog
+        uses: ncipollo/release-action@v1
+        with:
+          # draft: true
+          allowUpdates: true
+          bodyFile: CHANGES.md
