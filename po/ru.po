@@ -11,83 +11,83 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/axel.c:150
+#: src/axel.c:146
 msgid "Buffer resized for this speed."
 msgstr "Размер буфера изменен для этой скорости."
 
-#: src/axel.c:179
+#: src/axel.c:178
 msgid "Could not parse URL.\n"
 msgstr "Невозможно обработать URL.\n"
 
-#: src/axel.c:201
+#: src/axel.c:202
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "Файл '% s' уже существует; не получить.\n"
 
-#: src/axel.c:206
+#: src/axel.c:207
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "Обнаружена неполная загрузка, игнорируется опция no-clobber\n"
 
-#: src/axel.c:223
+#: src/axel.c:227
 #, c-format
 msgid "ERROR %d: %s.\n"
 msgstr ""
 
-#: src/axel.c:237
+#: src/axel.c:243
 #, fuzzy, c-format
 msgid "File size: %s (%jd bytes)"
 msgstr "Размер файла: %s (%jd байтасов)"
 
-#: src/axel.c:240
+#: src/axel.c:248
 #, fuzzy
 msgid "File size: unavailable"
 msgstr "Размер файла: недоступен"
 
-#: src/axel.c:269
+#: src/axel.c:277
 #, c-format
 msgid "Opening output file %s"
 msgstr "Открывается выходной файл %s"
 
-#: src/axel.c:276
+#: src/axel.c:285
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Сервер не поддерживается, начинаем заново с одним соединением."
 
-#: src/axel.c:293
+#: src/axel.c:305
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: Ошибка, усеченный файл состояния\n"
 
-#: src/axel.c:301
+#: src/axel.c:314
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "Поддельное количество соединений хранится в файле состояния\n"
 
-#: src/axel.c:313
+#: src/axel.c:327
 #, c-format
 msgid "State file has old format.\n"
 msgstr "Государственный файл имеет старый формат\n"
 
-#: src/axel.c:346
+#: src/axel.c:363
 #, fuzzy, c-format
 msgid "State file found: %jd bytes downloaded, %jd to go."
 msgstr "Найден файл состояния: %jd байта(ов) скачано, %jd осталось."
 
-#: src/axel.c:352 src/axel.c:363
+#: src/axel.c:370 src/axel.c:383
 msgid "Error opening local file"
 msgstr "Ошибка при открытии локального файла"
 
-#: src/axel.c:376
+#: src/axel.c:397
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr ""
 "Ошибки в файловой системе или операционной системе.. Пробуем исправить :-("
 
-#: src/axel.c:389
+#: src/axel.c:412
 #, fuzzy
 msgid "Error creating local file"
 msgstr "Ошибка при открытии локального файла"
 
-#: src/axel.c:430
+#: src/axel.c:454
 #, c-format
 msgid ""
 "\n"
@@ -96,59 +96,59 @@ msgstr ""
 "\n"
 "Реактивировать соединение %d\n"
 
-#: src/axel.c:459
+#: src/axel.c:482
 msgid "Starting download"
 msgstr "Начинаем скачивание"
 
-#: src/axel.c:469 src/axel.c:652
+#: src/axel.c:497 src/axel.c:707
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "Соединение %i скачивает с %s:%i через интерфейс %s"
 
-#: src/axel.c:479 src/axel.c:664
+#: src/axel.c:508 src/axel.c:722
 msgid "pthread error!!!"
 msgstr "ошибка pthread!!!"
 
-#: src/axel.c:525
+#: src/axel.c:560
 #, fuzzy, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "Ошибка записи команды %s\n"
 
-#: src/axel.c:557
+#: src/axel.c:596
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Время соединения %i вышло"
 
-#: src/axel.c:570
+#: src/axel.c:611
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Ошибка в соединении %i! Соединение закрыто"
 
-#: src/axel.c:584
+#: src/axel.c:629
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Соединение %i неожиданно закрылось"
 
-#: src/axel.c:588 src/axel.c:604
+#: src/axel.c:635 src/axel.c:654
 #, c-format
 msgid "Connection %i finished"
 msgstr "Соединение %i закончилось"
 
-#: src/axel.c:614
+#: src/axel.c:665
 msgid "Write error!"
 msgstr "Ошибка записи!"
 
-#: src/axel.c:716
+#: src/axel.c:791
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "Ошибка при применении регулирования: %s"
 
-#: src/axel.c:901
+#: src/axel.c:986
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr "Осталось слишком мало байтов, форсируя одно соединение\n"
 
-#: src/axel.c:920
+#: src/axel.c:1007
 #, fuzzy, c-format
 msgid "Downloading %jd-%jd using conn. %i\n"
 msgstr "Загрузка %jd-%jd с использованием соединения %i\n"

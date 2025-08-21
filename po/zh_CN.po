@@ -16,80 +16,80 @@ msgstr ""
 "Last-Revision: Li Jin <punkid.online@gmail.com>\n"
 "X-Generator: Poedit 2.4.1\n"
 
-#: src/axel.c:150
+#: src/axel.c:146
 msgid "Buffer resized for this speed."
 msgstr "为这个速率调整缓冲区大小。"
 
-#: src/axel.c:179
+#: src/axel.c:178
 msgid "Could not parse URL.\n"
 msgstr "无法解析 URL。\n"
 
-#: src/axel.c:201
+#: src/axel.c:202
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "文件 '%s' 已存在\n"
 
-#: src/axel.c:206
+#: src/axel.c:207
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "发现不完整的下载，忽略 no-clobber 选项\n"
 
-#: src/axel.c:223
+#: src/axel.c:227
 #, c-format
 msgid "ERROR %d: %s.\n"
 msgstr ""
 
-#: src/axel.c:237
+#: src/axel.c:243
 #, fuzzy, c-format
 msgid "File size: %s (%jd bytes)"
 msgstr "文件大小：%s (%jd 字节)"
 
-#: src/axel.c:240
+#: src/axel.c:248
 msgid "File size: unavailable"
 msgstr "文件大小：不可用"
 
-#: src/axel.c:269
+#: src/axel.c:277
 #, c-format
 msgid "Opening output file %s"
 msgstr "正在打开输出文件 %s"
 
-#: src/axel.c:276
+#: src/axel.c:285
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "服务器不支持，使用单个连接从头下载。"
 
-#: src/axel.c:293
+#: src/axel.c:305
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: 错误，已清空的状态文件\n"
 
-#: src/axel.c:301
+#: src/axel.c:314
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "状态文件中存储的连接数有误\n"
 
-#: src/axel.c:313
+#: src/axel.c:327
 #, c-format
 msgid "State file has old format.\n"
 msgstr "状态文件版本陈旧\n"
 
-#: src/axel.c:346
+#: src/axel.c:363
 #, fuzzy, c-format
 msgid "State file found: %jd bytes downloaded, %jd to go."
 msgstr "找到状态文件：已下载 %jd 字节，剩余 %jd 字节。"
 
-#: src/axel.c:352 src/axel.c:363
+#: src/axel.c:370 src/axel.c:383
 msgid "Error opening local file"
 msgstr "无法打开本地文件"
 
-#: src/axel.c:376
+#: src/axel.c:397
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "文件系统/操作系统不讨喜…… 正在寻求解决方法。:-("
 
-#: src/axel.c:389
+#: src/axel.c:412
 msgid "Error creating local file"
 msgstr "无法创建本地文件"
 
-#: src/axel.c:430
+#: src/axel.c:454
 #, c-format
 msgid ""
 "\n"
@@ -98,59 +98,59 @@ msgstr ""
 "\n"
 "重新激活连接 %d\n"
 
-#: src/axel.c:459
+#: src/axel.c:482
 msgid "Starting download"
 msgstr "正在开始下载"
 
-#: src/axel.c:469 src/axel.c:652
+#: src/axel.c:497 src/axel.c:707
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "连接 %1$i 正通过接口 %4$s 从 %2$s:%3$i 下载"
 
-#: src/axel.c:479 src/axel.c:664
+#: src/axel.c:508 src/axel.c:722
 msgid "pthread error!!!"
 msgstr "pthread 出错啦！！！"
 
-#: src/axel.c:525
+#: src/axel.c:560
 #, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "等待连接 %s 时出错"
 
-#: src/axel.c:557
+#: src/axel.c:596
 #, c-format
 msgid "Connection %i timed out"
 msgstr "连接 %i 超时"
 
-#: src/axel.c:570
+#: src/axel.c:611
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "连接 %i 出错！连接中断"
 
-#: src/axel.c:584
+#: src/axel.c:629
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "连接 %i 被异常中断"
 
-#: src/axel.c:588 src/axel.c:604
+#: src/axel.c:635 src/axel.c:654
 #, c-format
 msgid "Connection %i finished"
 msgstr "连接 %i 完成下载"
 
-#: src/axel.c:614
+#: src/axel.c:665
 msgid "Write error!"
 msgstr "写入错误！"
 
-#: src/axel.c:716
+#: src/axel.c:791
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "强制调整流量时出错：%s"
 
-#: src/axel.c:901
+#: src/axel.c:986
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr "剩余字节数过小，强制单连接下载\n"
 
-#: src/axel.c:920
+#: src/axel.c:1007
 #, fuzzy, c-format
 msgid "Downloading %jd-%jd using conn. %i\n"
 msgstr "使用连接下载 %jd-%jd [%i]\n"

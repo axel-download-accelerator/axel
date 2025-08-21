@@ -14,84 +14,84 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/axel.c:150
+#: src/axel.c:146
 msgid "Buffer resized for this speed."
 msgstr "このスピードに合わせバッファーをリサイズします。"
 
-#: src/axel.c:179
+#: src/axel.c:178
 msgid "Could not parse URL.\n"
 msgstr "URL を解析できません。\n"
 
-#: src/axel.c:201
+#: src/axel.c:202
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "ファイル '%s' はすでに存在します。 だからそれは取得されません。\n"
 
-#: src/axel.c:206
+#: src/axel.c:207
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr ""
 "不完全なダウンロードが見つかりましたが、no-clobberオプションは無視されます\n"
 
-#: src/axel.c:223
+#: src/axel.c:227
 #, c-format
 msgid "ERROR %d: %s.\n"
 msgstr "エラー %d: %s.\n"
 
-#: src/axel.c:237
+#: src/axel.c:243
 #, fuzzy, c-format
 msgid "File size: %s (%jd bytes)"
 msgstr "ファイルサイズ: %s (%jd バイト)"
 
-#: src/axel.c:240
+#: src/axel.c:248
 #, fuzzy
 msgid "File size: unavailable"
 msgstr "ファイルサイズ: 利用不可"
 
-#: src/axel.c:269
+#: src/axel.c:277
 #, c-format
 msgid "Opening output file %s"
 msgstr "出力ファイル %s をオープンします"
 
-#: src/axel.c:276
+#: src/axel.c:285
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr ""
 "サポートされていないサーバーなので、単一コネクションを使い最初から始めます。"
 
-#: src/axel.c:293
+#: src/axel.c:305
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: エラー、状態ファイルが切り捨てられました\n"
 
-#: src/axel.c:301
+#: src/axel.c:314
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "状態ファイルに保存されている接続の偽の数\n"
 
-#: src/axel.c:313
+#: src/axel.c:327
 #, c-format
 msgid "State file has old format.\n"
 msgstr "状態ファイルは古い形式です。\n"
 
-#: src/axel.c:346
+#: src/axel.c:363
 #, fuzzy, c-format
 msgid "State file found: %jd bytes downloaded, %jd to go."
 msgstr "状態ファイル発見: %jd バイトがダウンロード済み、あと %jd バイト。"
 
-#: src/axel.c:352 src/axel.c:363
+#: src/axel.c:370 src/axel.c:383
 msgid "Error opening local file"
 msgstr "ローカルファイルをオープンする際にエラー発生しました"
 
-#: src/axel.c:376
+#: src/axel.c:397
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "ファイルシステム/OSがイマイチ。回避します。 :-("
 
-#: src/axel.c:389
+#: src/axel.c:412
 #, fuzzy
 msgid "Error creating local file"
 msgstr "ローカルファイルをオープンする際にエラー発生しました"
 
-#: src/axel.c:430
+#: src/axel.c:454
 #, c-format
 msgid ""
 "\n"
@@ -100,59 +100,59 @@ msgstr ""
 "\n"
 "接続 %d を再アクティブ化しています\n"
 
-#: src/axel.c:459
+#: src/axel.c:482
 msgid "Starting download"
 msgstr "ダウンロード開始します"
 
-#: src/axel.c:469 src/axel.c:652
+#: src/axel.c:497 src/axel.c:707
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "接続 %i は %s:%i から、インターフェース %s でダウンロードします"
 
-#: src/axel.c:479 src/axel.c:664
+#: src/axel.c:508 src/axel.c:722
 msgid "pthread error!!!"
 msgstr "pthread のエラー!!!"
 
-#: src/axel.c:525
+#: src/axel.c:560
 #, fuzzy, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "コマンド %s を書く際にエラー\n"
 
-#: src/axel.c:557
+#: src/axel.c:596
 #, c-format
 msgid "Connection %i timed out"
 msgstr "接続 %i がタイムアウトしました"
 
-#: src/axel.c:570
+#: src/axel.c:611
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "接続 %i でエラー! コネクションをクローズしました"
 
-#: src/axel.c:584
+#: src/axel.c:629
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "接続 %i が不意にクローズされました"
 
-#: src/axel.c:588 src/axel.c:604
+#: src/axel.c:635 src/axel.c:654
 #, c-format
 msgid "Connection %i finished"
 msgstr "接続 %i が終了しました"
 
-#: src/axel.c:614
+#: src/axel.c:665
 msgid "Write error!"
 msgstr "書き込みエラー!"
 
-#: src/axel.c:716
+#: src/axel.c:791
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "調整を強制している間のエラー: %s"
 
-#: src/axel.c:901
+#: src/axel.c:986
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr "残りのバイト数が少なすぎて、単一接続が強制される\n"
 
-#: src/axel.c:920
+#: src/axel.c:1007
 #, fuzzy, c-format
 msgid "Downloading %jd-%jd using conn. %i\n"
 msgstr "%jd-%jd をダウンロード中、接続 %i を使用して\n"

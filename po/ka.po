@@ -12,81 +12,81 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 
-#: src/axel.c:150
+#: src/axel.c:146
 msgid "Buffer resized for this speed."
 msgstr "ბუფერის ზომა ამ სიჩქარისთვის შეიცვლება."
 
-#: src/axel.c:179
+#: src/axel.c:178
 msgid "Could not parse URL.\n"
 msgstr "URL-ის დამუშავების შეცდომა\n"
 
-#: src/axel.c:201
+#: src/axel.c:202
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "ფაილი '%s' უკვე გვაქვს; აღარ გადმოვიწერ.\n"
 
-#: src/axel.c:206
+#: src/axel.c:207
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "გადმოწერა არასრულია. პარამეტრი no-clobber გამოტოვებულია\n"
 
-#: src/axel.c:223
+#: src/axel.c:227
 #, c-format
 msgid "ERROR %d: %s.\n"
 msgstr "შეცდომა %d: %s.\n"
 
-#: src/axel.c:237
+#: src/axel.c:243
 #, c-format
 msgid "File size: %s (%jd bytes)"
 msgstr "ფაილის ზომა: %s (%jd ბაიტი)"
 
-#: src/axel.c:240
+#: src/axel.c:248
 msgid "File size: unavailable"
 msgstr "ფაილის ზომა: მიუწვდომელია"
 
-#: src/axel.c:269
+#: src/axel.c:277
 #, c-format
 msgid "Opening output file %s"
 msgstr "გამოტანის ფაილის (%s) გახსნა"
 
-#: src/axel.c:276
+#: src/axel.c:285
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "სერვერი მხარდაჭერილი არაა. ვიწყებ ნულიდან, ერთი მიერთებით."
 
-#: src/axel.c:293
+#: src/axel.c:305
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: შეცდომა. მდგომარეობის ფაილი არასრულია\n"
 
-#: src/axel.c:301
+#: src/axel.c:314
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "მდგომარეობის ფაილში დამახსოვრებული მიერთებების რაოდენობა ბუნდოვანია\n"
 
-#: src/axel.c:313
+#: src/axel.c:327
 #, c-format
 msgid "State file has old format.\n"
 msgstr "მდგომარეობის ფაილის ძველი ფორმატი.\n"
 
-#: src/axel.c:346
+#: src/axel.c:363
 #, c-format
 msgid "State file found: %jd bytes downloaded, %jd to go."
 msgstr ""
 "აღმოჩენილია მდგომარეობის ფაილი: %jd ბაიტი გადმოწერილია, %jd კი დარჩენილი."
 
-#: src/axel.c:352 src/axel.c:363
+#: src/axel.c:370 src/axel.c:383
 msgid "Error opening local file"
 msgstr "შეცდომა ლოკალური ფაილის გახსნისას"
 
-#: src/axel.c:376
+#: src/axel.c:397
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "საზიზღარი ფაილური სისტემა/ოს-ი. ვეცდები, რამე ვქნა. :-("
 
-#: src/axel.c:389
+#: src/axel.c:412
 msgid "Error creating local file"
 msgstr "ლოკალური ფაილის გახსნის შეცდომა"
 
-#: src/axel.c:430
+#: src/axel.c:454
 #, c-format
 msgid ""
 "\n"
@@ -95,59 +95,59 @@ msgstr ""
 "\n"
 "კავშირის თავიდან აქტივაცია: %d\n"
 
-#: src/axel.c:459
+#: src/axel.c:482
 msgid "Starting download"
 msgstr "გადმოწერის დასაწყისი"
 
-#: src/axel.c:469 src/axel.c:652
+#: src/axel.c:497 src/axel.c:707
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "მიერთება %i ვიწერ %s:%i-დან %s ინტერფეისის გამოყენებით"
 
-#: src/axel.c:479 src/axel.c:664
+#: src/axel.c:508 src/axel.c:722
 msgid "pthread error!!!"
 msgstr "pthread-ის შეცდომა!!!"
 
-#: src/axel.c:525
+#: src/axel.c:560
 #, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "შეცდომა კავშირის მოლოდინისას: %s"
 
-#: src/axel.c:557
+#: src/axel.c:596
 #, c-format
 msgid "Connection %i timed out"
 msgstr "%i: შეერთების მოლოდინის ვადა ამოიწურა"
 
-#: src/axel.c:570
+#: src/axel.c:611
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "შეცდომა მიერთებაზე %i! კავშირი დახურულია"
 
-#: src/axel.c:584
+#: src/axel.c:629
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "მიერთება %i მოულოდნელად დაიხურა"
 
-#: src/axel.c:588 src/axel.c:604
+#: src/axel.c:635 src/axel.c:654
 #, c-format
 msgid "Connection %i finished"
 msgstr "მიერთება %i დასრულდა"
 
-#: src/axel.c:614
+#: src/axel.c:665
 msgid "Write error!"
 msgstr "ჩაწერის შეცდომა!"
 
-#: src/axel.c:716
+#: src/axel.c:791
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "შეცდომა ნაძალადევი შეზღუდვისას: %s"
 
-#: src/axel.c:901
+#: src/axel.c:986
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr "ძალიან ცოტაღა დარჩა. ერთ მიერთებას ვიტოვებ\n"
 
-#: src/axel.c:920
+#: src/axel.c:1007
 #, c-format
 msgid "Downloading %jd-%jd using conn. %i\n"
 msgstr "ვიწერ: %jd-%jd მიერთებებით %i\n"

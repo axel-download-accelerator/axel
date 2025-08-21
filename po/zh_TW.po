@@ -13,80 +13,80 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/axel.c:150
+#: src/axel.c:146
 msgid "Buffer resized for this speed."
 msgstr "已調整緩衝區大小以配合此速度。"
 
-#: src/axel.c:179
+#: src/axel.c:178
 msgid "Could not parse URL.\n"
 msgstr "無法解析 URL。\n"
 
-#: src/axel.c:201
+#: src/axel.c:202
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "檔案 '%s' 已存在，將略過下載\n"
 
-#: src/axel.c:206
+#: src/axel.c:207
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "找到未完成的下載，忽略 no-clobber 選項\n"
 
-#: src/axel.c:223
+#: src/axel.c:227
 #, c-format
 msgid "ERROR %d: %s.\n"
 msgstr "錯誤 %d：%s。\n"
 
-#: src/axel.c:237
+#: src/axel.c:243
 #, c-format
 msgid "File size: %s (%jd bytes)"
 msgstr "檔案大小：%s（%jd 位元組）"
 
-#: src/axel.c:240
+#: src/axel.c:248
 msgid "File size: unavailable"
 msgstr "檔案大小：無法取得"
 
-#: src/axel.c:269
+#: src/axel.c:277
 #, c-format
 msgid "Opening output file %s"
 msgstr "開啟輸出檔案 %s"
 
-#: src/axel.c:276
+#: src/axel.c:285
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "伺服器不支援，從頭開始並使用單一連線。"
 
-#: src/axel.c:293
+#: src/axel.c:305
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st：錯誤，狀態檔案被截斷\n"
 
-#: src/axel.c:301
+#: src/axel.c:314
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "狀態檔案中儲存的連線數量不正確\n"
 
-#: src/axel.c:313
+#: src/axel.c:327
 #, c-format
 msgid "State file has old format.\n"
 msgstr "狀態檔案的格式較舊。\n"
 
-#: src/axel.c:346
+#: src/axel.c:363
 #, c-format
 msgid "State file found: %jd bytes downloaded, %jd to go."
 msgstr "找到狀態檔案：%jd 位元組已下載，還剩 %jd 位元組。"
 
-#: src/axel.c:352 src/axel.c:363
+#: src/axel.c:370 src/axel.c:383
 msgid "Error opening local file"
 msgstr "開啟本機檔案時出錯"
 
-#: src/axel.c:376
+#: src/axel.c:397
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "檔案系統/作業系統有問題.. 正在解決。:-( "
 
-#: src/axel.c:389
+#: src/axel.c:412
 msgid "Error creating local file"
 msgstr "建立本機檔案時出錯"
 
-#: src/axel.c:430
+#: src/axel.c:454
 #, c-format
 msgid ""
 "\n"
@@ -95,59 +95,59 @@ msgstr ""
 "\n"
 "重新啟動連線 %d\n"
 
-#: src/axel.c:459
+#: src/axel.c:482
 msgid "Starting download"
 msgstr "開始下載"
 
-#: src/axel.c:469 src/axel.c:652
+#: src/axel.c:497 src/axel.c:707
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "連線 %i 正在從 %s:%i 使用介面 %s 下載"
 
-#: src/axel.c:479 src/axel.c:664
+#: src/axel.c:508 src/axel.c:722
 msgid "pthread error!!!"
 msgstr "pthread 錯誤!!!"
 
-#: src/axel.c:525
+#: src/axel.c:560
 #, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "等待連線時出錯：%s"
 
-#: src/axel.c:557
+#: src/axel.c:596
 #, c-format
 msgid "Connection %i timed out"
 msgstr "連線 %i 逾時"
 
-#: src/axel.c:570
+#: src/axel.c:611
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "連線 %i 出錯！連線已關閉"
 
-#: src/axel.c:584
+#: src/axel.c:629
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "連線 %i 突然關閉"
 
-#: src/axel.c:588 src/axel.c:604
+#: src/axel.c:635 src/axel.c:654
 #, c-format
 msgid "Connection %i finished"
 msgstr "連線 %i 完成"
 
-#: src/axel.c:614
+#: src/axel.c:665
 msgid "Write error!"
 msgstr "寫入錯誤！"
 
-#: src/axel.c:716
+#: src/axel.c:791
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "執行限速時出錯：%s"
 
-#: src/axel.c:901
+#: src/axel.c:986
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr "剩餘位元組太少，強制使用單一連線\n"
 
-#: src/axel.c:920
+#: src/axel.c:1007
 #, c-format
 msgid "Downloading %jd-%jd using conn. %i\n"
 msgstr "下載 %jd-%jd 正在使用連線 %i\n"
@@ -251,8 +251,7 @@ msgstr "寫入時連線已斷。\n"
 msgid ""
 "Too many custom headers (-H)! Currently only %u custom headers can be "
 "appended.\n"
-msgstr ""
-"自訂標頭（-H）過多！目前只能附加 %u 個自訂標頭。\n"
+msgstr "自訂標頭（-H）過多！目前只能附加 %u 個自訂標頭。\n"
 
 #: src/text.c:227
 #, c-format

@@ -22,80 +22,80 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/axel.c:150
+#: src/axel.c:146
 msgid "Buffer resized for this speed."
 msgstr "Buffer ridimensionato per questa velocità."
 
-#: src/axel.c:179
+#: src/axel.c:178
 msgid "Could not parse URL.\n"
 msgstr "Impossibile interpretare l'URL.\n"
 
-#: src/axel.c:201
+#: src/axel.c:202
 #, c-format
 msgid "File '%s' already there; not retrieving.\n"
 msgstr "Il file '%s' è già presente; download non effettuato.\n"
 
-#: src/axel.c:206
+#: src/axel.c:207
 #, c-format
 msgid "Incomplete download found, ignoring no-clobber option\n"
 msgstr "Trovato download incompleto, ignoro l'opzione \"no-clobber\"\n"
 
-#: src/axel.c:223
+#: src/axel.c:227
 #, c-format
 msgid "ERROR %d: %s.\n"
 msgstr "ERRORE %d: %s.\n"
 
-#: src/axel.c:237
+#: src/axel.c:243
 #, c-format
 msgid "File size: %s (%jd bytes)"
 msgstr "Dimensione file: %s (%jd byte)"
 
-#: src/axel.c:240
+#: src/axel.c:248
 msgid "File size: unavailable"
 msgstr "Dimensione file: non disponibile"
 
-#: src/axel.c:269
+#: src/axel.c:277
 #, c-format
 msgid "Opening output file %s"
 msgstr "Sto aprendo il file di output %s"
 
-#: src/axel.c:276
+#: src/axel.c:285
 msgid "Server unsupported, starting from scratch with one connection."
 msgstr "Server non supportato, sto ricominciando da zero con una connessione."
 
-#: src/axel.c:293
+#: src/axel.c:305
 #, c-format
 msgid "%s.st: Error, truncated state file\n"
 msgstr "%s.st: Errore, file di stato troncato\n"
 
-#: src/axel.c:301
+#: src/axel.c:314
 #, c-format
 msgid "Bogus number of connections stored in state file\n"
 msgstr "Numero errato di connessioni memorizzate nel file di stato\n"
 
-#: src/axel.c:313
+#: src/axel.c:327
 #, c-format
 msgid "State file has old format.\n"
 msgstr "Il file di stato utilizza il vecchio formato.\n"
 
-#: src/axel.c:346
+#: src/axel.c:363
 #, c-format
 msgid "State file found: %jd bytes downloaded, %jd to go."
 msgstr "Trovato file di stato: %jd byte scaricati, %jd al termine."
 
-#: src/axel.c:352 src/axel.c:363
+#: src/axel.c:370 src/axel.c:383
 msgid "Error opening local file"
 msgstr "Errore nell'apertura del file locale"
 
-#: src/axel.c:376
+#: src/axel.c:397
 msgid "Crappy filesystem/OS.. Working around. :-("
 msgstr "Filesystem/OS scadente.. Raggiro il problema. :-("
 
-#: src/axel.c:389
+#: src/axel.c:412
 msgid "Error creating local file"
 msgstr "Errore nella creazione del file locale"
 
-#: src/axel.c:430
+#: src/axel.c:454
 #, c-format
 msgid ""
 "\n"
@@ -104,59 +104,59 @@ msgstr ""
 "\n"
 "Riattivando la connessione %d\n"
 
-#: src/axel.c:459
+#: src/axel.c:482
 msgid "Starting download"
 msgstr "Inizio download"
 
-#: src/axel.c:469 src/axel.c:652
+#: src/axel.c:497 src/axel.c:707
 #, c-format
 msgid "Connection %i downloading from %s:%i using interface %s"
 msgstr "La connessione %i sta scaricando da %s:%i usando l'interfaccia %s"
 
-#: src/axel.c:479 src/axel.c:664
+#: src/axel.c:508 src/axel.c:722
 msgid "pthread error!!!"
 msgstr "Errore pthread!!!"
 
-#: src/axel.c:525
+#: src/axel.c:560
 #, c-format
 msgid "Error while waiting for connection: %s"
 msgstr "Errore durante l'attesa della connessione: %s"
 
-#: src/axel.c:557
+#: src/axel.c:596
 #, c-format
 msgid "Connection %i timed out"
 msgstr "Connessione %i scaduta"
 
-#: src/axel.c:570
+#: src/axel.c:611
 #, c-format
 msgid "Error on connection %i! Connection closed"
 msgstr "Errore nella connessione %i! Connessione terminata"
 
-#: src/axel.c:584
+#: src/axel.c:629
 #, c-format
 msgid "Connection %i unexpectedly closed"
 msgstr "Connessione %i terminata inaspettatamente"
 
-#: src/axel.c:588 src/axel.c:604
+#: src/axel.c:635 src/axel.c:654
 #, c-format
 msgid "Connection %i finished"
 msgstr "Connessione %i terminata"
 
-#: src/axel.c:614
+#: src/axel.c:665
 msgid "Write error!"
 msgstr "Errore di scrittura!"
 
-#: src/axel.c:716
+#: src/axel.c:791
 #, c-format
 msgid "Error while enforcing throttling: %s"
 msgstr "Errore nell'applicazione del limite di velocità: %s"
 
-#: src/axel.c:901
+#: src/axel.c:986
 #, c-format
 msgid "Too few bytes remaining, forcing a single connection\n"
 msgstr "Restano pochi byte, forzando una singola connessione\n"
 
-#: src/axel.c:920
+#: src/axel.c:1007
 #, c-format
 msgid "Downloading %jd-%jd using conn. %i\n"
 msgstr "Scaricando %jd-%jd usando la conn. %i\n"
