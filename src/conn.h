@@ -103,7 +103,7 @@ typedef struct {
 	int last_transfer;
 	char *message;
 	char *local_if;
-
+  bool joined;
 	bool state;
 	pthread_t setup_thread[1];
 	pthread_mutex_t lock;
