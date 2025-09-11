@@ -3,13 +3,10 @@ name: Coverage + Pages (C)
 on:
   pull_request:
   push:
-    branches: [ master ]  # adjust if your default branch changes
+    branches: [ master ]  # change if your default branch is different
 
 permissions:
   contents: read
-
-env:
-  CANONICAL_OWNER: ritesh006   # only deploy Pages when pushing to master on YOUR fork
 
 jobs:
   coverage:
@@ -25,7 +22,7 @@ jobs:
           sudo apt-get install -y \
             build-essential automake libtool pkg-config \
             gettext autopoint autoconf-archive \
-            lcov gcovr python3 \
+            lcov gcovr python3 curl \
             m4 xz-utils txt2man \
             libssl-dev libgnutls28-dev libidn2-0-dev zlib1g-dev
 
@@ -107,14 +104,13 @@ jobs:
 
   publish-pages:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository_owner == 'ritesh006'
-  needs: coverage
-  runs-on: ubuntu-latest
-  permissions:
-    pages: write
-    id-token: write
-  environment:
-    name: github-pages
-    url: ${{ steps.deployment.outputs.page_url }}
-  steps:
-    - id: deployment
-      uses: actions/deploy-pages@v4
+    needs: coverage
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
