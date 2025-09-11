@@ -1,0 +1,40 @@
+name: Release Packaging
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    name: Build & Upload Artifact
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME_UNDERSCORE: axel
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential automake autoconf-archive gettext autopoint \
+            pkg-config
+
+      - name: Bootstrap (autotools)
+        run: |
+          mkdir -p m4
+          autoreconf -fvi
+
+      - name: Configure (release)
+        run: |
+          ./configure --enable-silent-rules CFLAGS="-O2"
+
+      - name: Build
+        run: make -j"$(nproc)"
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PROJECT_NAME_UNDERSCORE }}
+          path: |
+            ./axel
