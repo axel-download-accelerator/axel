@@ -3,29 +3,45 @@ name: Coverage + Pages (C)
 on:
   pull_request:
   push:
-    branches: [ master ]
+    branches: [ master ]  # adjust if your default branch changes
 
 permissions:
   contents: read
 
 env:
-  CANONICAL_OWNER: ritesh006   # <-- set this to the upstream owner
+  CANONICAL_OWNER: ritesh006   # only deploy Pages when pushing to master on YOUR fork
 
 jobs:
   coverage:
-    name: Build & Coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Install build + coverage deps
+      - name: Install build + coverage deps (apt)
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            build-essential automake autoconf-archive gettext autopoint \
-            pkg-config lcov gcovr python3
+            build-essential automake libtool pkg-config \
+            gettext autopoint autoconf-archive \
+            lcov gcovr python3 \
+            m4 xz-utils txt2man \
+            libssl-dev libgnutls28-dev libidn2-0-dev zlib1g-dev
+
+      - name: Install Autoconf 2.72 (from source)
+        run: |
+          set -eux
+          v=2.72
+          curl -fsSLO https://ftp.gnu.org/gnu/autoconf/autoconf-${v}.tar.xz
+          tar -xf autoconf-${v}.tar.xz
+          cd autoconf-${v}
+          ./configure
+          make -j"$(nproc)"
+          sudo make install
+          cd ..
+          rm -rf autoconf-${v} autoconf-${v}.tar.xz
+          autoconf --version | head -n1
 
       - name: Bootstrap (autotools)
         run: |
@@ -46,7 +62,7 @@ jobs:
           python3 -m http.server --directory /tmp 8000 &
           SVR=$!; sleep 1
           ./axel -n 1 -o /tmp/out.bin http://127.0.0.1:8000/test.bin || true
-          ./axel --help || true
+          ./axel --help  || true
           ./axel --version || true
           kill $SVR || true
 
@@ -83,15 +99,14 @@ jobs:
           color: "${{ steps.color.outputs.color }}"
           path: coverage/lcov-html/coverage-badge.svg
 
-      - name: Upload Pages artifact (only on push to main in canonical repo)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository_owner == env.CANONICAL_OWNER
+      - name: Upload Pages artifact (only on push to master in this repo)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository_owner == env.CANONICAL_OWNER
         uses: actions/upload-pages-artifact@v3
         with:
           path: coverage/lcov-html
 
   publish-pages:
-    # Only deploy on push to main in canonical repo
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository_owner == env.CANONICAL_OWNER
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository_owner == env.CANONICAL_OWNER
     needs: coverage
     runs-on: ubuntu-latest
     permissions:
