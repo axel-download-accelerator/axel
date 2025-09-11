@@ -3,13 +3,13 @@ name: Coverage + Pages (C)
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 permissions:
   contents: read
 
 env:
-  CANONICAL_OWNER: your-org-or-username   # <-- set this to the upstream owner
+  CANONICAL_OWNER: ritesh006   # <-- set this to the upstream owner
 
 jobs:
   coverage:
