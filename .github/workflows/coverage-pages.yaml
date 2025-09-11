@@ -1,0 +1,105 @@
+name: Coverage + Pages (C)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+env:
+  CANONICAL_OWNER: your-org-or-username   # <-- set this to the upstream owner
+
+jobs:
+  coverage:
+    name: Build & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install build + coverage deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential automake autoconf-archive gettext autopoint \
+            pkg-config lcov gcovr python3
+
+      - name: Bootstrap (autotools)
+        run: |
+          mkdir -p m4
+          autoreconf -fvi
+
+      - name: Configure (with coverage)
+        run: |
+          CC="gcc --coverage" CFLAGS="-O0 -g" LDFLAGS="--coverage" \
+          ./configure --enable-silent-rules
+
+      - name: Build
+        run: make -j"$(nproc)" V=1
+
+      - name: Generate runtime data (smoke run)
+        run: |
+          dd if=/dev/zero of=/tmp/test.bin bs=1024 count=64 status=none
+          python3 -m http.server --directory /tmp 8000 &
+          SVR=$!; sleep 1
+          ./axel -n 1 -o /tmp/out.bin http://127.0.0.1:8000/test.bin || true
+          ./axel --help || true
+          ./axel --version || true
+          kill $SVR || true
+
+      - name: LCOV HTML
+        run: |
+          mkdir -p coverage
+          lcov --capture --directory src --output-file coverage/coverage.info --no-external
+          genhtml coverage/coverage.info --output-directory coverage/lcov-html --title "coverage"
+
+      - name: Derive percentage for badge
+        id: covsum
+        run: |
+          PCT=$(lcov --summary coverage/coverage.info | awk -F'[()% ]+' '/lines/ {print $(NF-1)}')
+          echo "pct=$PCT" >> "$GITHUB_OUTPUT"
+
+      - name: Pick badge color
+        id: color
+        run: |
+          P=${{ steps.covsum.outputs.pct }}
+          P=${P%.*}
+          if   (( P >= 90 )); then C=brightgreen
+          elif (( P >= 75 )); then C=green
+          elif (( P >= 60 )); then C=yellowgreen
+          elif (( P >= 45 )); then C=yellow
+          elif (( P >= 30 )); then C=orange
+          else C=red; fi
+          echo "color=$C" >> "$GITHUB_OUTPUT"
+
+      - name: Create coverage badge (SVG)
+        uses: emibcn/badge-action@v2
+        with:
+          label: coverage
+          status: "${{ steps.covsum.outputs.pct }}%"
+          color: "${{ steps.color.outputs.color }}"
+          path: coverage/lcov-html/coverage-badge.svg
+
+      - name: Upload Pages artifact (only on push to main in canonical repo)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository_owner == env.CANONICAL_OWNER
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: coverage/lcov-html
+
+  publish-pages:
+    # Only deploy on push to main in canonical repo
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository_owner == env.CANONICAL_OWNER
+    needs: coverage
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

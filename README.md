@@ -1,5 +1,11 @@
 # AXEL - Lightweight CLI download accelerator
 
+[![Test](https://github.com/ritesh006/axel/actions/workflows/test.yaml/badge.svg)](https://github.com/ritesh006/axel/actions/workflows/test.yaml)
+[![Coverage](https://ritesh006.github.io/axel/coverage-badge.svg)](https://ritesh006.github.io/axel/)
+[![Lint](https://github.com/ritesh006/axel/actions/workflows/lint.yaml/badge.svg)](https://github.com/ritesh006/axel/actions/workflows/lint.yaml)
+
+
+
 ## About
 
 Axel tries to accelerate the download process by using multiple
