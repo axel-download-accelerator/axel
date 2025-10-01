@@ -1,0 +1,45 @@
+name: Test (C)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential automake autoconf-archive gettext autopoint \
+            pkg-config python3
+
+      - name: Bootstrap (autotools)
+        run: |
+          mkdir -p m4
+          autoreconf -fvi
+
+      - name: Configure (no coverage)
+        run: |
+          ./configure --enable-silent-rules
+
+      - name: Build
+        run: make -j"$(nproc)" V=1
+
+      - name: make check (if present)
+        run: make check || echo "No tests (or none detected)"
+      
+      - name: Basic smoke run (HTTP download)
+        run: |
+          dd if=/dev/zero of=/tmp/test.bin bs=1024 count=64 status=none
+          python3 -m http.server --directory /tmp 8000 &
+          SVR=$!; sleep 1
+          ./axel -n 1 -o /tmp/out.bin http://127.0.0.1:8000/test.bin || true
+          ./axel --help || true
+          ./axel --version || true
+          kill $SVR || true

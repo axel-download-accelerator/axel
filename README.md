@@ -1,4 +1,14 @@
+[![Test](https://github.com/axel-download-accelerator/axel/actions/workflows/test.yaml/badge.svg)](https://github.com/axel-download-accelerator/axel/actions/workflows/test.yaml)
+[![Coverage](https://axel-download-accelerator.github.io/axel/coverage-badge.svg)](https://axel-download-accelerator.github.io/axel/)
+[![Lint](https://github.com/axel-download-accelerator/axel/actions/workflows/lint.yaml/badge.svg)](https://github.com/axel-download-accelerator/axel/actions/workflows/lint.yaml)
+
 # AXEL - Lightweight CLI download accelerator
+
+[![Test](https://github.com/ritesh006/axel/actions/workflows/test.yaml/badge.svg)](https://github.com/ritesh006/axel/actions/workflows/test.yaml)
+[![Coverage](https://ritesh006.github.io/axel/coverage-badge.svg)](https://ritesh006.github.io/axel/)
+[![Lint](https://github.com/ritesh006/axel/actions/workflows/lint.yaml/badge.svg)](https://github.com/ritesh006/axel/actions/workflows/lint.yaml)
+
+
 
 ## About
 

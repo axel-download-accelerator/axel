@@ -31,3 +31,19 @@ TAGS
 .*.swp
 \#*#*
 *~
+build/
+*.gcno
+*.gcda
+*.gcov
+coverage/
+
+# CI/build scratch
+coverage/
+*.gcno
+*.gcda
+*.gcov
+*.info
+*.log
+src/Makefile.am.bak
+# Docker build cache
+**/.DS_Store

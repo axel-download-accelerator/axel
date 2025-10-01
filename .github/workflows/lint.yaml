@@ -1,0 +1,43 @@
+name: Lint (C)
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  format:
+    name: clang-format check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format
+      - name: Check formatting (fails on diff)
+        run: |
+          # If you have a .clang-format in repo, it will be used automatically.
+          # Show diff and fail if any C/C headers are not formatted.
+          set -e
+          files=$(git ls-files '*.c' '*.h' || true)
+          if [ -z "$files" ]; then
+            echo "No C/C header files"; exit 0
+          fi
+          clang-format -Werror --dry-run $files
+
+  static:
+    name: Static analysis (cppcheck)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y cppcheck
+      - name: cppcheck
+        run: |
+          files=$(git ls-files '*.c' '*.h' || true)
+          if [ -z "$files" ]; then
+            echo "No C/C header files"; exit 0
+          fi
+          cppcheck --enable=warning,style,performance,portability --error-exitcode=1 \
+                   --inline-suppr --quiet .
