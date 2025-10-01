@@ -33,7 +33,8 @@
 
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ USA.
  *
  * SPDX-License-Identifier: GPL-2.0-or-later
  */
@@ -45,25 +46,25 @@
 
 #ifdef HAVE_SSL
 #ifdef HAVE_WOLFSSL
+#include <wolfssl/openssl/ssl.h>
 #include <wolfssl/options.h>
 #include <wolfssl/wolfcrypt/settings.h>
-#include <wolfssl/openssl/ssl.h>
 #else
 #include <openssl/ssl.h>
 #endif
 #endif
 
 typedef struct {
-	int fd;
-	sa_family_t ai_family;
+  int fd;
+  sa_family_t ai_family;
 #ifdef HAVE_SSL
-	SSL *ssl;
+  SSL *ssl;
 #endif
 } tcp_t;
 
 int is_ipv6_addr(const char *hostname);
 int tcp_connect(tcp_t *tcp, char *hostname, int port, int secure,
-		char *local_if, unsigned io_timeout);
+                char *local_if, unsigned io_timeout);
 void tcp_close(tcp_t *tcp);
 
 ssize_t tcp_read(tcp_t *tcp, void *buffer, int size);
@@ -71,4 +72,4 @@ ssize_t tcp_write(tcp_t *tcp, void *buffer, int size);
 
 int get_if_ip(char *dst, size_t len, const char *iface);
 
-#endif				/* AXEL_TCP_H */
+#endif /* AXEL_TCP_H */

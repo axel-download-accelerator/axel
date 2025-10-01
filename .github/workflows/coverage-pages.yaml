@@ -25,20 +25,24 @@ jobs:
             lcov gcovr python3 curl \
             m4 xz-utils txt2man \
             libssl-dev libgnutls28-dev libidn2-0-dev zlib1g-dev
+      
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format
+
+      - name: Check clang-format (fail if not formatted)
+        run: clang-format --dry-run --Werror src/text.c
 
       - name: Install Autoconf 2.72 (from source)
         run: |
-          set -eux
-          v=2.72
-          curl -fsSLO https://ftp.gnu.org/gnu/autoconf/autoconf-${v}.tar.xz
-          tar -xf autoconf-${v}.tar.xz
-          cd autoconf-${v}
-          ./configure
-          make -j"$(nproc)"
+          set -e
+          wget https://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz
+          tar xzf autoconf-2.72.tar.gz
+          cd autoconf-2.72
+          ./configure --prefix=/usr/local
+          make -j$(nproc)
           sudo make install
           cd ..
-          rm -rf autoconf-${v} autoconf-${v}.tar.xz
-          autoconf --version | head -n1
+          autoconf --version
 
       - name: Bootstrap (autotools)
         run: |
@@ -98,12 +102,14 @@ jobs:
 
       - name: Upload Pages artifact (only on push to master in this repo)
         if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'axel-download-accelerator/axel'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository_owner == 'ritesh006'
         uses: actions/upload-pages-artifact@v3
         with:
           path: coverage/lcov-html
 
   publish-pages:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'axel-download-accelerator/axel'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository_owner == 'ritesh006'
     needs: coverage
     runs-on: ubuntu-latest
     permissions:

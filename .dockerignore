@@ -1,0 +1,6 @@
+.git
+build
+coverage
+dist
+*.tar.gz
+*.zip
