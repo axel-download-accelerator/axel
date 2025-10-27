@@ -50,6 +50,7 @@
 #include "config.h"
 #include <sys/ioctl.h>
 #include "axel.h"
+#include <signal.h>
 
 
 static void stop(int signal);
@@ -115,15 +116,19 @@ main(int argc, char *argv[])
 	int j, ret = 1;
 	char *s;
 
+
+
 	fn[0] = 0;
+	/* Ignore SIGPIPE to prevent Axel from terminating when writing to closed sockets/pipes */
+	signal(SIGPIPE, SIG_IGN);
+
 
 /* Set up internationalization (i18n) */
 #ifdef ENABLE_NLS
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
-#endif
-	if (axel_rnd_init() == -1)
+#endif	if (axel_rnd_init() == -1)
 		return 1;
 
 	if (!conf_init(conf)) {
