@@ -46,7 +46,7 @@
 #define AXEL_HTTP_H
 
 typedef struct {
-	char host[MAX_STRING];
+	char *host;
 	char auth[MAX_STRING];
 	abuf_t request[1], headers[1];
 	int port;

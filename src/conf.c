@@ -321,7 +321,19 @@ conf_init(conf_t *conf)
 void
 conf_free(conf_t *conf)
 {
-	free(conf->interfaces);
+	if (conf->interfaces) {
+		axel_if_t *iface = conf->interfaces->next;
+		while (iface != conf->interfaces) {
+			axel_if_t *next = iface->next;
+			if (iface->text)
+				free(iface->text);
+			free(iface);
+			iface = next;
+		}
+		if (conf->interfaces->text)
+			free(conf->interfaces->text);
+		free(conf->interfaces);
+	}
 }
 
 static
@@ -336,9 +348,13 @@ parse_interfaces(conf_t *conf, char *s)
 		axel_if_t *i;
 
 		i = iface->next;
+		if (iface->text)
+			free(iface->text);
 		free(iface);
 		iface = i;
 	}
+	if (conf->interfaces->text)
+		free(conf->interfaces->text);
 	free(conf->interfaces);
 
 	if (!*s) {
@@ -359,10 +375,15 @@ parse_interfaces(conf_t *conf, char *s)
 			s++;
 		for (s2 = s; *s2 != ' ' && *s2 != '\t' && *s2; s2++) ;
 		*s2 = 0;
+
+		iface->text = malloc(MAX_STRING);
+		if (!iface->text)
+			return 0;
+
 		if (*s < '0' || *s > '9')
-			get_if_ip(iface->text, sizeof(iface->text), s);
+			get_if_ip(iface->text, MAX_STRING, s);
 		else
-			strlcpy(iface->text, s, sizeof(iface->text));
+			strlcpy(iface->text, s, MAX_STRING);
 		s = s2 + 1;
 		if (*s) {
 			iface->next = malloc(sizeof(*iface));

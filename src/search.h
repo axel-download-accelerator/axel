@@ -42,7 +42,7 @@
 #define AXEL_SEARCH_H
 
 typedef struct {
-	char url[MAX_STRING];
+	char *url;
 	double speed_start_time;
 	off_t speed, size;
 	pthread_t speed_thread[1];

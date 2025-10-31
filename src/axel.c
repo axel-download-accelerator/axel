@@ -126,6 +126,11 @@ axel_new(conf_t *conf, int count, const search_t *res)
 	url_t *u;
 	char *s;
 	int i;
+	uint64_t delay;
+	char msg[80];
+	size_t url_buf_size;
+	char *temp_url;
+	int code;
 
 	if (!count || !res)
 		return NULL;
@@ -150,8 +155,7 @@ axel_new(conf_t *conf, int count, const search_t *res)
 					     _("Buffer resized for this speed."));
 			axel->conf->buffer_size = axel->conf->max_speed;
 		}
-		uint64_t delay =
-			UINT64_C(1073741824) * axel->conf->buffer_size *
+		delay = UINT64_C(1073741824) * axel->conf->buffer_size *
 			axel->conf->num_connections / axel->conf->max_speed;
 
 		axel->delay_time.tv_sec  = delay / 1073741824;
@@ -169,7 +173,16 @@ axel_new(conf_t *conf, int count, const search_t *res)
 	axel->url = u;
 
 	for (i = 0; i < count; i++) {
-		strlcpy(u[i].text, res[i].url, sizeof(u[i].text));
+		size_t url_len = strlen(res[i].url) + 1;
+		u[i].text = malloc(url_len);
+		if (!u[i].text) {
+			for (int k = 0; k < i; k++)
+				free(u[k].text);
+			free(u);
+			axel->url = NULL;
+			goto nomem;
+		}
+		strlcpy(u[i].text, res[i].url, url_len);
 		u[i].next = &u[i + 1];
 	}
 	u[count - 1].next = u;
@@ -218,8 +231,7 @@ axel_new(conf_t *conf, int count, const search_t *res)
 		 * depends on the protocol used. */
 		status = conn_info(&axel->conn[0]);
 		if (!status) {
-			char msg[80];
-			int code = conn_info_status_get(msg, sizeof(msg), axel->conn);
+			code = conn_info_status_get(msg, sizeof(msg), axel->conn);
 			fprintf(stderr, _("ERROR %d: %s.\n"), code, msg);
 			axel->ready = -1;
 			return axel;
@@ -228,7 +240,17 @@ axel_new(conf_t *conf, int count, const search_t *res)
 				 * happen only once because the FTP protocol
 				 * can't redirect back to HTTP */
 
-	conn_url(axel->url->text, sizeof(axel->url->text) - 1, axel->conn);
+	url_buf_size = 4096;
+	temp_url = malloc(url_buf_size);
+	if (!temp_url) {
+		axel_message(axel, _("Out of memory\n"));
+		axel->ready = -1;
+		return axel;
+	}
+	conn_url(temp_url, url_buf_size - 1, axel->conn);
+	free(axel->url->text);
+	axel->url->text = temp_url;
+
 	axel->size = axel->conn[0].size;
 	if (axel->conf->verbose > 0) {
 		if (axel->size != LLONG_MAX) {
@@ -743,9 +765,23 @@ axel_close(axel_t *axel)
 			pthread_join(*axel->conn[i].setup_thread, NULL);
 		}
 		conn_disconnect(&axel->conn[i]);
+		if (axel->conn[i].dir) {
+			free(axel->conn[i].dir);
+		}
+		if (axel->conn[i].file) {
+			free(axel->conn[i].file);
+		}
 	}
 
-	free(axel->url);
+	if (axel->url) {
+		url_t *current = axel->url;
+		url_t *first = axel->url;
+		do {
+			free(current->text);
+			current = current->next;
+		} while (current != first);
+		free(axel->url);
+	}
 
 	/* Delete state file if necessary */
 	if (axel->ready == 1) {
@@ -863,6 +899,12 @@ axel_message(axel_t *axel, const char *format, ...)
 	m = calloc(1, sizeof(message_t));
 	if (!m)
 		goto nomem;
+
+	m->text = malloc(MAX_STRING);
+	if (!m->text) {
+		free(m);
+		goto nomem;
+	}
 
 	va_start(params, format);
 	vsnprintf(m->text, MAX_STRING, format, params);

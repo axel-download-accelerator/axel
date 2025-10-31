@@ -272,12 +272,6 @@ main(int argc, char *argv[])
 		}
 	} else {
 		s = argv[optind];
-		if (strlen(s) > MAX_STRING) {
-			fprintf(stderr,
-				_("Can't handle URLs of length over %zu\n"),
-				MAX_STRING);
-			goto free_conf;
-		}
 	}
 
 	if (conf->progress_style != AXEL_PROGRESS_STYLE_PERCENTAGE)
@@ -294,6 +288,7 @@ main(int argc, char *argv[])
 		int i = search_makelist(search, s);
 		if (i < 0) {
 			fprintf(stderr, _("File not found\n"));
+			free(search);
 			goto free_conf;
 		}
 		if (conf->verbose)
@@ -301,9 +296,13 @@ main(int argc, char *argv[])
 		j = search_getspeeds(search, i);
 		if (j < 0) {
 			fprintf(stderr, _("Speed testing failed\n"));
+			for (int k = 0; k < i; k++)
+				free(search[k].url);
+			free(search);
 			return 1;
 		}
 
+		int search_count = i;
 		search_sortlist(search, i);
 		if (conf->verbose) {
 			printf(_("%i usable servers found, will use these URLs:\n"),
@@ -316,6 +315,8 @@ main(int argc, char *argv[])
 			printf("\n");
 		}
 		axel = axel_new(conf, j, search);
+		for (int k = 0; k < search_count; k++)
+			free(search[k].url);
 		free(search);
 		if (!axel || axel->ready == -1) {
 			print_messages(axel);
@@ -327,11 +328,20 @@ main(int argc, char *argv[])
 			goto free_conf;
 
 		for (int i = 0; i < argc - optind; i++) {
-			strlcpy(search[i].url, argv[optind + i],
-				sizeof(search[i].url));
+			size_t url_len = strlen(argv[optind + i]) + 1;
+			search[i].url = malloc(url_len);
+			if (!search[i].url) {
+				for (int k = 0; k < i; k++)
+					free(search[k].url);
+				free(search);
+				goto free_conf;
+			}
+			strlcpy(search[i].url, argv[optind + i], url_len);
 			// FIXME check url here
 		}
 		axel = axel_new(conf, argc - optind, search);
+		for (int i = 0; i < argc - optind; i++)
+			free(search[i].url);
 		free(search);
 		if (!axel || axel->ready == -1) {
 			print_messages(axel);
@@ -768,6 +778,7 @@ print_messages(axel_t *axel)
 	while ((m = axel->message)) {
 		printf("%s\n", m->text);
 		axel->message = m->next;
+		free(m->text);
 		free(m);
 	}
 }

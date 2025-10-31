@@ -97,7 +97,7 @@
 
 typedef struct {
 	void *next;
-	char text[MAX_STRING];
+	char *text;
 } message_t;
 
 typedef message_t url_t;
