@@ -55,14 +55,24 @@
 int
 conn_set(conn_t *conn, const char *set_url)
 {
-	char url[MAX_STRING];
+	if (conn->dir) {
+		free(conn->dir);
+		conn->dir = NULL;
+	}
+	if (conn->file) {
+		free(conn->file);
+		conn->file = NULL;
+	}
+
 	char *i, *j;
+	char *url;
+	const char *url_without_proto;
 
 	/* protocol:// */
 	if ((i = strstr(set_url, "://")) == NULL) {
 		conn->proto = PROTO_DEFAULT;
 		conn->port = PROTO_DEFAULT_PORT;
-		strlcpy(url, set_url, sizeof(url));
+		url_without_proto = set_url;
 	} else {
 		int proto_len = i - set_url;
 		if (strncmp(set_url, "ftp", proto_len) == 0) {
@@ -88,15 +98,35 @@ conn_set(conn_t *conn, const char *set_url)
                        return 0;
                }
 #endif
-		strlcpy(url, i + 3, sizeof(url));
+		url_without_proto = i + 3;
 	}
+
+	url = malloc(strlen(url_without_proto) + 1);
+	if (!url) {
+		fprintf(stderr, "Out of memory\n");
+		return 0;
+	}
+	strlcpy(url, url_without_proto, strlen(url_without_proto) + 1);
 
 	/* Split */
 	if ((i = strchr(url, '/')) == NULL) {
-		strcpy(conn->dir, "/");
+		conn->dir = malloc(2);
+		if (!conn->dir) {
+			fprintf(stderr, "Out of memory\n");
+			free(url);
+			return 0;
+		}
+		strlcpy(conn->dir, "/", 2);
 	} else {
 		*i = 0;
-		snprintf(conn->dir, MAX_STRING, "/%s", i + 1);
+		size_t dir_len = strlen(i + 1) + 2; /* "/" + path + "\0" */
+		conn->dir = malloc(dir_len);
+		if (!conn->dir) {
+			fprintf(stderr, "Out of memory\n");
+			free(url);
+			return 0;
+		}
+		snprintf(conn->dir, dir_len, "/%s", i + 1);
 	}
 	j = strchr(conn->dir, '?');
 	if (j != NULL)
@@ -108,11 +138,49 @@ conn_set(conn_t *conn, const char *set_url)
 	if (j != NULL)
 		*j = '?';
 	if (i == NULL) {
-		strlcpy(conn->file, conn->dir, sizeof(conn->file));
-		strcpy(conn->dir, "/");
+		size_t dir_size = strlen(conn->dir) + 1;
+		conn->file = malloc(dir_size);
+		if (!conn->file) {
+			fprintf(stderr, "Out of memory\n");
+			free(conn->dir);
+			free(url);
+			return 0;
+		}
+		strlcpy(conn->file, conn->dir, dir_size);
+		free(conn->dir);
+		conn->dir = malloc(2);
+		if (!conn->dir) {
+			fprintf(stderr, "Out of memory\n");
+			free(conn->file);
+			conn->file = NULL;
+			free(url);
+			return 0;
+		}
+		strlcpy(conn->dir, "/", 2);
 	} else {
-		strlcpy(conn->file, i + 1, sizeof(conn->file));
-		strlcat(conn->dir, "/", sizeof(conn->dir));
+		size_t file_len = strlen(i + 1) + 1;
+		conn->file = malloc(file_len);
+		if (!conn->file) {
+			fprintf(stderr, "Out of memory\n");
+			free(conn->dir);
+			conn->dir = NULL;
+			free(url);
+			return 0;
+		}
+		strlcpy(conn->file, i + 1, file_len);
+		size_t new_dir_len = strlen(conn->dir) + 2;
+		char *new_dir = realloc(conn->dir, new_dir_len);
+		if (!new_dir) {
+			fprintf(stderr, "Out of memory\n");
+			free(conn->file);
+			conn->file = NULL;
+			free(conn->dir);
+			conn->dir = NULL;
+			free(url);
+			return 0;
+		}
+		conn->dir = new_dir;
+		strlcat(conn->dir, "/", new_dir_len);
 	}
 
 	/* Check for username in host field */
@@ -121,7 +189,9 @@ conn_set(conn_t *conn, const char *set_url)
 		strlcpy(conn->user, url, sizeof(conn->user));
 		i = strrchr(conn->user, '@');
 		*i = 0;
-		strlcpy(url, i + 1, sizeof(url));
+		/* Extract host from user@host - shift string in place */
+		char *host_start = strrchr(url, '@') + 1;
+		memmove(url, host_start, strlen(host_start) + 1);
 		*conn->pass = 0;
 	} else {
 		/* If not: Fill in defaults */
@@ -147,6 +217,11 @@ conn_set(conn_t *conn, const char *set_url)
 		if ((i = strrchr(conn->host, ']')) != NULL) {
 			*i++ = 0;
 		} else {
+			free(conn->dir);
+			conn->dir = NULL;
+			free(conn->file);
+			conn->file = NULL;
+			free(url);
 			return 0;
 		}
 	} else {
@@ -164,6 +239,7 @@ conn_set(conn_t *conn, const char *set_url)
 		i = conn->host;
 	}
 
+	free(url);
 	return conn->port > 0;
 }
 
@@ -226,6 +302,10 @@ conn_disconnect(conn_t *conn)
 		http_disconnect(conn->http);
 	conn->tcp = NULL;
 	conn->enabled = false;
+
+	/* NOTE: dir and file are NOT freed here because they may be needed
+	 * for reconnection or URL rebuilding. They are freed in conn_set()
+	 * when replaced, or during final cleanup in axel_close(). */
 }
 
 int
@@ -306,16 +386,25 @@ conn_setup(conn_t *conn)
 				return 0;
 		}
 	} else {
-		char s[MAX_STRING * 2];
 		int i;
+		size_t url_len = strlen(conn->dir) + strlen(conn->file) + 1;
+		char *s = malloc(url_len);
+		if (!s) {
+			fprintf(stderr, "Out of memory\n");
+			return 0;
+		}
 
-		snprintf(s, sizeof(s), "%s%s", conn->dir, conn->file);
+		snprintf(s, url_len, "%s%s", conn->dir, conn->file);
 		conn->http->firstbyte =
 			conn->supported ? conn->currentbyte : -1;
 		conn->http->lastbyte = conn->lastbyte;
 
-		abuf_setup(conn->http->request, 2048);
+		size_t request_size = url_len + strlen(conn->host) + 512;
+		if (request_size < 2048)
+			request_size = 2048;
+		abuf_setup(conn->http->request, request_size);
 		http_get(conn->http, s);
+		free(s);
 		for (i = 0; i < conn->conf->add_header_count; i++)
 			http_addheader(conn->http, "%s",
 				       conn->conf->add_header[i]);

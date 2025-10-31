@@ -109,13 +109,27 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	const char *puser = NULL, *ppass = "";
 	conn_t tconn[1];
 
-	strlcpy(conn->host, host, sizeof(conn->host));
+	if (conn->host) {
+		free(conn->host);
+	}
+
+	size_t host_len = strlen(host) + 1;
+	conn->host = malloc(host_len);
+	if (!conn->host) {
+		fprintf(stderr, "Out of memory\n");
+		return 0;
+	}
+
+	strlcpy(conn->host, host, host_len);
 	conn->port = port;
 	conn->proto = proto;
 
 	if (proxy && *proxy) {
+		memset(tconn, 0, sizeof(conn_t));
 		if (!conn_set(tconn, proxy)) {
 			fprintf(stderr, _("Invalid proxy string: %s\n"), proxy);
+			free(conn->host);
+			conn->host = NULL;
 			return 0;
 		}
 		host = tconn->host;
@@ -127,8 +141,20 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 	}
 
 	if (tcp_connect(&conn->tcp, host, port, PROTO_IS_SECURE(proto),
-			conn->local_if, io_timeout) == -1)
+			conn->local_if, io_timeout) == -1) {
+		if (proxy && *proxy) {
+			free(tconn->dir);
+			free(tconn->file);
+		}
+		free(conn->host);
+		conn->host = NULL;
 		return 0;
+	}
+
+	if (proxy && *proxy) {
+		free(tconn->dir);
+		free(tconn->file);
+	}
 
 	if (*user == 0) {
 		*conn->auth = 0;
@@ -148,6 +174,10 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 void
 http_disconnect(http_t *conn)
 {
+	if (conn->host) {
+		free(conn->host);
+		conn->host = NULL;
+	}
 	tcp_close(&conn->tcp);
 }
 
@@ -202,17 +232,36 @@ http_get(http_t *conn, char *lurl)
 void
 http_addheader(http_t *conn, const char *format, ...)
 {
-	char s[MAX_STRING];
 	va_list params;
+	va_list params_copy;
+	int needed;
+	char *s;
 
 	va_start(params, format);
-	vsnprintf(s, sizeof(s) - 3, format, params);
-	strlcat(s, "\r\n", sizeof(s));
+	va_copy(params_copy, params);
+	needed = vsnprintf(NULL, 0, format, params);
 	va_end(params);
+
+	if (needed < 0) {
+		va_end(params_copy);
+		return;
+	}
+
+	s = malloc(needed + 3);
+	if (!s) {
+		va_end(params_copy);
+		return;
+	}
+
+	vsnprintf(s, needed + 1, format, params_copy);
+	strcat(s, "\r\n");
+	va_end(params_copy);
 
 	if (abuf_strcat(conn->request, s) < 0) {
 		fprintf(stderr, "Out of memory\n");
 	}
+
+	free(s);
 }
 
 int

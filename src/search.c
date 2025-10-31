@@ -109,8 +109,17 @@ search_makelist(search_t *results, char *orig_url)
 	if (!conn_set(conn, orig_url) || !conn_init(conn) || !conn_info(conn))
 		return -1;
 
-	size_t orig_len = strlcpy(results[0].url, orig_url,
-				  sizeof(results[0].url));
+	size_t orig_len = strlen(orig_url) + 1;
+	results[0].url = malloc(orig_len);
+	if (!results[0].url) {
+		fprintf(stderr, "Out of memory\n");
+		if (conn->dir)
+			free(conn->dir);
+		if (conn->file)
+			free(conn->file);
+		return -1;
+	}
+	strlcpy(results[0].url, orig_url, orig_len);
 	results[0].speed = 1 + 1000 * (axel_gettime() - t);
 	results[0].size = conn->size;
 	int nresults = 1;
@@ -135,6 +144,10 @@ search_makelist(search_t *results, char *orig_url)
 		 conn->size, conn->size);
 
 	conn_disconnect(conn);
+	if (conn->dir)
+		free(conn->dir);
+	if (conn->file)
+		free(conn->file);
 	memset(conn, 0, sizeof(conn_t));
 	conn->conf = results->conf;
 
@@ -191,13 +204,23 @@ search_makelist(search_t *results, char *orig_url)
 		if (!strncmp(url, orig_url, orig_len))
 			continue;
 
-		strlcpy(results[nresults].url, url, sizeof(results[0].url));
+		size_t url_len = strlen(url) + 1;
+		results[nresults].url = malloc(url_len);
+		if (!results[nresults].url) {
+			fprintf(stderr, "Out of memory\n");
+			break;
+		}
+		strlcpy(results[nresults].url, url, url_len);
 		results[nresults].size = results[0].size;
 		results[nresults].conf = results->conf;
 		++nresults;
 	}
 
 done:
+	if (conn->dir)
+		free(conn->dir);
+	if (conn->file)
+		free(conn->file);
 	free(s);
 	return nresults;
 }
@@ -299,6 +322,10 @@ search_speedtest(void *r)
 		results->speed = SPEED_FAILED;
 
 	conn_disconnect(conn);
+	if (conn->dir)
+		free(conn->dir);
+	if (conn->file)
+		free(conn->file);
 
 	return NULL;
 }

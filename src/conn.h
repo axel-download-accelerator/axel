@@ -86,8 +86,8 @@ typedef struct {
 	int port;
 	int proxy;
 	char host[MAX_STRING];
-	char dir[MAX_STRING];
-	char file[MAX_STRING];
+	char *dir;
+	char *file;
 	char user[MAX_STRING];
 	char pass[MAX_STRING];
 	char output_filename[MAX_STRING];
