@@ -1,127 +1,98 @@
-# AXEL - Lightweight CLI download accelerator
+AXEL - 轻量级 CLI 下载加速器
 
-## About
+关于
 
-Axel tries to accelerate the download process by using multiple
-connections per file, and can also balance the load between
-different servers.
+Axel 尝试通过对每个文件使用多个连接来加速下载过程，并且还可以在不同服务器之间平衡负载。
 
-Axel tries to be as light as possible, so it might be useful on
-byte-critical systems.
+Axel 试图尽可能轻量，因此它在字节关键型系统上可能很有用。
 
-Axel supports HTTP, HTTPS, FTP and FTPS protocols.
+Axel 支持 HTTP、HTTPS、FTP 和 FTPS 协议。
 
-Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone
-else who has contributed to it over the years.
+感谢 Axel 的原始开发者 Wilmer van der Gaast，以及多年来为它做出贡献的其他人。
 
-## Usage
+用法
 
-For usage information, see the manual page:
+有关用法信息，请参阅手册页：
 
-    man axel
+如何提供帮助
 
-## How to help
-If you can code and are interested in improving Axel, please read the
-[CONTRIBUTING.md](CONTRIBUTING.md) file; if you're looking for ideas check our
-[open tickets](https://github.com/axel-download-accelerator/axel/issues/).
+如果您会编码并且有兴趣改进 Axel，请阅读 CONTRIBUTING.md 文件；如果您在寻找想法，请查看我们的开放工单。
 
-Additionally, there is a
-[google group](https://groups.google.com/forum/#!forum/axel-accelerator-dev) to
-discuss and to coordinate development. You can also find other developers in the
-`#axel` channel on [Freenode](https://freenode.net/).
+此外，还有一个谷歌群组用于讨论和协调开发。您也可以在 Freenode 的 #axel 频道中找到其他开发人员。
 
-The sustainability of the project mainly depends on developers dedicating time,
-so if you want to contribute but can't code, there's also the option to fund
-paid development time through:
+项目的可持续性主要取决于开发人员投入的时间，因此，如果您想贡献但不会编码，也可以通过以下方式资助付费开发时间：
 
-- *Ismael Luceno*
-  + [Github Sponsors](https://github.com/sponsors/ismaell)
-  + [![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/ismaell)
-  + [![Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/ismael/donate)
+· Ismael Luceno
+  · Github 赞助
+  · https://c5.patreon.com/external/logo/become_a_patron_button.png
+  · https://liberapay.com/assets/widgets/donate.svg
 
-## Installing from binaries
-Your operating system may contain a precompiled version of Axel, and if so you
-should probably use it.  If the package is outdated please get in touch with the
-package maintainer or open a support ticket with your distro.
+从二进制文件安装
 
-## Building from source
-WARNING: Building from the source code repository is recommended only when doing
-development, otherwise only use release tarballs.
+您的操作系统可能包含 Axel 的预编译版本，如果是这样，您可能应该使用它。如果软件包过时，请与软件包维护者联系或在您的发行版中提交支持工单。
 
-Axel uses GNU autotools for it's buildsystem; instructions are provided in the
-[INSTALL](INSTALL) file. The basic actions for most users are:
+从源代码构建
 
-    ./configure && make && make install
+警告：建议仅在开发时从源代码存储库构建，否则请仅使用发布版 tarball。
 
-To build without SSL/TLS support, pass to `configure` the `--without-ssl` flag.
+Axel 使用 GNU 自动工具作为其构建系统；说明在 INSTALL 文件中提供。大多数用户的基本操作是：
 
-If you're working from the source code repository instead of a release tarball,
-you need to generate the buildsystem first with:
+要在没有 SSL/TLS 支持的情况下构建，请向 configure 传递 --without-ssl 标志。
 
-    autoreconf -i
+如果您是从源代码存储库而不是发布版 tarball 工作，您需要首先使用以下命令生成构建系统：
 
-When working from a git repository the build system will detect that and will
-add -Werror to the CFLAGS if supported; so if you're not doing development you
-should probably consider passing `--disable-Werror` to `configure` in order to
-prevent build failures due to mere warnings.
+当从 git 存储库工作时，构建系统将检测到这一点，并在支持的情况下将 -Werror 添加到 CFLAGS 中；因此，如果您不是在进行开发，您可能应该考虑向 configure 传递 --disable-Werror，以防止因轻微警告而导致构建失败。
 
-### Dependencies
-* `gettext` (or `gettext-tiny`)
-* `pkg-config`
+依赖
 
-Optional:
+· gettext (或 gettext-tiny)
+· pkg-config
 
-* `libssl` (OpenSSL, LibreSSL or compatible) -- for SSL/TLS support.
+可选：
 
-#### Extra dependencies for building from snapshots
-* `autoconf-archive`
-* `autoconf`
-* `automake`
-* `autopoint`
-* `txt2man`
+· libssl (OpenSSL, LibreSSL 或兼容版本) -- 用于 SSL/TLS 支持。
 
-#### Packages on Debian-based systems
-* `build-essential`
-* `autoconf`
-* `autoconf-archive`
-* `automake`
-* `autopoint`
-* `gettext`
-* `libssl-dev`
-* `pkg-config`
-* `txt2man`
+从快照构建所需的额外依赖
 
+· autoconf-archive
+· autoconf
+· automake
+· autopoint
+· txt2man
 
-#### Packages on Mac OS X (Homebrew)
-* `autoconf-archive`
-* `automake`
-* `gettext`
-* `openssl`
+基于 Debian 的系统上的软件包
 
-### Building on Mac OS X (Homebrew)
+· build-essential
+· autoconf
+· autoconf-archive
+· automake
+· autopoint
+· gettext
+· libssl-dev
+· pkg-config
+· txt2man
 
-You'll need to provide some extra options to autotools so it can find gettext
-and openssl.
+Mac OS X (Homebrew) 上的软件包
 
-	GETTEXT=/usr/local/opt/gettext
-	OPENSSL=/usr/local/opt/openssl
-	PATH="$GETTEXT/bin:$PATH"
+· autoconf-archive
+· automake
+· gettext
+· openssl
 
-	[ -x configure ] || autoreconf -fiv -I$GETTEXT/share/aclocal/
+在 Mac OS X (Homebrew) 上构建
 
-	CFLAGS="-I$GETTEXT/include -I$OPENSSL/include" \
-	LDFLAGS=-L$GETTEXT/lib ./configure
+您需要向自动工具提供一些额外的选项，以便它可以找到 gettext 和 openssl。
 
-You can just run `make` as usual after these steps.
+完成这些步骤后，您可以像往常一样运行 make。
 
-## Related projects ##
+相关项目
 
-* [aria2](https://github.com/aria2/aria2)
-* [hget](https://github.com/huydx/hget)
-* [lftp](https://github.com/lavv17/lftp)
-* [nugget](https://github.com/maxogden/nugget)
-* [pget](https://github.com/Code-Hex/pget)
+· aria2
+· hget
+· lftp
+· nugget
+· pget
 
-## License ##
+许可证
 
-Axel is licensed under GPL-2+ with the OpenSSL exception.
+Axel 根据 GPL-2+ 许可证授权，并带有 OpenSSL 例外。
