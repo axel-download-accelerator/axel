@@ -12,7 +12,7 @@ byte-critical systems.
 Axel supports HTTP, HTTPS, FTP and FTPS protocols.
 
 Thanks to the original developer of Axel, Wilmer van der Gaast, and everyone
-else who has contributed to it over the years.
+else who has contributed to it over the years
 
 ## Usage
 
@@ -42,11 +42,11 @@ paid development time through:
 ## Installing from binaries
 Your operating system may contain a precompiled version of Axel, and if so you
 should probably use it.  If the package is outdated please get in touch with the
-package maintainer or open a support ticket with your distro.
+package maintainer or open a support ticket with your distro
 
 ## Building from source
 WARNING: Building from the source code repository is recommended only when doing
-development, otherwise only use release tarballs.
+development, otherwise only use release tarballs
 
 Axel uses GNU autotools for it's buildsystem; instructions are provided in the
 [INSTALL](INSTALL) file. The basic actions for most users are:
