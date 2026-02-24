@@ -142,9 +142,10 @@ conf_loadfile(conf_t *conf, const char *file)
 		/* Skip the "=" and any spaces following it */
 		while (isspace(*++tmp));	/* XXX isspace('\0') is false */
 		value = tmp;
-		/* Get to the end of the value string */
-		while (*tmp && !isspace(*tmp))
-			tmp++;
+		/* Trim trailing spaces without truncating list-like values */
+		tmp = value + strlen(value);
+		while (tmp > value && isspace((unsigned char)tmp[-1]))
+			tmp--;
 		*tmp = '\0';
 
 		/* String options */
