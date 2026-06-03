@@ -100,7 +100,7 @@ typedef struct {
 	tcp_t *tcp;
 	bool enabled;
 	bool supported;
-	int last_transfer;
+	long long last_transfer;
 	char *message;
 	char *local_if;
 
