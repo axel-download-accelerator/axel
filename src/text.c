@@ -490,6 +490,15 @@ main(int argc, char *argv[])
 	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain(PACKAGE);
 #endif
+#ifdef SIGPIPE
+	/* Writing to a connection that the peer has already closed (e.g.
+	 * after the machine wakes up from sleep and the server has dropped
+	 * the connections) raises SIGPIPE, whose default action silently
+	 * kills the process. Ignore it and rely on the write(2)/SSL error
+	 * paths instead, like wget, curl and aria2 do. */
+	signal(SIGPIPE, SIG_IGN);
+#endif
+
 	if (axel_rnd_init() == -1)
 		return 1;
 
