@@ -110,6 +110,7 @@ typedef struct {
 } conn_t;
 
 int conn_set(conn_t *conn, const char *set_url);
+void conn_output_filename(const conn_t *conn, char *dst, size_t size);
 int conn_url(char *dst, size_t len, conn_t *conn);
 void conn_disconnect(conn_t *conn);
 int conn_init(conn_t *conn);

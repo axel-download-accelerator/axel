@@ -8,8 +8,14 @@ SUBDIRS = po
 
 EXTRA_DIST = \
 	scripts/pocheck.awk \
+	tests/config.h \
+	tests/test-path-traversal.c \
+	tests/test-path-traversal.sh \
 	README.md \
 	CONTRIBUTING.md
+
+check-local:
+	$(SHELL) $(top_srcdir)/tests/test-path-traversal.sh
 
 include doc/Makefile.am
 
