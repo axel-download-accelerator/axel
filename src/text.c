@@ -65,6 +65,7 @@ static int get_term_width(void);
 int run = 1;
 
 #define MAX_REDIR_OPT	256
+#define NO_NETRC_OPT	257
 
 #ifdef NOGETOPTLONG
 #define getopt_long(a, b, c, d, e) getopt(a, b, c)
@@ -77,6 +78,7 @@ static struct option axel_options[] = {
 	{"output",          1,      NULL, 'o'},
 	{"search",          2,      NULL, 'S'},
 	{"netrc",           2,      NULL, 'R'},
+	{"no-netrc",        0,      NULL, NO_NETRC_OPT},
 	{"ipv4",            0,      NULL, '4'},
 	{"ipv6",            0,      NULL, '6'},
 	{"no-proxy",        0,      NULL, 'N'},
@@ -186,7 +188,10 @@ main(int argc, char *argv[])
 			}
 			break;
 		case 'R':
-			conf->netrc = netrc_init(optarg);
+			conf_netrc_set(conf, optarg ? optarg : "");
+			break;
+		case NO_NETRC_OPT:
+			conf_netrc_set(conf, NULL);
 			break;
 		case '6':
 			conf->ai_family = AF_INET6;
@@ -696,7 +701,7 @@ print_help(void)
 		 "-n x\tSpecify maximum number of connections\n"
 		 "-o f\tSpecify local output file\n"
 		 "-S[n]\tSearch for mirrors and download from n servers\n"
-		 "-R[file]\tRetrieve credentials from $HOME/.netrc file or filename\n"
+		 "-R[f]\tTake credentials from f, or from the default .netrc\n"
 		 "-4\tUse the IPv4 protocol\n"
 		 "-6\tUse the IPv6 protocol\n"
 		 "-H x\tAdd HTTP header string\n"
@@ -721,7 +726,8 @@ print_help(void)
 		 "--max-redirect=x\t\tSpecify maximum number of redirections\n"
 		 "--output=f\t\t-o f\tSpecify local output file\n"
 		 "--search[=n]\t\t-S[n]\tSearch for mirrors and download from n servers\n"
-		 "--netrc[=file]\t\t-R[file]\tRetrieve credentials from $HOME/.netrc file or filename\n"
+		 "--netrc[=f]\t\t-R[f]\tTake credentials from f, or from the default .netrc\n"
+		 "--no-netrc\t\t\tDon't take credentials from any .netrc\n"
 		 "--ipv4\t\t\t-4\tUse the IPv4 protocol\n"
 		 "--ipv6\t\t\t-6\tUse the IPv6 protocol\n"
 		 "--header=x\t\t-H x\tAdd HTTP header string\n"

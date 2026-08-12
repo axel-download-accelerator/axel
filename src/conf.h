@@ -86,6 +86,7 @@ typedef struct {
 int conf_loadfile(conf_t *conf, const char *file);
 int conf_init(conf_t *conf);
 void conf_free(conf_t *conf);
+void conf_netrc_set(conf_t *conf, const char *path);
 void conf_auth_setup(conf_t *conf, int proto, const char *host,
 		     char *user, size_t user_len,
 		     char *pass, size_t pass_len);

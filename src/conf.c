@@ -222,6 +222,9 @@ conf_loadfile(conf_t *conf, const char *file)
 			conf_hdr_make(conf->add_header[HDR_USER_AGENT],
 				      "User-Agent", DEFAULT_USER_AGENT);
 			continue;
+		} else if (!strcmp(key, "netrc")) {
+			conf_netrc_set(conf, value);
+			continue;
 		}
 #if 0
 		/* FIXME broken code */
@@ -315,6 +318,19 @@ conf_init(conf_t *conf)
 	conf->no_proxy[i + 1] = 0;
 
 	return 1;
+}
+
+/**
+ * Select the .netrc file to take credentials from.
+ *
+ * An empty path selects the default location, and a NULL one disables
+ * the lookup altogether.
+ */
+void
+conf_netrc_set(conf_t *conf, const char *path)
+{
+	netrc_free(conf->netrc);
+	conf->netrc = path ? netrc_init(path) : NULL;
 }
 
 /* release resources allocated by conf_init() */
