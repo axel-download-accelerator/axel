@@ -125,15 +125,7 @@ conn_set(conn_t *conn, const char *set_url)
 		strlcpy(url, i + 1, sizeof(url));
 		*conn->pass = 0;
 	} else {
-		/* If not: Fill in defaults */
-		if (PROTO_IS_FTP(conn->proto) && !conn->conf->netrc) {
-			/* Dash the password: Save traffic by trying
-			   to avoid multi-line responses */
-			strcpy(conn->user, "anonymous");
-			strcpy(conn->pass, "mailto:axel@axel.project");
-		} else {
-			*conn->user = *conn->pass = 0;
-		}
+		*conn->user = *conn->pass = 0;
 	}
 
 	/* Password? */
@@ -165,12 +157,9 @@ conn_set(conn_t *conn, const char *set_url)
 		i = conn->host;
 	}
 
-	/* Uses .netrc info if enabled and creds have not been provided */
-	if (!*conn->user) {
-		netrc_parse(conn->conf->netrc, conn->host,
-			    conn->user, sizeof(conn->user),
-			    conn->pass, sizeof(conn->pass));
-	}
+	conf_auth_setup(conn->conf, conn->proto, conn->host,
+			conn->user, sizeof(conn->user),
+			conn->pass, sizeof(conn->pass));
 
 	return conn->port > 0;
 }

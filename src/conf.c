@@ -325,6 +325,32 @@ conf_free(conf_t *conf)
 	free(conf->interfaces);
 }
 
+/**
+ * Fill in the credentials to use for a connection.
+ *
+ * Credentials obtained from somewhere else, e.g. the URL itself, are
+ * kept; otherwise the configured authentication sources are consulted,
+ * and auto-login is used as a last resort.
+ */
+void
+conf_auth_setup(conf_t *conf, int proto, const char *host,
+		char *user, size_t user_len, char *pass, size_t pass_len)
+{
+	if (*user)
+		return;
+
+	netrc_parse(conf->netrc, host, user, user_len, pass, pass_len);
+	if (*user)
+		return;
+
+	if (PROTO_IS_FTP(proto)) {
+		/* Dash the password: Save traffic by trying
+		   to avoid multi-line responses */
+		strlcpy(user, "anonymous", user_len);
+		strlcpy(pass, "mailto:axel@axel.project", pass_len);
+	}
+}
+
 static
 int
 parse_interfaces(conf_t *conf, char *s)
