@@ -321,6 +321,7 @@ conf_init(conf_t *conf)
 void
 conf_free(conf_t *conf)
 {
+	netrc_free(conf->netrc);
 	free(conf->interfaces);
 }
 
