@@ -44,9 +44,20 @@
 #define MAP_POPULATE 0
 #endif
 
+/* a machine we already looked up; host, user and password follow,
+   NUL-terminated, in that order */
+struct netrc_entry {
+	struct netrc_entry *next;
+	const char *user;
+	const char *pass;
+	char host[];
+};
+
 struct netrc{
 	size_t sz;
 	char *s_addr;
+	pthread_mutex_t lock;
+	struct netrc_entry *cache;
 };
 
 typedef struct {
@@ -174,8 +185,11 @@ netrc_init(const char *path)
 	netrc = calloc(1, sizeof(netrc_t));
 	if (netrc) {
 		netrc->sz = netrc_mmap(path, &netrc->s_addr);
-		if (netrc->sz)
-			return netrc;
+		if (netrc->sz) {
+			if (!pthread_mutex_init(&netrc->lock, NULL))
+				return netrc;
+			munmap(netrc->s_addr, netrc->sz);
+		}
 		free(netrc);
 	}
 	return NULL;
@@ -184,11 +198,54 @@ netrc_init(const char *path)
 void
 netrc_free(netrc_t *netrc)
 {
+	struct netrc_entry *e;
+
 	if (!netrc)
 		return;
 
+	for (e = netrc->cache; e; ) {
+		struct netrc_entry *next = e->next;
+
+		free(e);
+		e = next;
+	}
+
+	pthread_mutex_destroy(&netrc->lock);
 	munmap(netrc->s_addr, netrc->sz);
 	free(netrc);
+}
+
+static const struct netrc_entry *
+netrc_cache_get(const netrc_t *netrc, const char *host)
+{
+	const struct netrc_entry *e;
+
+	for (e = netrc->cache; e; e = e->next)
+		if (!strcmp(e->host, host))
+			return e;
+
+	return NULL;
+}
+
+static void
+netrc_cache_add(netrc_t *netrc, const char *host,
+		const char *user, const char *pass)
+{
+	size_t host_sz = strlen(host) + 1;
+	size_t user_sz = strlen(user) + 1;
+	size_t pass_sz = strlen(pass) + 1;
+	struct netrc_entry *e;
+
+	e = malloc(sizeof(*e) + host_sz + user_sz + pass_sz);
+	if (!e)			/* the cache is only an optimization */
+		return;
+
+	memcpy(e->host, host, host_sz);
+	e->user = memcpy(e->host + host_sz, user, user_sz);
+	e->pass = memcpy(e->host + host_sz + user_sz, pass, pass_sz);
+
+	e->next = netrc->cache;
+	netrc->cache = e;
 }
 
 static void
@@ -221,9 +278,9 @@ enum {
 	NETRC_DEFAULT,
 };
 
-void
-netrc_parse(netrc_t *netrc, const char *host,
-	    char *user, size_t user_len, char *pass, size_t pass_len)
+static void
+netrc_lookup(const netrc_t *netrc, const char *host,
+	     char *user, size_t user_len, char *pass, size_t pass_len)
 {
 	bool matched = false;
 	size_t host_len;
@@ -246,9 +303,6 @@ netrc_parse(netrc_t *netrc, const char *host,
 	};
 #undef TOKEN
 	enum { parser_len = sizeof(parser) / sizeof(*parser), };
-
-	if (!netrc)
-		return;
 
 	host_len = strlen(host);
 
@@ -312,4 +366,33 @@ netrc_parse(netrc_t *netrc, const char *host,
 
 		tok = memtok(NULL, 0, tok_delim, &save_buf);
 	}
+}
+
+/**
+ * Look up the credentials for a host.
+ *
+ * The output buffers are expected to be empty, and are left untouched
+ * when the host has no entry. Every machine is only parsed once.
+ */
+void
+netrc_parse(netrc_t *netrc, const char *host,
+	    char *user, size_t user_len, char *pass, size_t pass_len)
+{
+	const struct netrc_entry *e;
+
+	if (!netrc)
+		return;
+
+	pthread_mutex_lock(&netrc->lock);
+
+	e = netrc_cache_get(netrc, host);
+	if (e) {
+		strlcpy(user, e->user, user_len);
+		strlcpy(pass, e->pass, pass_len);
+	} else {
+		netrc_lookup(netrc, host, user, user_len, pass, pass_len);
+		netrc_cache_add(netrc, host, user, pass);
+	}
+
+	pthread_mutex_unlock(&netrc->lock);
 }
