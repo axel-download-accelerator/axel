@@ -43,6 +43,12 @@ OPTIONS
                       time-consuming because the program tests every server's speed, and it checks
                       whether the file's still available.
 
+ --netrc[=x], -R[x]  Take the credentials for the host being contacted from a .netrc file. Without an
+                     argument, the file named by the NETRC environment variable is used, or ~/.netrc
+                     if that is not set. Credentials given in the URL take precedence.
+
+ --no-netrc  Do not use any .netrc file, overriding the netrc setting of the configuration file.
+
  --ipv6, -6  Use the IPv6 protocol only when connecting to the host.
 
  --ipv4, -4  Use the IPv4 protocol only when connecting to the host.
@@ -105,6 +111,9 @@ FILES
  /etc/axelrc  System-wide configuration file.
 
  ~/.axelrc  Personal configuration file.
+
+ ~/.netrc  Credentials, used only when --netrc is given or the netrc setting is enabled in a
+ configuration file. The format is the traditional one, see ftp(1).
 
  These files are not documented in a manpage, but the example file which comes with the program contains
  enough information. The position of the system-wide configuration file might be different. In source code this

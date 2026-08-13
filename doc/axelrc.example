@@ -121,3 +121,10 @@
 # downloading this file altogether.
 #
 # no_clobber = 1
+
+# Take the credentials for the host being contacted from a .netrc file.
+# Leave the value blank to use the file named by the NETRC environment
+# variable, or ~/.netrc if that is not set. Credentials given in the URL
+# take precedence, and --no-netrc overrides this setting.
+#
+# netrc = 
