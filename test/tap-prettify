@@ -1,0 +1,100 @@
+#!/usr/bin/awk -f
+# SPDX-FileCopyrightText: Copyright 2026 Ismael Luceno <ismael@iodev.co.uk>
+# SPDX-License-Identifier: GPL-2.0-or-later
+#
+# test/tap-prettify - TAP beautifier with live spinner and progress bar.
+#
+BEGIN {
+	PASS = 1; FAIL = 2; SKIP = 3; TODO = 4
+	live = !system("test -t 1")
+	split(live ? "✓ ✗ ⏭ ?" : "[PASS] [FAIL] [SKIP] [TODO]", ic)
+	if (live) {
+		ic[PASS] = "\033[32m" ic[PASS] "\033[0m"
+		ic[FAIL] = "\033[31m" ic[FAIL] "\033[0m"
+		ic[SKIP] = "\033[33m" ic[SKIP] "\033[0m"
+		ic[TODO] = "\033[36m" ic[TODO] "\033[0m"
+
+		# spinner characters (ASCII, rotates)
+		split("| / - \\", spinner)
+	}
+
+	bar_width = 60
+}
+
+# tap-run says this way that a suite exited non-zero
+/^__status__\t/ {
+	split($0, f, "\t")
+	died[f[2]] = f[3]
+	ndied++
+	next
+}
+
+# Consume ID prefix
+{
+	suite = $0
+	sub(/\t.*/, "", suite)
+	sub(/[^\t]+\t/, "", $0)
+}
+
+# Plan line
+/^1\.\.[0-9]+/ { total += substr($0,4); next }
+
+# Process test lines
+/^(not )?ok / {
+	if (/# TODO/) status = TODO
+	else if (/# SKIP/) status = SKIP
+	else if (/^o/) status = PASS
+	else { status = FAIL; failed[suite]++ }
+	sub(/^(not )?ok [0-9]+/, "")
+	printf "%s%s%s\n", live ? "\r\033[2K" : "", ic[status], $0
+	counts[status]++
+	cnt++
+	if (live && total > 0) {
+		printf "%s [%s] %d/%d", \
+			spinner[(cnt - 1) % length(spinner)], \
+			bar(bar_width, cnt / total), \
+			cnt, total
+		fflush()
+	}
+}
+
+function fill(c, len,	s,n) {
+	if (len <= 0) return ""
+	s = c in _fill_cache ? _fill_cache[c] : c
+	n = length(s)
+	if (n < len) {
+		do {
+			s = s s
+			n *= 2
+		} while (n < len)
+		_fill_cache[c] = s
+	}
+	return substr(s, 1, len)
+}
+
+function bar(width, filled) {
+	filled *= width
+	return fill("=", filled) ">" fill("-", width - filled - 1)
+}
+
+END {
+	printf "%sSummary:\n"   \
+		"  Pass: %d\n"  \
+		"  Fail: %d\n"  \
+		"  Skip: %d\n"  \
+		"  Todo: %d\n", \
+		(live && total ? "\n\n" : "\n"), \
+		counts[PASS], counts[FAIL], counts[SKIP], counts[TODO]
+		
+	# A suite that failed a test has already said so; report the rest,
+	# which died with nothing to show for it.
+	for (s in died)
+		if (!(s in failed))
+			printf "  Died: %s exited with status %s\n", s, died[s]
+
+	short = total && cnt != total
+	if (short)
+		printf "  Note: planned %d tests, ran %d\n", total, cnt
+
+	exit (counts[FAIL] || ndied || short) ? 1 : 0
+}
