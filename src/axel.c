@@ -265,6 +265,14 @@ axel_open(axel_t *axel)
 	int i, fd;
 	ssize_t nread;
 
+	/* Replace common invalid characters in filename
+	https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
+	const char invalid[] = "/\\?%*:|<>";
+	const char replacement = '_';
+	for (char *j = axel->filename; (j = strpbrk(j, invalid)); j++) {
+		*j = replacement;
+	}
+	
 	if (axel->conf->verbose > 0)
 		axel_message(axel, _("Opening output file %s"), axel->filename);
 
