@@ -42,3 +42,4 @@ relcheck: update-po
 
 
 include src/Makefile.am
+include test/Makefile.am
