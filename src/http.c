@@ -72,7 +72,7 @@ chain_next(const char ***p)
 static void
 http_auth_token(char *token, const char *user, const char *pass)
 {
-	const char base64_encode[64] =
+	NONSTRING const char base64_encode[64] =
 	    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	    "abcdefghijklmnopqrstuvwxyz" "0123456789+/";
 	const char *auth[] = { user, ":", pass, NULL };

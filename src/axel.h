@@ -79,6 +79,13 @@
 #define PRINTF_FUNC(argn)
 #endif
 
+/* GCC variable attributes */
+#ifdef HAVE_VAR_ATTRIBUTE_NONSTRING
+#define NONSTRING __attribute__((nonstring))
+#else
+#define NONSTRING
+#endif
+
 /* Internationalization */
 #ifdef ENABLE_NLS
 #define _(x)			gettext(x)
