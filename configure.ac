@@ -97,6 +97,9 @@ AS_IF([! test "x$enable_debug" = xyes ], [
 # GCC function attributes
 AX_GCC_FUNC_ATTRIBUTE([format])
 
+# GCC variable attributes
+AX_GCC_VAR_ATTRIBUTE([nonstring])
+
 # Built-in functions
 AX_GCC_BUILTIN([__builtin_clzll])
 

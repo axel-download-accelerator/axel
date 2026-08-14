@@ -1,7 +1,8 @@
 /ABOUT-NLS
 /autom4te.cache/
 /build-aux/
-/m4/
+/m4/*
+!/m4/ax_gcc_var_attribute.m4
 /po/Makefile.in.in
 /po/Makevars.template
 /po/POTFILES
