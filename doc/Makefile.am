@@ -8,6 +8,7 @@ PACKAGE_DESC = lightweight command line download accelerator
 doc_reldate = @RELDATE_PRETTY@
 
 .txt.1:
+	$(MKDIR_P) $(@D)
 	tmp=$$(mktemp tmpXXXXXX) && \
 	> "$$tmp" \
 	txt2man -t "$(<:.txt=)" -s 1 \
