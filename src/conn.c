@@ -56,15 +56,16 @@ int
 conn_set(conn_t *conn, const char *set_url)
 {
 	char url[MAX_STRING];
+	const char *sep;
 	char *i, *j;
 
 	/* protocol:// */
-	if ((i = strstr(set_url, "://")) == NULL) {
+	if ((sep = strstr(set_url, "://")) == NULL) {
 		conn->proto = PROTO_DEFAULT;
 		conn->port = PROTO_DEFAULT_PORT;
 		strlcpy(url, set_url, sizeof(url));
 	} else {
-		int proto_len = i - set_url;
+		int proto_len = sep - set_url;
 		if (strncmp(set_url, "ftp", proto_len) == 0) {
 			conn->proto = PROTO_FTP;
 			conn->port = PROTO_FTP_PORT;
@@ -88,7 +89,7 @@ conn_set(conn_t *conn, const char *set_url)
                        return 0;
                }
 #endif
-		strlcpy(url, i + 3, sizeof(url));
+		strlcpy(url, sep + 3, sizeof(url));
 	}
 
 	/* Split */
