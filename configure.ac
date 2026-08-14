@@ -240,7 +240,7 @@ AS_IF([test "x$with_ssl" != xno], [
 
 # Add Gettext
 AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.11.1])
+AM_GNU_GETTEXT_REQUIRE_VERSION([0.11.1])
 
 # POSIX threads
 AX_PTHREAD()
