@@ -107,31 +107,19 @@ calc_percentage(off_t cur, off_t total)
 	return min(100, (100 * cur + total / 2) / total);
 }
 
+/**
+ * Read the command line into conf, the output file name into fn, and whether
+ * a search was asked for into do_search.
+ *
+ * Returns -1 to carry on with the download, or the status to exit with when
+ * the command line asked for nothing more than a message.
+ */
+static
 int
-main(int argc, char *argv[])
+parse_options(int argc, char *argv[], conf_t *conf, char fn[MAX_STRING],
+	      int *do_search)
 {
-	char fn[MAX_STRING];
-	int do_search = 0;
-	search_t *search;
-	conf_t conf[1];
-	axel_t *axel;
-	int j, ret = 1;
-	char *s;
-
-	fn[0] = 0;
-
-/* Set up internationalization (i18n) */
-#ifdef ENABLE_NLS
-	setlocale(LC_ALL, "");
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain(PACKAGE);
-#endif
-	if (axel_rnd_init() == -1)
-		return 1;
-
-	if (!conf_init(conf)) {
-		return 1;
-	}
+	int j;
 
 	opterr = 0;
 
@@ -152,7 +140,7 @@ main(int argc, char *argv[])
 			if(!(conf->add_header_count<MAX_ADD_HEADERS)) {
 				fprintf(stderr,
 					_("Too many custom headers (-H)! Currently only %u custom headers can be appended.\n"), MAX_ADD_HEADERS-HDR_count_init);
-				goto free_conf;
+				return 1;
 			}
 			strlcpy(conf->add_header[conf->add_header_count++], optarg,
 				sizeof(conf->add_header[0]));
@@ -160,13 +148,13 @@ main(int argc, char *argv[])
 		case 's':
 			if (!sscanf(optarg, "%llu", &conf->max_speed)) {
 				print_help();
-				goto free_conf;
+				return 1;
 			}
 			break;
 		case 'n':
 			if (!sscanf(optarg, "%hu", &conf->num_connections)) {
 				print_help();
-				goto free_conf;
+				return 1;
 			}
 			break;
 		case MAX_REDIR_OPT:
@@ -176,14 +164,14 @@ main(int argc, char *argv[])
 			}
 			break;
 		case 'o':
-			strlcpy(fn, optarg, sizeof(fn));
+			strlcpy(fn, optarg, MAX_STRING);
 			break;
 		case 'S':
-			do_search = 1;
+			*do_search = 1;
 			if (optarg) {
 				if (!sscanf(optarg, "%i", &conf->search_top)) {
 					print_help();
-					goto free_conf;
+					return 1;
 				}
 			}
 			break;
@@ -216,8 +204,7 @@ main(int argc, char *argv[])
 			break;
 		case 'h':
 			print_help();
-			ret = 0;
-			goto free_conf;
+			return 0;
 		case 'v':
 			if (j == -1)
 				j = 1;
@@ -226,15 +213,14 @@ main(int argc, char *argv[])
 			break;
 		case 'V':
 			print_version_info();
-			ret = 0;
-			goto free_conf;
+			return 0;
 		case 'q':
 			close(1);
 			conf->verbose = -1;
 			if (open("/dev/null", O_WRONLY) != 1) {
 				fprintf(stderr,
 					_("Can't redirect stdout to /dev/null.\n"));
-				goto free_conf;
+				return 1;
 			}
 			break;
 		case 'T':
@@ -242,7 +228,7 @@ main(int argc, char *argv[])
 			break;
 		default:
 			print_help();
-			goto free_conf;
+			return 1;
 		}
 	}
 
@@ -254,140 +240,144 @@ main(int argc, char *argv[])
 
 	if (conf->num_connections < 1) {
 		print_help();
-		goto free_conf;
+		return 1;
 	}
 
 	if (conf->max_redirect < 0) {
 		print_help();
 		return 1;
 	}
-#ifdef HAVE_SSL
-	ssl_init(conf);
-#endif				/* HAVE_SSL */
 
 	if (argc - optind == 0) {
 		print_help();
-		goto free_conf;
-	} else if (strcmp(argv[optind], "-") == 0) {
-		s = malloc(MAX_STRING);
-		if (!s)
-			goto free_conf;
+		return 1;
+	}
 
-		if (scanf("%1024[^\n]s", s) != 1) {
-			fprintf(stderr,
-				_("Error when trying to read URL (Too long?).\n"));
-			free(s);
-			goto free_conf;
-		}
-	} else {
+	return -1;
+}
+
+/**
+ * Return the URL to download: the first operand, or, when that is "-", a
+ * line read from standard input.
+ *
+ * The result is argv[optind] itself unless it had to be read, so the caller
+ * frees it only when it is not.  Returns NULL after reporting why.
+ */
+static
+char *
+get_url(char *argv[])
+{
+	char *s;
+
+	if (strcmp(argv[optind], "-") != 0) {
 		s = argv[optind];
 		if (strlen(s) > MAX_STRING) {
 			fprintf(stderr,
 				_("Can't handle URLs of length over %zu\n"),
 				MAX_STRING);
-			goto free_conf;
+			return NULL;
 		}
+		return s;
 	}
 
-	if (conf->progress_style != AXEL_PROGRESS_STYLE_PERCENTAGE)
-		printf(_("Initializing download: %s\n"), s);
+	s = malloc(MAX_STRING);
+	if (!s)
+		return NULL;
 
-	if (do_search) {
-		search = calloc(conf->search_amount + 1, sizeof(search_t));
-		if (!search)
-			goto free_conf;
+	if (scanf("%1024[^\n]s", s) != 1) {
+		fprintf(stderr,
+			_("Error when trying to read URL (Too long?).\n"));
+		free(s);
+		return NULL;
+	}
 
-		search[0].conf = conf;
-		if (conf->verbose)
-			printf(_("Doing search...\n"));
-		int i = search_makelist(search, s);
-		if (i < 0) {
-			fprintf(stderr, _("File not found\n"));
-			goto free_conf;
-		}
-		if (conf->verbose)
-			printf(_("Testing speeds, this can take a while...\n"));
-		j = search_getspeeds(search, i);
-		if (j < 0) {
-			fprintf(stderr, _("Speed testing failed\n"));
-			return 1;
-		}
+	return s;
+}
 
-		search_sortlist(search, i);
-		if (conf->verbose) {
-			printf(_("%i usable servers found, will use these URLs:\n"),
-			       j);
-			j = min(j, conf->search_top);
-			printf("%-60s %15s\n", "URL", _("Speed"));
-			for (i = 0; i < j; i++)
-				printf("%-70.70s %5jd\n", search[i].url,
-				       search[i].speed);
-			printf("\n");
-		}
-		axel = axel_new(conf, j, search);
-		free(search);
-		if (!axel || axel->ready == -1) {
-			print_messages(axel);
-			goto close_axel;
-		}
-	} else {
+/**
+ * Build the download, either from the mirrors a search turns up for s, or
+ * from the URLs given on the command line.
+ *
+ * Returns NULL after reporting why; print_messages() and axel_close() both
+ * ignore a NULL axel, so the caller has nothing else to undo.
+ */
+static
+axel_t *
+axel_setup(conf_t *conf, int do_search, char *s, int argc, char *argv[])
+{
+	search_t *search;
+	axel_t *axel;
+	int i, j;
+
+	if (!do_search) {
 		search = calloc(argc - optind, sizeof(search_t));
 		if (!search)
-			goto free_conf;
+			return NULL;
 
-		for (int i = 0; i < argc - optind; i++) {
+		for (i = 0; i < argc - optind; i++) {
 			strlcpy(search[i].url, argv[optind + i],
 				sizeof(search[i].url));
 			// FIXME check url here
 		}
 		axel = axel_new(conf, argc - optind, search);
 		free(search);
-		if (!axel || axel->ready == -1) {
-			print_messages(axel);
-			goto close_axel;
-		}
-	}
-	print_messages(axel);
-	if (s != argv[optind]) {
-		free(s);
+		return axel;
 	}
 
-	/* Check if a file name has been specified */
-	if (*fn) {
-		struct stat buf;
+	search = calloc(conf->search_amount + 1, sizeof(search_t));
+	if (!search)
+		return NULL;
 
-		if (stat(fn, &buf) == 0) {
-			if (S_ISDIR(buf.st_mode)) {
-				size_t fnlen = strlen(fn);
-				size_t axelfnlen = strlen(axel->filename);
+	search[0].conf = conf;
+	if (conf->verbose)
+		printf(_("Doing search...\n"));
+	i = search_makelist(search, s);
+	if (i < 0) {
+		fprintf(stderr, _("File not found\n"));
+		free(search);
+		return NULL;
+	}
+	if (conf->verbose)
+		printf(_("Testing speeds, this can take a while...\n"));
+	j = search_getspeeds(search, i);
+	if (j < 0) {
+		fprintf(stderr, _("Speed testing failed\n"));
+		free(search);
+		return NULL;
+	}
 
-				if (fnlen + 1 + axelfnlen + 1 > MAX_STRING) {
-					fprintf(stderr, _("Filename too long!\n"));
-					goto close_axel;
-				}
+	search_sortlist(search, i);
+	if (conf->verbose) {
+		printf(_("%i usable servers found, will use these URLs:\n"), j);
+		j = min(j, conf->search_top);
+		printf("%-60s %15s\n", "URL", _("Speed"));
+		for (i = 0; i < j; i++)
+			printf("%-70.70s %5jd\n", search[i].url,
+			       search[i].speed);
+		printf("\n");
+	}
+	axel = axel_new(conf, j, search);
+	free(search);
+	return axel;
+}
 
-				fn[fnlen] = '/';
-				memcpy(fn + fnlen + 1, axel->filename,
-				       axelfnlen);
-				fn[fnlen + 1 + axelfnlen] = '\0';
-			}
-		}
-		char statefn[MAX_STRING + 3];
-		snprintf(statefn, sizeof(statefn), "%s.st", fn);
-		if (access(fn, F_OK) == 0 && access(statefn, F_OK) != 0) {
-			fprintf(stderr, _("No state file, cannot resume!\n"));
-			goto close_axel;
-		}
-		if (access(statefn, F_OK) == 0 && access(fn, F_OK) != 0) {
-			printf(_("State file found, but no downloaded data. Starting from scratch.\n"));
-			unlink(statefn);
-		}
-		strlcpy(axel->filename, fn, sizeof(axel->filename));
-	} else {
+/**
+ * Point the download at the name the user asked for, or, with no -o, at the
+ * first free name beside the one the URL suggests.
+ *
+ * Returns -1 after reporting why the name cannot be used.
+ */
+static
+int
+set_filename(axel_t *axel, char fn[MAX_STRING])
+{
+	char statefn[MAX_STRING + 3];
+
+	if (!*fn) {
 		/* Local file existence check */
-		s = axel->filename + strlen(axel->filename);
+		char *s = axel->filename + strlen(axel->filename);
+
 		for (int i = 0; 1; i++) {
-			char statefn[MAX_STRING + 3];
 			snprintf(statefn, sizeof(statefn), "%s.st",
 				 axel->filename);
 
@@ -395,36 +385,54 @@ main(int argc, char *argv[])
 			int st_exists = !access(statefn, F_OK);
 			if (f_exists) {
 				if (axel->conn[0].supported && st_exists)
-						break;
+					break;
 			} else if (!st_exists)
 				break;
 			snprintf(s, axel->filename + sizeof(axel->filename) - s,
 				 ".%i", i);
 		}
+		return 0;
 	}
 
-	if (!axel_open(axel)) {
-		print_messages(axel);
-		goto close_axel;
+	struct stat buf;
+
+	if (stat(fn, &buf) == 0 && S_ISDIR(buf.st_mode)) {
+		size_t fnlen = strlen(fn);
+		size_t axelfnlen = strlen(axel->filename);
+
+		if (fnlen + 1 + axelfnlen + 1 > MAX_STRING) {
+			fprintf(stderr, _("Filename too long!\n"));
+			return -1;
+		}
+
+		fn[fnlen] = '/';
+		memcpy(fn + fnlen + 1, axel->filename, axelfnlen);
+		fn[fnlen + 1 + axelfnlen] = '\0';
 	}
-	print_messages(axel);
-	axel_start(axel);
-	print_messages(axel);
 
-	if (conf->progress_style == AXEL_PROGRESS_STYLE_ALTERNATIVE
-	    || conf->progress_style == AXEL_PROGRESS_STYLE_PERCENTAGE) {
-		putchar('\n');
-	} else if (axel->bytes_done > 0) {	/* Print first dots if resuming */
-		putchar('\n');
-		print_commas(axel->bytes_done);
-		fflush(stdout);
-
+	snprintf(statefn, sizeof(statefn), "%s.st", fn);
+	if (access(fn, F_OK) == 0 && access(statefn, F_OK) != 0) {
+		fprintf(stderr, _("No state file, cannot resume!\n"));
+		return -1;
 	}
-	axel->start_byte = axel->bytes_done;
+	if (access(statefn, F_OK) == 0 && access(fn, F_OK) != 0) {
+		printf(_("State file found, but no downloaded data. Starting from scratch.\n"));
+		unlink(statefn);
+	}
+	strlcpy(axel->filename, fn, sizeof(axel->filename));
 
-	/* Install save_state signal handler for resuming support */
-	signal(SIGINT, stop);
-	signal(SIGTERM, stop);
+	return 0;
+}
+
+/**
+ * Run the transfer to its end, drawing it in whichever style was asked for,
+ * and stopping early if a signal told us to.
+ */
+static
+void
+download(axel_t *axel)
+{
+	const conf_t *conf = axel->conf;
 
 	while (!axel->ready && run) {
 		off_t prev;
@@ -462,6 +470,86 @@ main(int argc, char *argv[])
 		}
 		fflush(stdout);
 	}
+}
+
+int
+main(int argc, char *argv[])
+{
+	char fn[MAX_STRING];
+	int do_search = 0;
+	conf_t conf[1];
+	axel_t *axel = NULL;
+	int ret;
+	char *s;
+
+	fn[0] = 0;
+
+/* Set up internationalization (i18n) */
+#ifdef ENABLE_NLS
+	setlocale(LC_ALL, "");
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
+#endif
+	if (axel_rnd_init() == -1)
+		return 1;
+
+	if (!conf_init(conf)) {
+		return 1;
+	}
+
+	/* Anything but -1 is a command line that asked for nothing more than
+	   a message, and that message has been printed already. */
+	ret = parse_options(argc, argv, conf, fn, &do_search);
+	if (ret != -1)
+		goto free_conf;
+
+	ret = 1;
+#ifdef HAVE_SSL
+	ssl_init(conf);
+#endif				/* HAVE_SSL */
+
+	s = get_url(argv);
+	if (!s)
+		goto free_conf;
+
+	if (conf->progress_style != AXEL_PROGRESS_STYLE_PERCENTAGE)
+		printf(_("Initializing download: %s\n"), s);
+
+	axel = axel_setup(conf, do_search, s, argc, argv);
+	if (s != argv[optind])
+		free(s);
+
+	print_messages(axel);
+	if (!axel || axel->ready == -1)
+		goto close_axel;
+
+	if (set_filename(axel, fn) == -1)
+		goto close_axel;
+
+	if (!axel_open(axel)) {
+		print_messages(axel);
+		goto close_axel;
+	}
+	print_messages(axel);
+	axel_start(axel);
+	print_messages(axel);
+
+	if (conf->progress_style == AXEL_PROGRESS_STYLE_ALTERNATIVE
+	    || conf->progress_style == AXEL_PROGRESS_STYLE_PERCENTAGE) {
+		putchar('\n');
+	} else if (axel->bytes_done > 0) {	/* Print first dots if resuming */
+		putchar('\n');
+		print_commas(axel->bytes_done);
+		fflush(stdout);
+
+	}
+	axel->start_byte = axel->bytes_done;
+
+	/* Install save_state signal handler for resuming support */
+	signal(SIGINT, stop);
+	signal(SIGTERM, stop);
+
+	download(axel);
 
 	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
 	time_human(htime, sizeof(htime), axel_gettime() - axel->start_time);

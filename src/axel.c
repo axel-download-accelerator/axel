@@ -487,151 +487,106 @@ axel_start(axel_t *axel)
 	axel->ready = 0;
 }
 
-/* Main 'loop' */
-void
-axel_do(axel_t *axel)
+/**
+ * Read whatever one connection has ready, and write it to the output file.
+ *
+ * Must be called with the conn_t lock held; the caller releases it.
+ *
+ * Returns -1 when the whole pass has to be abandoned, rather than merely
+ * this connection: the output file is what failed, not the network.
+ */
+static
+int
+read_connection(axel_t *axel, int i, fd_set *fds)
 {
-	fd_set fds[1];
-	int hifd, i;
 	off_t remaining, size;
-	struct timeval timeval[1];
-	url_t *url_ptr;
-	struct timespec delay = {.tv_sec = 0, .tv_nsec = 100000000};
-	unsigned long long int max_speed_ratio;
 
-	/* Create statefile if necessary */
-	if (axel_gettime() > axel->next_state) {
-		save_state(axel);
-		axel->next_state = axel_gettime() + axel->conf->save_state_interval;
-	}
+	if (!axel->conn[i].enabled)
+		return 0;
 
-	/* Wait for data on (one of) the connections */
-	FD_ZERO(fds);
-	hifd = 0;
-	for (i = 0; i < axel->conf->num_connections; i++) {
-		/* skip connection if setup thread hasn't released the lock yet */
-		if (!pthread_mutex_trylock(&axel->conn[i].lock)) {
-			if (axel->conn[i].enabled) {
-				FD_SET(axel->conn[i].tcp->fd, fds);
-				hifd = max(hifd, axel->conn[i].tcp->fd);
-			}
-			pthread_mutex_unlock(&axel->conn[i].lock);
-		}
-	}
-	if (hifd == 0) {
-		/* No connections yet. Wait... */
-		if (axel_sleep(delay) < 0) {
-			axel_message(axel,
-				     _("Error while waiting for connection: %s"),
-				     strerror(errno));
-			axel->ready = -1;
-			return;
-		}
-		goto conn_check;
-	}
-
-	timeval->tv_sec = 0;
-	timeval->tv_usec = 100000;
-	if (select(hifd + 1, fds, NULL, NULL, timeval) == -1) {
-		/* A select() error probably means it was interrupted
-		 * by a signal, or that something else's very wrong... */
-		axel->ready = -1;
-		return;
-	}
-
-	/* Handle connections which need attention */
-	for (i = 0; i < axel->conf->num_connections; i++) {
-		/* skip connection if setup thread hasn't released the lock yet */
-		if (pthread_mutex_trylock(&axel->conn[i].lock))
-			continue;
-
-		if (!axel->conn[i].enabled)
-			goto next_conn;
-
-		if (!FD_ISSET(axel->conn[i].tcp->fd, fds)) {
-			time_t timeout = axel->conn[i].last_transfer +
-			    axel->conf->connection_timeout;
-			if (axel_gettime() > timeout) {
-				if (axel->conf->verbose)
-					axel_message(axel,
-						     _("Connection %i timed out"),
-						     i);
-				conn_disconnect(&axel->conn[i]);
-			}
-			goto next_conn;
-		}
-
-		axel->conn[i].last_transfer = axel_gettime();
-		size =
-		    tcp_read(axel->conn[i].tcp, buffer,
-			     axel->conf->buffer_size);
-		if (size == -1) {
-			if (axel->conf->verbose) {
-				axel_message(axel, _("Error on connection %i! "
-						     "Connection closed"), i);
-			}
+	if (!FD_ISSET(axel->conn[i].tcp->fd, fds)) {
+		time_t timeout = axel->conn[i].last_transfer +
+		    axel->conf->connection_timeout;
+		if (axel_gettime() > timeout) {
+			if (axel->conf->verbose)
+				axel_message(axel,
+					     _("Connection %i timed out"),
+					     i);
 			conn_disconnect(&axel->conn[i]);
-			goto next_conn;
 		}
+		return 0;
+	}
 
-		if (size == 0) {
-			if (axel->conf->verbose) {
-				/* Only abnormal behaviour if: */
-				if (axel->conn[i].currentbyte <
-				    axel->conn[i].lastbyte &&
-				    axel->size != LLONG_MAX) {
-					axel_message(axel,
-						     _("Connection %i unexpectedly closed"),
-						     i);
-				} else {
-					axel_message(axel,
-						     _("Connection %i finished"),
-						     i);
-				}
-			}
-			if (!axel->conn[0].supported) {
-				axel->ready = 1;
-			}
-			conn_disconnect(&axel->conn[i]);
-			reactivate_connection(axel, i);
-			goto next_conn;
+	axel->conn[i].last_transfer = axel_gettime();
+	size =
+	    tcp_read(axel->conn[i].tcp, buffer,
+		     axel->conf->buffer_size);
+	if (size == -1) {
+		if (axel->conf->verbose) {
+			axel_message(axel, _("Error on connection %i! "
+					     "Connection closed"), i);
 		}
+		conn_disconnect(&axel->conn[i]);
+		return 0;
+	}
 
-		/* remaining == Bytes to go */
-		remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte;
-		if (remaining < size) {
-			if (axel->conf->verbose) {
-				axel_message(axel, _("Connection %i finished"),
+	if (size == 0) {
+		if (axel->conf->verbose) {
+			/* Only abnormal behaviour if: */
+			if (axel->conn[i].currentbyte <
+			    axel->conn[i].lastbyte &&
+			    axel->size != LLONG_MAX) {
+				axel_message(axel,
+					     _("Connection %i unexpectedly closed"),
+					     i);
+			} else {
+				axel_message(axel,
+					     _("Connection %i finished"),
 					     i);
 			}
-			conn_disconnect(&axel->conn[i]);
-			size = remaining;
-			/* Don't terminate, still stuff to write! */
 		}
-		/* This should always succeed.. */
-		lseek(axel->outfd, axel->conn[i].currentbyte, SEEK_SET);
-		if (write(axel->outfd, buffer, size) != size) {
-			axel_message(axel, _("Write error!"));
-			axel->ready = -1;
-			pthread_mutex_unlock(&axel->conn[i].lock);
-			return;
+		if (!axel->conn[0].supported) {
+			axel->ready = 1;
 		}
-		axel->conn[i].currentbyte += size;
-		axel->bytes_done += size;
-		if (remaining == size)
-			reactivate_connection(axel, i);
-
- next_conn:
-		pthread_mutex_unlock(&axel->conn[i].lock);
+		conn_disconnect(&axel->conn[i]);
+		reactivate_connection(axel, i);
+		return 0;
 	}
 
-	if (axel->ready)
-		return;
+	/* remaining == Bytes to go */
+	remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte;
+	if (remaining < size) {
+		if (axel->conf->verbose) {
+			axel_message(axel, _("Connection %i finished"),
+				     i);
+		}
+		conn_disconnect(&axel->conn[i]);
+		size = remaining;
+		/* Don't terminate, still stuff to write! */
+	}
+	/* This should always succeed.. */
+	lseek(axel->outfd, axel->conn[i].currentbyte, SEEK_SET);
+	if (write(axel->outfd, buffer, size) != size) {
+		axel_message(axel, _("Write error!"));
+		axel->ready = -1;
+		return -1;
+	}
+	axel->conn[i].currentbyte += size;
+	axel->bytes_done += size;
+	if (remaining == size)
+		reactivate_connection(axel, i);
 
- conn_check:
-	/* Look for aborted connections and attempt to restart them. */
-	url_ptr = axel->url;
-	for (i = 0; i < axel->conf->num_connections; i++) {
+	return 0;
+}
+
+/* Look for aborted connections and attempt to restart them. */
+static
+void
+restart_connections(axel_t *axel)
+{
+	url_t *url_ptr = axel->url;
+
+	for (int i = 0; i < axel->conf->num_connections; i++) {
 		/* skip connection if setup thread hasn't released the lock yet */
 		if (pthread_mutex_trylock(&axel->conn[i].lock))
 			continue;
@@ -676,8 +631,13 @@ axel_do(axel_t *axel)
 		}
 		pthread_mutex_unlock(&axel->conn[i].lock);
 	}
+}
 
-	/* Calculate current average speed and finish_time */
+/* Calculate current average speed and finish_time */
+static
+void
+update_speed(axel_t *axel)
+{
 	axel->bytes_per_second =
 	    (off_t)((double)(axel->bytes_done - axel->start_byte) /
 		  (axel_gettime() - axel->start_time));
@@ -688,37 +648,125 @@ axel_do(axel_t *axel)
 			  axel->bytes_per_second);
 	else
 		axel->finish_time = INT_MAX;
+}
 
-	/* Check speed. If too high, delay for some time to slow things
-	   down a bit. I think a 5% deviation should be acceptable. */
-	if (axel->conf->max_speed > 0) {
-		max_speed_ratio = 1000 * axel->bytes_per_second /
-		    axel->conf->max_speed;
-		if (max_speed_ratio > 1050) {
-			axel->delay_time.tv_nsec += 10000000;
-			if (axel->delay_time.tv_nsec >= 1000000000) {
-				axel->delay_time.tv_sec++;
-				axel->delay_time.tv_nsec -= 1000000000;
-			}
-		} else if (max_speed_ratio < 950) {
-			if (axel->delay_time.tv_nsec >= 10000000) {
-				axel->delay_time.tv_nsec -= 10000000;
-			} else if (axel->delay_time.tv_sec > 0) {
-				axel->delay_time.tv_sec--;
-				axel->delay_time.tv_nsec += 999000000;
-			} else {
-				axel->delay_time.tv_sec = 0;
-				axel->delay_time.tv_nsec = 0;
-			}
+/**
+ * Check speed. If too high, delay for some time to slow things down a bit.
+ * I think a 5% deviation should be acceptable.
+ *
+ * Returns -1 if the wait failed, having marked the download as broken.
+ */
+static
+int
+enforce_throttling(axel_t *axel)
+{
+	unsigned long long int max_speed_ratio;
+
+	if (axel->conf->max_speed == 0)
+		return 0;
+
+	max_speed_ratio = 1000 * axel->bytes_per_second /
+	    axel->conf->max_speed;
+	if (max_speed_ratio > 1050) {
+		axel->delay_time.tv_nsec += 10000000;
+		if (axel->delay_time.tv_nsec >= 1000000000) {
+			axel->delay_time.tv_sec++;
+			axel->delay_time.tv_nsec -= 1000000000;
 		}
-		if (axel_sleep(axel->delay_time) < 0) {
+	} else if (max_speed_ratio < 950) {
+		if (axel->delay_time.tv_nsec >= 10000000) {
+			axel->delay_time.tv_nsec -= 10000000;
+		} else if (axel->delay_time.tv_sec > 0) {
+			axel->delay_time.tv_sec--;
+			axel->delay_time.tv_nsec += 999000000;
+		} else {
+			axel->delay_time.tv_sec = 0;
+			axel->delay_time.tv_nsec = 0;
+		}
+	}
+	if (axel_sleep(axel->delay_time) < 0) {
+		axel_message(axel,
+			     _("Error while enforcing throttling: %s"),
+			     strerror(errno));
+		axel->ready = -1;
+		return -1;
+	}
+
+	return 0;
+}
+
+/* Main 'loop' */
+void
+axel_do(axel_t *axel)
+{
+	fd_set fds[1];
+	int hifd, i;
+	struct timeval timeval[1];
+	struct timespec delay = {.tv_sec = 0, .tv_nsec = 100000000};
+
+	/* Create statefile if necessary */
+	if (axel_gettime() > axel->next_state) {
+		save_state(axel);
+		axel->next_state = axel_gettime() + axel->conf->save_state_interval;
+	}
+
+	/* Wait for data on (one of) the connections */
+	FD_ZERO(fds);
+	hifd = 0;
+	for (i = 0; i < axel->conf->num_connections; i++) {
+		/* skip connection if setup thread hasn't released the lock yet */
+		if (!pthread_mutex_trylock(&axel->conn[i].lock)) {
+			if (axel->conn[i].enabled) {
+				FD_SET(axel->conn[i].tcp->fd, fds);
+				hifd = max(hifd, axel->conn[i].tcp->fd);
+			}
+			pthread_mutex_unlock(&axel->conn[i].lock);
+		}
+	}
+
+	if (hifd == 0) {
+		/* No connections yet. Wait... */
+		if (axel_sleep(delay) < 0) {
 			axel_message(axel,
-				     _("Error while enforcing throttling: %s"),
+				     _("Error while waiting for connection: %s"),
 				     strerror(errno));
 			axel->ready = -1;
 			return;
 		}
+	} else {
+		timeval->tv_sec = 0;
+		timeval->tv_usec = 100000;
+		if (select(hifd + 1, fds, NULL, NULL, timeval) == -1) {
+			/* A select() error probably means it was interrupted
+			 * by a signal, or that something else's very wrong... */
+			axel->ready = -1;
+			return;
+		}
+
+		/* Handle connections which need attention */
+		for (i = 0; i < axel->conf->num_connections; i++) {
+			int err;
+
+			/* skip connection if setup thread hasn't released
+			 * the lock yet */
+			if (pthread_mutex_trylock(&axel->conn[i].lock))
+				continue;
+
+			err = read_connection(axel, i, fds);
+			pthread_mutex_unlock(&axel->conn[i].lock);
+			if (err)
+				return;
+		}
+
+		if (axel->ready)
+			return;
 	}
+
+	restart_connections(axel);
+	update_speed(axel);
+
+	if (enforce_throttling(axel) < 0)
+		return;
 
 	/* Ready? */
 	if (axel->bytes_done == axel->size)

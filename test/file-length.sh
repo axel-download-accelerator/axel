@@ -95,12 +95,11 @@ exempt() {
     return 1
 }
 
-# Functions already over the limit when this suite was imported: measured,
-# reported, and counted as TODO instead of failing the run.  Each line is
-# "path:function".  Removing one is the goal; adding one is not.
-grandfathered="\
-src/axel.c:axel_do${NL}\
-src/text.c:main"
+# Functions over the limit that the run tolerates: measured, reported, and
+# counted as TODO instead of failing.  Each line is "path:function", separated
+# by ${NL}.  Removing one is the goal; adding one is not.  Empty is the state
+# to keep it in.
+grandfathered=""
 
 # collect <max> <find-expression>... -- "lines TAB max TAB path" per match
 collect() {
