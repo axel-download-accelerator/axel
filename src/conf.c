@@ -355,7 +355,8 @@ conf_auth_setup(conf_t *conf, int proto, const char *host,
 	if (*user || *pass)
 		return;
 
-	netrc_parse(conf->netrc, host, user, user_len, pass, pass_len);
+	netrc_parse(conf ? conf->netrc : NULL, host, user, user_len,
+		    pass, pass_len);
 	if (*user)
 		return;
 

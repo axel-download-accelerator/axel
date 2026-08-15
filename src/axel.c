@@ -446,11 +446,11 @@ axel_start(axel_t *axel)
 	   re-scan the URL for every conn */
 	url_ptr = axel->url;
 	for (i = 0; i < axel->conf->num_connections; i++) {
+		axel->conn[i].conf = axel->conf;
 		conn_set(&axel->conn[i], url_ptr->text);
 		url_ptr = url_ptr->next;
 		axel->conn[i].local_if = axel->conf->interfaces->text;
 		axel->conf->interfaces = axel->conf->interfaces->next;
-		axel->conn[i].conf = axel->conf;
 		if (i)
 			axel->conn[i].supported = true;
 	}
