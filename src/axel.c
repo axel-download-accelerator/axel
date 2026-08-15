@@ -52,69 +52,14 @@
 #include "axel.h"
 #include "assert.h"
 #include "sleep.h"
+#include "stfile.h"
 
 /* Axel */
-static void save_state(axel_t *axel);
 static void *setup_thread(void *);
-
-#ifdef __GNUC__
-__attribute__((format(printf, 2, 3)))
-#endif /* __GNUC__ */
-static void axel_message(axel_t *axel, const char *format, ...);
-static void axel_divide(axel_t *axel);
 
 static char *buffer = NULL;
 
 #define MIN_CHUNK_WORTH (100 * 1024) /* 100 KB */
-
-
-static
-char *
-stfile_makename(const char *bname)
-{
-	const char suffix[] = ".st";
-	const size_t bname_len = strlen(bname);
-	char *buf = malloc(bname_len + sizeof(suffix));
-	if (!buf) {
-		perror("stfile_open");
-		abort();
-	}
-	memcpy(buf, bname, bname_len);
-	memcpy(buf + bname_len, suffix, sizeof(suffix));
-	return buf;
-}
-
-
-static
-int
-stfile_unlink(const char *bname)
-{
-	char *stname = stfile_makename(bname);
-	int ret = unlink(stname);
-	free(stname);
-	return ret;
-}
-
-static
-int
-stfile_access(const char *bname, int mode)
-{
-	char *stname = stfile_makename(bname);
-	int ret = access(stname, mode);
-	free(stname);
-	return ret;
-}
-
-
-static
-int
-stfile_open(const char *bname, int flags, mode_t mode)
-{
-	char *stname = stfile_makename(bname);
-	int fd = open(stname, flags, mode);
-	free(stname);
-	return fd;
-}
 
 
 /* Create a new axel_t structure */
@@ -262,9 +207,6 @@ axel_new(conf_t *conf, int count, const search_t *res)
 int
 axel_open(axel_t *axel)
 {
-	int i, fd;
-	ssize_t nread;
-
 	if (axel->conf->verbose > 0)
 		axel_message(axel, _("Opening output file %s"), axel->filename);
 
@@ -282,73 +224,14 @@ axel_open(axel_t *axel)
 
 		axel->conn = new_conn;
 		axel_divide(axel);
-	} else if ((fd = stfile_open(axel->filename, O_RDONLY, 0)) != -1) {
-		int old_format = 0;
-		off_t stsize = lseek(fd, 0, SEEK_END);
-		lseek(fd, 0, SEEK_SET);
+	} else {
+		int loaded = stfile_load(axel);
 
-		nread = read(fd, &axel->conf->num_connections,
-			     sizeof(axel->conf->num_connections));
-		if (nread != sizeof(axel->conf->num_connections)) {
-			printf(_("%s.st: Error, truncated state file\n"),
-			       axel->filename);
-			close(fd);
+		if (loaded < 0)
 			return 0;
-		}
 
-		if (axel->conf->num_connections < 1) {
-			fprintf(stderr,
-				_("Bogus number of connections stored in state file\n"));
-			close(fd);
-			return 0;
-		}
-
-		if (stsize < (off_t)(sizeof(axel->conf->num_connections) +
-				     sizeof(axel->bytes_done) +
-				     2 * axel->conf->num_connections *
-				     sizeof(axel->conn[0].currentbyte))) {
-			/* FIXME this might be wrong, the file may have been
-			 * truncated, we need another way to check. */
-#ifndef NDEBUG
-			printf(_("State file has old format.\n"));
-#endif
-			old_format = 1;
-		}
-
-		void *new_conn = realloc(axel->conn, sizeof(conn_t) *
-					 axel->conf->num_connections);
-		if (!new_conn) {
-			close(fd);
-			return 0;
-		}
-		axel->conn = new_conn;
-
-		memset(axel->conn + 1, 0,
-		       sizeof(conn_t) * (axel->conf->num_connections - 1));
-
-		if (old_format)
-			axel_divide(axel);
-
-		nread = read(fd, &axel->bytes_done, sizeof(axel->bytes_done));
-		assert(nread == sizeof(axel->bytes_done));
-		for (i = 0; i < axel->conf->num_connections; i++) {
-			nread = read(fd, &axel->conn[i].currentbyte,
-				     sizeof(axel->conn[i].currentbyte));
-			assert(nread == sizeof(axel->conn[i].currentbyte));
-			if (!old_format) {
-				nread = read(fd, &axel->conn[i].lastbyte,
-					     sizeof(axel->conn[i].lastbyte));
-				assert(nread == sizeof(axel->conn[i].lastbyte));
-			}
-		}
-
-		axel_message(axel,
-			     _("State file found: %jd bytes downloaded, %jd to go."),
-			     axel->bytes_done, axel->size - axel->bytes_done);
-
-		close(fd);
-
-		if ((axel->outfd = open(axel->filename, O_WRONLY, 0666)) == -1) {
+		if (loaded > 0 &&
+		    (axel->outfd = open(axel->filename, O_WRONLY, 0666)) == -1) {
 			axel_message(axel, _("Error opening local file"));
 			return 0;
 		}
@@ -722,7 +605,7 @@ axel_do(axel_t *axel)
 
 	/* Create statefile if necessary */
 	if (axel_gettime() > axel->next_state) {
-		save_state(axel);
+		stfile_save(axel);
 		axel->next_state = axel_gettime() + axel->conf->save_state_interval;
 	}
 
@@ -817,7 +700,7 @@ axel_close(axel_t *axel)
 	}
 	/* Else: Create it.. */
 	else if (axel->bytes_done > 0) {
-		save_state(axel);
+		stfile_save(axel);
 	}
 
 	print_messages(axel);
@@ -841,47 +724,6 @@ axel_gettime(void)
 
 	gettimeofday(time, NULL);
 	return (double)time->tv_sec + (double)time->tv_usec / 1000000;
-}
-
-/**
- * Save the state of the current download.
- */
-static
-void
-save_state(axel_t *axel)
-{
-	/* No use for such a file if the server doesn't support
-	   resuming anyway.. */
-	if (!axel->conn[0].supported)
-		return;
-
-	int fd;
-	fd = stfile_open(axel->filename, O_CREAT | O_TRUNC | O_WRONLY, 0666);
-	if (fd == -1) {
-		return;		/* Not 100% fatal.. */
-	}
-
-	ssize_t nwrite;
-	(void)nwrite; /* workaround unused variable warning */
-	nwrite =
-	    write(fd, &axel->conf->num_connections,
-		  sizeof(axel->conf->num_connections));
-	assert(nwrite == sizeof(axel->conf->num_connections));
-
-	nwrite = write(fd, &axel->bytes_done, sizeof(axel->bytes_done));
-	assert(nwrite == sizeof(axel->bytes_done));
-
-	for (int i = 0; i < axel->conf->num_connections; i++) {
-		nwrite =
-		    write(fd, &axel->conn[i].currentbyte,
-			  sizeof(axel->conn[i].currentbyte));
-		assert(nwrite == sizeof(axel->conn[i].currentbyte));
-		nwrite =
-		    write(fd, &axel->conn[i].lastbyte,
-			  sizeof(axel->conn[i].lastbyte));
-		assert(nwrite == sizeof(axel->conn[i].lastbyte));
-	}
-	close(fd);
 }
 
 /* Thread used to set up a connection */
@@ -915,7 +757,7 @@ setup_thread(void *c)
 }
 
 /* Add a message to the axel->message structure */
-static void
+void
 axel_message(axel_t *axel, const char *format, ...)
 {
 	message_t *m;
@@ -950,7 +792,7 @@ axel_message(axel_t *axel, const char *format, ...)
 }
 
 /* Divide the file and set the locations for each connection */
-static void
+void
 axel_divide(axel_t *axel)
 {
 	/* Optimize the number of connections in case the file is small */

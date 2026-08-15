@@ -25,6 +25,8 @@ axel_SOURCES = \
 	src/search.c \
 	src/search.h \
 	src/ssl.h \
+	src/stfile.c \
+	src/stfile.h \
 	src/tcp.c \
 	src/tcp.h \
 	src/text.c

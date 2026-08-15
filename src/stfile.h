@@ -1,0 +1,60 @@
+/*
+  Axel -- A lighter download accelerator for Linux and other Unices
+
+  Copyright 2001-2007 Wilmer van der Gaast
+  Copyright 2008      Philipp Hagemeister
+  Copyright 2016      Stephen Thirlwall
+  Copyright 2017-2026 Ismael Luceno
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+
+  In addition, as a special exception, the copyright holders give
+  permission to link the code of portions of this program with the
+  OpenSSL library under certain conditions as described in each
+  individual source file, and distribute linked combinations including
+  the two.
+
+  You must obey the GNU General Public License in all respects for all
+  of the code used other than OpenSSL. If you modify file(s) with this
+  exception, you may extend this exception to your version of the
+  file(s), but you are not obligated to do so. If you do not wish to do
+  so, delete this exception statement from your version. If you delete
+  this exception statement from all source files in the program, then
+  also delete it here.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+/* The .st file that lets an interrupted download be resumed */
+
+#ifndef AXEL_STFILE_H
+#define AXEL_STFILE_H
+
+/* All of these name the state file after the download it belongs to, the
+ * way the rest of the program refers to it: by the output filename, with
+ * the .st left off. */
+
+int stfile_access(const char *bname, int mode);
+int stfile_unlink(const char *bname);
+
+/* Read back the progress of an earlier run of this download.
+ *
+ * Returns 1 if there was a state file and axel now holds what it said, 0 if
+ * there was nothing to resume from, and -1 if the download cannot go ahead. */
+int stfile_load(axel_t *axel);
+
+void stfile_save(axel_t *axel);
+
+#endif				/* AXEL_STFILE_H */
