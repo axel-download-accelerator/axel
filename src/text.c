@@ -110,6 +110,126 @@ calc_percentage(off_t cur, off_t total)
 }
 
 /**
+ * Act on one option read from the command line.
+ *
+ * Takes what the option may have to say about the output file name, whether
+ * a search was asked for, and how many times -v was given, on top of conf.
+ *
+ * Returns -1 to carry on reading the command line, or the status to exit
+ * with when the option asked for nothing more than a message.
+ */
+static
+int
+parse_option(int option, conf_t *conf, char fn[MAX_STRING], int *do_search,
+	     int *verbose)
+{
+	switch (option) {
+	case 'U':
+		conf_hdr_make(conf->add_header[HDR_USER_AGENT],
+			      "User-Agent", optarg);
+		break;
+	case 'H':
+		if(!(conf->add_header_count<MAX_ADD_HEADERS)) {
+			fprintf(stderr,
+				_("Too many custom headers (-H)! Currently only %u custom headers can be appended.\n"), MAX_ADD_HEADERS-HDR_count_init);
+			return 1;
+		}
+		strlcpy(conf->add_header[conf->add_header_count++], optarg,
+			sizeof(conf->add_header[0]));
+		break;
+	case 's':
+		if (!sscanf(optarg, "%llu", &conf->max_speed)) {
+			print_help();
+			return 1;
+		}
+		break;
+	case 'n':
+		if (!sscanf(optarg, "%hu", &conf->num_connections)) {
+			print_help();
+			return 1;
+		}
+		break;
+	case MAX_REDIR_OPT:
+		if (!sscanf(optarg, "%i", &conf->max_redirect)) {
+			print_help();
+			return 1;
+		}
+		break;
+	case LOCATION_TRUSTED_OPT:
+		conf->location_trusted = 1;
+		break;
+	case 'o':
+		strlcpy(fn, optarg, MAX_STRING);
+		break;
+	case 'S':
+		*do_search = 1;
+		if (optarg) {
+			if (!sscanf(optarg, "%i", &conf->search_top)) {
+				print_help();
+				return 1;
+			}
+		}
+		break;
+	case 'R':
+		conf_netrc_set(conf, optarg ? optarg : "");
+		break;
+	case NO_NETRC_OPT:
+		conf_netrc_set(conf, NULL);
+		break;
+	case '6':
+		conf->ai_family = AF_INET6;
+		break;
+	case '4':
+		conf->ai_family = AF_INET;
+		break;
+	case 'a':
+		conf->progress_style = AXEL_PROGRESS_STYLE_ALTERNATIVE;
+		break;
+	case 'p':
+		conf->progress_style = AXEL_PROGRESS_STYLE_PERCENTAGE;
+		break;
+	case 'k':
+		conf->insecure = 1;
+		break;
+	case 'c':
+		conf->no_clobber = 1;
+		break;
+	case 'N':
+		*conf->http_proxy = 0;
+		break;
+	case 'h':
+		print_help();
+		return 0;
+	case 'v':
+		if (*verbose == -1)
+			*verbose = 1;
+		else
+			(*verbose)++;
+		break;
+	case 'V':
+		print_version_info();
+		return 0;
+	case 'q':
+		close(1);
+		conf->verbose = -1;
+		if (open("/dev/null", O_WRONLY) != 1) {
+			fprintf(stderr,
+				_("Can't redirect stdout to /dev/null.\n"));
+			return 1;
+		}
+		break;
+	case 'T':
+		conf->io_timeout = strtoul(optarg, NULL, 0);
+		break;
+	default:
+		print_help();
+		return 1;
+	}
+
+	return -1;
+}
+
+/**
  * Read the command line into conf, the output file name into fn, and whether
  * a search was asked for into do_search.
  *
@@ -121,11 +241,10 @@ int
 parse_options(int argc, char *argv[], conf_t *conf, char fn[MAX_STRING],
 	      int *do_search)
 {
-	int j;
+	int verbose = -1;
 
 	opterr = 0;
 
-	j = -1;
 	while (1) {
 		int option = getopt_long(argc, argv,
 					 "s:n:o:S::R::46NqvhVapkcH:U:T:",
@@ -133,127 +252,19 @@ parse_options(int argc, char *argv[], conf_t *conf, char fn[MAX_STRING],
 		if (option == -1)
 			break;
 
-		switch (option) {
-		case 'U':
-			conf_hdr_make(conf->add_header[HDR_USER_AGENT],
-				      "User-Agent", optarg);
-			break;
-		case 'H':
-			if(!(conf->add_header_count<MAX_ADD_HEADERS)) {
-				fprintf(stderr,
-					_("Too many custom headers (-H)! Currently only %u custom headers can be appended.\n"), MAX_ADD_HEADERS-HDR_count_init);
-				return 1;
-			}
-			strlcpy(conf->add_header[conf->add_header_count++], optarg,
-				sizeof(conf->add_header[0]));
-			break;
-		case 's':
-			if (!sscanf(optarg, "%llu", &conf->max_speed)) {
-				print_help();
-				return 1;
-			}
-			break;
-		case 'n':
-			if (!sscanf(optarg, "%hu", &conf->num_connections)) {
-				print_help();
-				return 1;
-			}
-			break;
-		case MAX_REDIR_OPT:
-			if (!sscanf(optarg, "%i", &conf->max_redirect)) {
-				print_help();
-				return 1;
-			}
-			break;
-		case LOCATION_TRUSTED_OPT:
-			conf->location_trusted = 1;
-			break;
-		case 'o':
-			strlcpy(fn, optarg, MAX_STRING);
-			break;
-		case 'S':
-			*do_search = 1;
-			if (optarg) {
-				if (!sscanf(optarg, "%i", &conf->search_top)) {
-					print_help();
-					return 1;
-				}
-			}
-			break;
-		case 'R':
-			conf_netrc_set(conf, optarg ? optarg : "");
-			break;
-		case NO_NETRC_OPT:
-			conf_netrc_set(conf, NULL);
-			break;
-		case '6':
-			conf->ai_family = AF_INET6;
-			break;
-		case '4':
-			conf->ai_family = AF_INET;
-			break;
-		case 'a':
-			conf->progress_style = AXEL_PROGRESS_STYLE_ALTERNATIVE;
-			break;
-		case 'p':
-			conf->progress_style = AXEL_PROGRESS_STYLE_PERCENTAGE;
-			break;
-		case 'k':
-			conf->insecure = 1;
-			break;
-		case 'c':
-			conf->no_clobber = 1;
-			break;
-		case 'N':
-			*conf->http_proxy = 0;
-			break;
-		case 'h':
-			print_help();
-			return 0;
-		case 'v':
-			if (j == -1)
-				j = 1;
-			else
-				j++;
-			break;
-		case 'V':
-			print_version_info();
-			return 0;
-		case 'q':
-			close(1);
-			conf->verbose = -1;
-			if (open("/dev/null", O_WRONLY) != 1) {
-				fprintf(stderr,
-					_("Can't redirect stdout to /dev/null.\n"));
-				return 1;
-			}
-			break;
-		case 'T':
-			conf->io_timeout = strtoul(optarg, NULL, 0);
-			break;
-		default:
-			print_help();
-			return 1;
-		}
+		int ret = parse_option(option, conf, fn, do_search, &verbose);
+		if (ret != -1)
+			return ret;
 	}
 
 	/* disable alternate outputs and verbosity when quiet is specified */
-	if (conf->verbose < 0) {
+	if (conf->verbose < 0)
 		conf->progress_style = AXEL_PROGRESS_STYLE_CLASSIC;
-	} else if (j > -1)
-		conf->verbose = j;
+	else if (verbose > -1)
+		conf->verbose = verbose;
 
-	if (conf->num_connections < 1) {
-		print_help();
-		return 1;
-	}
-
-	if (conf->max_redirect < 0) {
-		print_help();
-		return 1;
-	}
-
-	if (argc - optind == 0) {
+	if (conf->num_connections < 1 || conf->max_redirect < 0 ||
+	    argc - optind == 0) {
 		print_help();
 		return 1;
 	}
