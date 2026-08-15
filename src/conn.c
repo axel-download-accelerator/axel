@@ -420,11 +420,9 @@ urlseq_check_loop(struct urlseq *u, conn_t *conn)
 /* Point a connection at the target of a redirect.
  *
  * Where that lands decides whether the credential-bearing headers keep being
- * sent: the user gave them for the host they named, and they stay behind
- * once the download leaves it, or drops out of TLS and would put them on the
- * wire in the clear.  A change of port, or a step up to TLS, is still the
- * same host and keeps them.  --location-trusted sends them anywhere, the way
- * curl's option of the same name does. */
+ * sent, which is conf_credentials_may_follow's question; --location-trusted
+ * says to send them wherever it went, the way curl's option of the same name
+ * does. */
 static
 int
 conn_redirect(conn_t *conn, const char *url)
@@ -440,8 +438,7 @@ conn_redirect(conn_t *conn, const char *url)
 	if (conn->conf->location_trusted || conn->conf->untrusted_host)
 		return 1;
 
-	if (strcasecmp(conn->host, host) == 0 &&
-	    (!PROTO_IS_SECURE(proto) || PROTO_IS_SECURE(conn->proto)))
+	if (conf_credentials_may_follow(proto, host, conn->proto, conn->host))
 		return 1;
 
 	conn->conf->untrusted_host = true;

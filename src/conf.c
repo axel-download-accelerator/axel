@@ -269,6 +269,23 @@ conf_header_is_private(const char *header)
 	return false;
 }
 
+/* May those headers follow a redirect from one place to another?
+ *
+ * They were given for the host the user named, so a redirect to any other
+ * one leaves them behind.  The port is not part of the question -- a cookie
+ * is not scoped to one -- but leaving TLS is, since that would put the
+ * credential on the wire in the clear.  A step up to TLS is the same host,
+ * better protected, and keeps them. */
+bool
+conf_credentials_may_follow(int from_proto, const char *from_host,
+			    int to_proto, const char *to_host)
+{
+	if (strcasecmp(from_host, to_host) != 0)
+		return false;
+
+	return !PROTO_IS_SECURE(from_proto) || PROTO_IS_SECURE(to_proto);
+}
+
 bool
 conf_has_private_headers(const conf_t *conf)
 {

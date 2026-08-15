@@ -102,6 +102,10 @@ bool conf_header_is_private(const char *header);
 /* Is there anything among the headers that a redirect shouldn't get? */
 bool conf_has_private_headers(const conf_t *conf);
 
+/* Are two ends of a redirect near enough for a credential to follow? */
+bool conf_credentials_may_follow(int from_proto, const char *from_host,
+				 int to_proto, const char *to_host);
+
 enum {
 	HDR_USER_AGENT,
 	HDR_count_init,

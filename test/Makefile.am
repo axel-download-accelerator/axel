@@ -1,6 +1,6 @@
 # One binary per suite: harness.h keeps its registry in file-scope statics,
 # so two suites linked together would leave one of them unreachable.
-TEST_SUITES = test/netrc
+TEST_SUITES = test/netrc test/conf
 
 # Some properties of the tree are invisible to a program compiled from it:
 # how long its files are, and whether they are compiled at all.  These suites
@@ -26,6 +26,15 @@ test_netrc_SOURCES = \
 test_netrc_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/src
 test_netrc_CFLAGS = $(AM_CFLAGS) $(PTHREAD_CFLAGS)
 test_netrc_LDADD = $(LIBOBJS) $(PTHREAD_LIBS)
+
+test_conf_SOURCES = \
+	test/harness.h \
+	test/conf.c \
+	src/conf.c \
+	src/netrc.c
+test_conf_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/src
+test_conf_CFLAGS = $(AM_CFLAGS) $(PTHREAD_CFLAGS)
+test_conf_LDADD = $(LIBOBJS) $(LIBINTL) $(PTHREAD_LIBS)
 
 test_tap_run_SOURCES = test/tap-run.c
 
