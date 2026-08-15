@@ -61,6 +61,7 @@ typedef struct {
 	int verbose;
 	int insecure;
 	int no_clobber;
+	int location_trusted;
 	enum {
 		AXEL_PROGRESS_STYLE_CLASSIC,
 		AXEL_PROGRESS_STYLE_ALTERNATIVE,
@@ -81,6 +82,10 @@ typedef struct {
 
 	int add_header_count;
 	char add_header[MAX_ADD_HEADERS][MAX_STRING];
+
+	/* Set once a redirect has led somewhere the user didn't name, so
+	   that the headers meant for the host they did name stay behind */
+	bool untrusted_host;
 } conf_t;
 
 int conf_loadfile(conf_t *conf, const char *file);
@@ -90,6 +95,12 @@ void conf_netrc_set(conf_t *conf, const char *path);
 void conf_auth_setup(conf_t *conf, int proto, const char *host,
 		     char *user, size_t user_len,
 		     char *pass, size_t pass_len);
+
+/* Is this one of the headers that carry a credential? */
+bool conf_header_is_private(const char *header);
+
+/* Is there anything among the headers that a redirect shouldn't get? */
+bool conf_has_private_headers(const conf_t *conf);
 
 enum {
 	HDR_USER_AGENT,

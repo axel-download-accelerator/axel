@@ -172,6 +172,7 @@ conf_loadfile(conf_t *conf, const char *file)
 			KEY(verbose)
 			KEY(insecure)
 			KEY(no_clobber)
+			KEY(location_trusted)
 			KEY(search_timeout)
 			KEY(search_threads)
 			KEY(search_amount)
@@ -241,6 +242,41 @@ error:
 
 	fclose(fp);
 	return ret;
+}
+
+/* The headers a user gives with -H are meant for the host they named.  A
+ * cookie or an authorization line is a credential, and a redirect can point
+ * anywhere, so those stop travelling once the download leaves that host --
+ * otherwise a shortened or hijacked link walks off with the session. */
+bool
+conf_header_is_private(const char *header)
+{
+	static const char *const names[] = {
+		"cookie",
+		"authorization",
+		"proxy-authorization",
+	};
+
+	for (size_t i = 0; i < sizeof(names) / sizeof(*names); i++) {
+		size_t len = strlen(names[i]);
+
+		/* The name, then whatever space was typed, then the colon */
+		if (strncasecmp(header, names[i], len) == 0 &&
+		    header[len + strspn(header + len, " \t")] == ':')
+			return true;
+	}
+
+	return false;
+}
+
+bool
+conf_has_private_headers(const conf_t *conf)
+{
+	for (int i = 0; i < conf->add_header_count; i++)
+		if (conf_header_is_private(conf->add_header[i]))
+			return true;
+
+	return false;
 }
 
 int

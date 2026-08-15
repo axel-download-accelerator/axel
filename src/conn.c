@@ -313,9 +313,15 @@ conn_setup(conn_t *conn)
 
 		abuf_setup(conn->http->request, 2048);
 		http_get(conn->http, s);
-		for (i = 0; i < conn->conf->add_header_count; i++)
-			http_addheader(conn->http, "%s",
-				       conn->conf->add_header[i]);
+		for (i = 0; i < conn->conf->add_header_count; i++) {
+			const char *header = conn->conf->add_header[i];
+
+			if (conn->conf->untrusted_host &&
+			    conf_header_is_private(header))
+				continue;
+
+			http_addheader(conn->http, "%s", header);
+		}
 	}
 	return 1;
 }
@@ -411,6 +417,42 @@ urlseq_check_loop(struct urlseq *u, conn_t *conn)
 	return 0;
 }
 
+/* Point a connection at the target of a redirect.
+ *
+ * Where that lands decides whether the credential-bearing headers keep being
+ * sent: the user gave them for the host they named, and they stay behind
+ * once the download leaves it, or drops out of TLS and would put them on the
+ * wire in the clear.  A change of port, or a step up to TLS, is still the
+ * same host and keeps them.  --location-trusted sends them anywhere, the way
+ * curl's option of the same name does. */
+static
+int
+conn_redirect(conn_t *conn, const char *url)
+{
+	char host[sizeof(conn->host)];
+	int proto = conn->proto;
+
+	strlcpy(host, conn->host, sizeof(host));
+
+	if (!conn_set(conn, url))
+		return 0;
+
+	if (conn->conf->location_trusted || conn->conf->untrusted_host)
+		return 1;
+
+	if (strcasecmp(conn->host, host) == 0 &&
+	    (!PROTO_IS_SECURE(proto) || PROTO_IS_SECURE(conn->proto)))
+		return 1;
+
+	conn->conf->untrusted_host = true;
+	if (conf_has_private_headers(conn->conf))
+		fprintf(stderr, _("Redirected away from the host asked for, "
+				  "not passing on the headers that carry "
+				  "credentials.\n"));
+
+	return 1;
+}
+
 /* Get file size and other information */
 int
 conn_info(conn_t *conn)
@@ -460,9 +502,8 @@ conn_info(conn_t *conn)
 			strlcpy(s, conn->http->headers->p, sizeof(s));
 		}
 
-		if (!conn_set(conn, s)) {
+		if (!conn_redirect(conn, s))
 			return 0;
-		}
 
 		/* check if the download has been redirected to FTP and
 		 * report it back to the caller */

@@ -66,6 +66,7 @@ int run = 1;
 
 #define MAX_REDIR_OPT	256
 #define NO_NETRC_OPT	257
+#define LOCATION_TRUSTED_OPT	258
 
 #ifdef NOGETOPTLONG
 #define getopt_long(a, b, c, d, e) getopt(a, b, c)
@@ -75,6 +76,7 @@ static struct option axel_options[] = {
 	{"max-speed",       1,      NULL, 's'},
 	{"num-connections", 1,      NULL, 'n'},
 	{"max-redirect",    1,      NULL, MAX_REDIR_OPT},
+	{"location-trusted",0,      NULL, LOCATION_TRUSTED_OPT},
 	{"output",          1,      NULL, 'o'},
 	{"search",          2,      NULL, 'S'},
 	{"netrc",           2,      NULL, 'R'},
@@ -162,6 +164,9 @@ parse_options(int argc, char *argv[], conf_t *conf, char fn[MAX_STRING],
 				print_help();
 				return 1;
 			}
+			break;
+		case LOCATION_TRUSTED_OPT:
+			conf->location_trusted = 1;
 			break;
 		case 'o':
 			strlcpy(fn, optarg, MAX_STRING);
@@ -821,6 +826,7 @@ print_help(void)
 		 "--max-speed=x\t\t-s x\tSpecify maximum speed (bytes per second)\n"
 		 "--num-connections=x\t-n x\tSpecify maximum number of connections\n"
 		 "--max-redirect=x\t\tSpecify maximum number of redirections\n"
+		 "--location-trusted\t\tKeep sending credential headers after a redirect\n"
 		 "--output=f\t\t-o f\tSpecify local output file\n"
 		 "--search[=n]\t\t-S[n]\tSearch for mirrors and download from n servers\n"
 		 "--netrc[=f]\t\t-R[f]\tTake credentials from f, or from the default .netrc\n"
