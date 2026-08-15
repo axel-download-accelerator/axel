@@ -26,6 +26,13 @@
 #
 # max_redirect = 20
 
+# Keep sending headers that carry credentials (Cookie, Authorization,
+# Proxy-Authorization) after a redirect to a host other than the one asked
+# for. They are dropped by default, so that a redirect cannot walk off with
+# them.
+#
+# location_trusted = 0
+
 # If no data comes from a connection for this number of seconds, abort (and
 # resume) the connection.
 #

@@ -33,6 +33,12 @@ OPTIONS
  --max-redirect=x  Specify an alternative number of redirections to follow when connecting to the
                    server (default is 20).
 
+ --location-trusted  Keep sending the headers that carry credentials after a redirect has led to a
+                     host other than the one asked for. A Cookie, Authorization or Proxy-Authorization
+                     header given with --header is meant for the host named on the command line, so it
+                     is dropped once a redirect leaves that host, or leaves TLS behind. Use this only
+                     when every host the download may be sent to is as trusted as the first one.
+
  --output=x, -o x  Downloaded data will be put in a local file with the same name, unless you specify
                    a different name using this option. You can specify a directory as well, the program
                    will append the filename.
