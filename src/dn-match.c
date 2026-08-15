@@ -57,7 +57,7 @@ dn_match(const char *hostname, const char *pat, size_t pat_len)
 	const size_t left = strcspn(pat, ".*");
 
 	/* We can't match an IDN against a wildcard */
-	const char ace_prefix[4] = "xn--";
+	NONSTRING const char ace_prefix[4] = "xn--";
 	if (pat[left] == '*' && !strncasecmp(hostname, ace_prefix, 4))
 		return DN_NEQ;
 
