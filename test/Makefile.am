@@ -2,10 +2,21 @@
 # so two suites linked together would leave one of them unreachable.
 TEST_SUITES = test/netrc
 
+# Some properties of the tree are invisible to a program compiled from it:
+# how long its files are, and whether they are compiled at all.  These suites
+# read the source tree instead, so there is nothing to build and nothing a
+# build directory would hold -- they run from $(top_srcdir), and find it
+# again through SRCTOP, since tap-run passes a suite no arguments.  They emit
+# the same TAP on stderr as test/harness.h, so tap-run needs to know nothing
+# about the language.
+SH_SUITES = \
+	test/file-length.sh \
+	test/file-map.sh
+
 # tap-run drives the suites itself, so automake's own driver stays out of it
 check_PROGRAMS = $(TEST_SUITES) test/tap-run
 
-EXTRA_DIST += test/tap-prettify
+EXTRA_DIST += $(SH_SUITES) test/tap-prettify
 CLEANFILES = test/tap.log
 
 test_netrc_SOURCES = \
@@ -24,7 +35,15 @@ test_tap_run_SOURCES = test/tap-run.c
 # or a plan that came up short.  The raw TAP stays in test/tap.log for
 # whoever has to read the run later.
 #
-# Run a subset with, e.g., make check TEST_SUITES=test/netrc
+# Run a subset with, e.g., make check TEST_SUITES=test/netrc SH_SUITES=
+#
+# The loop is what a `$(SH_SUITES:%=$(top_srcdir)/%)` would say in GNU
+# make and nowhere else; the scripts have to be named relative to the source
+# tree for EXTRA_DIST above, and absolutely for a build outside it.
 check-local: $(check_PROGRAMS)
-	@test/tap-run $(TEST_SUITES) | tee test/tap.log \
+	@scripts=; for s in $(SH_SUITES); do \
+		scripts="$$scripts $(abs_top_srcdir)/$$s"; \
+	done; \
+	SRCTOP='$(abs_top_srcdir)' \
+	    test/tap-run $(TEST_SUITES) $$scripts | tee test/tap.log \
 		| $(AWK) -f $(top_srcdir)/test/tap-prettify
