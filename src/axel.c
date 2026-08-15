@@ -579,6 +579,24 @@ read_connection(axel_t *axel, int i, fd_set *fds)
 	return 0;
 }
 
+/* Reap a connection's setup thread, if it has one left to reap.
+ *
+ * Joining a thread twice is undefined behaviour, and so is joining one that
+ * was never created.  The handle is zero until pthread_create() fills it in
+ * -- axel->conn is calloc'd, and the entries a state file grows it by are
+ * memset -- so zeroing it on the way out is what tells a thread still to be
+ * reaped from one that is already gone. */
+static
+void
+join_setup_thread(conn_t *conn)
+{
+	if (*conn->setup_thread == 0)
+		return;
+
+	pthread_join(*conn->setup_thread, NULL);
+	*conn->setup_thread = 0;
+}
+
 /* Look for aborted connections and attempt to restart them. */
 static
 void
@@ -595,8 +613,7 @@ restart_connections(axel_t *axel)
 		    axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
 			if (!axel->conn[i].state) {
 				// Wait for termination of this thread
-				pthread_join(*(axel->conn[i].setup_thread),
-					     NULL);
+				join_setup_thread(&axel->conn[i]);
 
 				conn_set(&axel->conn[i], url_ptr->text);
 				url_ptr = url_ptr->next;
@@ -624,8 +641,7 @@ restart_connections(axel_t *axel)
 						 axel->conf->reconnect_delay)) {
 					pthread_cancel(*axel->conn[i].setup_thread);
 					axel->conn[i].state = false;
-					pthread_join(*axel->conn[i].
-						     setup_thread, NULL);
+					join_setup_thread(&axel->conn[i]);
 				}
 			}
 		}
@@ -788,7 +804,7 @@ axel_close(axel_t *axel)
 		/* don't try to kill non existing thread */
 		if (*axel->conn[i].setup_thread != 0) {
 			pthread_cancel(*axel->conn[i].setup_thread);
-			pthread_join(*axel->conn[i].setup_thread, NULL);
+			join_setup_thread(&axel->conn[i]);
 		}
 		conn_disconnect(&axel->conn[i]);
 	}
