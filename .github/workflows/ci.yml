@@ -1,0 +1,93 @@
+# Every job builds the buildsystem from the checkout, so the run covers
+# autoreconf as much as it covers the code.
+#
+# distcheck rather than make && make check: it builds outside the source
+# tree and out of an unpacked tarball, so it also answers whether the
+# distribution carries everything the suites read -- which two of them
+# read the source tree for.
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CFLAGS: -Os -fPIC
+  MAKEFLAGS: -j4
+
+jobs:
+  linux:
+    name: ${{ matrix.arch }} ${{ matrix.cc }} ${{ matrix.ssl }}
+    runs-on: ${{ matrix.runner }}
+    # In the environment rather than on the command line, so that the
+    # configure distcheck runs inside the unpacked tree uses it too
+    env:
+      CC: ${{ matrix.cc }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {arch: amd64, runner: ubuntu-latest,   cc: gcc,   ssl: --with-ssl}
+          - {arch: amd64, runner: ubuntu-latest,   cc: gcc,   ssl: --without-ssl}
+          - {arch: amd64, runner: ubuntu-latest,   cc: clang, ssl: --with-ssl}
+          - {arch: amd64, runner: ubuntu-latest,   cc: clang, ssl: --without-ssl}
+          - {arch: arm64, runner: ubuntu-24.04-arm, cc: gcc,  ssl: --with-ssl}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+              autoconf-archive autopoint clang gettext libssl-dev \
+              pkg-config txt2man
+
+      - name: autoreconf
+        run: autoreconf -fiv
+
+      - name: configure
+        run: ./configure ${{ matrix.ssl }}
+
+      # The inner configure takes no flags of its own, so without this
+      # every job would distcheck the default build
+      - name: distcheck
+        run: >
+          make DIST_TARGETS=dist-gzip GZIP_ENV=--fast DISTCHECK_CONFIGURE_FLAGS="${{ matrix.ssl }}" distcheck
+
+      # distcheck runs the suites inside the unpacked distribution, and
+      # takes it away again on the way out, so the raw TAP has to be
+      # collected while it is still there -- which is only on failure.
+      - name: TAP log
+        if: failure()
+        run: find . -name tap.log -exec sh -c 'echo "== $1"; cat "$1"' _ {} \;
+
+  macos:
+    # Advisory, as it was under Travis: Homebrew keeps gettext and openssl
+    # where configure does not look, and moves them from time to time, so a
+    # break here is as likely to be theirs as ours.
+    continue-on-error: true
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: >
+          brew install autoconf automake autoconf-archive gettext openssl
+          pkg-config txt2man
+
+      - name: Build and test
+        run: |
+          GETTEXT=$(brew --prefix gettext)
+          OPENSSL=$(brew --prefix openssl)
+          export PATH="$GETTEXT/bin:$PATH"
+          autoreconf -fiv -I"$GETTEXT/share/aclocal"
+          ./configure \
+              CFLAGS="$CFLAGS -I$GETTEXT/include -I$OPENSSL/include" \
+              LDFLAGS="-L$GETTEXT/lib" \
+              PKG_CONFIG_PATH="$OPENSSL/lib/pkgconfig"
+          make DIST_TARGETS=dist-gzip GZIP_ENV=--fast distcheck
