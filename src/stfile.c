@@ -96,6 +96,45 @@ stfile_open(const char *bname, int flags, mode_t mode)
 }
 
 
+/* Does the state just read describe the file the server just described?
+ *
+ * The state file names neither the URL nor the size it was written for, so a
+ * download whose output name collides with an unfinished, unrelated one will
+ * happily load the other's progress.  Nothing then adds up: the byte counts
+ * print as nonsense, every connection asks for a range past the end of the
+ * file, and none of it is ever going to finish.
+ *
+ * What can be checked is the shape.  The chunks axel_divide() lays down tile
+ * the file in order, and a connection stops at the end of its own chunk, so
+ * the offsets have to climb from zero to exactly the size the server gave.
+ * An old-format state file carries no chunk ends -- axel_divide() has just
+ * recomputed those from the current size -- and for one of those this only
+ * really checks the progress made within each chunk. */
+static
+bool
+state_fits_download(const axel_t *axel)
+{
+	off_t start = 0;
+
+	if (axel->bytes_done < 0 || axel->bytes_done > axel->size)
+		return false;
+
+	for (int i = 0; i < axel->conf->num_connections; i++) {
+		const conn_t *conn = &axel->conn[i];
+
+		if (conn->lastbyte > axel->size)
+			return false;
+		if (conn->currentbyte < start ||
+		    conn->currentbyte > conn->lastbyte)
+			return false;
+
+		start = conn->lastbyte;
+	}
+
+	return start == axel->size;
+}
+
+
 int
 stfile_load(axel_t *axel)
 {
@@ -103,29 +142,31 @@ stfile_load(axel_t *axel)
 	if (fd == -1)
 		return 0;
 
+	/* What to go back to if the state turns out not to be ours */
+	uint16_t wanted_conns = axel->conf->num_connections;
+	uint16_t nconns;
 	int old_format = 0;
 	off_t stsize = lseek(fd, 0, SEEK_END);
 	lseek(fd, 0, SEEK_SET);
 
-	ssize_t nread = read(fd, &axel->conf->num_connections,
-			     sizeof(axel->conf->num_connections));
-	if (nread != sizeof(axel->conf->num_connections)) {
+	ssize_t nread = read(fd, &nconns, sizeof(nconns));
+	if (nread != sizeof(nconns)) {
 		printf(_("%s.st: Error, truncated state file\n"),
 		       axel->filename);
 		close(fd);
 		return -1;
 	}
 
-	if (axel->conf->num_connections < 1) {
+	if (nconns < 1) {
 		fprintf(stderr,
 			_("Bogus number of connections stored in state file\n"));
 		close(fd);
 		return -1;
 	}
 
-	if (stsize < (off_t)(sizeof(axel->conf->num_connections) +
+	if (stsize < (off_t)(sizeof(nconns) +
 			     sizeof(axel->bytes_done) +
-			     2 * axel->conf->num_connections *
+			     2 * nconns *
 			     sizeof(axel->conn[0].currentbyte))) {
 		/* FIXME this might be wrong, the file may have been
 		 * truncated, we need another way to check. */
@@ -135,16 +176,10 @@ stfile_load(axel_t *axel)
 		old_format = 1;
 	}
 
-	void *new_conn = realloc(axel->conn, sizeof(conn_t) *
-				 axel->conf->num_connections);
-	if (!new_conn) {
+	if (!axel_conn_resize(axel, nconns)) {
 		close(fd);
 		return -1;
 	}
-	axel->conn = new_conn;
-
-	memset(axel->conn + 1, 0,
-	       sizeof(conn_t) * (axel->conf->num_connections - 1));
 
 	if (old_format)
 		axel_divide(axel);
@@ -162,11 +197,19 @@ stfile_load(axel_t *axel)
 		}
 	}
 
+	close(fd);
+
+	if (!state_fits_download(axel)) {
+		axel_message(axel, _("State file %s.st belongs to another "
+				     "download, ignoring it."), axel->filename);
+		axel->bytes_done = 0;
+		return axel_conn_resize(axel, wanted_conns) ? 0 : -1;
+	}
+
 	axel_message(axel,
 		     _("State file found: %jd bytes downloaded, %jd to go."),
 		     axel->bytes_done, axel->size - axel->bytes_done);
 
-	close(fd);
 	return 1;
 }
 

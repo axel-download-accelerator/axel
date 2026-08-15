@@ -203,6 +203,30 @@ axel_new(conf_t *conf, int count, const search_t *res)
 	return NULL;
 }
 
+/* Grow or shrink the array of connections, zeroing whatever is added.
+ *
+ * Only the entries past the end are cleared: the ones already there keep the
+ * lock axel_new() initialised for them.  A connection a state file adds gets
+ * a zeroed lock instead, which works because that is what an unlocked mutex
+ * is on the platforms this runs on, and because nothing has taken it yet. */
+int
+axel_conn_resize(axel_t *axel, uint16_t nconns)
+{
+	uint16_t oldconns = axel->conf->num_connections;
+
+	void *new_conn = realloc(axel->conn, sizeof(conn_t) * nconns);
+	if (!new_conn)
+		return 0;
+
+	axel->conn = new_conn;
+	if (nconns > oldconns)
+		memset(axel->conn + oldconns, 0,
+		       sizeof(conn_t) * (nconns - oldconns));
+
+	axel->conf->num_connections = nconns;
+	return 1;
+}
+
 /* Open a local file to store the downloaded data */
 int
 axel_open(axel_t *axel)
@@ -217,12 +241,9 @@ axel_open(axel_t *axel)
 	if (!axel->conn[0].supported) {
 		axel_message(axel, _("Server unsupported, "
 				     "starting from scratch with one connection."));
-		axel->conf->num_connections = 1;
-		void *new_conn = realloc(axel->conn, sizeof(conn_t));
-		if (!new_conn)
+		if (!axel_conn_resize(axel, 1))
 			return 0;
 
-		axel->conn = new_conn;
 		axel_divide(axel);
 	} else {
 		int loaded = stfile_load(axel);
@@ -246,6 +267,15 @@ axel_open(axel_t *axel)
 			axel_message(axel, _("Error opening local file"));
 			return 0;
 		}
+
+		/* Every byte of this download is about to be written, so
+		   whatever the file already holds past the end of it belongs
+		   to something else and has to go.  Not worth stopping for:
+		   the target may be a device or a fifo, which has no length
+		   to set, and the writes themselves will say so if it is
+		   anything worse than that. */
+		if (axel->size != LLONG_MAX)
+			(void)ftruncate(axel->outfd, axel->size);
 
 		/* And check whether the filesystem can handle seeks to
 		   past-EOF areas.. Speeds things up. :) AFAIK this

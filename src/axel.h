@@ -160,6 +160,9 @@ void axel_message(axel_t *axel, const char *format, ...) PRINTF_FUNC(2);
 /* Hand each connection a share of the file to fetch */
 void axel_divide(axel_t *axel);
 
+/* Change how many connections there are, keeping conf and the array in step */
+int axel_conn_resize(axel_t *axel, uint16_t nconns);
+
 double axel_gettime(void);
 ssize_t axel_rand64(uint64_t *);
 int axel_rnd_init(void);
