@@ -111,6 +111,8 @@ AS_IF([test "x$ax_cv_have___builtin_clzll" = xno], [
 # Checks for other programs.
 AC_PROG_INSTALL
 
+AC_CHECK_PROGS([TXT2MAN], [txt2man], [${am_missing_run}txt2man])
+
 # Checks for libraries.
 
 # Checks for header files.

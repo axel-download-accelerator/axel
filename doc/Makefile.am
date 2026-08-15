@@ -11,7 +11,7 @@ doc_reldate = @RELDATE_PRETTY@
 	$(MKDIR_P) $(@D)
 	tmp=$$(mktemp tmpXXXXXX) && \
 	> "$$tmp" \
-	txt2man -t "$(<:.txt=)" -s 1 \
+	$(TXT2MAN) -t "$$(basename "$<" .txt)" -s 1 \
 		-d "$(doc_reldate)" \
 		-P "$(PACKAGE_NAME)" \
 		-r "$(PACKAGE_NAME)-$(PACKAGE_VERSION)" \
