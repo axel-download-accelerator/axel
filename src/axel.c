@@ -206,9 +206,10 @@ axel_new(conf_t *conf, int count, const search_t *res)
 /* Grow or shrink the array of connections, zeroing whatever is added.
  *
  * Only the entries past the end are cleared: the ones already there keep the
- * lock axel_new() initialised for them.  A connection a state file adds gets
- * a zeroed lock instead, which works because that is what an unlocked mutex
- * is on the platforms this runs on, and because nothing has taken it yet. */
+ * lock axel_new() initialised for them.  The added entries get their lock
+ * initialised explicitly: a zeroed pthread_mutex_t is not a valid mutex on
+ * every platform (e.g. macOS), and pthread_mutex_trylock() on one fails with
+ * EINVAL forever, which permanently disables those connections. */
 int
 axel_conn_resize(axel_t *axel, uint16_t nconns)
 {
@@ -219,9 +220,12 @@ axel_conn_resize(axel_t *axel, uint16_t nconns)
 		return 0;
 
 	axel->conn = new_conn;
-	if (nconns > oldconns)
+	if (nconns > oldconns) {
 		memset(axel->conn + oldconns, 0,
 		       sizeof(conn_t) * (nconns - oldconns));
+		for (uint16_t i = oldconns; i < nconns; i++)
+			pthread_mutex_init(&axel->conn[i].lock, NULL);
+	}
 
 	axel->conf->num_connections = nconns;
 	return 1;
