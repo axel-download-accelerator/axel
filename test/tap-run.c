@@ -22,8 +22,7 @@
  * Compile with: gcc -std=c99 -O2 -o tap-run tap-run.c
  */
 
-#define _GNU_SOURCE
-#define _POSIX_C_SOURCE 200809L   /* for asprintf, strdup, posix_spawn, etc. */
+#define _GNU_SOURCE   /* asprintf on glibc; implies POSIX.1-2008 there */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,7 +36,9 @@
 #include <sys/uio.h>
 #include <sys/wait.h>
 
-/* POSIX.1-2008 declares environ in <unistd.h> */
+/* POSIX leaves environ for the application to declare: glibc puts it
+ * in <unistd.h> only under _GNU_SOURCE, macOS in no header at all. */
+extern char **environ;
 
 #ifndef IOV_MAX
 # define IOV_MAX 1024
