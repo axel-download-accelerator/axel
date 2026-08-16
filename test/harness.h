@@ -127,6 +127,7 @@ static volatile sig_atomic_t _h_timed_out;
  * run therefore leaks, and any later test relying on shared global state may
  * be unreliable.  That is an acceptable trade here: the alternative is the
  * suite producing no result at all. */
+static void _h_on_alarm(int sig) __attribute__((noreturn));
 static void _h_on_alarm(int sig) {
     (void)sig;
     _h_timed_out = 1;
