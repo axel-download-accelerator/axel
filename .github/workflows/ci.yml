@@ -5,6 +5,10 @@
 # tree and out of an unpacked tarball, so it also answers whether the
 # distribution carries everything the suites read -- which two of them
 # read the source tree for.
+#
+# A plain make from the checkout runs before it: the unpacked tarball has
+# no .git, AX_IS_RELEASE calls it a release, and -Werror stays off there,
+# so only an in-tree build catches warning regressions.
 name: CI
 
 on:
@@ -53,6 +57,11 @@ jobs:
       - name: configure
         run: ./configure ${{ matrix.ssl }}
 
+      # From the checkout, so AX_IS_RELEASE has -Werror on -- the build
+      # inside distcheck runs in release mode and never sees warnings
+      - name: make
+        run: make
+
       # The inner configure takes no flags of its own, so without this
       # every job would distcheck the default build
       - name: distcheck
@@ -90,4 +99,6 @@ jobs:
               CFLAGS="$CFLAGS -I$GETTEXT/include -I$OPENSSL/include" \
               LDFLAGS="-L$GETTEXT/lib" \
               PKG_CONFIG_PATH="$OPENSSL/lib/pkgconfig"
+          # in-tree first: this is the only -Werror build (see header)
+          make
           make DIST_TARGETS=dist-gzip GZIP_ENV=--fast distcheck
