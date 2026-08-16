@@ -132,7 +132,7 @@ search_makelist(search_t *results, char *orig_url)
 		 /* Num. of results: */ "m=%i&"
 		 /* Size (min/max):  */ "s1=%jd&s2=%jd",
 		 conn->file, results->conf->search_amount,
-		 conn->size, conn->size);
+		 (intmax_t)conn->size, (intmax_t)conn->size);
 
 	conn_disconnect(conn);
 	memset(conn, 0, sizeof(conn_t));

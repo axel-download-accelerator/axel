@@ -208,7 +208,8 @@ stfile_load(axel_t *axel)
 
 	axel_message(axel,
 		     _("State file found: %jd bytes downloaded, %jd to go."),
-		     axel->bytes_done, axel->size - axel->bytes_done);
+		     (intmax_t)axel->bytes_done,
+		     (intmax_t)(axel->size - axel->bytes_done));
 
 	return 1;
 }

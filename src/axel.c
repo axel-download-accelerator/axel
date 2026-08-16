@@ -180,7 +180,7 @@ axel_new(conf_t *conf, int count, const search_t *res)
 			char hsize[32];
 			axel_size_human(hsize, sizeof(hsize), axel->size);
 			axel_message(axel, _("File size: %s (%jd bytes)"),
-				     hsize, axel->size);
+				     hsize, (intmax_t)axel->size);
 		} else {
 			axel_message(axel, _("File size: unavailable"));
 		}
@@ -854,8 +854,8 @@ axel_divide(axel_t *axel)
 #ifndef NDEBUG
 	for (int i = 0; i < axel->conf->num_connections; i++) {
 		printf(_("Downloading %jd-%jd using conn. %i\n"),
-		       axel->conn[i].currentbyte,
-		       axel->conn[i].lastbyte, i);
+		       (intmax_t)axel->conn[i].currentbyte,
+		       (intmax_t)axel->conn[i].lastbyte, i);
 	}
 #endif
 }

@@ -116,7 +116,7 @@ ftp_cwd(ftp_t *conn, char *cwd)
 off_t
 ftp_size(ftp_t *conn, char *file, int maxredir, unsigned io_timeout)
 {
-	off_t i, j, size = MAX_STRING;
+	intmax_t i, j, size = MAX_STRING;
 	char *reply, *s, fn[MAX_STRING];
 
 	/* Try the SIZE command first, if possible */

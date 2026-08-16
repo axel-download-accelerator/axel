@@ -369,7 +369,7 @@ axel_setup(conf_t *conf, int do_search, char *s, int argc, char *argv[])
 		printf("%-60s %15s\n", "URL", _("Speed"));
 		for (i = 0; i < j; i++)
 			printf("%-70.70s %5jd\n", search[i].url,
-			       search[i].speed);
+			       (intmax_t)search[i].speed);
 		printf("\n");
 	}
 	axel = axel_new(conf, j, search);
