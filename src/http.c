@@ -49,6 +49,7 @@
 
 #include "config.h"
 #include "axel.h"
+#include "http_params.h"
 
 #define HDR_CHUNK 512
 
@@ -359,26 +360,32 @@ void
 http_filename(const http_t *conn, char *filename)
 {
 	const char *h;
-	if ((h = http_header(conn, "Content-Disposition:")) != NULL) {
-		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^;\n\"\']",
-		       filename);
-		/* Trim spaces at the end of string */
-		const char space[] = "\t ";
-		for (char *n, *p = filename; (p = strpbrk(p, space)); p = n) {
-			n = p + strspn(p, space);
-			if (!*n) {
-				*p = 0;
-				break;
-			}
-		}
+	struct header_params params[] = {
+		{ "filename", filename, MAX_STRING },
+	};
 
-		/* Replace common invalid characters in filename
-		   https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
-		const char invalid[] = "/\\?%*:|<>";
-		const char replacement = '_';
-		for (char *i = filename; (i = strpbrk(i, invalid)); i++) {
-			*i = replacement;
+	if ((h = http_header(conn, "Content-Disposition:")) == NULL)
+		return;
+
+	http_header_params(h, NULL, 0, params,
+			   sizeof(params) / sizeof(params[0]));
+
+	/* Trim spaces at the end of string */
+	const char space[] = "\t ";
+	for (char *n, *p = filename; (p = strpbrk(p, space)); p = n) {
+		n = p + strspn(p, space);
+		if (!*n) {
+			*p = 0;
+			break;
 		}
+	}
+
+	/* Replace common invalid characters in filename
+	   https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
+	const char invalid[] = "/\\?%*:|<>";
+	const char replacement = '_';
+	for (char *i = filename; (i = strpbrk(i, invalid)); i++) {
+		*i = replacement;
 	}
 }
 
