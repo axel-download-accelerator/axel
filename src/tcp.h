@@ -62,6 +62,7 @@ typedef struct {
 } tcp_t;
 
 int is_ipv6_addr(const char *hostname);
+int tcp_wait_for_connection(int sock_fd, unsigned io_timeout);
 int tcp_connect(tcp_t *tcp, char *hostname, int port, int secure,
 		char *local_if, unsigned io_timeout);
 void tcp_close(tcp_t *tcp);
