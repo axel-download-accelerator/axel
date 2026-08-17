@@ -164,6 +164,24 @@ conn_set(conn_t *conn, const char *set_url)
 	return conn->port > 0;
 }
 
+void
+conn_output_filename(const conn_t *conn, char *dst, size_t size)
+{
+	char path[MAX_STRING];
+	char *end;
+	char *sep;
+
+	snprintf(path, sizeof(path), "%s%s", conn->dir, conn->file);
+	http_decode(path);
+
+	end = path + strlen(path);
+	while (end > path + 1 && end[-1] == '/')
+		*--end = 0;
+
+	sep = strrchr(path, '/');
+	strlcpy(dst, sep ? sep + 1 : path, size);
+}
+
 const char *
 scheme_from_proto(int proto)
 {
