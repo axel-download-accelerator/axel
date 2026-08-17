@@ -77,6 +77,33 @@ tcp_error(char *hostname, int port, const char *reason)
 		hostname, port, reason);
 }
 
+int
+tcp_wait_for_connection(int sock_fd, unsigned io_timeout)
+{
+	fd_set fdset;
+	struct timeval tout = { .tv_sec = io_timeout };
+	socklen_t error_len;
+	int error;
+	int ret;
+
+	FD_ZERO(&fdset);
+	FD_SET(sock_fd, &fdset);
+	ret = select(sock_fd + 1, NULL, &fdset, NULL, &tout);
+	if (ret <= 0)
+		return ret;
+
+	error = 0;
+	error_len = sizeof(error);
+	if (getsockopt(sock_fd, SOL_SOCKET, SO_ERROR, &error, &error_len))
+		return -1;
+	if (error) {
+		errno = error;
+		return -1;
+	}
+
+	return 1;
+}
+
 /* Get a TCP connection */
 int
 tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
@@ -138,7 +165,8 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 			tcp_fastopen = setsockopt(sock_fd, IPPROTO_TCP,
 						  TCP_FASTOPEN_CONNECT,
 						  NULL, 0);
-		} else if (io_timeout) {
+		}
+		if (tcp_fastopen == -1 && io_timeout) {
 			/* Set O_NONBLOCK so we can timeout */
 			fcntl(sock_fd, F_SETFL, O_NONBLOCK);
 		}
@@ -156,15 +184,13 @@ tcp_connect(tcp_t *tcp, char *hostname, int port, int secure, char *local_if,
 		if (tcp_fastopen != -1)
 			break;
 
-		/* Wait for the connection */
-		fd_set fdset;
-		FD_ZERO(&fdset);
-		FD_SET(sock_fd, &fdset);
-		struct timeval tout = { .tv_sec  = io_timeout };
-		ret = select(sock_fd + 1, NULL, &fdset, NULL, &tout);
-		/* Success? */
-		if (ret != -1)
+		ret = tcp_wait_for_connection(sock_fd, io_timeout);
+		if (ret > 0)
 			break;
+		if (ret == 0)
+			errno = ETIMEDOUT;
+		close(sock_fd);
+		sock_fd = -1;
 	} while ((gai_result = gai_result->ai_next));
 
 	freeaddrinfo(gai_results);
