@@ -95,6 +95,9 @@ static struct option axel_options[] = {
 	{"header",          1,      NULL, 'H'},
 	{"user-agent",      1,      NULL, 'U'},
 	{"timeout",         1,      NULL, 'T'},
+	{"auto-resume",     0,      NULL, 'A'},
+	{"resume-countdown",1,      NULL, 'd'},
+	{"resume-retry",    1,      NULL, 'y'},
 	{NULL,              0,      NULL, 0}
 };
 #endif
@@ -221,6 +224,21 @@ parse_option(int option, conf_t *conf, char fn[MAX_STRING], int *do_search,
 	case 'T':
 		conf->io_timeout = strtoul(optarg, NULL, 0);
 		break;
+	case 'A':
+		conf->auto_resume = 1;
+		break;
+	case 'd':
+		if (!sscanf(optarg, "%i", &conf->resume_countdown)) {
+			print_help();
+			return 1;
+		}
+		break;
+	case 'y':
+		if (!sscanf(optarg, "%i", &conf->resume_retry)) {
+			print_help();
+			return 1;
+		}
+		break;
 	default:
 		print_help();
 		return 1;
@@ -247,7 +265,7 @@ parse_options(int argc, char *argv[], conf_t *conf, char fn[MAX_STRING],
 
 	while (1) {
 		int option = getopt_long(argc, argv,
-					 "s:n:o:S::R::46NqvhVapkcH:U:T:",
+					 "s:n:o:S::R::46NqvhVapkcH:U:T:Ay:d:",
 					 axel_options, NULL);
 		if (option == -1)
 			break;
@@ -828,6 +846,9 @@ print_help(void)
 		 "-p\tPrint simple percentages instead of progress bar (0-100)\n"
 		 "-h\tThis information\n"
 		 "-T x\tSet I/O and connection timeout\n"
+		 "-A\tEnable auto resume\n"
+		 "-d x\tSet resume countdown before reconnection\n"
+		 "-y x\tSet resume retries before exit\n"
 		 "-V\tVersion information\n"
 		 "\n"
 		 "Visit https://github.com/axel-download-accelerator/axel/issues\n"));
@@ -855,6 +876,9 @@ print_help(void)
 		 "--percentage\t\t-p\tPrint simple percentages instead of progress bar (0-100)\n"
 		 "--help\t\t\t-h\tThis information\n"
 		 "--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
+		 "--auto-resume\t\t-A\tEnable auto resume\n"
+		 "--resume-countdown=x\t-d x\tSet resume countdown before reconnection\n"
+		 "--resume-retry=x\t-y x\tSet resume retries before exit\n"
 		 "--version\t\t-V\tVersion information\n"
 		 "\n"
 		 "Visit https://github.com/axel-download-accelerator/axel/issues to report bugs\n"));

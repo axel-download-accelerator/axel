@@ -62,9 +62,40 @@ static char *buffer = NULL;
 #define MIN_CHUNK_WORTH (100 * 1024) /* 100 KB */
 
 
+/* Sleep for the resume countdown, printing progress. */
+static
+int
+axel_resume_waiter(const conf_t *conf, const int retry)
+{
+	int ret = 0;
+	int countdown = conf->resume_countdown;
+	struct timespec delay = {.tv_sec = 1,.tv_nsec = 0 };
+
+	while (countdown > 0) {
+		if (retry != 0) {
+			printf(_("\rRetry in %2d seconds\r"), countdown);
+			fflush(stdout);
+		}
+		if (axel_sleep(delay) != 0) {
+			ret = -1;
+			goto exit;
+		}
+
+		countdown--;
+	}
+	if (retry != 0) {
+		printf(_("\rReconnecting...     \n"));
+		fflush(stdout);
+	}
+
+ exit:
+	return ret;
+}
+
 /* Create a new axel_t structure */
+static
 axel_t *
-axel_new(conf_t *conf, int count, const search_t *res)
+do_axel_new(conf_t *conf, int count, const search_t *res)
 {
 	axel_t *axel;
 	int status;
@@ -203,6 +234,40 @@ axel_new(conf_t *conf, int count, const search_t *res)
 	return NULL;
 }
 
+/* Retries do_axel_new() on failure if auto-resume feature is enabled. */
+axel_t *
+axel_new(conf_t *conf, int count, const search_t *res)
+{
+	axel_t *axel;
+	int ready = 0;
+	int retry = conf->resume_retry;
+	do {
+		axel = do_axel_new(conf, count, res);
+		if (!axel) {
+			goto exit;
+		}
+
+		if (retry > 0)
+			retry--;
+
+		ready = axel->ready;
+		if (ready == -1) {
+			if (!conf->auto_resume)
+				goto exit;
+
+			if (axel_resume_waiter(conf, retry) == -1)
+				goto exit;
+
+			axel_close(axel);
+			axel = NULL;
+		}
+
+	} while (conf->auto_resume && (ready == -1) && (retry != 0));
+
+ exit:
+	return axel;
+}
+
 /* Grow or shrink the array of connections, zeroing whatever is added.
  *
  * Only the entries past the end are cleared: the ones already there keep the
@@ -274,8 +339,13 @@ axel_open(axel_t *axel)
 		   the target may be a device or a fifo, which has no length
 		   to set, and the writes themselves will say so if it is
 		   anything worse than that. */
-		if (axel->size != LLONG_MAX)
-			(void)ftruncate(axel->outfd, axel->size);
+		if (axel->size != LLONG_MAX) {
+			if (ftruncate(axel->outfd, axel->size) != 0) {
+				axel_message(axel,
+					     _("Fail to truncate the download file: %s"),
+					     strerror(errno));
+			}
+		}
 
 		/* And check whether the filesystem can handle seeks to
 		   past-EOF areas.. Speeds things up. :) AFAIK this
@@ -743,7 +813,10 @@ axel_close(axel_t *axel)
 	}
 	free(axel->conn);
 	free(axel);
-	free(buffer);
+	if (!buffer) {
+		free(buffer);
+		buffer = NULL;
+	}
 }
 
 /* time() with more precision */

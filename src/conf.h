@@ -62,6 +62,9 @@ typedef struct {
 	int insecure;
 	int no_clobber;
 	int location_trusted;
+	int auto_resume;
+	int resume_countdown;
+	int resume_retry;
 	enum {
 		AXEL_PROGRESS_STYLE_CLASSIC,
 		AXEL_PROGRESS_STYLE_ALTERNATIVE,

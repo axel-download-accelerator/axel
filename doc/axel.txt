@@ -86,6 +86,12 @@ OPTIONS
 
  --timeout=x, -T x  Set I/O and connection timeout
 
+ --auto-resume, -A  Enable auto-resume
+
+ --resume-countdown=x, -d x     Set resume countdown before reconnection
+
+ --resume-retry=x, -y x     Set resume retries before exit
+
  --version, -V  Get version information.
 
 NOTE
