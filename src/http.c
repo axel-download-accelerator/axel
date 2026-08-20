@@ -61,45 +61,65 @@ is_default_port(int proto, int port)
 		port == PROTO_HTTPS_PORT));
 }
 
-inline static char
+inline static int
 chain_next(const char ***p)
 {
 	while (**p && !***p)
 		++(*p);
-	return **p ? *(**p)++ : 0;
+	return **p ? (unsigned char)*((**p)++) : -1;
 }
 
-static void
-http_auth_token(char *token, const char *user, const char *pass)
+static int
+http_auth_token(char *token, size_t token_len,
+		const char *user, const char *pass)
 {
 	NONSTRING const char base64_encode[64] =
 	    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	    "abcdefghijklmnopqrstuvwxyz" "0123456789+/";
 	const char *auth[] = { user, ":", pass, NULL };
 	const char **p = auth;
+	size_t user_len = strlen(user);
+	size_t pass_len = strlen(pass);
+	size_t input_len, output_len, blocks;
+
+	if (!token_len || user_len + 1 < user_len ||
+	    user_len + 1 > SIZE_MAX - pass_len)
+		return 0;
+	input_len = user_len + 1 + pass_len;
+	if (input_len > SIZE_MAX - 2)
+		return 0;
+	blocks = (input_len + 2) / 3;
+	if (blocks > SIZE_MAX / 4)
+		return 0;
+	output_len = 4 * blocks;
+	if (output_len >= token_len)
+		return 0;
 
 	while (*p) {
-		char a = chain_next(&p);
-		if (!a)
+		int a = chain_next(&p);
+		if (a < 0)
 			break;
 		*token++ = base64_encode[a >> 2];
-		char b = chain_next(&p);
-		*token++ = base64_encode[((a & 3) << 4) | (b >> 4)];
-		if (!b) {
+		int b = chain_next(&p);
+		if (b < 0) {
+			*token++ = base64_encode[(a & 3) << 4];
 			*token++ = '=';
 			*token++ = '=';
 			break;
 		} else {
-			char c = chain_next(&p);
+			*token++ = base64_encode[((a & 3) << 4) | (b >> 4)];
+			int c = chain_next(&p);
 			*token++ = base64_encode[((b & 15) << 2)
-						 | (c >> 6)];
-			if (!c) {
+							 | (c < 0 ? 0 : c >> 6)];
+			if (c < 0) {
 				*token++ = '=';
 				break;
 			} else
 				*token++ = base64_encode[c & 63];
 		}
 	}
+	*token = 0;
+	return 1;
 }
 
 int
@@ -132,14 +152,18 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 
 	if (*user == 0) {
 		*conn->auth = 0;
-	} else {
-		http_auth_token(conn->auth, user, pass);
+	} else if (!http_auth_token(conn->auth, sizeof(conn->auth), user,
+					pass)) {
+		fprintf(stderr, _("HTTP credentials are too long.\n"));
+		return 0;
 	}
 
 	if (!conn->proxy || !puser || *puser == 0) {
 		*conn->proxy_auth = 0;
-	} else {
-		http_auth_token(conn->proxy_auth, puser, ppass);
+	} else if (!http_auth_token(conn->proxy_auth,
+				   sizeof(conn->proxy_auth), puser, ppass)) {
+		fprintf(stderr, _("Proxy credentials are too long.\n"));
+		return 0;
 	}
 
 	return 1;
