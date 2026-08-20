@@ -40,6 +40,27 @@
 
 #define DN_NEQ 1
 
+static
+int
+dn_prefix_equal(const char *hostname, const char *pat, size_t len)
+{
+	for (size_t i = 0; i < len; i++) {
+		if (!hostname[i] ||
+		    tolower((unsigned char)hostname[i]) !=
+		    tolower((unsigned char)pat[i]))
+			return 0;
+	}
+	return 1;
+}
+
+static
+int
+dn_equal(const char *hostname, const char *pat, size_t pat_len)
+{
+	return strlen(hostname) == pat_len &&
+		dn_prefix_equal(hostname, pat, pat_len);
+}
+
 /**
  * Hostname matching according to RFC-6125 section 6.4.3.
  *
@@ -53,16 +74,25 @@
 int
 dn_match(const char *hostname, const char *pat, size_t pat_len)
 {
+	if (!pat_len || memchr(pat, '\0', pat_len))
+		return DN_MATCH_MALFORMED;
+
 	/* The pattern is partitioned at the first wildcard or dot */
-	const size_t left = strcspn(pat, ".*");
+	size_t left = 0;
+	while (left < pat_len && pat[left] != '.' && pat[left] != '*')
+		left++;
 
 	/* We can't match an IDN against a wildcard */
 	NONSTRING const char ace_prefix[4] = "xn--";
-	if (pat[left] == '*' && !strncasecmp(hostname, ace_prefix, 4))
+	if (left < pat_len && pat[left] == '*' &&
+	    left != 0)
+		return DN_MATCH_MALFORMED;
+	if (left < pat_len && pat[left] == '*' &&
+	    !strncasecmp(hostname, ace_prefix, 4))
 		return DN_NEQ;
 
 	/* Compare left-side partition */
-	if (strncasecmp(hostname, pat, left))
+	if (!dn_prefix_equal(hostname, pat, left))
 		return DN_NEQ;
 
 	hostname += left;
@@ -72,20 +102,20 @@ dn_match(const char *hostname, const char *pat, size_t pat_len)
 	/* Wildcard? */
 	size_t right = 0;
 	if (*pat == '*') {
-		--pat_len;
-		right = strcspn(++pat, ".");
+		if (pat_len <= 1 || pat[1] != '.')
+			return DN_MATCH_MALFORMED;
+		pat_len--;
+		pat++;
+		while (right < pat_len && pat[right] != '.')
+			right++;
 		const size_t rem = strcspn(hostname, ".");
 		/* Shorter label in hostname? */
-		if (right > rem)
+		if (!rem || right > rem)
 			return DN_NEQ;
 		/* Skip the longest match and adjust pat_len */
 		hostname += rem - right;
 	}
 
-	/* Check premature end of pattern (malformed certificate) */
-	if (pat_len == right - strlen(pat + right))
-		return DN_MATCH_MALFORMED;
-
 	/* Compare right-side partition */
-	return !!strcasecmp(hostname, pat);
+	return dn_equal(hostname, pat, pat_len) ? 0 : DN_NEQ;
 }
