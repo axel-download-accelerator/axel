@@ -436,13 +436,18 @@ conn_redirect(conn_t *conn, const char *url)
 	if (!conn_set(conn, url))
 		return 0;
 
-	if (conn->conf->location_trusted || conn->conf->untrusted_host)
+	if (conn->conf->location_trusted)
 		return 1;
+	if (conn->conf->untrusted_host) {
+		*conn->user = *conn->pass = 0;
+		return 1;
+	}
 
 	if (conf_credentials_may_follow(proto, host, conn->proto, conn->host))
 		return 1;
 
 	conn->conf->untrusted_host = true;
+	*conn->user = *conn->pass = 0;
 	if (conf_has_private_headers(conn->conf))
 		fprintf(stderr, _("Redirected away from the host asked for, "
 				  "not passing on the headers that carry "
