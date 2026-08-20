@@ -52,6 +52,10 @@
 
 #define HDR_CHUNK 512
 
+#ifdef HAVE_SSL
+static int http_proxy_tunnel(http_t *conn);
+#endif
+
 inline static int
 is_default_port(int proto, int port)
 {
@@ -124,6 +128,11 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 		puser = tconn->user;
 		ppass = tconn->pass;
 		conn->proxy = 1;
+		if (conn->proto == PROTO_HTTPS && PROTO_IS_SECURE(proto)) {
+			fprintf(stderr,
+				_("HTTPS through an HTTPS proxy is not supported.\n"));
+			return 0;
+		}
 	}
 
 	if (tcp_connect(&conn->tcp, host, port, PROTO_IS_SECURE(proto),
@@ -140,6 +149,15 @@ http_connect(http_t *conn, int proto, char *proxy, char *host, int port,
 		*conn->proxy_auth = 0;
 	} else {
 		http_auth_token(conn->proxy_auth, puser, ppass);
+	}
+
+	if (conn->proxy && conn->proto == PROTO_HTTPS) {
+#ifdef HAVE_SSL
+		if (!http_proxy_tunnel(conn))
+			return 0;
+#else
+		return 0;
+#endif
 	}
 
 	return 1;
@@ -296,6 +314,45 @@ http_exec(http_t *conn)
 
 	return 1;
 }
+
+#ifdef HAVE_SSL
+static
+int
+http_proxy_tunnel(http_t *conn)
+{
+	const char *prefix = "", *postfix = "";
+
+	if (is_ipv6_addr(conn->host)) {
+		prefix = "[";
+		postfix = "]";
+	}
+
+	if (abuf_setup(conn->request, 1024) < 0 ||
+	    abuf_setup(conn->headers, 1024) < 0)
+		return 0;
+	*conn->request->p = 0;
+
+	http_addheader(conn, "CONNECT %s%s%s:%i HTTP/1.1", prefix,
+			conn->host, postfix, conn->port);
+	http_addheader(conn, "Host: %s%s%s:%i", prefix, conn->host,
+			postfix, conn->port);
+	if (*conn->proxy_auth)
+		http_addheader(conn, "Proxy-Authorization: Basic %s",
+			       conn->proxy_auth);
+
+	if (!http_exec(conn) || conn->status / 100 != 2)
+		return 0;
+
+	conn->tcp.ssl = ssl_connect(conn->tcp.fd, conn->host);
+	if (!conn->tcp.ssl)
+		return 0;
+
+	/* The proxy credentials belong only on the CONNECT request. */
+	*conn->proxy_auth = 0;
+	conn->proxy = 0;
+	return 1;
+}
+#endif
 
 const char *
 http_header(const http_t *conn, const char *header)
