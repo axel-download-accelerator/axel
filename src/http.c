@@ -51,6 +51,7 @@
 #include "axel.h"
 
 #define HDR_CHUNK 512
+#define MAX_HEADERS (64 * 1024)
 
 inline static int
 is_default_port(int proto, int port)
@@ -265,9 +266,19 @@ http_exec(http_t *conn)
 		s++;
 
 		size_t pos = s - conn->headers->p;
-		if (pos + 10 < conn->headers->len) {
-			int tmp = abuf_setup(conn->headers,
-					     conn->headers->len + HDR_CHUNK);
+		if (pos + 10 >= conn->headers->len) {
+			size_t new_len;
+			if (conn->headers->len > MAX_HEADERS - HDR_CHUNK)
+				new_len = MAX_HEADERS;
+			else
+				new_len = conn->headers->len + HDR_CHUNK;
+
+			if (new_len == conn->headers->len) {
+				fprintf(stderr, _("Response headers are too large.\n"));
+				return 0;
+			}
+
+			int tmp = abuf_setup(conn->headers, new_len);
 			if (tmp < 0) {
 				fprintf(stderr, "Out of memory\n");
 				return 0;
