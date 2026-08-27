@@ -41,6 +41,7 @@
 
 #include "http_params.h"
 
+#include <stdbool.h>
 #include <string.h>
 #include <strings.h>
 
@@ -192,6 +193,218 @@ http_copy_parameter(char *dest, size_t size,
 		j++;
 	}
 	dest[j] = '\0';
+
+	return true;
+}
+
+// transfer a ASCII hex char to 0-15. return -1 if it is not a hex char
+static int
+hexadecimal_value(unsigned char c)
+{
+	if ('0' <= c && c <= '9')
+		return c - '0';
+	if ('A' <= c && c <= 'F')
+		return c - 'A' + 10;
+	if ('a' <= c && c <= 'f')
+		return c - 'a' + 10;
+
+	return -1;
+}
+
+static bool
+is_attribute_character(unsigned char c)
+{
+	if (('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z') ||
+	    ('0' <= c && c <= '9'))
+		return true;
+
+	switch (c) {
+	case '!':
+	case '#':
+	case '$':
+	case '&':
+	case '+':
+	case '-':
+	case '.':
+	case '^':
+	case '_':
+	case '`':
+	case '|':
+	case '~':
+		return true;
+	default:
+		return false;
+	}
+}
+
+static bool
+read_extended_byte(const char **cursor, const char *end, unsigned char *byte)
+{
+	const char *p = *cursor;
+
+	if (p == end)
+		return false;
+
+	if (*p == '%') {
+		int high;
+		int low;
+
+		if (end - p < 3)
+			return false;
+
+		high = hexadecimal_value((unsigned char) p[1]);
+		low = hexadecimal_value((unsigned char) p[2]);
+		if (high < 0 || low < 0)
+			return false;
+
+		*byte = (unsigned char) ((high << 4) | low);
+		p += 3;
+	} else {
+		*byte = (unsigned char) *p;
+		if (!is_attribute_character(*byte))
+			return false;
+
+		p++;
+	}
+
+	if (*byte == 0)
+		return false;
+
+	*cursor = p;
+	return true;
+}
+
+// language can be empty
+static bool
+is_language(const char *start, const char *end)
+{
+	for (const char *p = start; p < end; p++) {
+		unsigned char c = (unsigned char) *p;
+
+		if (!(('A' <= c && c <= 'Z') || ('a' <= c && c <= 'z') ||
+		      ('0' <= c && c <= '9') || c == '-'))
+			return false;
+	}
+
+	return true;
+}
+
+static bool
+read_continuation_byte(const char **cursor, const char *end,
+		       unsigned char *byte, size_t *length)
+{
+	if (!read_extended_byte(cursor, end, byte) || (*byte & 0xc0) != 0x80)
+		return false;
+
+	(*length)++;
+	return true;
+}
+
+static bool
+validate_extended_utf8(const char *start, const char *end, size_t *length)
+{
+	const char *p = start;
+	size_t decoded_length = 0;
+
+	while (p < end) {
+		unsigned char first;
+		unsigned char second;
+		unsigned char third;
+		unsigned char fourth;
+
+		if (!read_extended_byte(&p, end, &first))
+			return false;
+		decoded_length++;
+
+		if (first <= 0x7f)
+			continue;
+
+		if (first >= 0xc2 && first <= 0xdf) {
+			if (!read_continuation_byte
+			    (&p, end, &second, &decoded_length))
+				return false;
+			continue;
+		}
+
+		if (first >= 0xe0 && first <= 0xef) {
+			if (!read_continuation_byte
+			    (&p, end, &second, &decoded_length)
+			    || !read_continuation_byte(&p, end, &third,
+						       &decoded_length))
+				return false;
+
+			if ((first == 0xe0 && second < 0xa0)
+			    || (first == 0xed && second > 0x9f))
+				return false;
+			continue;
+		}
+
+		if (first >= 0xf0 && first <= 0xf4) {
+			if (!read_continuation_byte
+			    (&p, end, &second, &decoded_length)
+			    || !read_continuation_byte(&p, end, &third,
+						       &decoded_length)
+			    || !read_continuation_byte(&p, end, &fourth,
+						       &decoded_length))
+				return false;
+
+			if ((first == 0xf0 && second < 0x90)
+			    || (first == 0xf4 && second > 0x8f))
+				return false;
+			continue;
+		}
+
+		return false;
+	}
+
+	*length = decoded_length;
+	return true;
+}
+
+bool
+http_decode_extended_parameter(char *dest, size_t size,
+			       const struct http_parameter *parameter)
+{
+	const char *charset_end;
+	const char *language_end;
+	const char *value_start;
+	const char *end;
+	const char *p;
+	size_t decoded_length;
+	size_t output = 0;
+
+	if (!dest || !size || !parameter || !parameter->value
+	    || parameter->quoted)
+		return false;
+
+	end = parameter->value + parameter->length;
+	charset_end = memchr(parameter->value, '\'', parameter->length);
+	if (!charset_end)
+		return false;
+
+	language_end =
+	    memchr(charset_end + 1, '\'', (size_t) (end - charset_end - 1));
+	if (!language_end)
+		return false;
+
+	if ((size_t) (charset_end - parameter->value) != 5 ||
+	    strncasecmp(parameter->value, "UTF-8", 5) != 0 ||
+	    !is_language(charset_end + 1, language_end))
+		return false;
+
+	value_start = language_end + 1;
+	if (!validate_extended_utf8(value_start, end, &decoded_length) ||
+	    decoded_length >= size)
+		return false;
+
+	for (p = value_start; p < end;) {
+		unsigned char byte;
+
+		if (!read_extended_byte(&p, end, &byte))
+			return false;
+		dest[output++] = (char) byte;
+	}
+	dest[output] = '\0';
 
 	return true;
 }

@@ -56,4 +56,6 @@ bool http_find_parameter(const char *header, const char *name,
 bool http_copy_parameter(char *dest, size_t size,
 			 const struct http_parameter *parameter);
 
+bool http_decode_extended_parameter(char *dest, size_t size,
+				    const struct http_parameter *parameter);
 #endif /* AXEL_HTTP_PARAMS_H */

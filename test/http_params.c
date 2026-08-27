@@ -172,6 +172,244 @@ TEST(a_destination_with_exactly_enough_space_is_accepted)
 	CHECK_STR(output, "a.txt");
 }
 
+/* RFC 8187 extended parameter decoding. */
+
+TEST(a_utf8_extended_parameter_is_percent_decoded)
+{
+	struct http_parameter parameter;
+	char output[64];
+
+	ASSERT(http_find_parameter("attachment; "
+				   "filename*=UTF-8''%E3%83%86%E3%82%B9%E3%83%88.m2ts",
+				   "filename*", &parameter));
+	ASSERT(http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "\xE3\x83\x86\xE3\x82\xB9\xE3\x83\x88.m2ts");
+}
+
+TEST(a_two_byte_utf8_character_is_percent_decoded)
+{
+	struct http_parameter parameter;
+	char output[32];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=UTF-8'fr'caf%C3%A9.txt", "filename*",
+		&parameter));
+	ASSERT(http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "caf\xC3\xA9.txt");
+}
+
+TEST(a_chinese_filename_is_percent_decoded)
+{
+	struct http_parameter parameter;
+	char output[32];
+
+	ASSERT(http_find_parameter("attachment; "
+				   "filename*=UTF-8'zh-CN'%E6%B5%8B%E8%AF%95.txt",
+				   "filename*", &parameter));
+	ASSERT(http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "\xE6\xB5\x8B\xE8\xAF\x95.txt");
+}
+
+TEST(the_optional_language_is_accepted_and_ignored)
+{
+	struct http_parameter parameter;
+	char output[64];
+
+	ASSERT(http_find_parameter("attachment; "
+				   "filename*=UTF-8'ja'%E3%83%86%E3%82%B9%E3%83%88.m2ts",
+				   "filename*", &parameter));
+	ASSERT(http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "\xE3\x83\x86\xE3\x82\xB9\xE3\x83\x88.m2ts");
+}
+
+TEST(the_utf8_charset_name_ignores_case)
+{
+	struct http_parameter parameter;
+	char output[32];
+
+	ASSERT(http_find_parameter("attachment; filename*=utf-8''report.txt",
+				   "filename*", &parameter));
+	ASSERT(http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "report.txt");
+}
+
+TEST(unencoded_attribute_characters_are_preserved)
+{
+	struct http_parameter parameter;
+	char output[32];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=UTF-8''report-1_final.txt", "filename*",
+		&parameter));
+	ASSERT(http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "report-1_final.txt");
+}
+
+TEST(a_percent_encoded_path_separator_is_only_decoded_here)
+{
+	struct http_parameter parameter;
+	char output[32];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=UTF-8''dir%2Ffile.txt", "filename*",
+		&parameter));
+	ASSERT(http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "dir/file.txt");
+}
+
+TEST(an_unsupported_charset_is_rejected_without_output)
+{
+	struct http_parameter parameter;
+	char output[16] = "unchanged";
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=ISO-8859-1''report.txt", "filename*",
+		&parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "unchanged");
+}
+
+TEST(an_invalid_percent_escape_is_rejected_without_output)
+{
+	struct http_parameter parameter;
+	char output[16] = "unchanged";
+
+	ASSERT(http_find_parameter("attachment; filename*=UTF-8''bad%ZZ.txt",
+				   "filename*", &parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "unchanged");
+}
+
+TEST(a_truncated_percent_escape_is_rejected)
+{
+	struct http_parameter parameter;
+	char output[16];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=UTF-8''bad%2", "filename*", &parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+}
+
+TEST(a_percent_encoded_nul_is_rejected)
+{
+	struct http_parameter parameter;
+	char output[16];
+
+	ASSERT(http_find_parameter("attachment; filename*=UTF-8''a%00b.txt",
+				   "filename*", &parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+}
+
+TEST(an_overlong_utf8_sequence_is_rejected)
+{
+	struct http_parameter parameter;
+	char output[16];
+
+	ASSERT(http_find_parameter("attachment; filename*=UTF-8''%C0%AF.txt",
+				   "filename*", &parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+}
+
+TEST(a_utf8_surrogate_sequence_is_rejected)
+{
+	struct http_parameter parameter;
+	char output[16];
+
+	ASSERT(http_find_parameter("attachment; filename*=UTF-8''%ED%A0%80.txt",
+				   "filename*", &parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+}
+
+TEST(a_four_byte_utf8_sequence_is_accepted)
+{
+	struct http_parameter parameter;
+	char output[32];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=UTF-8''%F0%9F%98%80.txt", "filename*",
+		&parameter));
+	ASSERT(http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+	CHECK_STR(output, "\xF0\x9F\x98\x80.txt");
+}
+
+TEST(a_truncated_utf8_sequence_is_rejected)
+{
+	struct http_parameter parameter;
+	char output[16];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=UTF-8''%E3%83", "filename*",
+		&parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+}
+
+TEST(a_codepoint_beyond_the_unicode_range_is_rejected)
+{
+	struct http_parameter parameter;
+	char output[16];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=UTF-8''%F4%90%80%80.txt", "filename*",
+		&parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+}
+
+TEST(a_quoted_extended_value_is_rejected)
+{
+	struct http_parameter parameter;
+	char output[16];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=\"UTF-8''report.txt\"", "filename*",
+		&parameter));
+	ASSERT(parameter.quoted);
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+}
+
+TEST(a_raw_space_in_an_extended_value_is_rejected)
+{
+	struct http_parameter parameter;
+	char output[32];
+
+	ASSERT(http_find_parameter("attachment; filename*=UTF-8''two words.txt",
+				   "filename*", &parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (output, sizeof(output), &parameter));
+}
+
+TEST(an_extended_value_needs_room_for_its_final_nul)
+{
+	struct http_parameter parameter;
+	char too_small[5] = "keep";
+	char exact[sizeof("a.txt")];
+
+	ASSERT(http_find_parameter
+	       ("attachment; filename*=UTF-8''a.txt", "filename*", &parameter));
+	ASSERT(!http_decode_extended_parameter
+	       (too_small, sizeof(too_small), &parameter));
+	CHECK_STR(too_small, "keep");
+	ASSERT(http_decode_extended_parameter
+	       (exact, sizeof(exact), &parameter));
+	CHECK_STR(exact, "a.txt");
+}
+
 int
 main(void)
 {
@@ -203,6 +441,44 @@ main(void)
 		      "a small destination is rejected without partial output");
 	REGISTER_DESC(a_destination_with_exactly_enough_space_is_accepted,
 		      "a destination with room for the final NUL is accepted");
+	REGISTER_DESC(a_utf8_extended_parameter_is_percent_decoded,
+		      "a UTF-8 extended parameter is percent-decoded");
+	REGISTER_DESC(a_two_byte_utf8_character_is_percent_decoded,
+		      "a two-byte UTF-8 character is percent-decoded");
+	REGISTER_DESC(a_chinese_filename_is_percent_decoded,
+		      "a Chinese filename and language tag are decoded");
+	REGISTER_DESC(the_optional_language_is_accepted_and_ignored,
+		      "the optional language is accepted and ignored");
+	REGISTER_DESC(the_utf8_charset_name_ignores_case,
+		      "the UTF-8 charset name ignores case");
+	REGISTER_DESC(unencoded_attribute_characters_are_preserved,
+		      "unencoded attribute characters are preserved");
+	REGISTER_DESC(a_percent_encoded_path_separator_is_only_decoded_here,
+		      "a percent-encoded path separator is only decoded here");
+	REGISTER_DESC(an_unsupported_charset_is_rejected_without_output,
+		      "an unsupported charset is rejected without output");
+	REGISTER_DESC(an_invalid_percent_escape_is_rejected_without_output,
+		      "an invalid percent escape is rejected without output");
+	REGISTER_DESC(a_truncated_percent_escape_is_rejected,
+		      "a truncated percent escape is rejected");
+	REGISTER_DESC(a_percent_encoded_nul_is_rejected,
+		      "a percent-encoded NUL is rejected");
+	REGISTER_DESC(an_overlong_utf8_sequence_is_rejected,
+		      "an overlong UTF-8 sequence is rejected");
+	REGISTER_DESC(a_utf8_surrogate_sequence_is_rejected,
+		      "a UTF-8 surrogate sequence is rejected");
+	REGISTER_DESC(a_four_byte_utf8_sequence_is_accepted,
+		      "a four-byte UTF-8 sequence is accepted");
+	REGISTER_DESC(a_truncated_utf8_sequence_is_rejected,
+		      "a truncated UTF-8 sequence is rejected");
+	REGISTER_DESC(a_codepoint_beyond_the_unicode_range_is_rejected,
+		      "a codepoint beyond the Unicode range is rejected");
+	REGISTER_DESC(a_quoted_extended_value_is_rejected,
+		      "a quoted extended value is rejected");
+	REGISTER_DESC(a_raw_space_in_an_extended_value_is_rejected,
+		      "a raw space in an extended value is rejected");
+	REGISTER_DESC(an_extended_value_needs_room_for_its_final_nul,
+		      "an extended value needs room for its final NUL");
 
 	RUN_ALL();
 	return DONE();
