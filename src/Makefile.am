@@ -19,6 +19,8 @@ axel_SOURCES = \
 	src/hash.h \
 	src/http.c \
 	src/http.h \
+	src/http_params.c \
+	src/http_params.h \
 	src/netrc.c \
 	src/netrc.h \
 	src/random.c \
