@@ -8,6 +8,7 @@
   Copyright 2016      Stephen Thirlwall
   Copyright 2017      Antonio Quartulli
   Copyright 2017-2019 Ismael Luceno
+  Copyright 2026      SiYu Liu <2028566723@qq.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -70,7 +71,7 @@ __attribute__((format(printf, 2, 3)))
 void http_addheader(http_t *conn, const char *format, ...);
 int http_exec(http_t *conn);
 const char *http_header(const http_t *conn, const char *header);
-void http_filename(const http_t *conn, char *filename);
+void http_filename(const http_t *conn, char *filename, size_t size);
 off_t http_size(http_t *conn);
 off_t http_size_from_range(http_t *conn);
 void http_decode(char *s);

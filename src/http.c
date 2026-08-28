@@ -13,6 +13,7 @@
   Copyright 2017      David Polverari
   Copyright 2017-2019 Ismael Luceno
   Copyright 2018-2019 Shankar
+  Copyright 2026      SiYu Liu <2028566723@qq.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -49,6 +50,7 @@
 
 #include "config.h"
 #include "axel.h"
+#include "http_params.h"
 
 #define HDR_CHUNK 512
 #define MAX_HEADERS (64 * 1024)
@@ -367,30 +369,11 @@ http_size_from_range(http_t *conn)
  * Content-Disposition: attachment; filename="filename.jpg"
  */
 void
-http_filename(const http_t *conn, char *filename)
+http_filename(const http_t *conn, char *filename, size_t size)
 {
-	const char *h;
-	if ((h = http_header(conn, "Content-Disposition:")) != NULL) {
-		sscanf(h, "%*s%*[ \t]filename%*[ \t=\"\'-]%254[^;\n\"\']",
-		       filename);
-		/* Trim spaces at the end of string */
-		const char space[] = "\t ";
-		for (char *n, *p = filename; (p = strpbrk(p, space)); p = n) {
-			n = p + strspn(p, space);
-			if (!*n) {
-				*p = 0;
-				break;
-			}
-		}
+	const char *header = http_header(conn, "Content-Disposition:");
 
-		/* Replace common invalid characters in filename
-		   https://en.wikipedia.org/wiki/Filename#Reserved_characters_and_words */
-		const char invalid[] = "/\\?%*:|<>";
-		const char replacement = '_';
-		for (char *i = filename; (i = strpbrk(i, invalid)); i++) {
-			*i = replacement;
-		}
-	}
+	http_content_disposition_filename(header, filename, size);
 }
 
 inline static char

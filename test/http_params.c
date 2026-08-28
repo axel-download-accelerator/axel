@@ -410,6 +410,87 @@ TEST(an_extended_value_needs_room_for_its_final_nul)
 	CHECK_STR(exact, "a.txt");
 }
 
+/* Content-Disposition filename selection and sanitization. */
+
+TEST(an_extended_filename_is_preferred_over_the_legacy_fallback)
+{
+	char output[64];
+
+	ASSERT(http_content_disposition_filename
+	       ("attachment; filename=\"????????.m2ts\"; "
+		"filename*=UTF-8''%E3%83%86%E3%82%B9%E3%83%88.m2ts", output,
+		sizeof(output)));
+	CHECK_STR(output, "\xE3\x83\x86\xE3\x82\xB9\xE3\x83\x88.m2ts");
+}
+
+TEST(an_invalid_extended_filename_falls_back_to_filename)
+{
+	char output[32];
+
+	ASSERT(http_content_disposition_filename
+	       ("attachment; filename=\"fallback.txt\"; "
+		"filename*=UTF-8''bad%ZZ.txt", output, sizeof(output)));
+	CHECK_STR(output, "fallback.txt");
+}
+
+TEST(an_unsupported_extended_charset_falls_back_to_filename)
+{
+	char output[32];
+
+	ASSERT(http_content_disposition_filename
+	       ("attachment; filename=\"fallback.txt\"; "
+		"filename*=ISO-8859-1''report.txt", output, sizeof(output)));
+	CHECK_STR(output, "fallback.txt");
+}
+
+TEST(a_legacy_filename_is_used_when_no_extended_one_exists)
+{
+	char output[32];
+
+	ASSERT(http_content_disposition_filename
+	       ("attachment; filename=\"a;b.txt\"", output, sizeof(output)));
+	CHECK_STR(output, "a;b.txt");
+}
+
+TEST(decoded_separators_and_control_characters_are_sanitized)
+{
+	char output[32];
+
+	ASSERT(http_content_disposition_filename("attachment; "
+						 "filename*=UTF-8''dir%2Fline%0Abad%3F.txt",
+						 output, sizeof(output)));
+	CHECK_STR(output, "dir_line_bad_.txt");
+}
+
+TEST(a_legacy_filename_is_sanitized_after_quoted_pair_copying)
+{
+	char output[32];
+
+	ASSERT(http_content_disposition_filename
+	       ("attachment; filename=\"dir\\\\file?.txt\"", output,
+		sizeof(output)));
+	CHECK_STR(output, "dir_file_.txt");
+}
+
+TEST(an_unusable_extended_filename_falls_back_to_filename)
+{
+	char output[32];
+
+	ASSERT(http_content_disposition_filename
+	       ("attachment; filename=safe.txt; filename*=UTF-8''..", output,
+		sizeof(output)));
+	CHECK_STR(output, "safe.txt");
+}
+
+TEST(no_usable_filename_clears_an_old_result)
+{
+	char output[32] = "old-response.txt";
+
+	ASSERT(!http_content_disposition_filename
+	       ("attachment; size=123", output, sizeof(output)));
+	CHECK_STR(output, "");
+}
+
 int
 main(void)
 {
@@ -479,6 +560,24 @@ main(void)
 		      "a raw space in an extended value is rejected");
 	REGISTER_DESC(an_extended_value_needs_room_for_its_final_nul,
 		      "an extended value needs room for its final NUL");
+
+	REGISTER_DESC
+	    (an_extended_filename_is_preferred_over_the_legacy_fallback,
+	     "an extended filename is preferred over its legacy fallback");
+	REGISTER_DESC(an_invalid_extended_filename_falls_back_to_filename,
+		      "an invalid extended filename falls back to filename");
+	REGISTER_DESC(an_unsupported_extended_charset_falls_back_to_filename,
+		      "an unsupported extended charset falls back to filename");
+	REGISTER_DESC(a_legacy_filename_is_used_when_no_extended_one_exists,
+		      "a legacy filename is used when no extended one exists");
+	REGISTER_DESC(decoded_separators_and_control_characters_are_sanitized,
+		      "decoded separators and control characters are sanitized");
+	REGISTER_DESC(a_legacy_filename_is_sanitized_after_quoted_pair_copying,
+		      "a copied legacy filename is sanitized");
+	REGISTER_DESC(an_unusable_extended_filename_falls_back_to_filename,
+		      "an unusable extended filename falls back to filename");
+	REGISTER_DESC(no_usable_filename_clears_an_old_result,
+		      "no usable filename leaves an empty result");
 
 	RUN_ALL();
 	return DONE();

@@ -11,6 +11,7 @@
   Copyright 2017      Antonio Quartulli
   Copyright 2017-2018 Ismael Luceno
   Copyright 2018      Shankar
+  Copyright 2026      SiYu Liu <2028566723@qq.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -48,6 +49,7 @@
 #include "config.h"
 #include "axel.h"
 #include "hash.h"
+#include "http.h"
 
 /**
  * Convert an URL to a conn_t structure.
@@ -460,6 +462,9 @@ conn_redirect(conn_t *conn, const char *url)
 int
 conn_info(conn_t *conn)
 {
+	/* A redirect or a previous protocol must not leave its filename here */
+	conn->output_filename[0] = '\0';
+
 	/* It's all a bit messed up.. But it works. */
 	if (PROTO_IS_FTP(conn->proto) && !conn->proxy) {
 		return conn_info_ftp(conn);
@@ -482,8 +487,6 @@ conn_info(conn_t *conn)
 			return 0;
 		conn_exec(conn);
 		conn_disconnect(conn);
-
-		http_filename(conn->http, conn->output_filename);
 
 		/* Code 3xx == redirect */
 		if (conn->http->status / 100 != 3)
@@ -532,6 +535,9 @@ conn_info(conn_t *conn)
 	/* Check for non-recoverable errors */
 	if (conn->http->status != 416 && conn->http->status / 100 != 2)
 		return 0;
+
+	http_filename(conn->http, conn->output_filename,
+		      sizeof(conn->output_filename));
 
 	conn->size = http_size_from_range(conn->http);
 	/* We assume partial requests are supported if a Content-Range

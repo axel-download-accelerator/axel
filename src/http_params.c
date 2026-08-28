@@ -408,3 +408,51 @@ http_decode_extended_parameter(char *dest, size_t size,
 
 	return true;
 }
+
+static bool
+sanitize_filename(char *filename)
+{
+	static const char invalid[] = "/\\?%*:|<>";
+
+	char *end = filename + strlen(filename);
+
+	while (end > filename && (end[-1] == ' ' || end[-1] == '\t'))
+		*--end = '\0';
+
+	for (unsigned char *p = (unsigned char *)filename; *p; p++) {
+		if (*p < 0x20 || *p == 0x7f
+		    || strchr(invalid, (char) *p) != NULL)
+			*p = '_';
+	}
+
+	return *filename && strcmp(filename, ".") != 0
+	    && strcmp(filename, "..") != 0;
+}
+
+bool
+http_content_disposition_filename(const char *header, char *filename,
+				  size_t size)
+{
+	struct http_parameter parameter;
+
+	if (!filename || !size)
+		return false;
+
+	filename[0] = '\0';
+	if (!header)
+		return false;
+
+	if (http_find_parameter(header, "filename*", &parameter) &&
+	    http_decode_extended_parameter(filename, size, &parameter) &&
+	    sanitize_filename(filename))
+		return true;
+
+	filename[0] = '\0';
+	if (http_find_parameter(header, "filename", &parameter) &&
+	    http_copy_parameter(filename, size, &parameter) &&
+	    sanitize_filename(filename))
+		return true;
+
+	filename[0] = '\0';
+	return false;
+}

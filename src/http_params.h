@@ -58,4 +58,8 @@ bool http_copy_parameter(char *dest, size_t size,
 
 bool http_decode_extended_parameter(char *dest, size_t size,
 				    const struct http_parameter *parameter);
+
+bool http_content_disposition_filename(const char *header, char *filename,
+				       size_t size);
+
 #endif /* AXEL_HTTP_PARAMS_H */
