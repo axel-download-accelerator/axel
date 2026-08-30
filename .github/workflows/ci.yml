@@ -5,6 +5,11 @@
 # tree and out of an unpacked tarball, so it also answers whether the
 # distribution carries everything the suites read -- which two of them
 # read the source tree for.
+#
+# --enable-compile-warnings=error is passed to the inner configure so that
+# build, the only one distcheck does, runs with -Werror: AX_IS_RELEASE
+# leaves it off by default once the tree has no .git, which is always true
+# inside the unpacked distribution.
 name: CI
 
 on:
@@ -57,7 +62,7 @@ jobs:
       # every job would distcheck the default build
       - name: distcheck
         run: >
-          make DIST_TARGETS=dist-gzip GZIP_ENV=--fast DISTCHECK_CONFIGURE_FLAGS="${{ matrix.ssl }}" distcheck
+          make DIST_TARGETS=dist-gzip GZIP_ENV=--fast DISTCHECK_CONFIGURE_FLAGS="${{ matrix.ssl }} --enable-compile-warnings=error" distcheck
 
       # distcheck runs the suites inside the unpacked distribution, and
       # takes it away again on the way out, so the raw TAP has to be
@@ -90,4 +95,5 @@ jobs:
               CFLAGS="$CFLAGS -I$GETTEXT/include -I$OPENSSL/include" \
               LDFLAGS="-L$GETTEXT/lib" \
               PKG_CONFIG_PATH="$OPENSSL/lib/pkgconfig"
-          make DIST_TARGETS=dist-gzip GZIP_ENV=--fast distcheck
+          make DIST_TARGETS=dist-gzip GZIP_ENV=--fast \
+              DISTCHECK_CONFIGURE_FLAGS="--enable-compile-warnings=error" distcheck
