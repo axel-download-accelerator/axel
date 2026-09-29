@@ -429,11 +429,156 @@ sanitize_filename(char *filename)
 	    && strcmp(filename, "..") != 0;
 }
 
+#define MAX_SUFFIX 16 /* max length including the dot */
+#ifdef NAME_MAX
+#define MAX_LOCAL_FILENAME ((size_t) NAME_MAX + 1)
+#else
+#define MAX_LOCAL_FILENAME ((size_t) 256)
+#endif
+
+static unsigned char
+ascii_fold(char c)
+{
+	return (unsigned char)(c + ('A' <= c && c <= 'Z' ? 'a' - 'A' : 0));
+}
+
+static bool
+is_plain_word(const char *p, size_t length)
+{
+	for (size_t i = 0; i < length; i++) {
+		unsigned char c = ascii_fold(p[i]);
+
+		if ((c < 'a' || 'z' < c) && (c < '0' || '9' < c))
+			return false;
+	}
+
+	return true;
+}
+
+/* Suffixes of the stream compressors formats, stored backwards for
+ * efficiency. */
+static const char compressor_suffixes[][5] = {
+	"z7", "rb", "2zb", "3zb", "zg", "zl", "4zl", "amzl",
+	"ozl", "zr", "zs", "zx", "z", "zz", "tsz",
+};
+
+/* Whether the name ends in one of the compressor suffixes above. */
+static bool
+ends_with_compressor(const char *name, size_t length)
+{
+	size_t s;
+
+	for (s = 0; s < sizeof compressor_suffixes
+		      / sizeof compressor_suffixes[0]; s++) {
+		const char *key = compressor_suffixes[s];
+		size_t i = length;
+
+		/* the name gives up its last character first and the key
+		 * its first, so the two meet in the middle */
+		while (*key != '\0' && i > 0
+		       && ascii_fold(name[i - 1]) == (unsigned char) *key) {
+			key++;
+			i--;
+		}
+		if (*key == '\0' && i > 0 && name[i - 1] == '.')
+			return true;
+	}
+
+	return false;
+}
+
+/* The tail of the name to keep, dot included, or 0 if there is none.
+ *
+ * A compressor suffix takes the word in front of it as well, because
+ * that is what names the file to whatever opens it.  Only a compressor
+ * is read that way: an ordinary suffix stands on its own, and taking
+ * the word in front of one only costs a little of the stem. */
+static size_t
+suffix_len(const char *name, size_t length)
+{
+	size_t dot = 0;
+	size_t previous = 0;
+	size_t last;
+
+	for (last = length; last > 0; last--)
+		if (name[last - 1] == '.') {
+			dot = last - 1;
+			break;
+		}
+
+	/* A leading dot is the whole name rather than an suffix, and
+	 * a tail over the budget is not one we can act on. */
+	if (dot == 0 || length - dot > MAX_SUFFIX)
+		return 0;
+
+	if (!ends_with_compressor(name, length))
+		return length - dot;
+
+	for (last = dot; last > 0; last--)
+		if (name[last - 1] == '.') {
+			previous = last - 1;
+			break;
+		}
+
+	if (previous > 0 && length - previous <= MAX_SUFFIX
+	    && dot - previous - 1 >= 1 && dot - previous - 1 <= 12
+	    && is_plain_word(name + previous + 1, dot - previous - 1))
+		return length - previous;
+
+	return length - dot;
+}
+
+/* Cut the name down to what fits in size bytes, keeping the suffix
+ * and never ending in the middle of a character. */
+static bool
+truncate_filename(char *filename, size_t size)
+{
+	size_t limit = size - 1;
+	size_t length = strlen(filename);
+	size_t suffix;
+	size_t keep;
+
+	if (length <= limit)
+		return true;
+
+	suffix = suffix_len(filename, length);
+	keep = limit > suffix ? limit - suffix : 0;
+
+	if (length > suffix) {
+		size_t start = length - suffix;	/* the suffix begins here */
+		size_t word = start;
+
+		while (word > 0 && filename[word - 1] != '.')
+			word--;
+
+		if (word > 0 && keep >= word)
+			keep = word - 1;
+	}
+
+	/* A byte with its top bits set is a continuation, so a cut that
+	 * lands on one is inside a character. */
+	while (keep > 0 && ((unsigned char) filename[keep] & 0xc0) == 0x80)
+		keep--;
+
+	if (keep == 0) {
+		/* None of the name survives.  What is left is the suffix
+		 * on its own, which is a hidden file with no stem. */
+		filename[0] = '\0';
+		return false;
+	}
+
+	memmove(filename + keep, filename + length - suffix, suffix);
+	filename[keep + suffix] = '\0';
+
+	return true;
+}
+
 bool
 http_content_disposition_filename(const char *header, char *filename,
 				  size_t size)
 {
 	struct http_parameter parameter;
+	size_t local = size < MAX_LOCAL_FILENAME ? size : MAX_LOCAL_FILENAME;
 
 	if (!filename || !size)
 		return false;
@@ -444,13 +589,15 @@ http_content_disposition_filename(const char *header, char *filename,
 
 	if (http_find_parameter(header, "filename*", &parameter) &&
 	    http_decode_extended_parameter(filename, size, &parameter) &&
-	    sanitize_filename(filename))
+	    sanitize_filename(filename) &&
+	    truncate_filename(filename, local))
 		return true;
 
 	filename[0] = '\0';
 	if (http_find_parameter(header, "filename", &parameter) &&
 	    http_copy_parameter(filename, size, &parameter) &&
-	    sanitize_filename(filename))
+	    sanitize_filename(filename) &&
+	    truncate_filename(filename, local))
 		return true;
 
 	filename[0] = '\0';
