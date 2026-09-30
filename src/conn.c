@@ -11,7 +11,7 @@
   Copyright 2017      Antonio Quartulli
   Copyright 2017-2018 Ismael Luceno
   Copyright 2018      Shankar
-  Copyright 2026      kyomoto-omarchy <2028566723@qq.com>
+  Copyright 2026 	  SiYu Liu <2028566723@qq.com>
 
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
