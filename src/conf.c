@@ -405,7 +405,7 @@ void
 conf_auth_setup(conf_t *conf, int proto, const char *host,
 		char *user, size_t user_len, char *pass, size_t pass_len)
 {
-	if (*user || *pass)
+	if (*user || *pass || (conf && conf->untrusted_host))
 		return;
 
 	netrc_parse(conf ? conf->netrc : NULL, host, user, user_len,
