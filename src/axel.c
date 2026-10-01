@@ -129,8 +129,8 @@ axel_new(conf_t *conf, int count, const search_t *res)
 	axel->conn[0].local_if = axel->conf->interfaces->text;
 	axel->conf->interfaces = axel->conf->interfaces->next;
 
-	strlcpy(axel->filename, axel->conn[0].file, sizeof(axel->filename));
-	http_decode(axel->filename);
+	conn_output_filename(&axel->conn[0], axel->filename,
+			     sizeof(axel->filename));
 
 	if ((s = strchr(axel->filename, '?')) != NULL &&
 	    axel->conf->strip_cgi_parameters)
@@ -188,8 +188,8 @@ axel_new(conf_t *conf, int count, const search_t *res)
 
 	/* Wildcards in URL --> Get complete filename */
 	if (axel->filename[strcspn(axel->filename, "*?")])
-		strlcpy(axel->filename, axel->conn[0].file,
-			sizeof(axel->filename));
+		conn_output_filename(&axel->conn[0], axel->filename,
+				     sizeof(axel->filename));
 
 	if (*axel->conn[0].output_filename != 0) {
 		strlcpy(axel->filename, axel->conn[0].output_filename,
