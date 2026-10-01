@@ -743,7 +743,10 @@ axel_close(axel_t *axel)
 	}
 	free(axel->conn);
 	free(axel);
-	free(buffer);
+	if (buffer) {
+		free(buffer);
+		buffer = NULL;
+	}
 }
 
 /* time() with more precision */
