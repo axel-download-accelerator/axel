@@ -274,8 +274,13 @@ axel_open(axel_t *axel)
 		   the target may be a device or a fifo, which has no length
 		   to set, and the writes themselves will say so if it is
 		   anything worse than that. */
-		if (axel->size != LLONG_MAX)
-			(void)ftruncate(axel->outfd, axel->size);
+		if (axel->size != LLONG_MAX) {
+			if (ftruncate(axel->outfd, axel->size) != 0) {
+				axel_message(axel,
+					     _("Fail to truncate the download file: %s"),
+					     strerror(errno));
+			}
+		}
 
 		/* And check whether the filesystem can handle seeks to
 		   past-EOF areas.. Speeds things up. :) AFAIK this
