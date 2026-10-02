@@ -50,6 +50,7 @@
 #include "config.h"
 #include <sys/ioctl.h>
 #include "axel.h"
+#include "sleep.h"
 
 
 static void stop(int signal);
@@ -547,10 +548,69 @@ download(axel_t *axel)
 	}
 }
 
+/* Sleep for the resume countdown, printing progress. */
+static
+int
+resume_waiter(const conf_t *conf)
+{
+	int ret = 0;
+	int countdown = conf->resume_countdown;
+	struct timespec delay = {.tv_sec = 1,.tv_nsec = 0 };
+
+	while (countdown > 0 && run) {
+		printf(_("\rRetry in %2d seconds"), countdown);
+		fflush(stdout);
+		if (axel_sleep(delay) != 0) {
+			ret = -1;
+			goto exit;
+		}
+
+		countdown--;
+	}
+
+	if (!run) {
+		ret = -1;
+		goto exit;
+	}
+
+	if (conf->resume_countdown > 0) {
+		printf(_("\rReconnecting...     \n"));
+		fflush(stdout);
+	}
+
+ exit:
+	return ret;
+}
+
+/* Consume one retry from the shared budget and wait for the resume
+ * countdown. Closes *axel before waiting, so the caller must not use
+ * it afterwards if the return value is not 0.
+ *
+ * Returns 1 to retry, 0 if no retry is allowed, or -1 on wait failure.
+ */
+static
+int
+retry_wait(conf_t *conf, axel_t **axel)
+{
+	if (!conf->auto_resume || conf->resume_retry == 0)
+		return 0;
+
+	if (conf->resume_retry > 0)
+		conf->resume_retry--;
+
+	if (*axel) {
+		axel_close(*axel);
+		*axel = NULL;
+	}
+
+	return resume_waiter(conf) < 0 ? -1 : 1;
+}
+
 int
 main(int argc, char *argv[])
 {
 	char fn[MAX_STRING];
+	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
 	int do_search = 0;
 	conf_t conf[1];
 	axel_t *axel = NULL;
@@ -559,7 +619,7 @@ main(int argc, char *argv[])
 
 	fn[0] = 0;
 
-/* Set up internationalization (i18n) */
+	/* Set up internationalization (i18n) */
 #ifdef ENABLE_NLS
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
@@ -587,25 +647,36 @@ main(int argc, char *argv[])
 	if (ret != -1)
 		goto free_conf;
 
-	ret = 1;
 #ifdef HAVE_SSL
 	ssl_init(conf);
 #endif				/* HAVE_SSL */
 
 	s = get_url(argv);
-	if (!s)
+	if (!s) {
+		ret = 1;
 		goto free_conf;
+	}
 
 	if (conf->progress_style != AXEL_PROGRESS_STYLE_PERCENTAGE)
 		printf(_("Initializing download: %s\n"), s);
 
+	/* Install save_state signal handler for resuming support */
+	signal(SIGINT, stop);
+	signal(SIGTERM, stop);
+
+ again:
+	ret = 1;
 	axel = axel_setup(conf, do_search, s, argc, argv);
-	if (s != argv[optind])
-		free(s);
+	if (!axel)
+		goto close_axel;
 
 	print_messages(axel);
-	if (!axel || axel->ready == -1)
+
+	if (axel->ready == -1) {
+		if (axel->recoverable && retry_wait(conf, &axel) == 1)
+			goto again;
 		goto close_axel;
+	}
 
 	if (set_filename(axel, fn) == -1)
 		goto close_axel;
@@ -625,17 +696,25 @@ main(int argc, char *argv[])
 		putchar('\n');
 		print_commas(axel->bytes_done);
 		fflush(stdout);
-
 	}
 	axel->start_byte = axel->bytes_done;
 
-	/* Install save_state signal handler for resuming support */
-	signal(SIGINT, stop);
-	signal(SIGTERM, stop);
-
 	download(axel);
 
-	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
+	if (axel->ready == 1 || !run)
+		goto finish;
+
+	if (axel->ready == -1 && axel->recoverable) {
+		ret = retry_wait(conf, &axel);
+		if (ret == -1) {
+			ret = 1;
+			goto close_axel;
+		}
+		if (ret == 1)
+			goto again;
+	}
+
+ finish:
 	time_human(htime, sizeof(htime), axel_gettime() - axel->start_time);
 	axel_size_human(hsize, sizeof(hsize), axel->bytes_done - axel->start_byte);
 
@@ -646,6 +725,8 @@ main(int argc, char *argv[])
 
  close_axel:
 	axel_close(axel);
+	if (s != argv[optind])
+		free(s);
  free_conf:
 	conf_free(conf);
 

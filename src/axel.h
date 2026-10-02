@@ -146,6 +146,7 @@ typedef struct {
 	int ready;
 	message_t *message, *last_message;
 	url_t *url;
+	bool recoverable;
 } axel_t;
 
 axel_t *axel_new(conf_t *conf, int count, const search_t *urls);
