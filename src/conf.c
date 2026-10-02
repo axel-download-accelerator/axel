@@ -320,6 +320,9 @@ conf_init(conf_t *conf)
 	conf->verbose = 1;
 	conf->insecure = 0;
 	conf->no_clobber = 0;
+	conf->auto_resume = 0;
+	conf->resume_countdown = 10;
+	conf->resume_retry = -1;
 
 	conf->search_timeout = 10;
 	conf->search_threads = 3;

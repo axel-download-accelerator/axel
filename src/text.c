@@ -50,6 +50,7 @@
 #include "config.h"
 #include <sys/ioctl.h>
 #include "axel.h"
+#include "sleep.h"
 
 
 static void stop(int signal);
@@ -95,6 +96,9 @@ static struct option axel_options[] = {
 	{"header",          1,      NULL, 'H'},
 	{"user-agent",      1,      NULL, 'U'},
 	{"timeout",         1,      NULL, 'T'},
+	{"auto-resume",     0,      NULL, 'A'},
+	{"resume-countdown",1,      NULL, 'd'},
+	{"resume-retry",    1,      NULL, 'y'},
 	{NULL,              0,      NULL, 0}
 };
 #endif
@@ -107,6 +111,24 @@ unsigned
 calc_percentage(off_t cur, off_t total)
 {
 	return min(100, (100 * cur + total / 2) / total);
+}
+
+static
+int
+parse_ull(const char *arg, unsigned long long *value)
+{
+	char *end;
+
+	if (!arg)
+		return -1;
+	while (isspace((unsigned char)*arg))
+		arg++;
+	if (*arg == '-' || *arg == '\0')
+		return -1;
+
+	errno = 0;
+	*value = strtoull(arg, &end, 0);
+	return (errno == ERANGE || *end) ? -1 : 0;
 }
 
 /**
@@ -137,24 +159,33 @@ parse_option(int option, conf_t *conf, char fn[MAX_STRING], int *do_search,
 		strlcpy(conf->add_header[conf->add_header_count++], optarg,
 			sizeof(conf->add_header[0]));
 		break;
-	case 's':
-		if (!sscanf(optarg, "%llu", &conf->max_speed)) {
+	case 's': {
+		unsigned long long v;
+		if (parse_ull(optarg, &v) == -1) {
 			print_help();
 			return 1;
 		}
+		conf->max_speed = v;
 		break;
-	case 'n':
-		if (!sscanf(optarg, "%hu", &conf->num_connections)) {
+	}
+	case 'n': {
+		unsigned long long v;
+		if (parse_ull(optarg, &v) == -1 || v > USHRT_MAX) {
 			print_help();
 			return 1;
 		}
+		conf->num_connections = v;
 		break;
-	case MAX_REDIR_OPT:
-		if (!sscanf(optarg, "%i", &conf->max_redirect)) {
+	}
+	case MAX_REDIR_OPT: {
+		unsigned long long v;
+		if (parse_ull(optarg, &v) == -1 || v > INT_MAX) {
 			print_help();
 			return 1;
 		}
+		conf->max_redirect = v;
 		break;
+	}
 	case LOCATION_TRUSTED_OPT:
 		conf->location_trusted = 1;
 		break;
@@ -164,10 +195,12 @@ parse_option(int option, conf_t *conf, char fn[MAX_STRING], int *do_search,
 	case 'S':
 		*do_search = 1;
 		if (optarg) {
-			if (!sscanf(optarg, "%i", &conf->search_top)) {
+			unsigned long long v;
+			if (parse_ull(optarg, &v) == -1 || v > INT_MAX) {
 				print_help();
 				return 1;
 			}
+			conf->search_top = v;
 		}
 		break;
 	case 'R':
@@ -218,9 +251,36 @@ parse_option(int option, conf_t *conf, char fn[MAX_STRING], int *do_search,
 			return 1;
 		}
 		break;
-	case 'T':
-		conf->io_timeout = strtoul(optarg, NULL, 0);
+	case 'T': {
+		unsigned long long v;
+		if (parse_ull(optarg, &v) == -1 || v > ULONG_MAX) {
+			print_help();
+			return 1;
+		}
+		conf->io_timeout = v;
 		break;
+	}
+	case 'A':
+		conf->auto_resume = 1;
+		break;
+	case 'd': {
+		unsigned long long v;
+		if (parse_ull(optarg, &v) == -1 || v > INT_MAX) {
+			print_help();
+			return 1;
+		}
+		conf->resume_countdown = v;
+		break;
+	}
+	case 'y': {
+		unsigned long long v;
+		if (parse_ull(optarg, &v) == -1 || v < 1 || v > INT_MAX) {
+			print_help();
+			return 1;
+		}
+		conf->resume_retry = v;
+		break;
+	}
 	default:
 		print_help();
 		return 1;
@@ -247,7 +307,7 @@ parse_options(int argc, char *argv[], conf_t *conf, char fn[MAX_STRING],
 
 	while (1) {
 		int option = getopt_long(argc, argv,
-					 "s:n:o:S::R::46NqvhVapkcH:U:T:",
+					 "s:n:o:S::R::46NqvhVapkcH:U:T:Ay:d:",
 					 axel_options, NULL);
 		if (option == -1)
 			break;
@@ -488,10 +548,69 @@ download(axel_t *axel)
 	}
 }
 
+/* Sleep for the resume countdown, printing progress. */
+static
+int
+resume_waiter(const conf_t *conf)
+{
+	int ret = 0;
+	int countdown = conf->resume_countdown;
+	struct timespec delay = {.tv_sec = 1,.tv_nsec = 0 };
+
+	while (countdown > 0 && run) {
+		printf(_("\rRetry in %2d seconds"), countdown);
+		fflush(stdout);
+		if (axel_sleep(delay) != 0) {
+			ret = -1;
+			goto exit;
+		}
+
+		countdown--;
+	}
+
+	if (!run) {
+		ret = -1;
+		goto exit;
+	}
+
+	if (conf->resume_countdown > 0) {
+		printf(_("\rReconnecting...     \n"));
+		fflush(stdout);
+	}
+
+ exit:
+	return ret;
+}
+
+/* Consume one retry from the shared budget and wait for the resume
+ * countdown. Closes *axel before waiting, so the caller must not use
+ * it afterwards if the return value is not 0.
+ *
+ * Returns 1 to retry, 0 if no retry is allowed, or -1 on wait failure.
+ */
+static
+int
+retry_wait(conf_t *conf, axel_t **axel)
+{
+	if (!conf->auto_resume || conf->resume_retry == 0)
+		return 0;
+
+	if (conf->resume_retry > 0)
+		conf->resume_retry--;
+
+	if (*axel) {
+		axel_close(*axel);
+		*axel = NULL;
+	}
+
+	return resume_waiter(conf) < 0 ? -1 : 1;
+}
+
 int
 main(int argc, char *argv[])
 {
 	char fn[MAX_STRING];
+	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
 	int do_search = 0;
 	conf_t conf[1];
 	axel_t *axel = NULL;
@@ -500,7 +619,7 @@ main(int argc, char *argv[])
 
 	fn[0] = 0;
 
-/* Set up internationalization (i18n) */
+	/* Set up internationalization (i18n) */
 #ifdef ENABLE_NLS
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
@@ -528,25 +647,36 @@ main(int argc, char *argv[])
 	if (ret != -1)
 		goto free_conf;
 
-	ret = 1;
 #ifdef HAVE_SSL
 	ssl_init(conf);
 #endif				/* HAVE_SSL */
 
 	s = get_url(argv);
-	if (!s)
+	if (!s) {
+		ret = 1;
 		goto free_conf;
+	}
 
 	if (conf->progress_style != AXEL_PROGRESS_STYLE_PERCENTAGE)
 		printf(_("Initializing download: %s\n"), s);
 
+	/* Install save_state signal handler for resuming support */
+	signal(SIGINT, stop);
+	signal(SIGTERM, stop);
+
+ again:
+	ret = 1;
 	axel = axel_setup(conf, do_search, s, argc, argv);
-	if (s != argv[optind])
-		free(s);
+	if (!axel)
+		goto close_axel;
 
 	print_messages(axel);
-	if (!axel || axel->ready == -1)
+
+	if (axel->ready == -1) {
+		if (axel->recoverable && retry_wait(conf, &axel) == 1)
+			goto again;
 		goto close_axel;
+	}
 
 	if (set_filename(axel, fn) == -1)
 		goto close_axel;
@@ -566,17 +696,25 @@ main(int argc, char *argv[])
 		putchar('\n');
 		print_commas(axel->bytes_done);
 		fflush(stdout);
-
 	}
 	axel->start_byte = axel->bytes_done;
 
-	/* Install save_state signal handler for resuming support */
-	signal(SIGINT, stop);
-	signal(SIGTERM, stop);
-
 	download(axel);
 
-	char hsize[MAX_STRING / 2], htime[MAX_STRING / 2];
+	if (axel->ready == 1 || !run)
+		goto finish;
+
+	if (axel->ready == -1 && axel->recoverable) {
+		ret = retry_wait(conf, &axel);
+		if (ret == -1) {
+			ret = 1;
+			goto close_axel;
+		}
+		if (ret == 1)
+			goto again;
+	}
+
+ finish:
 	time_human(htime, sizeof(htime), axel_gettime() - axel->start_time);
 	axel_size_human(hsize, sizeof(hsize), axel->bytes_done - axel->start_byte);
 
@@ -587,6 +725,8 @@ main(int argc, char *argv[])
 
  close_axel:
 	axel_close(axel);
+	if (s != argv[optind])
+		free(s);
  free_conf:
 	conf_free(conf);
 
@@ -828,6 +968,9 @@ print_help(void)
 		 "-p\tPrint simple percentages instead of progress bar (0-100)\n"
 		 "-h\tThis information\n"
 		 "-T x\tSet I/O and connection timeout\n"
+		 "-A\tEnable auto resume\n"
+		 "-d x\tSet resume countdown before reconnection\n"
+		 "-y x\tSet resume retries before exit\n"
 		 "-V\tVersion information\n"
 		 "\n"
 		 "Visit https://github.com/axel-download-accelerator/axel/issues\n"));
@@ -855,6 +998,9 @@ print_help(void)
 		 "--percentage\t\t-p\tPrint simple percentages instead of progress bar (0-100)\n"
 		 "--help\t\t\t-h\tThis information\n"
 		 "--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
+		 "--auto-resume\t\t-A\tEnable auto resume\n"
+		 "--resume-countdown=x\t-d x\tSet resume countdown before reconnection\n"
+		 "--resume-retry=x\t-y x\tSet resume retries before exit\n"
 		 "--version\t\t-V\tVersion information\n"
 		 "\n"
 		 "Visit https://github.com/axel-download-accelerator/axel/issues to report bugs\n"));
