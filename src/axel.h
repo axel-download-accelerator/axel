@@ -103,6 +103,14 @@
 #define DEFAULT_IO_TIMEOUT	120
 #define DEFAULT_USER_AGENT	"Axel/" VERSION " (" ARCH ")"
 
+/* Verbosity levels. A message is shown only when its level is <=
+ * conf->verbose, so lower numbers are more important. */
+typedef enum {
+	AXEL_MSG_ERROR = 0,	/* errors, always shown unless --quiet */
+	AXEL_MSG_INFO = 1,	/* normal informational output (default) */
+	AXEL_MSG_DEBUG = 2,	/* extra detail, enabled with -vv */
+} msg_level_t;
+
 typedef struct {
 	void *next;
 	char text[MAX_STRING];
@@ -156,7 +164,7 @@ void axel_close(axel_t *axel);
 void print_messages(axel_t *axel);
 
 /* Queue a line for the progress display to print between updates */
-void axel_message(axel_t *axel, const char *format, ...) PRINTF_FUNC(2);
+void axel_message(axel_t *axel, int level, const char *format, ...) PRINTF_FUNC(3);
 
 /* Hand each connection a share of the file to fetch */
 void axel_divide(axel_t *axel);

@@ -200,13 +200,14 @@ stfile_load(axel_t *axel)
 	close(fd);
 
 	if (!state_fits_download(axel)) {
-		axel_message(axel, _("State file %s.st belongs to another "
-				     "download, ignoring it."), axel->filename);
+		axel_message(axel, AXEL_MSG_INFO,
+			     _("State file %s.st belongs to another "
+			       "download, ignoring it."), axel->filename);
 		axel->bytes_done = 0;
 		return axel_conn_resize(axel, wanted_conns) ? 0 : -1;
 	}
 
-	axel_message(axel,
+	axel_message(axel, AXEL_MSG_INFO,
 		     _("State file found: %jd bytes downloaded, %jd to go."),
 		     (intmax_t)axel->bytes_done,
 		     (intmax_t)(axel->size - axel->bytes_done));

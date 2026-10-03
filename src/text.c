@@ -90,6 +90,7 @@ static struct option axel_options[] = {
 	{"version",         0,      NULL, 'V'},
 	{"alternate",       0,      NULL, 'a'},
 	{"percentage",      0,      NULL, 'p'},
+	{"progress-only",   0,      NULL, 'P'},
 	{"insecure",        0,      NULL, 'k'},
 	{"no-clobber",      0,      NULL, 'c'},
 	{"header",          1,      NULL, 'H'},
@@ -188,6 +189,13 @@ parse_option(int option, conf_t *conf, char fn[MAX_STRING], int *do_search,
 	case 'p':
 		conf->progress_style = AXEL_PROGRESS_STYLE_PERCENTAGE;
 		break;
+	case 'P':
+		/* One-line progress bar only: the alternate bar plus a
+		 * verbosity low enough to drop all informational output,
+		 * keeping errors. */
+		conf->progress_style = AXEL_PROGRESS_STYLE_ALTERNATIVE;
+		conf->verbose = AXEL_MSG_ERROR;
+		break;
 	case 'k':
 		conf->insecure = 1;
 		break;
@@ -247,7 +255,7 @@ parse_options(int argc, char *argv[], conf_t *conf, char fn[MAX_STRING],
 
 	while (1) {
 		int option = getopt_long(argc, argv,
-					 "s:n:o:S::R::46NqvhVapkcH:U:T:",
+					 "s:n:o:S::R::46NqvhVapPkcH:U:T:",
 					 axel_options, NULL);
 		if (option == -1)
 			break;
@@ -345,7 +353,7 @@ axel_setup(conf_t *conf, int do_search, char *s, int argc, char *argv[])
 		return NULL;
 
 	search[0].conf = conf;
-	if (conf->verbose)
+	if (conf->verbose >= AXEL_MSG_INFO)
 		printf(_("Doing search...\n"));
 	i = search_makelist(search, s);
 	if (i < 0) {
@@ -353,7 +361,7 @@ axel_setup(conf_t *conf, int do_search, char *s, int argc, char *argv[])
 		free(search);
 		return NULL;
 	}
-	if (conf->verbose)
+	if (conf->verbose >= AXEL_MSG_INFO)
 		printf(_("Testing speeds, this can take a while...\n"));
 	j = search_getspeeds(search, i);
 	if (j < 0) {
@@ -363,7 +371,7 @@ axel_setup(conf_t *conf, int do_search, char *s, int argc, char *argv[])
 	}
 
 	search_sortlist(search, i);
-	if (conf->verbose) {
+	if (conf->verbose >= AXEL_MSG_INFO) {
 		printf(_("%i usable servers found, will use these URLs:\n"), j);
 		j = min(j, conf->search_top);
 		printf("%-60s %15s\n", "URL", _("Speed"));
@@ -537,7 +545,8 @@ main(int argc, char *argv[])
 	if (!s)
 		goto free_conf;
 
-	if (conf->progress_style != AXEL_PROGRESS_STYLE_PERCENTAGE)
+	if (conf->verbose >= AXEL_MSG_INFO
+	    && conf->progress_style != AXEL_PROGRESS_STYLE_PERCENTAGE)
 		printf(_("Initializing download: %s\n"), s);
 
 	axel = axel_setup(conf, do_search, s, argc, argv);
@@ -561,7 +570,10 @@ main(int argc, char *argv[])
 
 	if (conf->progress_style == AXEL_PROGRESS_STYLE_ALTERNATIVE
 	    || conf->progress_style == AXEL_PROGRESS_STYLE_PERCENTAGE) {
-		putchar('\n');
+		/* Separate the bar from the preceding messages, but only when
+		 * those messages were actually printed. */
+		if (conf->verbose >= AXEL_MSG_INFO)
+			putchar('\n');
 	} else if (axel->bytes_done > 0) {	/* Print first dots if resuming */
 		putchar('\n');
 		print_commas(axel->bytes_done);
@@ -580,8 +592,9 @@ main(int argc, char *argv[])
 	time_human(htime, sizeof(htime), axel_gettime() - axel->start_time);
 	axel_size_human(hsize, sizeof(hsize), axel->bytes_done - axel->start_byte);
 
-	printf(_("\nDownloaded %s in %s. (%.2f KB/s)\n"), hsize, htime,
-	       (double)axel->bytes_per_second / 1024);
+	if (conf->verbose >= AXEL_MSG_INFO)
+		printf(_("\nDownloaded %s in %s. (%.2f KB/s)\n"), hsize, htime,
+		       (double)axel->bytes_per_second / 1024);
 
 	ret = axel->ready ? 0 : 2;
 
@@ -826,6 +839,7 @@ print_help(void)
 		 "-v\tMore status information\n"
 		 "-a\tAlternate progress indicator\n"
 		 "-p\tPrint simple percentages instead of progress bar (0-100)\n"
+		 "-P\tShow only the one-line progress bar, suppressing other output\n"
 		 "-h\tThis information\n"
 		 "-T x\tSet I/O and connection timeout\n"
 		 "-V\tVersion information\n"
@@ -853,6 +867,7 @@ print_help(void)
 		 "--verbose\t\t-v\tMore status information\n"
 		 "--alternate\t\t-a\tAlternate progress indicator\n"
 		 "--percentage\t\t-p\tPrint simple percentages instead of progress bar (0-100)\n"
+		 "--progress-only\t\t-P\tShow only the one-line progress bar, suppressing other output\n"
 		 "--help\t\t\t-h\tThis information\n"
 		 "--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
 		 "--version\t\t-V\tVersion information\n"
