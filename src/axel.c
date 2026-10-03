@@ -90,9 +90,8 @@ axel_new(conf_t *conf, int count, const search_t *res)
 	if (axel->conf->max_speed > 0) {
 		/* max_speed / buffer_size < .5 */
 		if (16 * axel->conf->max_speed / axel->conf->buffer_size < 8) {
-			if (axel->conf->verbose >= 2)
-				axel_message(axel,
-					     _("Buffer resized for this speed."));
+			axel_message(axel, AXEL_MSG_DEBUG,
+				     _("Buffer resized for this speed."));
 			axel->conf->buffer_size = axel->conf->max_speed;
 		}
 		uint64_t delay =
@@ -121,7 +120,7 @@ axel_new(conf_t *conf, int count, const search_t *res)
 
 	axel->conn[0].conf = axel->conf;
 	if (!conn_set(&axel->conn[0], axel->url->text)) {
-		axel_message(axel, _("Could not parse URL.\n"));
+		axel_message(axel, AXEL_MSG_ERROR, _("Could not parse URL.\n"));
 		axel->ready = -1;
 		return axel;
 	}
@@ -154,7 +153,8 @@ axel_new(conf_t *conf, int count, const search_t *res)
 
 	do {
 		if (!conn_init(&axel->conn[0])) {
-			axel_message(axel, "%s", axel->conn[0].message);
+			axel_message(axel, AXEL_MSG_ERROR, "%s",
+				     axel->conn[0].message);
 			axel->ready = -1;
 			return axel;
 		}
@@ -175,15 +175,13 @@ axel_new(conf_t *conf, int count, const search_t *res)
 
 	conn_url(axel->url->text, sizeof(axel->url->text) - 1, axel->conn);
 	axel->size = axel->conn[0].size;
-	if (axel->conf->verbose > 0) {
-		if (axel->size != LLONG_MAX) {
-			char hsize[32];
-			axel_size_human(hsize, sizeof(hsize), axel->size);
-			axel_message(axel, _("File size: %s (%jd bytes)"),
-				     hsize, (intmax_t)axel->size);
-		} else {
-			axel_message(axel, _("File size: unavailable"));
-		}
+	if (axel->size != LLONG_MAX) {
+		char hsize[32];
+		axel_size_human(hsize, sizeof(hsize), axel->size);
+		axel_message(axel, AXEL_MSG_INFO, _("File size: %s (%jd bytes)"),
+			     hsize, (intmax_t)axel->size);
+	} else {
+		axel_message(axel, AXEL_MSG_INFO, _("File size: unavailable"));
 	}
 
 	/* Wildcards in URL --> Get complete filename */
@@ -231,15 +229,15 @@ axel_conn_resize(axel_t *axel, uint16_t nconns)
 int
 axel_open(axel_t *axel)
 {
-	if (axel->conf->verbose > 0)
-		axel_message(axel, _("Opening output file %s"), axel->filename);
+	axel_message(axel, AXEL_MSG_INFO, _("Opening output file %s"),
+		     axel->filename);
 
 	axel->outfd = -1;
 
 	/* Check whether server knows about RESTart and switch back to
 	   single connection download if necessary */
 	if (!axel->conn[0].supported) {
-		axel_message(axel, _("Server unsupported, "
+		axel_message(axel, AXEL_MSG_INFO, _("Server unsupported, "
 				     "starting from scratch with one connection."));
 		if (!axel_conn_resize(axel, 1))
 			return 0;
@@ -253,7 +251,8 @@ axel_open(axel_t *axel)
 
 		if (loaded > 0 &&
 		    (axel->outfd = open(axel->filename, O_WRONLY, 0666)) == -1) {
-			axel_message(axel, _("Error opening local file"));
+			axel_message(axel, AXEL_MSG_ERROR,
+				     _("Error opening local file"));
 			return 0;
 		}
 	}
@@ -264,7 +263,8 @@ axel_open(axel_t *axel)
 
 		if ((axel->outfd =
 		     open(axel->filename, O_CREAT | O_WRONLY, 0666)) == -1) {
-			axel_message(axel, _("Error opening local file"));
+			axel_message(axel, AXEL_MSG_ERROR,
+				     _("Error opening local file"));
 			return 0;
 		}
 
@@ -285,7 +285,7 @@ axel_open(axel_t *axel)
 			/* But if the OS/fs does not allow to seek behind
 			   EOF, we have to fill the file with zeroes before
 			   starting. Slow.. */
-			axel_message(axel,
+			axel_message(axel, AXEL_MSG_INFO,
 				     _("Crappy filesystem/OS.. Working around. :-("));
 			lseek(axel->outfd, 0, SEEK_SET);
 			memset(buffer, 0, axel->conf->buffer_size);
@@ -298,7 +298,7 @@ axel_open(axel_t *axel)
 					   min(j, axel->conf->buffer_size))) < 0) {
 					if (errno == EINTR || errno == EAGAIN)
 						continue;
-					axel_message(axel,
+					axel_message(axel, AXEL_MSG_ERROR,
 						     _("Error creating local file"));
 					return 0;
 				}
@@ -368,8 +368,7 @@ axel_start(axel_t *axel)
 			axel->conn[i].supported = true;
 	}
 
-	if (axel->conf->verbose > 0)
-		axel_message(axel, _("Starting download"));
+	axel_message(axel, AXEL_MSG_INFO, _("Starting download"));
 
 	for (i = 0; i < axel->conf->num_connections; i++) {
 		if (axel->conn[i].currentbyte >= axel->conn[i].lastbyte) {
@@ -377,19 +376,18 @@ axel_start(axel_t *axel)
 			reactivate_connection(axel, i);
 			pthread_mutex_unlock(&axel->conn[i].lock);
 		} else if (axel->conn[i].currentbyte < axel->conn[i].lastbyte) {
-			if (axel->conf->verbose >= 2) {
-				axel_message(axel,
-					     _("Connection %i downloading from %s:%i using interface %s"),
-					     i, axel->conn[i].host,
-					     axel->conn[i].port,
-					     axel->conn[i].local_if);
-			}
+			axel_message(axel, AXEL_MSG_DEBUG,
+				     _("Connection %i downloading from %s:%i using interface %s"),
+				     i, axel->conn[i].host,
+				     axel->conn[i].port,
+				     axel->conn[i].local_if);
 
 			axel->conn[i].state = true;
 			if (pthread_create
 			    (axel->conn[i].setup_thread, NULL, setup_thread,
 			     &axel->conn[i]) != 0) {
-				axel_message(axel, _("pthread error!!!"));
+				axel_message(axel, AXEL_MSG_ERROR,
+					     _("pthread error!!!"));
 				axel->ready = -1;
 			}
 		}
@@ -421,10 +419,8 @@ read_connection(axel_t *axel, int i, fd_set *fds)
 		time_t timeout = axel->conn[i].last_transfer +
 		    axel->conf->connection_timeout;
 		if (axel_gettime() > timeout) {
-			if (axel->conf->verbose)
-				axel_message(axel,
-					     _("Connection %i timed out"),
-					     i);
+			axel_message(axel, AXEL_MSG_INFO,
+				     _("Connection %i timed out"), i);
 			conn_disconnect(&axel->conn[i]);
 		}
 		return 0;
@@ -435,28 +431,24 @@ read_connection(axel_t *axel, int i, fd_set *fds)
 	    tcp_read(axel->conn[i].tcp, buffer,
 		     axel->conf->buffer_size);
 	if (size == -1) {
-		if (axel->conf->verbose) {
-			axel_message(axel, _("Error on connection %i! "
-					     "Connection closed"), i);
-		}
+		axel_message(axel, AXEL_MSG_INFO,
+			     _("Error on connection %i! "
+			       "Connection closed"), i);
 		conn_disconnect(&axel->conn[i]);
 		return 0;
 	}
 
 	if (size == 0) {
-		if (axel->conf->verbose) {
-			/* Only abnormal behaviour if: */
-			if (axel->conn[i].currentbyte <
-			    axel->conn[i].lastbyte &&
-			    axel->size != LLONG_MAX) {
-				axel_message(axel,
-					     _("Connection %i unexpectedly closed"),
-					     i);
-			} else {
-				axel_message(axel,
-					     _("Connection %i finished"),
-					     i);
-			}
+		/* Only abnormal behaviour if: */
+		if (axel->conn[i].currentbyte <
+		    axel->conn[i].lastbyte &&
+		    axel->size != LLONG_MAX) {
+			axel_message(axel, AXEL_MSG_INFO,
+				     _("Connection %i unexpectedly closed"),
+				     i);
+		} else {
+			axel_message(axel, AXEL_MSG_INFO,
+				     _("Connection %i finished"), i);
 		}
 		if (!axel->conn[0].supported) {
 			axel->ready = 1;
@@ -469,10 +461,8 @@ read_connection(axel_t *axel, int i, fd_set *fds)
 	/* remaining == Bytes to go */
 	remaining = axel->conn[i].lastbyte - axel->conn[i].currentbyte;
 	if (remaining < size) {
-		if (axel->conf->verbose) {
-			axel_message(axel, _("Connection %i finished"),
-				     i);
-		}
+		axel_message(axel, AXEL_MSG_INFO,
+			     _("Connection %i finished"), i);
 		conn_disconnect(&axel->conn[i]);
 		size = remaining;
 		/* Don't terminate, still stuff to write! */
@@ -480,7 +470,7 @@ read_connection(axel_t *axel, int i, fd_set *fds)
 	/* This should always succeed.. */
 	lseek(axel->outfd, axel->conn[i].currentbyte, SEEK_SET);
 	if (write(axel->outfd, buffer, size) != size) {
-		axel_message(axel, _("Write error!"));
+		axel_message(axel, AXEL_MSG_ERROR, _("Write error!"));
 		axel->ready = -1;
 		return -1;
 	}
@@ -532,12 +522,11 @@ restart_connections(axel_t *axel)
 				url_ptr = url_ptr->next;
 				/* axel->conn[i].local_if = axel->conf->interfaces->text;
 				   axel->conf->interfaces = axel->conf->interfaces->next; */
-				if (axel->conf->verbose >= 2)
-					axel_message(axel,
-						     _("Connection %i downloading from %s:%i using interface %s"),
-						     i, axel->conn[i].host,
-						     axel->conn[i].port,
-						     axel->conn[i].local_if);
+				axel_message(axel, AXEL_MSG_DEBUG,
+					     _("Connection %i downloading from %s:%i using interface %s"),
+					     i, axel->conn[i].host,
+					     axel->conn[i].port,
+					     axel->conn[i].local_if);
 
 				axel->conn[i].state = true;
 				if (pthread_create
@@ -545,7 +534,7 @@ restart_connections(axel_t *axel)
 				     setup_thread, &axel->conn[i]) == 0) {
 					axel->conn[i].last_transfer = axel_gettime();
 				} else {
-					axel_message(axel,
+					axel_message(axel, AXEL_MSG_ERROR,
 						     _("pthread error!!!"));
 					axel->ready = -1;
 				}
@@ -614,7 +603,7 @@ enforce_throttling(axel_t *axel)
 		}
 	}
 	if (axel_sleep(axel->delay_time) < 0) {
-		axel_message(axel,
+		axel_message(axel, AXEL_MSG_ERROR,
 			     _("Error while enforcing throttling: %s"),
 			     strerror(errno));
 		axel->ready = -1;
@@ -656,7 +645,7 @@ axel_do(axel_t *axel)
 	if (hifd == 0) {
 		/* No connections yet. Wait... */
 		if (axel_sleep(delay) < 0) {
-			axel_message(axel,
+			axel_message(axel, AXEL_MSG_ERROR,
 				     _("Error while waiting for connection: %s"),
 				     strerror(errno));
 			axel->ready = -1;
@@ -788,13 +777,17 @@ setup_thread(void *c)
 
 /* Add a message to the axel->message structure */
 void
-axel_message(axel_t *axel, const char *format, ...)
+axel_message(axel_t *axel, int level, const char *format, ...)
 {
 	message_t *m;
 	va_list params;
 
 	if (!axel)
 		goto nomem;
+
+	/* Drop messages above the configured verbosity level. */
+	if (level > axel->conf->verbose)
+		return;
 
 	m = calloc(1, sizeof(message_t));
 	if (!m)
